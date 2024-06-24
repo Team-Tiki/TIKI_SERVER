@@ -20,7 +20,7 @@ jobs:
         java-version: '17'
 
     - name: create application-secret.yml
-      run: 
+      run: |
         # create application-secret.yml
         cd ./src/main/resources
 
