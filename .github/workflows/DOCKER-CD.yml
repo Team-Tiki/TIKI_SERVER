@@ -22,10 +22,11 @@ jobs:
 
       - name: application-secret.yml 생성
         run: |
-          mkdir -p ./src/main/resources && cd $_
+          cd ./src/main/resources
           touch ./application-secret.yml
           echo "${{ secrets.CD_APPLICATION_SECRET}}" > ./application-secret.yml
           cat ./application-secret.yml
+          cat ./application-dev.yml
         working-directory: ${{ env.working-directory }}
 
       - name: 빌드
