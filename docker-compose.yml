@@ -1,0 +1,12 @@
+services:
+  redis:
+    container_name: redis
+    image: alpine
+    hostname: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - tiki-network
+networks:
+  tiki-network:
+    external: true

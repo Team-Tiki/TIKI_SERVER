@@ -16,3 +16,7 @@ spring:
         format_sql: true
         default_batch_fetch_size: 1000
         auto_quote_keyword: true
+  data:
+    redis:
+      host: redis
+      port: 6379
