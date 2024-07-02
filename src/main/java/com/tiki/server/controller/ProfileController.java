@@ -20,4 +20,10 @@ public class ProfileController {
                 .findFirst()
                 .orElse(NULL);
     }
+    @GetMapping("/profile-test")
+    public String getProfileTest() {
+        return Arrays.stream(env.getActiveProfiles())
+                .findFirst()
+                .orElse(NULL);
+    }
 }
