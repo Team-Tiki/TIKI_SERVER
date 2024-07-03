@@ -30,6 +30,9 @@ public class Team extends BaseTime {
 	@Enumerated(value = STRING)
 	private Category category;
 
+	@Enumerated(value = STRING)
+	private TeamType teamType;
+
 	private String imageUrl;
 
 	private String iconImageUrl;
