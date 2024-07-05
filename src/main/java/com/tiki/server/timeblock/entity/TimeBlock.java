@@ -4,14 +4,11 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.tiki.server.common.entity.BaseTime;
-import com.tiki.server.common.support.StringListConverter;
 import com.tiki.server.team.entity.Team;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -41,7 +38,4 @@ public class TimeBlock extends BaseTime {
 	private LocalDate startDate;
 
 	private LocalDate endDate;
-
-	@Convert(converter = StringListConverter.class)
-	private List<String> filesUrl;
 }
