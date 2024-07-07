@@ -1,4 +1,4 @@
-package com.tiki.server.memberteammanager.entity;
+package com.tiki.server.common.entity;
 
 public enum Position {
 	ADMIN, EXECUTIVE, MEMBER,
