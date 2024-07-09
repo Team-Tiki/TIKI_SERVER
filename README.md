@@ -117,7 +117,7 @@
 
 ### 👩‍👧‍👧 Our Team
 
-|    **🍀 [남궁찬](https://github.com/Chan531)**                 |**🍀 [신민](https://github.com/paragon0107)**                 |
+|    **🍀 [남궁찬](https://github.com/Chan531)**                 |**🍀 [신민규](https://github.com/paragon0107)**                 |
   |:-----------------------------------:|:-----------------------------------:|
 |   Server Developer  |    Server Developer     |
 |        프로젝트 세팅<br />    |   프로젝트 세팅<br />    |  
