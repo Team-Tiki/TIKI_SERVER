@@ -1,6 +1,8 @@
 package com.tiki.server.auth.config;
 
+import com.tiki.server.auth.exception.handler.CustomAccessDeniedHandler;
 import com.tiki.server.auth.exception.handler.CustomAuthenticationEntryPointHandler;
+import com.tiki.server.auth.filter.ExceptionHandlerFilter;
 import com.tiki.server.auth.filter.JwtAuthenticationFilter;
 import com.tiki.server.auth.jwt.JwtProvider;
 import com.tiki.server.auth.jwt.JwtValidator;
@@ -21,8 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     //prod와 dev를 나누는건 스웨거를 도입한 후
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-    private final JwtProvider jwtProvider;
-    private final JwtValidator jwtValidator;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,13 +37,22 @@ public class SecurityConfig {
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandlingConfigurer ->
                         exceptionHandlingConfigurer
+                                .accessDeniedHandler(customAccessDeniedHandler)
                                 .authenticationEntryPoint(customAuthenticationEntryPointHandler))
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                        authorizationManagerRequestMatcherRegistry
+                .authorizeHttpRequests(request ->
+                        request
+                                .requestMatchers("/api/v1/auth/login").permitAll()
+                                .requestMatchers("/api/v1/auth/password").permitAll()
+                                .requestMatchers("/api/v1/member/password").permitAll()
+                                .requestMatchers("/api/v1/member").permitAll()
                                 .anyRequest()
                                 .authenticated())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtValidator, jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new ExceptionHandlerFilter(), JwtAuthenticationFilter.class)
+                .addFilterBefore(
+                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        new ExceptionHandlerFilter(), JwtAuthenticationFilter.class
+                )
                 .build();
     }
 }
