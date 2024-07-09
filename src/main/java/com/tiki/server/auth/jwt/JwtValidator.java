@@ -14,11 +14,11 @@ import static com.tiki.server.auth.jwt.JwtValidationType.*;
 @RequiredArgsConstructor
 @Component
 public class JwtValidator {
-    private final JwtGenerator jwtGenerator;
+    private final JwtProvider jwtProvider;
 
     public JwtValidationType validateToken(String token) {
         try {
-            jwtGenerator.getBody(token);
+            jwtProvider.getBody(token);
             return VALID_JWT;
         } catch(MalformedJwtException exception) {
             log.error(exception.getMessage());

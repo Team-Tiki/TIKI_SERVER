@@ -14,23 +14,4 @@ import static java.util.Base64.getEncoder;
 @Component
 public class JwtGenerator {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    private long getUserFromJwt(String token) {
-        val claims = getBody(token);
-        return Long.parseLong(claims.get("memberId").toString());
-    }
-
-    public Claims getBody(final String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-    private SecretKey getSigningKey() {
-        val encodedKey = getEncoder().encodeToString(secretKey.getBytes());
-        return hmacShaKeyFor(encodedKey.getBytes());
-    }
 }
