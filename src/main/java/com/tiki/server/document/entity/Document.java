@@ -1,14 +1,14 @@
-package com.tiki.server.timeblock.entity;
+package com.tiki.server.document.entity;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.tiki.server.common.entity.BaseTime;
-import com.tiki.server.common.entity.Position;
-import com.tiki.server.team.entity.Team;
+import com.tiki.server.timeblock.entity.TimeBlock;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,25 +23,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class TimeBlock extends BaseTime {
+public class Document extends BaseTime {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "block_id")
+	@Column(name = "document_id")
 	private Long id;
 
+	private String fileUrl;
+
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "team_id")
-	private Team team;
-
-	private String color;
-
-	private String name;
+	@JoinColumn(name = "block_id")
+	private TimeBlock timeBlock;
 
 	@Enumerated(value = STRING)
-	private Position accessiblePosition;
+	private DocumentStatus status;
 
-	private LocalDate startDate;
-
-	private LocalDate endDate;
+	private LocalDate deletedDate;
 }

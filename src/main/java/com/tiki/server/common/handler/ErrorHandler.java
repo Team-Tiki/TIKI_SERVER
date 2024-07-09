@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
+import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.exception.MemberTeamManagerException;
 import com.tiki.server.team.exception.TeamException;
@@ -41,6 +42,13 @@ public class ErrorHandler {
 
 	@ExceptionHandler(TimeBlockException.class)
 	public ResponseEntity<BaseResponse> timeBlockException(TimeBlockException exception) {
+		log.error(exception.getMessage());
+		val errorCode = exception.getErrorCode();
+		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+	}
+
+	@ExceptionHandler(DocumentException.class)
+	public ResponseEntity<BaseResponse> documentException(DocumentException exception) {
 		log.error(exception.getMessage());
 		val errorCode = exception.getErrorCode();
 		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
