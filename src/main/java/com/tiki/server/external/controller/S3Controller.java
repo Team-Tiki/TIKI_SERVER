@@ -5,6 +5,7 @@ import static com.tiki.server.external.message.SuccessMessage.PRESIGNED_URL_GET_
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class S3Controller {
 	private final S3Service s3Service;
 
 	@GetMapping("/upload")
-	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(PreSignedUrlRequest request) {
+	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(@RequestBody PreSignedUrlRequest request) {
 		val response = s3Service.getUploadPreSignedUrl(request);
 		return ResponseEntity.ok(success(PRESIGNED_URL_GET_SUCCESS.getMessage(), response));
 	}
