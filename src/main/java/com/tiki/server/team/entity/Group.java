@@ -1,5 +1,5 @@
 package com.tiki.server.team.entity;
 
-public enum TeamType {
+public enum Group {
 	ALLIANCE, UNIVERSITY
 }
