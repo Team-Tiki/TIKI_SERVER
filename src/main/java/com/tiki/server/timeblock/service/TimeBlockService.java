@@ -5,10 +5,14 @@ import static com.tiki.server.timeblock.message.ErrorCode.INVALID_TYPE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.MEMBER;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
+import com.tiki.server.document.adapter.DocumentCreator;
+import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
@@ -29,7 +33,9 @@ public class TimeBlockService {
 	private final TeamFinder teamFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final TimeBlockCreator timeBlockCreator;
+	private final DocumentCreator documentCreator;
 
+	@Transactional
 	public TimeBlockCreationResponse createTimeBlock(
 		long memberId,
 		long teamId,
@@ -54,6 +60,7 @@ public class TimeBlockService {
 		checkMemberAccessible(accessiblePosition, memberPosition);
 		val timeBlock = createTimeBlock(team, accessiblePosition, request);
 		val timeBlockId = timeBlockCreator.createTimeBlock(timeBlock).getId();
+		saveDocuments(request.filesUrl(), timeBlock);
 		return TimeBlockCreationResponse.of(timeBlockId);
 	}
 
@@ -71,6 +78,17 @@ public class TimeBlockService {
 			.startDate(request.startDate())
 			.endDate(request.endDate())
 			.team(team)
+			.build();
+	}
+
+	private void saveDocuments(List<String> filesUrl, TimeBlock timeBlock) {
+		filesUrl.forEach(fileUrl -> documentCreator.create(createDocument(fileUrl, timeBlock)));
+	}
+
+	private Document createDocument(String fileUrl, TimeBlock timeBlock) {
+		return Document.builder()
+			.fileUrl(fileUrl)
+			.timeBlock(timeBlock)
 			.build();
 	}
 }
