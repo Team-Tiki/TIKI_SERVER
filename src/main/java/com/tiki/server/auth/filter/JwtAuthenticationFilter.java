@@ -39,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws IOException {
-
         try {
             val token = jwtProvider.getAccessTokenFromRequest(request);
             if (hasText(token) && jwtValidator.validateToken(token) == VALID_JWT) {

@@ -18,6 +18,7 @@ import static com.tiki.server.auth.message.ErrorCode.UNAUTHENTICATED_USER;
 
 @Component
 public class CustomAuthenticationEntryPointHandler implements AuthenticationEntryPoint {
+
     AuthenticationResponse authenticationResponse;
 
     @Override
