@@ -7,6 +7,7 @@ import com.tiki.server.auth.jwt.JwtValidator;
 import com.tiki.server.auth.jwt.UserAuthentication;
 import com.tiki.server.common.Constants;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -38,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-    ) throws IOException {
+    ) throws IOException, ServletException {
         try {
             val token = jwtProvider.getAccessTokenFromRequest(request);
             if (hasText(token) && jwtValidator.validateToken(token) == VALID_JWT) {
@@ -49,5 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+
     }
 }

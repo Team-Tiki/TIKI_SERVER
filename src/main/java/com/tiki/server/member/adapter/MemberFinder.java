@@ -10,4 +10,6 @@ import lombok.RequiredArgsConstructor;
 public class MemberFinder {
 
 	private final MemberRepository memberRepository;
+
+
 }
