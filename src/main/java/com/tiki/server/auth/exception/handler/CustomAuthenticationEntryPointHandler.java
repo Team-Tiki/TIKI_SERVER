@@ -17,9 +17,10 @@ import java.io.IOException;
 import static com.tiki.server.auth.message.ErrorCode.UNAUTHENTICATED_USER;
 
 @Component
+@RequiredArgsConstructor
 public class CustomAuthenticationEntryPointHandler implements AuthenticationEntryPoint {
 
-    AuthenticationResponse authenticationResponse;
+    private final AuthenticationResponse authenticationResponse;
 
     @Override
     public void commence(
