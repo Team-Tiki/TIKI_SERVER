@@ -5,11 +5,13 @@ import com.tiki.server.auth.message.ErrorCode;
 import com.tiki.server.common.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Component
 @RequiredArgsConstructor
 public class AuthenticationResponse {
 
