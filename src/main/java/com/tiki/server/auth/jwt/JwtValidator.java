@@ -14,13 +14,15 @@ import static com.tiki.server.auth.jwt.JwtValidationType.*;
 @RequiredArgsConstructor
 @Component
 public class JwtValidator {
+
     private final JwtProvider jwtProvider;
 
     public JwtValidationType validateToken(String token) {
+
         try {
             jwtProvider.getBodyFromJwt(token);
             return VALID_JWT;
-        } catch(MalformedJwtException exception) {
+        } catch (MalformedJwtException exception) {
             log.error(exception.getMessage());
             return INVALID_JWT_TOKEN;
         } catch (ExpiredJwtException exception) {

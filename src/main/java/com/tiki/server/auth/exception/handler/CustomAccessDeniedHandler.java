@@ -15,12 +15,14 @@ import static com.tiki.server.auth.message.ErrorCode.UNAUTHORIZED_USER;
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-    AuthenticationResponse authenticationResponse;
+    private AuthenticationResponse authenticationResponse;
+
     @Override
-    public void handle(HttpServletRequest request,
-                       HttpServletResponse response,
-                       AccessDeniedException accessDeniedException
+    public void handle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AccessDeniedException accessDeniedException
     ) throws IOException {
-        authenticationResponse.makeFailureResponse(response,UNAUTHORIZED_USER);
+        authenticationResponse.makeFailureResponse(response, UNAUTHORIZED_USER);
     }
 }

@@ -19,11 +19,13 @@ import static com.tiki.server.auth.message.ErrorCode.UNAUTHENTICATED_USER;
 @Component
 public class CustomAuthenticationEntryPointHandler implements AuthenticationEntryPoint {
     AuthenticationResponse authenticationResponse;
+
     @Override
-    public void commence(HttpServletRequest request,
-                         HttpServletResponse response,
-                         AuthenticationException authException
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException
     ) throws IOException {
-        authenticationResponse.makeFailureResponse(response,UNAUTHENTICATED_USER);
+        authenticationResponse.makeFailureResponse(response, UNAUTHENTICATED_USER);
     }
 }
