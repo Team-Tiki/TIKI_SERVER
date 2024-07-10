@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	TEMP("컴파일 에러 방지용");
+	SUCCESS_CREATE_TIME_BLOCK("타임 블록 생성 성공");
 
 	private final String message;
 }
