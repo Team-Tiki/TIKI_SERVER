@@ -17,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,13 +31,9 @@ public class TimeBlock extends BaseTime {
 	@Column(name = "block_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "team_id")
-	private Team team;
+	private String name;
 
 	private String color;
-
-	private String name;
 
 	@Enumerated(value = STRING)
 	private Position accessiblePosition;
@@ -44,4 +41,25 @@ public class TimeBlock extends BaseTime {
 	private LocalDate startDate;
 
 	private LocalDate endDate;
+
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "team_id")
+	private Team team;
+
+	@Builder
+	public TimeBlock(
+		String name,
+		String color,
+		Position accessiblePosition,
+		LocalDate startDate,
+		LocalDate endDate,
+		Team team
+	) {
+		this.name = name;
+		this.color = color;
+		this.accessiblePosition = accessiblePosition;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.team = team;
+	}
 }
