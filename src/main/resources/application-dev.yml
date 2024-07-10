@@ -20,3 +20,14 @@ spring:
     redis:
       host: redis
       port: 6379
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+  slack:
+    webhook_url: ${SLACK.WEBHOOK_URL.dev}
+    config: classpath:logback-spring.xml
+jwt:
+  secret:
+    ${JWT.SECRET}
+
