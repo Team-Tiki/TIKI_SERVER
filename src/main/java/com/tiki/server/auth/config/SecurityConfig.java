@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    //prod와 dev를 나누는건 스웨거를 도입한 후
+
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
