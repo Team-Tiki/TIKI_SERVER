@@ -27,3 +27,10 @@ logging:
   slack:
     webhook_url: ${SLACK.WEBHOOK_URL.dev}
     config: classpath:logback-spring.xml
+
+aws-property:
+  access-key: ${AWS_PROPERTY.ACCESS_KEY}
+  secret-key: ${AWS_PROPERTY.SECRET_KEY}
+  bucket: ${AWS_PROPERTY.BUCKET}
+  aws-region: ap-northeast-2
+  s3-url: ${AWS_PROPERTY.S3_URL}
