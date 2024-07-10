@@ -33,14 +33,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final JwtValidator jwtValidator;
 
-
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain
     ) throws IOException {
         try{
-            val token = getAccessTokenFromRequest(request);
+            val token = jwtProvider.getAccessTokenFromRequest(request);
             if (hasText(token) && jwtValidator.validateToken(token) == VALID_JWT){
                 val authentication = new UserAuthentication(jwtProvider.getUserFromJwt(token), null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -51,11 +50,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private String getAccessTokenFromRequest(HttpServletRequest request) {
-        String accessToken = request.getHeader(Constants.AUTHORIZATION);
-        if (!StringUtils.hasText(accessToken) || !accessToken.startsWith(Constants.BEARER)) {
-            throw new AuthException(INVALID_KEY);
-        }
-        return accessToken.substring(Constants.BEARER.length());
-    }
+
 }

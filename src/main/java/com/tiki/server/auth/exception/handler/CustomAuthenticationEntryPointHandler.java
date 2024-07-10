@@ -26,5 +26,4 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
     ) throws IOException {
         authenticationResponse.makeFailureResponse(response,UNAUTHENTICATED_USER);
     }
-
 }
