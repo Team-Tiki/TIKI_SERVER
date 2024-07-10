@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tiki.server.common.support.UriGenerator;
+import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
 import com.tiki.server.timeblock.dto.response.TimeBlockCreationResponse;
 import com.tiki.server.timeblock.service.TimeBlockService;
 
@@ -28,10 +30,12 @@ public class TimeBlockController {
 		Principal principal,
 		@PathVariable("teamId") long teamId,
 		@RequestParam String type,
-		@RequestBody
+		@RequestBody TimeBlockCreationRequest request
 	) {
 		val memberId = Long.valueOf(principal.getName());
-		val response = timeBlockService.createTimeBlock()
-		return ResponseEntity.created(URI);
+		val response = timeBlockService.createTimeBlock(memberId, teamId, type, request);
+		return ResponseEntity.created(
+			UriGenerator.getUri("/api/v1/time-blocks/team/{teamId}/time-block", response.timeBlockId())
+		);
 	}
 }
