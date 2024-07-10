@@ -34,5 +34,4 @@ public class JwtValidator {
             return EMPTY_JWT;
         }
     }
-
 }
