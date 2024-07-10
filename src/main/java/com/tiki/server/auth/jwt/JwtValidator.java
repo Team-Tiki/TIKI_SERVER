@@ -18,7 +18,6 @@ public class JwtValidator {
     private final JwtProvider jwtProvider;
 
     public JwtValidationType validateToken(String token) {
-
         try {
             jwtProvider.getBodyFromJwt(token);
             return VALID_JWT;
