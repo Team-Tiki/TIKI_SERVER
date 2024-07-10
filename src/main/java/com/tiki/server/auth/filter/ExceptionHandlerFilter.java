@@ -23,6 +23,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-
+        filterChain.doFilter(request, response);
     }
 }

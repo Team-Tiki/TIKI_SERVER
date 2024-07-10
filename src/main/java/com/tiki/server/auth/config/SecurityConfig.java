@@ -25,6 +25,7 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,7 +52,7 @@ public class SecurityConfig {
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
                 )
                 .addFilterBefore(
-                        new ExceptionHandlerFilter(), JwtAuthenticationFilter.class
+                        exceptionHandlerFilter, JwtAuthenticationFilter.class
                 )
                 .build();
     }

@@ -1,8 +1,10 @@
 package com.tiki.server.member.controller;
 
-import com.tiki.server.common.dto.BaseResponse;
+import com.tiki.server.common.dto.BaseResponse.*;
 import com.tiki.server.common.dto.SuccessResponse.*;
 
+import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
+import com.tiki.server.common.dto.BaseResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import com.tiki.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
+import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CREATE_MEMBER;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,11 +25,11 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-//	@PostMapping
-//	public ResponseEntity<BaseResponse> signUp(
-//			@RequestBody MemberProfileCreateRequest request
-//	){
-//		memberService.createMember(request);
-//		return ResponseEntity.created();
-//	}
+	@PostMapping
+	public ResponseEntity<BaseResponse> signUp(
+			@RequestBody MemberProfileCreateRequest request
+	){
+		memberService.createMember(request);
+		return ResponseEntity.created(success(SUCCESS_CREATE_MEMBER.getMessage()));
+	}
 }
