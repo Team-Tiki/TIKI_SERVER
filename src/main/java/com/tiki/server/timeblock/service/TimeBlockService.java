@@ -71,14 +71,7 @@ public class TimeBlockService {
 	}
 
 	private TimeBlock createTimeBlock(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
-		return TimeBlock.of(
-			request.name(),
-			request.color(),
-			accessiblePosition,
-			request.startDate(),
-			request.endDate(),
-			team
-		);
+		return TimeBlock.of(team, accessiblePosition, request);
 	}
 
 	private void saveDocuments(Map<String, String> files, TimeBlock timeBlock) {

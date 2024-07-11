@@ -3,12 +3,15 @@ package com.tiki.server.timeblock.entity;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDate;
 
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.team.entity.Team;
+import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,13 +20,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Builder(access = PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class TimeBlock extends BaseTime {
 
 	@Id
@@ -46,21 +52,13 @@ public class TimeBlock extends BaseTime {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
-	@Builder
-	public static TimeBlock of(
-		String name,
-		String color,
-		Position accessiblePosition,
-		LocalDate startDate,
-		LocalDate endDate,
-		Team team
-	) {
+	public static TimeBlock of(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
 		return TimeBlock.builder()
-			.name(name)
-			.color(color)
+			.name(request.name())
+			.color(request.color())
 			.accessiblePosition(accessiblePosition)
-			.startDate(startDate)
-			.endDate(endDate)
+			.startDate(request.startDate())
+			.endDate(request.endDate())
 			.team(team)
 			.build();
 	}
