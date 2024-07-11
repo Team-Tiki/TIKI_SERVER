@@ -26,6 +26,8 @@ public class Document extends BaseTime {
 	@Column(name = "document_id")
 	private Long id;
 
+	private String fileName;
+
 	private String fileUrl;
 
 	@ManyToOne(fetch = LAZY)
@@ -33,8 +35,9 @@ public class Document extends BaseTime {
 	private TimeBlock timeBlock;
 
 	@Builder
-	public static Document of(String fileUrl, TimeBlock timeBlock) {
+	public static Document of(String fileName, String fileUrl, TimeBlock timeBlock) {
 		return Document.builder()
+			.fileName(fileName)
 			.fileUrl(fileUrl)
 			.timeBlock(timeBlock)
 			.build();

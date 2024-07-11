@@ -22,6 +22,8 @@ public class DeletedDocument {
 	@Column(name = "deleted_document_id")
 	private Long id;
 
+	private String fileName;
+
 	private String fileUrl;
 
 	@Column(name = "block_id")
@@ -30,8 +32,9 @@ public class DeletedDocument {
 	private LocalDate deletedDate;
 
 	@Builder
-	public static DeletedDocument of(String fileUrl, long timeBlockId, LocalDate deletedDate) {
+	public static DeletedDocument of(String fileName, String fileUrl, long timeBlockId, LocalDate deletedDate) {
 		return DeletedDocument.builder()
+			.fileName(fileName)
 			.fileUrl(fileUrl)
 			.timeBlockId(timeBlockId)
 			.deletedDate(deletedDate)

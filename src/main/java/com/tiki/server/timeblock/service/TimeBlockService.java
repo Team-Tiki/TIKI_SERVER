@@ -5,7 +5,7 @@ import static com.tiki.server.timeblock.message.ErrorCode.INVALID_TYPE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.MEMBER;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +60,7 @@ public class TimeBlockService {
 		checkMemberAccessible(accessiblePosition, memberPosition);
 		val timeBlock = createTimeBlock(team, accessiblePosition, request);
 		val timeBlockId = timeBlockSaver.save(timeBlock).getId();
-		saveDocuments(request.filesUrl(), timeBlock);
+		saveDocuments(request.files(), timeBlock);
 		return TimeBlockCreationResponse.of(timeBlockId);
 	}
 
@@ -81,11 +81,11 @@ public class TimeBlockService {
 		);
 	}
 
-	private void saveDocuments(List<String> filesUrl, TimeBlock timeBlock) {
-		filesUrl.forEach(fileUrl -> documentSaver.save(createDocument(fileUrl, timeBlock)));
+	private void saveDocuments(Map<String, String> files, TimeBlock timeBlock) {
+		files.forEach((fileName, fileUrl) -> documentSaver.save(createDocument(fileName, fileUrl, timeBlock)));
 	}
 
-	private Document createDocument(String fileUrl, TimeBlock timeBlock) {
-		return Document.of(fileUrl, timeBlock);
+	private Document createDocument(String fileName, String fileUrl, TimeBlock timeBlock) {
+		return Document.of(fileName, fileUrl, timeBlock);
 	}
 }

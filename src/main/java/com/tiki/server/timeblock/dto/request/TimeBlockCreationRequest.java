@@ -1,7 +1,7 @@
 package com.tiki.server.timeblock.dto.request;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Map;
 
 import lombok.NonNull;
 
@@ -10,6 +10,6 @@ public record TimeBlockCreationRequest(
 	@NonNull String color,
 	@NonNull LocalDate startDate,
 	@NonNull LocalDate endDate,
-	List<String> filesUrl
+	Map<String, String> files
 ) {
 }
