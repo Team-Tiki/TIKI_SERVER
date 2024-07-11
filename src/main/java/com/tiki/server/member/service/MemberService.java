@@ -7,6 +7,7 @@ import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import lombok.NonNull;
 import lombok.val;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class MemberService {
 
     private final MemberSaver memberSaver;
     private final MemberFinder memberFinder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signUp(@NonNull MemberProfileCreateRequest request) {
@@ -30,7 +32,7 @@ public class MemberService {
 
         memberSaver.save(Member.of(
                 request.email(),
-                request.password(),
+                passwordEncoder.encode(request.password()),
                 request.name(),
                 request.birth(),
                 request.Univ()));
