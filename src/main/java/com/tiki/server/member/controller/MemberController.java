@@ -29,7 +29,7 @@ public class MemberController {
 	public ResponseEntity<BaseResponse> signUp(
 			@RequestBody MemberProfileCreateRequest request
 	){
-		memberService.createMember(request);
-		return ResponseEntity.created(success(SUCCESS_CREATE_MEMBER.getMessage()));
+		memberService.signUp(request);
+		return ResponseEntity.created(getUri("/")).body(success(SUCCESS_CREATE_MEMBER.getMessage()));
 	}
 }
