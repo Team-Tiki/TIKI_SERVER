@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +30,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        permitSwaggerUri(http);
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -55,5 +57,12 @@ public class SecurityConfig {
                         exceptionHandlerFilter, JwtAuthenticationFilter.class
                 )
                 .build();
+    }
+
+    private void permitSwaggerUri(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+            .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+            .requestMatchers(new AntPathRequestMatcher("/docs/**")).permitAll());
     }
 }
