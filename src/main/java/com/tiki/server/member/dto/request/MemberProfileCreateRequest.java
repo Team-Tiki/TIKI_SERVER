@@ -11,6 +11,6 @@ public record MemberProfileCreateRequest(
         @NonNull University Univ,
         @NonNull String email,
         @NonNull String password,
-        @NonNull String passwordCheck
+        @NonNull String passwordChecker
 ) {
 }
