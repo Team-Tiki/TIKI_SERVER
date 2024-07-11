@@ -26,7 +26,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void signUp(@NonNull MemberProfileCreateRequest request) {
+    public void signUp(MemberProfileCreateRequest request) {
         emailCheck(request.email());
         passwordCheck(request.password(), request.passwordChecker());
         val member = createMember(request);
@@ -39,13 +39,13 @@ public class MemberService {
         });
     }
 
-    private void passwordCheck(String password, String passwordCheck) {
-        if (!password.equals(passwordCheck)) {
+    private void passwordCheck(String password, String passwordChecker) {
+        if (!password.equals(passwordChecker)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
 
-    private Member createMember(MemberProfileCreateRequest request){
+    private Member createMember(MemberProfileCreateRequest request) {
         return Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
