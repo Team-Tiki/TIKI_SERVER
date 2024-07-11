@@ -3,11 +3,12 @@ package com.tiki.server.external.dto.response;
 import static lombok.AccessLevel.PRIVATE;
 
 import lombok.Builder;
+import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record PreSignedUrlResponse(
-	String fileName,
-	String url
+	@NonNull String fileName,
+	@NonNull String url
 ) {
 
 	public static PreSignedUrlResponse of(String fileName, String url) {
