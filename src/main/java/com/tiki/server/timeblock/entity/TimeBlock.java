@@ -47,7 +47,7 @@ public class TimeBlock extends BaseTime {
 	private Team team;
 
 	@Builder
-	public TimeBlock(
+	public static TimeBlock of(
 		String name,
 		String color,
 		Position accessiblePosition,
@@ -55,11 +55,13 @@ public class TimeBlock extends BaseTime {
 		LocalDate endDate,
 		Team team
 	) {
-		this.name = name;
-		this.color = color;
-		this.accessiblePosition = accessiblePosition;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.team = team;
+		return TimeBlock.builder()
+			.name(name)
+			.color(color)
+			.accessiblePosition(accessiblePosition)
+			.startDate(startDate)
+			.endDate(endDate)
+			.team(team)
+			.build();
 	}
 }
