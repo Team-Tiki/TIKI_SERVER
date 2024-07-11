@@ -1,8 +1,5 @@
 package com.tiki.server.member.controller;
 
-import com.tiki.server.common.dto.BaseResponse.*;
-import com.tiki.server.common.dto.SuccessResponse.*;
-
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.common.dto.BaseResponse;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +13,7 @@ import com.tiki.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
+import static com.tiki.server.common.support.UriGenerator.getUri;
 import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CREATE_MEMBER;
 
 @RestController
