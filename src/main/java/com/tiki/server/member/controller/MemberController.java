@@ -24,9 +24,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<BaseResponse> signUp(
-            @RequestBody MemberProfileCreateRequest request
-    ) {
+    public ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request) {
         memberService.signUp(request);
         return ResponseEntity.created(getUri("/")).body(success(SUCCESS_CREATE_MEMBER.getMessage()));
     }
