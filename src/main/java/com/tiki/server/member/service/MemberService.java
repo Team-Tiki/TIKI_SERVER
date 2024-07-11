@@ -28,8 +28,11 @@ public class MemberService {
     @Transactional
     public void signUp(@NonNull MemberProfileCreateRequest request) {
         emailCheck(request.email());
-        passwordCheck(request.password(), request.passwordCk());
+        passwordCheck(request.password(), request.passwordCheck());
+        saveMember(request);
+    }
 
+    private void saveMember(MemberProfileCreateRequest request){
         memberSaver.save(Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
@@ -37,16 +40,14 @@ public class MemberService {
                 request.birth(),
                 request.Univ()));
     }
-
     private void emailCheck(String email) {
-        val member = memberFinder.findMemberByEmail(email);
-        if (member.isPresent()) {
+        memberFinder.findByEmail(email).ifPresent(value -> {
             throw new MemberException(CONFLICT_MEMBER);
-        }
+        });
     }
 
-    private void passwordCheck(String password, String passwordCk) {
-        if (!password.equals(passwordCk)) {
+    private void passwordCheck(String password, String passwordCheck) {
+        if (!password.equals(passwordCheck)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
