@@ -6,7 +6,6 @@ import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import lombok.NonNull;
-import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,7 @@ public class MemberService {
         saveMember(request);
     }
 
-    private void saveMember(MemberProfileCreateRequest request){
+    private void saveMember(MemberProfileCreateRequest request) {
         memberSaver.save(Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
@@ -40,6 +39,7 @@ public class MemberService {
                 request.birth(),
                 request.Univ()));
     }
+
     private void emailCheck(String email) {
         memberFinder.findByEmail(email).ifPresent(value -> {
             throw new MemberException(CONFLICT_MEMBER);
