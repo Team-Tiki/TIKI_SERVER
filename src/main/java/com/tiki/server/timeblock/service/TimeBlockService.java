@@ -17,8 +17,8 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.adapter.TimeBlockSaver;
-import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
-import com.tiki.server.timeblock.dto.response.TimeBlockCreationResponse;
+import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
+import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.exception.TimeBlockException;
 
@@ -36,11 +36,11 @@ public class TimeBlockService {
 	private final DocumentSaver documentSaver;
 
 	@Transactional
-	public TimeBlockCreationResponse createTimeBlock(
+	public TimeBlockCreateResponse createTimeBlock(
 		long memberId,
 		long teamId,
 		String type,
-		TimeBlockCreationRequest request
+		TimeBlockCreateRequest request
 	) {
 		val team = teamFinder.findById(teamId);
 		val position = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId).getPosition();
@@ -51,17 +51,17 @@ public class TimeBlockService {
 		};
 	}
 
-	private TimeBlockCreationResponse createTimeBlockByType(
+	private TimeBlockCreateResponse createTimeBlockByType(
 		Team team,
 		Position accessiblePosition,
 		Position memberPosition,
-		TimeBlockCreationRequest request
+		TimeBlockCreateRequest request
 	) {
 		checkMemberAccessible(accessiblePosition, memberPosition);
 		val timeBlock = saveTimeBlock(team, accessiblePosition, request);
 		val timeBlockId = timeBlock.getId();
 		saveDocuments(request.files(), timeBlock);
-		return TimeBlockCreationResponse.of(timeBlockId);
+		return TimeBlockCreateResponse.of(timeBlockId);
 	}
 
 	private void checkMemberAccessible(Position accessiblePosition, Position memberPosition) {
@@ -70,11 +70,11 @@ public class TimeBlockService {
 		}
 	}
 
-	private TimeBlock saveTimeBlock(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
+	private TimeBlock saveTimeBlock(Team team, Position accessiblePosition, TimeBlockCreateRequest request) {
 		return timeBlockSaver.save(createTimeBlock(team, accessiblePosition, request));
 	}
 
-	private TimeBlock createTimeBlock(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
+	private TimeBlock createTimeBlock(Team team, Position accessiblePosition, TimeBlockCreateRequest request) {
 		return TimeBlock.of(team, accessiblePosition, request);
 	}
 

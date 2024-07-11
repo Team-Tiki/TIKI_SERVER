@@ -5,12 +5,12 @@ import static lombok.AccessLevel.PRIVATE;
 import lombok.Builder;
 
 @Builder(access = PRIVATE)
-public record TimeBlockCreationResponse(
+public record TimeBlockCreateResponse(
 	long timeBlockId
 ) {
 
-	public static TimeBlockCreationResponse of(long timeBlockId) {
-		return TimeBlockCreationResponse.builder()
+	public static TimeBlockCreateResponse of(long timeBlockId) {
+		return TimeBlockCreateResponse.builder()
 			.timeBlockId(timeBlockId)
 			.build();
 	}

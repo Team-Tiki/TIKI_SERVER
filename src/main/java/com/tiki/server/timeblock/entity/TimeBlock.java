@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
+import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,7 +52,7 @@ public class TimeBlock extends BaseTime {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
-	public static TimeBlock of(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
+	public static TimeBlock of(Team team, Position accessiblePosition, TimeBlockCreateRequest request) {
 		return TimeBlock.builder()
 			.name(request.name())
 			.color(request.color())

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
-import com.tiki.server.timeblock.dto.response.TimeBlockCreationResponse;
+import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
+import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,7 +56,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimeBlockCreationResponse>> createTimeBlock(
+	ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -71,6 +71,6 @@ public interface TimeBlockControllerDocs {
 			in = ParameterIn.QUERY,
 			example = "executive, member"
 		) @RequestParam String type,
-		@RequestBody TimeBlockCreationRequest request
+		@RequestBody TimeBlockCreateRequest request
 	);
 }
