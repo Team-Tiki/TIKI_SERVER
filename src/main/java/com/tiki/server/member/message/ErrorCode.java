@@ -18,8 +18,7 @@ public enum ErrorCode {
     CONFLICT_MEMBER(CONFLICT, "존재하는 이메일입니다."),
 
     /* 400 BAD REQUEST: 잘못된 요청*/
-    UNMATCHED_PASSWORD(BAD_REQUEST,"비밀번호가 일치하지 않습니다.");
-
+    UNMATCHED_PASSWORD(BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
