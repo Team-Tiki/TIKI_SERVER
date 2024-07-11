@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
+import com.tiki.server.timeblock.controller.docs.TimeBlockControllerDocs;
 import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
 import com.tiki.server.timeblock.dto.response.TimeBlockCreationResponse;
 import com.tiki.server.timeblock.service.TimeBlockService;
@@ -25,14 +26,15 @@ import lombok.val;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/time-blocks")
-public class TimeBlockController {
+public class TimeBlockController implements TimeBlockControllerDocs {
 
 	private final TimeBlockService timeBlockService;
 
+	@Override
 	@PostMapping("/team/{teamId}/time-block")
 	public ResponseEntity<SuccessResponse<TimeBlockCreationResponse>> createTimeBlock(
 		Principal principal,
-		@PathVariable("teamId") long teamId,
+		@PathVariable long teamId,
 		@RequestParam String type,
 		@RequestBody TimeBlockCreationRequest request
 	) {
