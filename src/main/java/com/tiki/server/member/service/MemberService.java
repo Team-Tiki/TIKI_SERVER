@@ -20,9 +20,10 @@ import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
 @Transactional(readOnly = true)
 public class MemberService {
 
-    MemberSaver memberSaver;
-    MemberFinder memberFinder;
+    private final MemberSaver memberSaver;
+    private final MemberFinder memberFinder;
 
+    @Transactional
     public void signUp(@NonNull MemberProfileCreateRequest request) {
         emailCheck(request.email());
         passwordCheck(request.password(), request.passwordCk());
@@ -43,7 +44,7 @@ public class MemberService {
     }
 
     private void passwordCheck(String password, String passwordCk) {
-        if (password.equals(passwordCk)) {
+        if (!password.equals(passwordCk)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
