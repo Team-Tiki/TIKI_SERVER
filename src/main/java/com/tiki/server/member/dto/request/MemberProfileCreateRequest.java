@@ -12,5 +12,5 @@ public record MemberProfileCreateRequest(
         @NonNull String email,
         @NonNull String password,
         @NonNull String passwordCk
-        ) {
+) {
 }

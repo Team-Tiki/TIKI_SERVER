@@ -21,13 +21,13 @@ import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CREATE_MEMBE
 @RequestMapping("api/v1/members")
 public class MemberController {
 
-	private final MemberService memberService;
+    private final MemberService memberService;
 
-	@PostMapping
-	public ResponseEntity<BaseResponse> signUp(
-			@RequestBody MemberProfileCreateRequest request
-	){
-		memberService.signUp(request);
-		return ResponseEntity.created(getUri("/")).body(success(SUCCESS_CREATE_MEMBER.getMessage()));
-	}
+    @PostMapping
+    public ResponseEntity<BaseResponse> signUp(
+            @RequestBody MemberProfileCreateRequest request
+    ) {
+        memberService.signUp(request);
+        return ResponseEntity.created(getUri("/")).body(success(SUCCESS_CREATE_MEMBER.getMessage()));
+    }
 }

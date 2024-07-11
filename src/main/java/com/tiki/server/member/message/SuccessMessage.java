@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	SUCCESS_CREATE_MEMBER("회원가입 성공");
+    SUCCESS_CREATE_MEMBER("회원가입 성공");
 
-	private final String message;
+    private final String message;
 }

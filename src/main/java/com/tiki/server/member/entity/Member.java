@@ -38,7 +38,7 @@ public class Member extends BaseTime {
     @Enumerated(value = STRING)
     private University univ;
 
-    public static Member of(String email, String password, String name, LocalDate birth, University univ){
+    public static Member of(String email, String password, String name, LocalDate birth, University univ) {
         return Member.builder()
                 .email(email)
                 .password(password)
