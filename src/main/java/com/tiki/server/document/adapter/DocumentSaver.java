@@ -12,7 +12,7 @@ public class DocumentSaver {
 
 	private final DocumentRepository documentRepository;
 
-	public Document save(Document document) {
-		return documentRepository.save(document);
+	public void save(Document document) {
+		documentRepository.save(document);
 	}
 }
