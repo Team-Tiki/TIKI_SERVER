@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.external.controller.docs.S3ControllerDocs;
 import com.tiki.server.external.dto.request.PreSignedUrlRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.util.S3Service;
@@ -20,10 +21,11 @@ import lombok.val;
 @RestController
 @RequestMapping("api/v1/file")
 @RequiredArgsConstructor
-public class S3Controller {
+public class S3Controller implements S3ControllerDocs {
 
 	private final S3Service s3Service;
 
+	@Override
 	@GetMapping("/upload")
 	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(@RequestBody PreSignedUrlRequest request) {
 		val response = s3Service.getUploadPreSignedUrl(request);
