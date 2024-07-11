@@ -33,18 +33,6 @@ public class MemberService {
         saveMember(member);
     }
 
-    private Member createMember(MemberProfileCreateRequest request){
-        return Member.of(
-                request.email(),
-                passwordEncoder.encode(request.password()),
-                request.name(),
-                request.birth(),
-                request.Univ());
-    }
-    private void saveMember(Member member) {
-        memberSaver.save(member);
-    }
-
     private void emailCheck(String email) {
         memberFinder.findByEmail(email).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
@@ -56,4 +44,18 @@ public class MemberService {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
+
+    private Member createMember(MemberProfileCreateRequest request){
+        return Member.of(
+                request.email(),
+                passwordEncoder.encode(request.password()),
+                request.name(),
+                request.birth(),
+                request.Univ());
+    }
+
+    private void saveMember(Member member) {
+        memberSaver.save(member);
+    }
+
 }
