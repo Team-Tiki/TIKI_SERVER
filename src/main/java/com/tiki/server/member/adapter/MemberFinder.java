@@ -9,14 +9,20 @@ import com.tiki.server.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @RepositoryAdapter
 @RequiredArgsConstructor
 public class MemberFinder {
 
-	private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-	public Member findById(long memberId) {
-		return memberRepository.findById(memberId)
-			.orElseThrow(() -> new MemberException(INVALID_MEMBER));
-	}
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    public Member findById(long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(INVALID_MEMBER));
+    }
 }
