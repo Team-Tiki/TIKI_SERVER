@@ -71,14 +71,14 @@ public class TimeBlockService {
 	}
 
 	private TimeBlock createTimeBlock(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
-		return TimeBlock.builder()
-			.name(request.name())
-			.color(request.color())
-			.accessiblePosition(accessiblePosition)
-			.startDate(request.startDate())
-			.endDate(request.endDate())
-			.team(team)
-			.build();
+		return TimeBlock.of(
+			request.name(),
+			request.color(),
+			accessiblePosition,
+			request.startDate(),
+			request.endDate(),
+			team
+		);
 	}
 
 	private void saveDocuments(List<String> filesUrl, TimeBlock timeBlock) {
@@ -86,9 +86,6 @@ public class TimeBlockService {
 	}
 
 	private Document createDocument(String fileUrl, TimeBlock timeBlock) {
-		return Document.builder()
-			.fileUrl(fileUrl)
-			.timeBlock(timeBlock)
-			.build();
+		return Document.of(fileUrl, timeBlock);
 	}
 }
