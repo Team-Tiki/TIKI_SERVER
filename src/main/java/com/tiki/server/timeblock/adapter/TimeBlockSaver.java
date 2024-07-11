@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
-public class TimeBlockCreator {
+public class TimeBlockSaver {
 
 	private final TimeBlockRepository timeBlockRepository;
 
-	public TimeBlock createTimeBlock(TimeBlock timeBlock) {
+	public TimeBlock save(TimeBlock timeBlock) {
 		return timeBlockRepository.save(timeBlock);
 	}
 }

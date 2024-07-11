@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
-public class DocumentCreator {
+public class DocumentSaver {
 
 	private final DocumentRepository documentRepository;
 
-	public Document create(Document document) {
+	public Document save(Document document) {
 		return documentRepository.save(document);
 	}
 }

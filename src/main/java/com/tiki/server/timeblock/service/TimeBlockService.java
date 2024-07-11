@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
-import com.tiki.server.document.adapter.DocumentCreator;
+import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.timeblock.adapter.TimeBlockCreator;
+import com.tiki.server.timeblock.adapter.TimeBlockSaver;
 import com.tiki.server.timeblock.dto.request.TimeBlockCreationRequest;
 import com.tiki.server.timeblock.dto.response.TimeBlockCreationResponse;
 import com.tiki.server.timeblock.entity.TimeBlock;
@@ -32,8 +32,8 @@ public class TimeBlockService {
 
 	private final TeamFinder teamFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
-	private final TimeBlockCreator timeBlockCreator;
-	private final DocumentCreator documentCreator;
+	private final TimeBlockSaver timeBlockSaver;
+	private final DocumentSaver documentSaver;
 
 	@Transactional
 	public TimeBlockCreationResponse createTimeBlock(
@@ -59,7 +59,7 @@ public class TimeBlockService {
 	) {
 		checkMemberAccessible(accessiblePosition, memberPosition);
 		val timeBlock = createTimeBlock(team, accessiblePosition, request);
-		val timeBlockId = timeBlockCreator.createTimeBlock(timeBlock).getId();
+		val timeBlockId = timeBlockSaver.save(timeBlock).getId();
 		saveDocuments(request.filesUrl(), timeBlock);
 		return TimeBlockCreationResponse.of(timeBlockId);
 	}
@@ -82,7 +82,7 @@ public class TimeBlockService {
 	}
 
 	private void saveDocuments(List<String> filesUrl, TimeBlock timeBlock) {
-		filesUrl.forEach(fileUrl -> documentCreator.create(createDocument(fileUrl, timeBlock)));
+		filesUrl.forEach(fileUrl -> documentSaver.save(createDocument(fileUrl, timeBlock)));
 	}
 
 	private Document createDocument(String fileUrl, TimeBlock timeBlock) {
