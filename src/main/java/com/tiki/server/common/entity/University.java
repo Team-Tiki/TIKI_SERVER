@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public enum School {
+public enum University {
     KONKUK_UNIV("건국대학교");
 
-    private final String school;
+    private final String University;
 }
