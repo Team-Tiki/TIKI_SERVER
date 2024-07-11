@@ -12,7 +12,7 @@ import lombok.Getter;
 public enum ErrorCode {
 
 	/* 404 NOT_FOUND : 자원을 찾을 수 없음 */
-	TEMP(NOT_FOUND, "컴파일 에러 방지용 에러입니다.");
+	INVALID_MEMBER_TEAM_MANAGER(NOT_FOUND, "팀에 존재하지 않는 회원입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

@@ -1,4 +1,4 @@
-package com.tiki.server.timeblock.message;
+package com.tiki.server.external.message;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	SUCCESS_CREATE_TIME_BLOCK("타임 블록 생성 성공");
+	PRESIGNED_URL_GET_SUCCESS("S3 PRESIGNED URL 불러오기 성공");
 
 	private final String message;
 }
