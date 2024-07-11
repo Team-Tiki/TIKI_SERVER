@@ -1,28 +1,29 @@
 package com.tiki.server.document.entity;
 
-import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Builder(access = PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class Document extends BaseTime {
 
 	@Id
@@ -30,14 +31,19 @@ public class Document extends BaseTime {
 	@Column(name = "document_id")
 	private Long id;
 
+	private String fileName;
+
 	private String fileUrl;
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "block_id")
 	private TimeBlock timeBlock;
 
-	@Enumerated(value = STRING)
-	private DocumentStatus status;
-
-	private LocalDate deletedDate;
+	public static Document of(String fileName, String fileUrl, TimeBlock timeBlock) {
+		return Document.builder()
+			.fileName(fileName)
+			.fileUrl(fileUrl)
+			.timeBlock(timeBlock)
+			.build();
+	}
 }
