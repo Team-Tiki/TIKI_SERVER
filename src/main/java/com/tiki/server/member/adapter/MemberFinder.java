@@ -17,7 +17,7 @@ public class MemberFinder {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findMemberByEmail(String email) {
+    public Optional<Member> findByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 
