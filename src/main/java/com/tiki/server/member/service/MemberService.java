@@ -6,6 +6,7 @@ import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import lombok.NonNull;
+import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,21 +28,25 @@ public class MemberService {
     @Transactional
     public void signUp(@NonNull MemberProfileCreateRequest request) {
         emailCheck(request.email());
-        passwordCheck(request.password(), request.passwordCheck());
-        saveMember(request);
+        passwordCheck(request.password(), request.passwordChecker());
+        val member = createMember(request);
+        saveMember(member);
     }
 
-    private void saveMember(MemberProfileCreateRequest request) {
-        memberSaver.save(Member.of(
+    private Member createMember(MemberProfileCreateRequest request){
+        return Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
                 request.name(),
                 request.birth(),
-                request.Univ()));
+                request.Univ());
+    }
+    private void saveMember(Member member) {
+        memberSaver.save(member);
     }
 
     private void emailCheck(String email) {
-        memberFinder.findByEmail(email).ifPresent(value -> {
+        memberFinder.findByEmail(email).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
         });
     }
