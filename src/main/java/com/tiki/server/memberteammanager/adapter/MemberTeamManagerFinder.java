@@ -1,6 +1,6 @@
 package com.tiki.server.memberteammanager.adapter;
 
-import static com.tiki.server.memberteammanager.message.ErrorCode.TEMP;
+import static com.tiki.server.memberteammanager.message.ErrorCode.INVALID_MEMBER_TEAM_MANAGER;
 
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
@@ -17,6 +17,6 @@ public class MemberTeamManagerFinder {
 
 	public MemberTeamManager findByMemberIdAndTeamId(long memberId, long teamId) {
 		return teamManagerRepository.findByMemberIdAndTeamId(memberId, teamId)
-			.orElseThrow(() -> new MemberTeamManagerException(TEMP));
+			.orElseThrow(() -> new MemberTeamManagerException(INVALID_MEMBER_TEAM_MANAGER));
 	}
 }
