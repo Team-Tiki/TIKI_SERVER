@@ -58,8 +58,8 @@ public class TimeBlockService {
 		TimeBlockCreationRequest request
 	) {
 		checkMemberAccessible(accessiblePosition, memberPosition);
-		val timeBlock = createTimeBlock(team, accessiblePosition, request);
-		val timeBlockId = timeBlockSaver.save(timeBlock).getId();
+		val timeBlock = saveTimeBlock(team, accessiblePosition, request);
+		val timeBlockId = timeBlock.getId();
 		saveDocuments(request.files(), timeBlock);
 		return TimeBlockCreationResponse.of(timeBlockId);
 	}
@@ -68,6 +68,10 @@ public class TimeBlockService {
 		if (accessiblePosition.getAuthorization() < memberPosition.getAuthorization()) {
 			throw new TimeBlockException(INVALID_AUTHORIZATION);
 		}
+	}
+
+	private TimeBlock saveTimeBlock(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
+		return timeBlockSaver.save(createTimeBlock(team, accessiblePosition, request));
 	}
 
 	private TimeBlock createTimeBlock(Team team, Position accessiblePosition, TimeBlockCreationRequest request) {
