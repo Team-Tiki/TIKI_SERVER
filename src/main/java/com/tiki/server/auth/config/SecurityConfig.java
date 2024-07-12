@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/auth/password").permitAll()
                                 .requestMatchers("/api/v1/members/password").permitAll()
                                 .requestMatchers("/api/v1/members").permitAll()
+                                .requestMatchers("api/v1/auth/**").permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .addFilter(corsConfig.corsFilter())
