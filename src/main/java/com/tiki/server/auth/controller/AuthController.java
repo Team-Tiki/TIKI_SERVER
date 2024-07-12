@@ -1,5 +1,7 @@
 package com.tiki.server.auth.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,5 +16,8 @@ public class AuthController {
 
 	private final AuthService authService;
 
-
+	@GetMapping("/{memberId}")
+	public String getAccessTokenForClient(@PathVariable long memberId) {
+		return authService.getAccessTokenForClient(memberId);
+	}
 }
