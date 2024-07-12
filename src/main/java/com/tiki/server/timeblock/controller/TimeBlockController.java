@@ -48,6 +48,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		).body(success(SUCCESS_CREATE_TIME_BLOCK.getMessage(), response));
 	}
 
+	@Override
 	@GetMapping("team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
 		Principal principal,
