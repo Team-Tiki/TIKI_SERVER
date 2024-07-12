@@ -20,6 +20,20 @@ spring:
     redis:
       host: redis
       port: 6379
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: ${MAIL.username}
+    password: ${MAIL.password}
+    properties:
+      mail:
+        smtp:
+          address: "hello.wer.tiki"
+          personal: "TIKI"
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
 logging:
   level:
@@ -38,4 +52,6 @@ aws-property:
   bucket: ${AWS_PROPERTY.BUCKET}
   aws-region: ap-northeast-2
   s3-url: ${AWS_PROPERTY.S3_URL}
+
+
 
