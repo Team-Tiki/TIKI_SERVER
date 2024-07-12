@@ -5,22 +5,28 @@ import static com.tiki.server.timeblock.message.ErrorCode.INVALID_TYPE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.MEMBER;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
+import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.document.vo.DocumentVO;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
+import com.tiki.server.timeblock.adapter.TimeBlockFinder;
 import com.tiki.server.timeblock.adapter.TimeBlockSaver;
 import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
 import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
+import com.tiki.server.timeblock.dto.response.TimelineGetResponse;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.exception.TimeBlockException;
+import com.tiki.server.timeblock.vo.TimeBlockVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -33,7 +39,9 @@ public class TimeBlockService {
 	private final TeamFinder teamFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final TimeBlockSaver timeBlockSaver;
+	private final TimeBlockFinder timeBlockFinder;
 	private final DocumentSaver documentSaver;
+	private final DocumentFinder documentFinder;
 
 	@Transactional
 	public TimeBlockCreateResponse createTimeBlock(
@@ -51,6 +59,16 @@ public class TimeBlockService {
 		};
 	}
 
+	public TimelineGetResponse getTimeline(long memberId, long teamId, String type) {
+		val team = teamFinder.findById(teamId);
+		val position = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId).getPosition();
+		return switch (type) {
+			case EXECUTIVE -> getTimelineByType(team, Position.EXECUTIVE, position);
+			case MEMBER -> getTimelineByType(team, Position.MEMBER, position);
+			default -> throw new TimeBlockException(INVALID_TYPE);
+		};
+	}
+
 	private TimeBlockCreateResponse createTimeBlockByType(
 		Team team,
 		Position accessiblePosition,
@@ -62,12 +80,6 @@ public class TimeBlockService {
 		val timeBlockId = timeBlock.getId();
 		saveDocuments(request.files(), timeBlock);
 		return TimeBlockCreateResponse.of(timeBlockId);
-	}
-
-	private void checkMemberAccessible(Position accessiblePosition, Position memberPosition) {
-		if (accessiblePosition.getAuthorization() < memberPosition.getAuthorization()) {
-			throw new TimeBlockException(INVALID_AUTHORIZATION);
-		}
 	}
 
 	private TimeBlock saveTimeBlock(Team team, Position accessiblePosition, TimeBlockCreateRequest request) {
@@ -84,5 +96,17 @@ public class TimeBlockService {
 
 	private Document createDocument(String fileName, String fileUrl, TimeBlock timeBlock) {
 		return Document.of(fileName, fileUrl, timeBlock);
+	}
+
+	private TimelineGetResponse getTimelineByType(Team team, Position accessiblePosition, Position memberPosition) {
+		checkMemberAccessible(accessiblePosition, memberPosition);
+		val timeBlocks = timeBlockFinder.findByTeamAndAccessiblePosition(team, accessiblePosition);
+		return TimelineGetResponse.from(timeBlocks);
+	}
+
+	private void checkMemberAccessible(Position accessiblePosition, Position memberPosition) {
+		if (accessiblePosition.getAuthorization() < memberPosition.getAuthorization()) {
+			throw new TimeBlockException(INVALID_AUTHORIZATION);
+		}
 	}
 }

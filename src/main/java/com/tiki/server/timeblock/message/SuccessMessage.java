@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	SUCCESS_CREATE_TIME_BLOCK("타임 블록 생성 성공");
+	SUCCESS_CREATE_TIME_BLOCK("타임 블록 생성 성공"),
+	SUCCESS_GET_TIMELINE("타임라인 조회 성공");
 
 	private final String message;
 }
