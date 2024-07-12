@@ -6,6 +6,8 @@ import com.tiki.server.auth.filter.ExceptionHandlerFilter;
 import com.tiki.server.auth.filter.JwtAuthenticationFilter;
 import com.tiki.server.auth.jwt.JwtProvider;
 import com.tiki.server.auth.jwt.JwtValidator;
+import com.tiki.server.common.config.CorsConfig;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CorsConfig corsConfig;
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -50,6 +53,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/member").permitAll()
                                 .anyRequest()
                                 .authenticated())
+                .addFilter(corsConfig.corsFilter())
                 .addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
                 )
