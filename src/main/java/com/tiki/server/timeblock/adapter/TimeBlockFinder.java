@@ -16,8 +16,12 @@ public class TimeBlockFinder {
 
 	private final TimeBlockRepository timeBlockRepository;
 
-	public List<TimeBlockVO> findByTeamAndAccessiblePosition(Team team, Position accessiblePosition) {
-		return timeBlockRepository.findByTeamAndAccessiblePosition(team, accessiblePosition).stream()
+	public List<TimeBlockVO> findByTeamAndAccessiblePositionAndDate(
+		long teamId,
+		String accessiblePosition,
+		String date
+	) {
+		return timeBlockRepository.findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream()
 			.map(TimeBlockVO::from)
 			.toList();
 	}

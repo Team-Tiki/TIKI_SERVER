@@ -52,10 +52,11 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
 		Principal principal,
 		@PathVariable long teamId,
-		@RequestParam String type
+		@RequestParam String type,
+		@RequestParam String date
 	) {
 		val memberId = Long.parseLong(principal.getName());
-		val response = timeBlockService.getTimeline(memberId, teamId, type);
+		val response = timeBlockService.getTimeline(memberId, teamId, type, date);
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TIMELINE.getMessage(), response));
 	}
 }

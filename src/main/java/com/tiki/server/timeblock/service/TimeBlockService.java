@@ -59,12 +59,12 @@ public class TimeBlockService {
 		};
 	}
 
-	public TimelineGetResponse getTimeline(long memberId, long teamId, String type) {
+	public TimelineGetResponse getTimeline(long memberId, long teamId, String type, String date) {
 		val team = teamFinder.findById(teamId);
 		val position = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId).getPosition();
 		return switch (type) {
-			case EXECUTIVE -> getTimelineByType(team, Position.EXECUTIVE, position);
-			case MEMBER -> getTimelineByType(team, Position.MEMBER, position);
+			case EXECUTIVE -> getTimelineByType(team, Position.EXECUTIVE, position, date);
+			case MEMBER -> getTimelineByType(team, Position.MEMBER, position, date);
 			default -> throw new TimeBlockException(INVALID_TYPE);
 		};
 	}
@@ -98,9 +98,15 @@ public class TimeBlockService {
 		return Document.of(fileName, fileUrl, timeBlock);
 	}
 
-	private TimelineGetResponse getTimelineByType(Team team, Position accessiblePosition, Position memberPosition) {
+	private TimelineGetResponse getTimelineByType(
+		Team team,
+		Position accessiblePosition,
+		Position memberPosition,
+		String date
+	) {
 		checkMemberAccessible(accessiblePosition, memberPosition);
-		val timeBlocks = timeBlockFinder.findByTeamAndAccessiblePosition(team, accessiblePosition);
+		val timeBlocks = timeBlockFinder.findByTeamAndAccessiblePositionAndDate(
+			team.getId(), accessiblePosition.name(), date);
 		return TimelineGetResponse.from(timeBlocks);
 	}
 
