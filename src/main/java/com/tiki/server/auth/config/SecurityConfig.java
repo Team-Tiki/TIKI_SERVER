@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(customAuthenticationEntryPointHandler))
                 .authorizeHttpRequests(request ->
                         request
+                                .requestMatchers("/actuator/health").permitAll()
                                 .requestMatchers("/api/v1/auth/login").permitAll()
                                 .requestMatchers("/api/v1/auth/password").permitAll()
                                 .requestMatchers("/api/v1/members/password").permitAll()
