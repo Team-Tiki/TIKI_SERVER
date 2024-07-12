@@ -4,8 +4,6 @@ import com.tiki.server.auth.exception.handler.CustomAccessDeniedHandler;
 import com.tiki.server.auth.exception.handler.CustomAuthenticationEntryPointHandler;
 import com.tiki.server.auth.filter.ExceptionHandlerFilter;
 import com.tiki.server.auth.filter.JwtAuthenticationFilter;
-import com.tiki.server.auth.jwt.JwtProvider;
-import com.tiki.server.auth.jwt.JwtValidator;
 import com.tiki.server.common.config.CorsConfig;
 
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
