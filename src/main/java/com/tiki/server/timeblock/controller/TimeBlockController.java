@@ -49,7 +49,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("team/{teamId}/timeline")
+	@GetMapping("/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
 		Principal principal,
 		@PathVariable long teamId,
