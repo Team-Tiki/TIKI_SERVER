@@ -65,11 +65,11 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 
 	@GetMapping("/team/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
-		// Principal principal,
+		Principal principal,
 		@PathVariable long teamId,
 		@PathVariable long timeBlockId
 	) {
-		val memberId = 1L;// Long.parseLong(principal.getName());
+		val memberId = Long.parseLong(principal.getName());
 		val response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TIME_BLOCK_DETAIL.getMessage(), response));
 	}
