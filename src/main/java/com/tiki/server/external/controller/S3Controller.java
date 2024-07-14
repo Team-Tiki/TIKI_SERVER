@@ -5,8 +5,10 @@ import static com.tiki.server.external.message.SuccessMessage.PRESIGNED_URL_GET_
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
@@ -19,16 +21,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 
 @RestController
-@RequestMapping("api/v1/file")
 @RequiredArgsConstructor
+@RequestMapping("api/v1/file")
 public class S3Controller implements S3ControllerDocs {
 
 	private final S3Service s3Service;
 
 	@Override
 	@GetMapping("/upload")
-	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(@RequestBody PreSignedUrlRequest request) {
-		val response = s3Service.getUploadPreSignedUrl(request);
+	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(@RequestParam String fileFormat) {
+		val response = s3Service.getUploadPreSignedUrl(fileFormat);
 		return ResponseEntity.ok(success(PRESIGNED_URL_GET_SUCCESS.getMessage(), response));
 	}
 }

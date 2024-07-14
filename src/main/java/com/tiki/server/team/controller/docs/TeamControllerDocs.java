@@ -1,13 +1,18 @@
-package com.tiki.server.external.controller.docs;
+package com.tiki.server.team.controller.docs;
+
+import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.external.dto.request.PreSignedUrlRequest;
-import com.tiki.server.external.dto.response.PreSignedUrlResponse;
+import com.tiki.server.team.dto.request.TeamCreateRequest;
+import com.tiki.server.team.dto.response.TeamCreateResponse;
+import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
+import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,32 +22,32 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "S3", description = "AWS S3 API")
-public interface S3ControllerDocs {
+@Tag(name = "teams", description = "팀 API")
+public interface TeamControllerDocs {
 
 	@Operation(
-		summary = "Presigned Url 생성",
-		description = "s3로부터 Presigned Url을 생성한다.",
+		summary = "팀 생성",
+		description = "팀을 생성한다.",
 		responses = {
 			@ApiResponse(
-				responseCode = "200",
+				responseCode = "201",
 				description = "성공",
 				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "유효하지 않은 회원",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "4xx",
 				description = "클라이언트(요청) 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "500",
-				description = "S3 PRESIGNED URL 불러오기 실패",
+				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(
-		@Parameter(
-			name = "fileFormat",
-			description = "파일 형식",
-			in = ParameterIn.QUERY,
-			example = "hwp, pdf, ..."
-		) @RequestParam String fileFormat
+	ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
+		@Parameter(hidden = true) Principal principal,
+		@RequestBody TeamCreateRequest request
 	);
 }

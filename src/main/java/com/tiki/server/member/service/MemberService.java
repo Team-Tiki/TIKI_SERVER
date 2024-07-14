@@ -27,13 +27,13 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
-        emailCheck(request.email());
+        mailCheck(request.email());
         passwordCheck(request.password(), request.passwordChecker());
         val member = createMember(request);
         saveMember(member);
     }
 
-    private void emailCheck(String email) {
+    private void mailCheck(String email) {
         memberFinder.findByEmail(email).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
         });

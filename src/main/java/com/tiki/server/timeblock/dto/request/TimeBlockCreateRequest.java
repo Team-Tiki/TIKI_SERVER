@@ -5,7 +5,7 @@ import java.util.Map;
 
 import lombok.NonNull;
 
-public record TimeBlockCreationRequest(
+public record TimeBlockCreateRequest(
 	@NonNull String name,
 	@NonNull String color,
 	@NonNull LocalDate startDate,
