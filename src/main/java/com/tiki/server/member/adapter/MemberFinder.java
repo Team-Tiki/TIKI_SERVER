@@ -23,6 +23,6 @@ public class MemberFinder {
 
     public Member findById(long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(INVALID_MEMBER));
+            .orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 }
