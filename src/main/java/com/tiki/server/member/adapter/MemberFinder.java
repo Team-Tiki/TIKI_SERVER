@@ -6,6 +6,7 @@ import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.member.repository.MemberRepository;
+import com.tiki.server.member.vo.MemberVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,6 @@ public class MemberFinder {
 
     public Member findById(long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(INVALID_MEMBER));
+            .orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 }
