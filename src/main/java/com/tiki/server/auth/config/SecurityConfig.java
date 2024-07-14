@@ -50,7 +50,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/member").permitAll()
                                 .requestMatchers("/api/v1/mail/**").permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("actuator/health").permitAll()
+                                .requestMatchers("/actuator/health").permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .addFilterBefore(
