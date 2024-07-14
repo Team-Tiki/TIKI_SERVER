@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link
+            rel="stylesheet"
+            as="style"
+            crossorigin
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css"
+    />
+    <title>티키 인증코드</title>
+    <style>
+        body {
+            display: flex;
+
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            font-family: Pretendard Variable sans-serif;
+            overflow: scroll;
+        }
+
+        div {
+            width: 831px;
+            height: 627px;
+            padding: 140px 140px 0px 140px;
+        }
+
+        img {
+            width: 23rem;
+            height: 8.2rem;
+        }
+
+        h2 {
+            font-size: 24px;
+            padding: 4rem 0 1.6rem 0;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 4rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        p{
+            padding-top: 6rem;
+            margin: 0;
+            font-size: 16px;
+            line-height: 22.4px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <img src='cid:image' alt="tiki_log"/>
+    <h2>인증코드를 확인해주세요.</h2>
+    <h1 th:text="${code}"></h1>
+    <p style="padding-top: 4rem; margin: 0">
+        비밀번호 재설정을 위해 요청하신 인증코드입니다.<br />
+        인증코드는 이메일 발송 시점으로부터 3분동안 유효합니다.
+    </p>
+</div>
+</body>
+</html>
