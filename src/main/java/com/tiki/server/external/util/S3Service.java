@@ -53,7 +53,7 @@ public class S3Service {
 			val s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->
 				builder.bucket(bucket)
-					.key(request.fileUrl())
+					.key(request.fileName())
 					.build()
 			);
 		} catch (RuntimeException e) {
