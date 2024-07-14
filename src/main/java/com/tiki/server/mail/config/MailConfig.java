@@ -1,5 +1,6 @@
 package com.tiki.server.mail.config;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +15,8 @@ import static com.tiki.server.mail.constants.MailConstants.TIKI_ADDRESS;
 @Configuration
 public class MailConfig {
 
-    @Value("${mail.password}")
-    private static String mailPassword;
+    @Value("${MAIL.password}")
+    private String mailPassword;
 
     @Bean
     public JavaMailSender setProperties() {
