@@ -2,8 +2,8 @@ package com.tiki.server.mail.service;
 
 import com.tiki.server.mail.adapter.MailFinder;
 import com.tiki.server.mail.adapter.MailSaver;
-import com.tiki.server.mail.dto.request.CodeCheckDto;
-import com.tiki.server.mail.dto.request.MailRequestDto;
+import com.tiki.server.mail.dto.request.CodeCheck;
+import com.tiki.server.mail.dto.request.MailRequest;
 import com.tiki.server.mail.entity.Mail;
 import com.tiki.server.mail.exception.MailException;
 import com.tiki.server.member.adapter.MemberFinder;
@@ -24,11 +24,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.tiki.server.mail.message.ErrorCode.INVALID_MATCHED;
-import static com.tiki.server.mail.message.ErrorCode.INVALID_REQUEST;
+import static com.tiki.server.mail.message.ErrorCode.*;
 import static com.tiki.server.member.message.ErrorCode.*;
 import static com.tiki.server.mail.constants.MailConstants.*;
-
 
 @Slf4j
 @Service
@@ -43,49 +41,56 @@ public class MailService {
     private final MailSaver mailSaver;
 
     @Transactional
-    public void sendSignUp(MailRequestDto mailRequestDto) {
-        val address = mailRequestDto.address();
-        checkSignUpEmail(address);
-        processingMail(address, MAIL_SUBJECT_SIGN_UP);
-    }
-    @Transactional
-    public void sendChangingPassword(MailRequestDto mailRequestDto) {
-        val address = mailRequestDto.address();
-        checkPasswordEmail(address);
-        processingMail(address, MAIL_SUBJECT_CHANGING_PASSWORD);
+    public void sendSignUp(MailRequest mailRequest) {
+        val address = mailRequest.address();
+        checkSignUpEmailFormat(address);
+        sendMail(address, MAIL_SUBJECT_SIGN_UP);
     }
 
-    public void checkCode(CodeCheckDto codeCheckDto) {
-        val address = codeCheckDto.address();
+    @Transactional
+    public void sendChangingPassword(MailRequest mailRequest) {
+        val address = mailRequest.address();
+        checkPasswordEmailFormat(address);
+        sendMail(address, MAIL_SUBJECT_CHANGING_PASSWORD);
+    }
+
+    public void checkCode(CodeCheck codeCheck) {
+        val address = codeCheck.address();
         checkEmailFormat(address);
         val mail = mailFinder.findById(address);
         if (mail.isEmpty()) {
             throw new MailException(INVALID_REQUEST);
         }
-        if (!mail.get().getCode().equals(codeCheckDto.code())) {
+        if (!mail.get().getCode().equals(codeCheck.code())) {
             throw new MailException(INVALID_MATCHED);
         }
     }
 
-    private void checkSignUpEmail(String address) {
+    private void checkSignUpEmailFormat(String address) {
+        checkMemberPresent(address);
+        checkEmailFormat(address);
+    }
+
+    private void checkMemberPresent(String address) {
         memberFinder.findByEmail(address).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
         });
+    }
+
+    private void checkPasswordEmailFormat(String address) {
+        checkMemberEmpty(address);
         checkEmailFormat(address);
     }
 
-    private void checkPasswordEmail(String address) {
+    private void checkMemberEmpty(String address) {
         if (memberFinder.findByEmail(address).isEmpty()) {
             throw new MemberException(INVALID_MEMBER);
         }
-        checkEmailFormat(address);
     }
 
-    private void processingMail(String address, String subject) {
-        val code = generateRandomValue();
-        val message = makeMessage(address, code, subject);
-        mailSaver.save(Mail.of(address, code));
-        send(message);
+    private void sendMail(String address, String subject) {
+        val mail = makeMail(address, subject);
+        send(mail);
     }
 
     private void checkEmailFormat(String address) {
@@ -94,34 +99,41 @@ public class MailService {
         }
     }
 
+    private MimeMessage makeMail(String address, String subject) {
+        val code = generateRandomValue();
+        val message = makeMessage(address, code, subject);
+        mailSaver.save(Mail.of(address, code));
+        return message;
+    }
+
     private MimeMessage makeMessage(String address, String code, String subject) {
         val message = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            val helper = new MimeMessageHelper(message, true, "utf-8");
             helper.setFrom(TIKI_ADDRESS);
             helper.setTo(address);
             helper.setSubject(subject);
             helper.setText(setContext(code), true);
-            helper.addInline("image", new ClassPathResource("images/mail_logo.png"));
+            helper.addInline("image", new ClassPathResource(IMG_PATH));
+            return message;
         } catch (Exception e) {
-            log.error(e.getMessage());
+            throw new MailException(MESSAGE_HELPER_ERROR);
         }
-        return message;
     }
 
     private void send(MimeMessage email) {
         javaMailSender.send(email);
     }
 
-    public static String generateRandomValue() {
-        Random random = new Random();
+    private static String generateRandomValue() {
+        val random = new Random();
 
         return IntStream.range(0, 6).mapToObj(i -> String.valueOf(random.nextInt(10))).collect(Collectors.joining());
     }
 
     public String setContext(String code) {
-        Context context = new Context();
+        val context = new Context();
         context.setVariable("code", code);
-        return templateEngine.process("certification", context);
+        return templateEngine.process(TEMPLATE_NAME, context);
     }
 }
