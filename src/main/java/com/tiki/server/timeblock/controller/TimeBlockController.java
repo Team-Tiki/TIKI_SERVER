@@ -63,6 +63,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TIMELINE.getMessage(), response));
 	}
 
+	@Override
 	@GetMapping("/team/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
 		Principal principal,

@@ -3,6 +3,7 @@ package com.tiki.server.external.util;
 import static com.tiki.server.external.constant.ExternalConstant.FILE_SAVE_PREFIX;
 import static com.tiki.server.external.constant.ExternalConstant.PRE_SIGNED_URL_EXPIRE_MINUTE;
 import static com.tiki.server.external.message.ErrorCode.*;
+import static com.tiki.server.timeblock.constant.TimeBlockConstant.FILE_DELIMITER;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -38,9 +39,9 @@ public class S3Service {
 	@Value("${aws-property.s3-url}")
 	private String s3URL;
 
-	public PreSignedUrlResponse getUploadPreSignedUrl(PreSignedUrlRequest request) {
+	public PreSignedUrlResponse getUploadPreSignedUrl(String fileFormat) {
 		try {
-			val fileName = generateFileName(request.fileFormat());
+			val fileName = generateFileName(fileFormat);
 			val key = FILE_SAVE_PREFIX + fileName;
 			val preSigner = awsConfig.getS3PreSigner();
 			val putObjectRequest = createPutObjectRequest(key);
@@ -80,6 +81,6 @@ public class S3Service {
 	}
 
 	private String generateFileName(String fileFormat) {
-		return UUID.randomUUID() + fileFormat;
+		return UUID.randomUUID() + FILE_DELIMITER + fileFormat;
 	}
 }
