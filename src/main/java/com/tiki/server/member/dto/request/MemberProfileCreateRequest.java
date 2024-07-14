@@ -8,7 +8,7 @@ import lombok.NonNull;
 public record MemberProfileCreateRequest(
         @NonNull String name,
         @NonNull LocalDate birth,
-        @NonNull University Univ,
+        @NonNull University univ,
         @NonNull String email,
         @NonNull String password,
         @NonNull String passwordChecker
