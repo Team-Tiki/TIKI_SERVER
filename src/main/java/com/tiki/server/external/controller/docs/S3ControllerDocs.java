@@ -2,6 +2,7 @@ package com.tiki.server.external.controller.docs;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
@@ -9,6 +10,8 @@ import com.tiki.server.external.dto.request.PreSignedUrlRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,6 +38,11 @@ public interface S3ControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(
-		@RequestBody PreSignedUrlRequest request
+		@Parameter(
+			name = "fileFormat",
+			description = "파일 형식",
+			in = ParameterIn.QUERY,
+			example = "hwp, pdf, ..."
+		) @RequestParam String fileFormat
 	);
 }
