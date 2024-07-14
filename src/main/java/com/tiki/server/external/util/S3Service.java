@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tiki.server.external.config.AWSConfig;
 import com.tiki.server.external.dto.request.PreSignedUrlRequest;
+import com.tiki.server.external.dto.request.S3DeleteRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 import com.tiki.server.external.message.ErrorCode;
@@ -53,12 +54,12 @@ public class S3Service {
 		}
 	}
 
-	public void deleteFile(String key) throws IOException {
+	public void deleteFile(S3DeleteRequest request) {
 		try {
 			val s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->
 				builder.bucket(bucket)
-					.key(key)
+					.key(request.fileUrl())
 					.build()
 			);
 		} catch (RuntimeException e) {
