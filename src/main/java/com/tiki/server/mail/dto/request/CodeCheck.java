@@ -1,12 +1,12 @@
 package com.tiki.server.mail.dto.request;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import lombok.NonNull;
 
-public record CodeCheckDto(
+public record CodeCheck(
         @Email
         String address,
-        @NotEmpty(message = "번호를 입력해 주세요")
+        @NonNull
         String code
 ) {
 }
