@@ -15,7 +15,7 @@ import java.util.Map;
 @EnableRedisRepositories
 public class RedisConfig {
 
-    @Value("${spring.data.redis.host}")
+    @Value("${REDIS.host}")
     private String host;
 
     @Value("${spring.data.redis.port}")
