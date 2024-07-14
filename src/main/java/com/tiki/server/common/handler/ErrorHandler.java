@@ -1,5 +1,6 @@
 package com.tiki.server.common.handler;
 
+import com.tiki.server.mail.exception.MailException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -57,6 +58,13 @@ public class ErrorHandler {
 
 	@ExceptionHandler(ExternalException.class)
 	public ResponseEntity<BaseResponse> externalException(ExternalException exception) {
+		log.error(exception.getMessage());
+		val errorCode = exception.getErrorCode();
+		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+	}
+
+	@ExceptionHandler(MailException.class)
+	public ResponseEntity<BaseResponse> MailException(MailException exception) {
 		log.error(exception.getMessage());
 		val errorCode = exception.getErrorCode();
 		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
