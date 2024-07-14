@@ -133,8 +133,8 @@ public interface TimeBlockControllerDocs {
 	);
 
 	@Operation(
-		summary = "타임라인 조회",
-		description = "타임라인을 조회한다.",
+		summary = "타임 블록 상세 조회",
+		description = "타임 블록을 상세 조회한다.",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",

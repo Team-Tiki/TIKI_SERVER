@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	PRESIGNED_URL_GET_SUCCESS("S3 PRESIGNED URL 불러오기 성공");
+	PRESIGNED_URL_GET_SUCCESS("S3 PRESIGNED URL 불러오기 성공"),
+	S3_FILE_DELETE_SUCCESS("S3 파일 삭제 성공");
 
 	private final String message;
 }
