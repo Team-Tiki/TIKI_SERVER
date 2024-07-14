@@ -51,7 +51,7 @@ public class MemberService {
                 passwordEncoder.encode(request.password()),
                 request.name(),
                 request.birth(),
-                request.Univ());
+                request.univ());
     }
 
     private void saveMember(Member member) {
