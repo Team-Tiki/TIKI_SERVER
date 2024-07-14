@@ -1,6 +1,7 @@
 package com.tiki.server.mail.config;
 
 import lombok.val;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,11 +9,14 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-import static com.tiki.server.mail.constants.MailConstants.MailPassword;
 import static com.tiki.server.mail.constants.MailConstants.TIKI_ADDRESS;
 
 @Configuration
 public class MailConfig {
+
+    @Value("${mail.password}")
+    private static String mailPassword;
+
     @Bean
     public JavaMailSender setProperties() {
 
@@ -20,7 +24,7 @@ public class MailConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername(TIKI_ADDRESS);
-        mailSender.setPassword(MailPassword);
+        mailSender.setPassword(mailPassword);
 
         val javaMailProperties = getProperties();
 
