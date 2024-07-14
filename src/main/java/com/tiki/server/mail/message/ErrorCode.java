@@ -4,14 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
 
-	/* 500 INTERNAL_SERVER_ERROR : 서버 에러 */
-	WRONG_EMAIL_FORMAT(INTERNAL_SERVER_ERROR, "S3 PRESIGNED URL 불러오기 실패");
+	/* 403 BAD REQUEST: 인증 거부*/
+	INVALID_MATCHED(FORBIDDEN,"인증 정보가 일치하지 않습니다."),
+
+	/* 404 NOT FOUND: 요청 리소스를 찾을 수 없음*/
+	INVALID_REQUEST(NOT_FOUND,"인증 정보가 존재하지 않습니다.")
+	;
 
 	private final HttpStatus httpStatus;
 	private final String message;
