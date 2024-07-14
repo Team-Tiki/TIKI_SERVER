@@ -43,9 +43,6 @@ logging:
 jwt:
   secret:
     ${JWT.SECRET}
-mail:
-  password:
-    ${MAIL.password}
 aws-property:
   access-key: ${AWS_PROPERTY.ACCESS_KEY}
   secret-key: ${AWS_PROPERTY.SECRET_KEY}
