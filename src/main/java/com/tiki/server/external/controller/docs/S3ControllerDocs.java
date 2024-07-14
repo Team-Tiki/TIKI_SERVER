@@ -48,8 +48,8 @@ public interface S3ControllerDocs {
 	);
 
 	@Operation(
-		summary = "Presigned Url 생성",
-		description = "s3로부터 Presigned Url을 생성한다.",
+		summary = "s3 파일 삭제",
+		description = "s3의 파일 삭제한다.",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
@@ -61,7 +61,7 @@ public interface S3ControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "500",
-				description = "S3 PRESIGNED URL 불러오기 실패",
+				description = "S3 버킷의 파일 삭제 실패",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<BaseResponse> deleteFile(
