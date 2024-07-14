@@ -3,6 +3,8 @@ package com.tiki.server.memberteammanager.entity;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Position;
@@ -16,12 +18,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Builder(access = PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+@NoArgsConstructor(access = PROTECTED)
 public class MemberTeamManager extends BaseTime {
 
 	@Id
@@ -41,4 +47,13 @@ public class MemberTeamManager extends BaseTime {
 
 	@Enumerated(value = STRING)
 	private Position position;
+
+	public static MemberTeamManager of(Member member, Team team, Position position) {
+		return MemberTeamManager.builder()
+			.member(member)
+			.team(team)
+			.name(member.getName())
+			.position(position)
+			.build();
+	}
 }
