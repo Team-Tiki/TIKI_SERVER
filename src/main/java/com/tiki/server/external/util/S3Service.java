@@ -5,27 +5,21 @@ import static com.tiki.server.external.constant.ExternalConstant.PRE_SIGNED_URL_
 import static com.tiki.server.external.message.ErrorCode.*;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.FILE_DELIMITER;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.tiki.server.external.config.AWSConfig;
-import com.tiki.server.external.dto.request.PreSignedUrlRequest;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
-import com.tiki.server.external.message.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @Component
