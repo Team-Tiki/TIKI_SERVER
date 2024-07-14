@@ -3,8 +3,8 @@ package com.tiki.server.mail.controller.docs;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.mail.dto.request.CodeCheckDto;
-import com.tiki.server.mail.dto.request.MailRequestDto;
+import com.tiki.server.mail.dto.request.CodeCheck;
+import com.tiki.server.mail.dto.request.MailRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,10 +41,8 @@ public interface MailControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-     ResponseEntity<BaseResponse> sendSignUpMail(
-
-            @RequestBody MailRequestDto mailRequestDto);
-
+    ResponseEntity<BaseResponse> sendSignUpMail(
+            @RequestBody MailRequest mailRequest);
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송",
@@ -71,8 +69,7 @@ public interface MailControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-     ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody MailRequestDto mailRequestDto);
-
+    ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody MailRequest mailRequest);
 
     @Operation(
             summary = "메일 인증",
@@ -103,6 +100,5 @@ public interface MailControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-     ResponseEntity<BaseResponse> checkCode(@RequestBody CodeCheckDto codeCheckDto);
-
+    ResponseEntity<BaseResponse> checkCode(@RequestBody CodeCheck codeCheck);
 }
