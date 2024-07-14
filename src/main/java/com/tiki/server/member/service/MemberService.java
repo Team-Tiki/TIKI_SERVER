@@ -27,19 +27,19 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
-        emailCheck(request.email());
-        passwordCheck(request.password(), request.passwordChecker());
+        checkMailDuplicate(request.email());
+        checkPassword(request.password(), request.passwordChecker());
         val member = createMember(request);
         saveMember(member);
     }
 
-    private void emailCheck(String email) {
+    private void checkMailDuplicate(String email) {
         memberFinder.findByEmail(email).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
         });
     }
 
-    private void passwordCheck(String password, String passwordChecker) {
+    private void checkPassword(String password, String passwordChecker) {
         if (!password.equals(passwordChecker)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
