@@ -6,7 +6,9 @@ import com.tiki.server.team.entity.Team;
 import lombok.Builder;
 import lombok.NonNull;
 
-@Builder
+import static lombok.AccessLevel.PRIVATE;
+
+@Builder(access = PRIVATE)
 public record TeamVO(
         long teamId,
         @NonNull String name,
@@ -16,8 +18,7 @@ public record TeamVO(
         String imageUrl
 ) {
     public static TeamVO from(Team team) {
-        return TeamVO
-                .builder()
+        return TeamVO.builder()
                 .teamId(team.getId())
                 .name(team.getName())
                 .overview(team.getOverview())
