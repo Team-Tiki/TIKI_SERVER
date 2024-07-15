@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
 
@@ -21,10 +22,11 @@ import lombok.val;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/documents")
-public class DocumentController {
+public class DocumentController implements DocumentControllerDocs {
 
 	private final DocumentService documentService;
 
+	@Override
 	@GetMapping("/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
 		Principal principal,
