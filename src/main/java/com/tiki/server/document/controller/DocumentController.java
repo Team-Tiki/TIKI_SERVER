@@ -1,5 +1,7 @@
 package com.tiki.server.document.controller;
 
+import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_DOCUMENTS;
+
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
@@ -31,5 +33,6 @@ public class DocumentController {
 	) {
 		val memberId = Long.parseLong(principal.getName());
 		val response = documentService.getAllDocuments(memberId, teamId, type);
+		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
 	}
 }
