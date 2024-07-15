@@ -24,6 +24,7 @@ public class MemberController implements MemberControllerDocs {
 
     private final MemberService memberService;
 
+    @Override
     @PostMapping
     public ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request) {
         memberService.signUp(request);
