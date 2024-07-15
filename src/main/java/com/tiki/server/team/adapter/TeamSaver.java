@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamSaver {
 
-	private final TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
-	public Team save(Team team) {
-		return teamRepository.save(team);
-	}
+    public Team save(Team team) {
+        return teamRepository.save(team);
+    }
 }

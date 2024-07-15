@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	SUCCESS_CREATE_TEAM("팀 생성 성공");
+	SUCCESS_CREATE_TEAM("팀 생성 성공"),
+	SUCCESS_GET_TEAMS("전체 팀 불러오기 성공");
 
 	private final String message;
 }

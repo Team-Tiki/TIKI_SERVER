@@ -2,6 +2,8 @@ package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
 
+import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +18,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Team;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
@@ -26,6 +27,7 @@ import lombok.val;
 public class TeamService {
 
 	private final TeamSaver teamSaver;
+	private final TeamFinder teamFinder;
 	private final MemberFinder memberFinder;
 	private final MemberTeamManagerSaver memberTeamManagerSaver;
 
@@ -35,6 +37,13 @@ public class TeamService {
 		val team = teamSaver.save(createTeam(request, member.getUniv()));
 		memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
 		return TeamCreateResponse.from(team);
+	}
+
+	public TeamsGetResponse showAllTeam(long memberId){
+		val member = memberFinder.findById(memberId);
+		val univ = member.getUniv();
+		val team = teamFinder.findAllByUniv(univ);
+		return TeamsGetResponse.from(team);
 	}
 
 	private Team createTeam(TeamCreateRequest request, University univ) {
