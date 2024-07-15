@@ -14,7 +14,7 @@ public record DocumentsGetResponse(
 	List<DocumentGetResponse> documents
 ) {
 
-	public static DocumentsGetResponse of(List<DocumentVO> documents) {
+	public static DocumentsGetResponse from(List<DocumentVO> documents) {
 		return DocumentsGetResponse.builder()
 			.documents(documents.stream().map(DocumentGetResponse::from).toList())
 			.build();

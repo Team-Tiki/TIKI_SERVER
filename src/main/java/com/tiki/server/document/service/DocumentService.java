@@ -41,7 +41,7 @@ public class DocumentService {
 	) {
 		checkMemberAccessible(accessiblePosition, memberPosition);
 		val documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
-		return DocumentsGetResponse.of(documents);
+		return DocumentsGetResponse.from(documents);
 	}
 
 	private void checkMemberAccessible(Position accessiblePosition, Position memberPosition) {
