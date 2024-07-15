@@ -2,12 +2,15 @@ package com.tiki.server.team.adapter;
 
 import static com.tiki.server.team.message.ErrorCode.INVALID_TEAM;
 
+import com.tiki.server.common.entity.University;
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.team.exception.TeamException;
 import com.tiki.server.team.repository.TeamRepository;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
@@ -18,5 +21,9 @@ public class TeamFinder {
 	public Team findById(long teamId) {
 		return teamRepository.findById(teamId)
 			.orElseThrow(() -> new TeamException(INVALID_TEAM));
+	}
+	public List<Team> findAllByUniv(University univ){
+		return teamRepository.findAllByUniv(univ)
+				.orElseThrow(() -> new TeamException(INVALID_TEAM));
 	}
 }
