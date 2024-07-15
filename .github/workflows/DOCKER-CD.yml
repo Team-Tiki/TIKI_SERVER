@@ -52,6 +52,8 @@ jobs:
           docker push hellotiki/dev
         working-directory: ${{ env.working-directory }}
 
+
+
   cd:
     needs: ci
     runs-on: ubuntu-22.04
@@ -66,3 +68,4 @@ jobs:
           script: |
             cd ~
             ./deploy.sh
+            docker image prune -f
