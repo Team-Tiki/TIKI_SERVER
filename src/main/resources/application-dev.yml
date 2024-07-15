@@ -18,7 +18,7 @@ spring:
         auto_quote_keyword: true
   data:
     redis:
-      host:  ${REDIS.host}
+      host: ${REDIS.host}
       port: 6379
   mail:
     host: smtp.gmail.com
