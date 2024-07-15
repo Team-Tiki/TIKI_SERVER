@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	TEMP("컴파일 에러 방지용");
+	SUCCESS_GET_DOCUMENTS("전체 문서 조회 성공");
 
 	private final String message;
 }
