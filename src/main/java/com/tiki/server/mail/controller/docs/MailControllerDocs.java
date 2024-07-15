@@ -41,8 +41,7 @@ public interface MailControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    ResponseEntity<BaseResponse> sendSignUpMail(
-            @RequestBody MailRequest mailRequest);
+    ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody MailRequest mailRequest);
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송",
