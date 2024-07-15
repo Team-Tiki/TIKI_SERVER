@@ -1,30 +1,13 @@
-version: '3.8'
 services:
   redis:
     container_name: redis
-    image: redis:alpine
+    image: alpine
     hostname: redis
     ports:
       - "6379:6379"
-  blue:
-    container_name: blue
-    image: hellotiki/dev
-    expose:
-      - 8080
-    ports:
-      - "8080:8080"
-    environment:
-      - TZ=Asia/Seoul
-    depends_on:
-      - redis
-  green:
-    container_name: green
-    image: hellotiki/dev
-    expose:
-      - 8080
-    ports:
-      - "8081:8080"
-    environment:
-      - TZ=Asia/Seoul
-    depends_on:
-      - redis
+    networks:
+      - tiki-network
+
+networks:
+  tiki-network:
+    external: true

@@ -68,4 +68,3 @@ jobs:
           script: |
             cd ~
             ./deploy.sh
-            docker image prune -f
