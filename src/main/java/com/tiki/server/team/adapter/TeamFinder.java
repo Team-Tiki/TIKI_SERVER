@@ -28,11 +28,6 @@ public class TeamFinder {
     }
 
     public List<TeamVO> findAllByUniv(University univ) {
-        return teamRepository.findAllByUniv(univ)
-                .map(teams -> teams.stream()
-                        .map(TeamVO::from)
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+        return teamRepository.findAllByUniv(univ).stream().map(TeamVO::from).toList();
     }
-
 }
