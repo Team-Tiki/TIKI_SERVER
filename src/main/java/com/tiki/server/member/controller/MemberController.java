@@ -1,5 +1,6 @@
 package com.tiki.server.member.controller;
 
+import com.tiki.server.member.controller.docs.MemberControllerDocs;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.common.dto.BaseResponse;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,11 @@ import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CREATE_MEMBE
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/members")
-public class MemberController {
+public class MemberController implements MemberControllerDocs {
 
     private final MemberService memberService;
 
+    @Override
     @PostMapping
     public ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request) {
         memberService.signUp(request);
