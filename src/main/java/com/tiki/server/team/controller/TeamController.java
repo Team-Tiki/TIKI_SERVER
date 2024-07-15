@@ -6,7 +6,7 @@ import static com.tiki.server.team.message.SuccessMessage.SUCCESS_GET_TEAMS;
 
 import java.security.Principal;
 
-import com.tiki.server.team.dto.response.AllTeamResponse;
+import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +41,7 @@ public class TeamController implements TeamControllerDocs {
     }
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<AllTeamResponse>> showAllTeam(Principal principal) {
+    public ResponseEntity<SuccessResponse<TeamsGetResponse>> showAllTeam(Principal principal) {
         val memberId = Long.parseLong(principal.getName());
         val response = teamService.showAllTeam(memberId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));

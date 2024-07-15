@@ -3,7 +3,7 @@ package com.tiki.server.team.service;
 import static com.tiki.server.common.entity.Position.ADMIN;
 
 import com.tiki.server.team.adapter.TeamFinder;
-import com.tiki.server.team.dto.response.AllTeamResponse;
+import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,11 +39,11 @@ public class TeamService {
 		return TeamCreateResponse.from(team);
 	}
 
-	public AllTeamResponse showAllTeam(long memberId){
+	public TeamsGetResponse showAllTeam(long memberId){
 		val member = memberFinder.findById(memberId);
 		val univ = member.getUniv();
 		val team = teamFinder.findAllByUniv(univ);
-		return AllTeamResponse.from(team);
+		return TeamsGetResponse.from(team);
 	}
 
 	private Team createTeam(TeamCreateRequest request, University univ) {

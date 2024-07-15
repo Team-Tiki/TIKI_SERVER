@@ -8,11 +8,11 @@ import java.util.List;
 import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
-public record AllTeamResponse(
+public record TeamsGetResponse(
         List<TeamGetResponse> teams
 ) {
-    public static AllTeamResponse from(List<TeamVO> teams) {
-        return AllTeamResponse.builder()
+    public static TeamsGetResponse from(List<TeamVO> teams) {
+        return TeamsGetResponse.builder()
                 .teams(teams.stream().map(TeamGetResponse::from).toList())
                 .build();
     }
