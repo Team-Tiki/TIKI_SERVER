@@ -4,14 +4,11 @@ import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
-import com.tiki.server.team.dto.request.TeamCreateRequest;
-import com.tiki.server.team.dto.response.TeamCreateResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,8 +22,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface DocumentControllerDocs {
 
 	@Operation(
-		summary = "팀 생성",
-		description = "팀을 생성한다.",
+		summary = "전체 문서 조회",
+		description = "전체 문서를 조회한다.",
 		responses = {
 			@ApiResponse(
 				responseCode = "200",
