@@ -4,7 +4,6 @@ import static com.tiki.server.common.entity.Position.ADMIN;
 
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.AllTeamResponse;
-import com.tiki.server.team.dto.response.TeamResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +20,6 @@ import com.tiki.server.team.entity.Team;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
