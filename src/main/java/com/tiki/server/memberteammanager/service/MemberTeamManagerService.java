@@ -15,7 +15,4 @@ public class MemberTeamManagerService {
 
     MemberTeamManagerFinder memberTeamManagerFinder;
 
-    public BelongTeamsResponse showBelongTeam(long memberId){
-        val belongTeams = memberTeamManagerFinder.findBelongTeamById;
-    }
 }

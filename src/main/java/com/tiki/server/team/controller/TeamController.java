@@ -4,12 +4,10 @@ import static com.tiki.server.team.message.SuccessMessage.SUCCESS_CREATE_TEAM;
 
 import java.security.Principal;
 
+import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
@@ -39,6 +37,17 @@ public class TeamController implements TeamControllerDocs {
 		val response = teamService.createTeam(memberId, request);
 		return ResponseEntity.created(
 			UriGenerator.getUri("/api/v1/teams/" + response.teamId())
+		).body(SuccessResponse.success(SUCCESS_CREATE_TEAM.getMessage(), response));
+	}
+
+	@GetMapping("/join")
+	private final ResponseEntity<SuccessResponse<BelongTeamsResponse>> showBelongTeam(
+			Principal principal
+	) {
+		val memberId = Long.parseLong(principal.getName());
+		val response = teamService.findBelongTeam(memberId);
+		return ResponseEntity.created(
+				UriGenerator.getUri("/api/v1/teams/" + response)
 		).body(SuccessResponse.success(SUCCESS_CREATE_TEAM.getMessage(), response));
 	}
 }

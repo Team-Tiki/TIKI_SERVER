@@ -14,14 +14,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberTeamManagerFinder {
 
-	private final MemberTeamManagerRepository teamManagerRepository;
+    private final MemberTeamManagerRepository teamManagerRepository;
 
-	public MemberTeamManager findByMemberIdAndTeamId(long memberId, long teamId) {
-		return teamManagerRepository.findByMemberIdAndTeamId(memberId, teamId)
-			.orElseThrow(() -> new MemberTeamManagerException(INVALID_MEMBER_TEAM_MANAGER));
-	}
-
-	public BelongTeamsResponse findBelongTeamById(long memberId){
-		return teamManagerRepository.
-	}
+    public MemberTeamManager findByMemberIdAndTeamId(long memberId, long teamId) {
+        return teamManagerRepository.findByMemberIdAndTeamId(memberId, teamId)
+                .orElseThrow(() -> new MemberTeamManagerException(INVALID_MEMBER_TEAM_MANAGER));
+    }
 }

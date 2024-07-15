@@ -2,6 +2,8 @@ package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
 
+import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
+import com.tiki.server.team.adapter.TeamFinder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import lombok.val;
 public class TeamService {
 
 	private final TeamSaver teamSaver;
+	private final TeamFinder teamFinder;
 	private final MemberFinder memberFinder;
 	private final MemberTeamManagerSaver memberTeamManagerSaver;
 
@@ -43,5 +46,10 @@ public class TeamService {
 
 	private MemberTeamManager createMemberTeamManager(Member member, Team team, Position position) {
 		return MemberTeamManager.of(member, team, position);
+	}
+
+	public BelongTeamsResponse findBelongTeam(long memberId){
+		val belongTeams = teamFinder.findBelongTeamByMemberId(memberId);
+
 	}
 }

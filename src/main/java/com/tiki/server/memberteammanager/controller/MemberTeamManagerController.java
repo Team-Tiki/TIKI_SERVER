@@ -23,14 +23,4 @@ import static com.tiki.server.team.message.SuccessMessage.SUCCESS_CREATE_TEAM;
 public class MemberTeamManagerController {
 
     private final MemberTeamManagerService memberTeamManagerService;
-
-    private final ResponseEntity<SuccessResponse<BelongTeamsResponse>> showBelongTeam(
-            Principal principal
-    ) {
-        val memberId = Long.parseLong(principal.getName());
-        memberTeamManagerService
-        return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/teams/" + response.teamId())
-        ).body(SuccessResponse.success(SUCCESS_CREATE_TEAM.getMessage(), response));
-    }
 }
