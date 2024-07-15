@@ -25,6 +25,6 @@ public class TeamFinder {
 	}
 
 	public Optional<Team> findBelongTeamByMemberId(long memberId){
-		return teamRepository.findBelongTeamByMemberId(memberId);
+		return teamRepository.findAllBelongTeamByMemberId(memberId);
 	}
 }

@@ -41,11 +41,11 @@ public class TeamController implements TeamControllerDocs {
 	}
 
 	@GetMapping("/join")
-	private final ResponseEntity<SuccessResponse<BelongTeamsResponse>> showBelongTeam(
+	public ResponseEntity<SuccessResponse<BelongTeamsResponse>> showBelongTeam(
 			Principal principal
 	) {
 		val memberId = Long.parseLong(principal.getName());
-		val response = teamService.findBelongTeam(memberId);
+		val response = teamService.findBelongTeams(memberId);
 		return ResponseEntity.created(
 				UriGenerator.getUri("/api/v1/teams/" + response)
 		).body(SuccessResponse.success(SUCCESS_CREATE_TEAM.getMessage(), response));

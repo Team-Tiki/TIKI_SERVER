@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
     @Query("SELECT t FROM Team t JOIN MemberTeamManager.team mm where mm.id = :memberId")
-    Optional<Team> findBelongTeamByMemberId(long memberId);
+    Optional<Team> findAllBelongTeamByMemberId(long memberId);
 
 }

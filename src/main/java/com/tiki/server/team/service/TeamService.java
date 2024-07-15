@@ -48,7 +48,7 @@ public class TeamService {
 		return MemberTeamManager.of(member, team, position);
 	}
 
-	public BelongTeamsResponse findBelongTeam(long memberId){
+	public BelongTeamsResponse findBelongTeams(long memberId){
 		val belongTeams = teamFinder.findBelongTeamByMemberId(memberId);
 
 	}
