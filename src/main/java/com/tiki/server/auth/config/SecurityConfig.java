@@ -46,8 +46,8 @@ public class SecurityConfig {
                         request
                                 .requestMatchers("/api/v1/auth/login").permitAll()
                                 .requestMatchers("/api/v1/auth/password").permitAll()
-                                .requestMatchers("/api/v1/member/password").permitAll()
-                                .requestMatchers("/api/v1/member").permitAll()
+                                .requestMatchers("/api/v1/members/password").permitAll()
+                                .requestMatchers("/api/v1/members").permitAll()
                                 .requestMatchers("/api/v1/mail/**").permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers("/actuator/health").permitAll()
