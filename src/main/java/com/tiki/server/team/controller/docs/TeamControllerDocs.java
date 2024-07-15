@@ -3,20 +3,15 @@ package com.tiki.server.team.controller.docs;
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
-import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
-import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
