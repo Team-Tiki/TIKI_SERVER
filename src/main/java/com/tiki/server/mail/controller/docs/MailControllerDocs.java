@@ -18,7 +18,7 @@ public interface MailControllerDocs {
 
     @Operation(
             summary = "회원가입 메일 전송",
-            description = "회원 가입을 위한 이메일을 보낸다.",
+            description = "회원 가입을 진행한다.",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
