@@ -52,7 +52,7 @@ public interface TeamControllerDocs {
             description = "가입한 대학의 전체 팀을 조회한다.",
             responses = {
                     @ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "성공",
                             content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
                     @ApiResponse(

@@ -5,6 +5,7 @@ import static com.tiki.server.team.message.SuccessMessage.*;
 
 import java.security.Principal;
 
+import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,12 @@ public class TeamController implements TeamControllerDocs {
         val memberId = Long.parseLong(principal.getName());
         val response = teamService.getAllTeam(memberId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
+    }
+
+    @Override
+    @GetMapping("/category")
+    public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
+        val response = teamService.getCategories();
+        return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
     }
 }

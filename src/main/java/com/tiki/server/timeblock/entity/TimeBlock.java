@@ -48,6 +48,9 @@ public class TimeBlock extends BaseTime {
 
 	private LocalDate endDate;
 
+	@Enumerated(value = STRING)
+	private BlockType type;
+
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "team_id")
 	private Team team;
@@ -60,6 +63,7 @@ public class TimeBlock extends BaseTime {
 			.startDate(request.startDate())
 			.endDate(request.endDate())
 			.team(team)
+			.type(request.blockType())
 			.build();
 	}
 }
