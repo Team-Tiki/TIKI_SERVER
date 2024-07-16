@@ -2,6 +2,8 @@ package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
 
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ import com.tiki.server.team.entity.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,6 +34,7 @@ public class TeamService {
     private final TeamFinder teamFinder;
     private final MemberFinder memberFinder;
     private final MemberTeamManagerSaver memberTeamManagerSaver;
+    private final MemberTeamManagerFinder memberTeamManagerFinder;
 
     @Transactional
     public TeamCreateResponse createTeam(long memberId, TeamCreateRequest request) {
@@ -52,5 +57,9 @@ public class TeamService {
 
     private MemberTeamManager createMemberTeamManager(Member member, Team team, Position position) {
         return MemberTeamManager.of(member, team, position);
+    }
+
+    public List<BelongTeamsResponse> findBelongTeams(long memberId) {
+        return memberTeamManagerFinder.findBelongTeamByMemberId(memberId).stream().map(BelongTeamsResponse::from).toList();
     }
 }
