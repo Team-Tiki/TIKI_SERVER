@@ -3,9 +3,10 @@ package com.tiki.server.member.service;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
+import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
-import lombok.NonNull;
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class MemberService {
     private final MemberSaver memberSaver;
     private final MemberFinder memberFinder;
     private final PasswordEncoder passwordEncoder;
+    private final MemberTeamManagerFinder memberTeamManagerFinder;
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
@@ -58,4 +60,7 @@ public class MemberService {
         memberSaver.save(member);
     }
 
+    public BelongTeamsGetResponse findBelongTeams(long memberId) {
+        return BelongTeamsGetResponse.from(memberTeamManagerFinder.findBelongTeamByMemberId(memberId));
+    }
 }

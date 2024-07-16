@@ -10,6 +10,7 @@ import com.tiki.server.team.repository.TeamRepository;
 
 import com.tiki.server.team.vo.TeamVO;
 import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 @RepositoryAdapter
