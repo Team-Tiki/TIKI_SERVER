@@ -41,9 +41,9 @@ public class TeamController implements TeamControllerDocs {
 
     @Override
     @GetMapping
-    public ResponseEntity<SuccessResponse<TeamsGetResponse>> showAllTeam(Principal principal) {
+    public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeam(Principal principal) {
         val memberId = Long.parseLong(principal.getName());
-        val response = teamService.showAllTeam(memberId);
+        val response = teamService.getAllTeam(memberId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
     }
 }
