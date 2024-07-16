@@ -19,5 +19,4 @@ public class MemberTeamManagerService {
     public List<BelongTeamsResponse> findBelongTeams(long memberId) {
         return memberTeamManagerFinder.findBelongTeamByMemberId(memberId).stream().map(BelongTeamsResponse::from).toList();
     }
-
 }
