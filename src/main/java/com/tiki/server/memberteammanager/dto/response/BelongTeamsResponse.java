@@ -17,7 +17,7 @@ public record BelongTeamsResponse(
         return BelongTeamsResponse.builder()
                 .id(memberTeamManager.getTeam().getId())
                 .name(memberTeamManager.getTeam().getName())
-                .iconImageUrl(memberTeamManager.getTeam().getImageUrl())
+                .iconImageUrl(memberTeamManager.getTeam().getIconImageUrl())
                 .build();
     }
 }
