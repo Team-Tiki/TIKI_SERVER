@@ -63,6 +63,7 @@ public class TimeBlock extends BaseTime {
 			.startDate(request.startDate())
 			.endDate(request.endDate())
 			.team(team)
+			.type(request.blockType())
 			.build();
 	}
 }
