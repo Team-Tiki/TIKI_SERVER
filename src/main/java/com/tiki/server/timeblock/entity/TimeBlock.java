@@ -48,6 +48,7 @@ public class TimeBlock extends BaseTime {
 
 	private LocalDate endDate;
 
+	@Enumerated(value = STRING)
 	private BlockType type;
 
 	@ManyToOne(fetch = LAZY)
