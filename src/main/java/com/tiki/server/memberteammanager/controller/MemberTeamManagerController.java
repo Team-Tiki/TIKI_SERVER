@@ -1,6 +1,7 @@
 package com.tiki.server.memberteammanager.controller;
 
 import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.memberteammanager.controller.docs.MemberTeamManagerControllerDocs;
 import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ import static com.tiki.server.team.message.SuccessMessage.SUCCESS_GET_JOINED_TEA
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/members/teams")
-public class MemberTeamManagerController {
+public class MemberTeamManagerController implements MemberTeamManagerControllerDocs {
 
     private final MemberTeamManagerService memberTeamManagerService;
 
