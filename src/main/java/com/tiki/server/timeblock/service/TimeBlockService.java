@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
+import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
+import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 import com.tiki.server.timeblock.adapter.TimeBlockFinder;
 import com.tiki.server.timeblock.adapter.TimeBlockSaver;
 import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
@@ -38,8 +40,10 @@ public class TimeBlockService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final TimeBlockSaver timeBlockSaver;
 	private final TimeBlockFinder timeBlockFinder;
+	private final TimeBlockDeleter timeBlockDeleter;
 	private final DocumentSaver documentSaver;
 	private final DocumentFinder documentFinder;
+	private final DocumentDeleter documentDeleter;
 
 	@Transactional
 	public TimeBlockCreateResponse createTimeBlock(
@@ -73,6 +77,16 @@ public class TimeBlockService {
 		checkMemberAccessible(timeBlock.accessiblePosition(), position);
 		val documents = documentFinder.findAllByTimeBlockId(timeBlockId);
 		return TimeBlockDetailGetResponse.from(documents);
+	}
+
+	@Transactional
+	public void deleteTimeBlock(long memberId, long teamId, long timeBlockId) {
+		val position = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId).getPosition();
+		val timeBlock = timeBlockFinder.findById(timeBlockId);
+		checkMemberAccessible(timeBlock.accessiblePosition(), position);
+		val documents = documentFinder.findAllByTimeBlockId(timeBlockId);
+		documentDeleter.deleteAllById(documents);
+		timeBlockDeleter.deleteById(timeBlock.timeBlockId());
 	}
 
 	private TimeBlockCreateResponse createTimeBlockByType(

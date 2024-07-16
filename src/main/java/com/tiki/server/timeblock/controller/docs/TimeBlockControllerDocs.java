@@ -43,11 +43,7 @@ public interface TimeBlockControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "팀에 존재하지 않는 회원",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "유효하지 않은 팀",
+				description = "팀에 존재하지 않는 회원, 유효하지 않은 팀",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "4xx",
@@ -94,11 +90,7 @@ public interface TimeBlockControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "팀에 존재하지 않는 회원",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "유효하지 않은 팀",
+				description = "팀에 존재하지 않는 회원, 유효하지 않은 팀",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "4xx",
@@ -146,11 +138,7 @@ public interface TimeBlockControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "팀에 존재하지 않는 회원",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "유효하지 않은 타임 블록",
+				description = "팀에 존재하지 않는 회원, 유효하지 않은 타임 블록",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 			@ApiResponse(
 				responseCode = "4xx",
@@ -162,6 +150,49 @@ public interface TimeBlockControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
+		@Parameter(hidden = true) Principal principal,
+		@Parameter(
+			name = "teamId",
+			description = "팀 id",
+			in = ParameterIn.PATH,
+			example = "1"
+		)
+		@PathVariable long teamId,
+		@Parameter(
+			name = "timeBlockId",
+			description = "타임 블록 id",
+			in = ParameterIn.PATH,
+			example = "1"
+		)
+		@PathVariable long timeBlockId
+	);
+
+	@Operation(
+		summary = "타임 블록 삭제",
+		description = "타임 블록을 삭제한다.",
+		responses = {
+			@ApiResponse(
+				responseCode = "204",
+				description = "성공",
+				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(
+				responseCode = "403",
+				description = "접근 권한 없음",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "팀에 존재하지 않는 회원, 유효하지 않은 타임 블록",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(
+				responseCode = "4xx",
+				description = "클라이언트(요청) 오류",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
+	)
+	public ResponseEntity<?> deleteTimeBlock(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
 			name = "teamId",
