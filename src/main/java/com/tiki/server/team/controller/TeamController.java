@@ -1,8 +1,7 @@
 package com.tiki.server.team.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
-import static com.tiki.server.team.message.SuccessMessage.SUCCESS_CREATE_TEAM;
-import static com.tiki.server.team.message.SuccessMessage.SUCCESS_GET_TEAMS;
+import static com.tiki.server.team.message.SuccessMessage.*;
 
 import java.security.Principal;
 
@@ -37,9 +36,10 @@ public class TeamController implements TeamControllerDocs {
         val response = teamService.createTeam(memberId, request);
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/teams/" + response.teamId())
-        ).body(SuccessResponse.success(SUCCESS_CREATE_TEAM.getMessage(), response));
+        ).body(success(SUCCESS_CREATE_TEAM.getMessage(), response));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<SuccessResponse<TeamsGetResponse>> showAllTeam(Principal principal) {
         val memberId = Long.parseLong(principal.getName());

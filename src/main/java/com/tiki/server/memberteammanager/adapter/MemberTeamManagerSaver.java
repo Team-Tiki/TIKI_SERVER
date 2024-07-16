@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberTeamManagerSaver {
 
-	private final MemberTeamManagerRepository memberTeamManagerRepository;
+    private final MemberTeamManagerRepository memberTeamManagerRepository;
 
-	public void save(MemberTeamManager memberTeamManager) {
-		memberTeamManagerRepository.save(memberTeamManager);
-	}
+    public void save(MemberTeamManager memberTeamManager) {
+        memberTeamManagerRepository.save(memberTeamManager);
+    }
 }

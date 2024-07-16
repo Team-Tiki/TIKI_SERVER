@@ -24,6 +24,7 @@ public record TeamVO(
                 .overview(team.getOverview())
                 .category(team.getCategory())
                 .univ(team.getUniv())
+                .imageUrl(team.getImageUrl())
                 .build();
     }
 }
