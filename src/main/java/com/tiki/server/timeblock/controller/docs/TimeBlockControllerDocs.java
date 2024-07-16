@@ -192,7 +192,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	public ResponseEntity<?> deleteTimeBlock(
+	ResponseEntity<?> deleteTimeBlock(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
 			name = "teamId",
