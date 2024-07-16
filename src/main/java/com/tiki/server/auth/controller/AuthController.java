@@ -1,7 +1,7 @@
 package com.tiki.server.auth.controller;
 
 import com.tiki.server.auth.dto.request.LoginRequest;
-import com.tiki.server.auth.dto.response.UserAllTokenGetResponse;
+import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
 import com.tiki.server.auth.dto.response.UserTokenGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<SuccessResponse<UserAllTokenGetResponse>> login(
+    public ResponseEntity<SuccessResponse<AccessTokenGetResponse>> login(
             HttpServletResponse response,
             @RequestBody LoginRequest userInfo) {
         val token = authService.login(userInfo, response);

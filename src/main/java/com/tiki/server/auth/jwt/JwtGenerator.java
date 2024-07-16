@@ -1,6 +1,6 @@
 package com.tiki.server.auth.jwt;
 
-import com.tiki.server.auth.dto.response.UserAllTokenGetResponse;
+import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +31,6 @@ public class JwtGenerator {
     @Value("${jwt.refresh-token-expire-time}")
     public long REFRESH_TOKEN_EXPIRE_TIME;
 
-    public UserAllTokenGetResponse generateAllToken(Authentication authentication) {
-        return UserAllTokenGetResponse.of(
-                generateAccessToken(authentication),
-                generateRefreshToken(authentication)
-        );
-    }
-
     public String generateToken(Authentication authentication, long expiration) {
         return Jwts.builder()
                 .setHeaderParam(TYPE, JWT_TYPE)
@@ -52,7 +45,7 @@ public class JwtGenerator {
         return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
     }
 
-    private String generateRefreshToken(Authentication authentication) {
+    public String generateRefreshToken(Authentication authentication) {
         return generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
     }
 

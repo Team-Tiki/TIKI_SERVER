@@ -1,7 +1,7 @@
 package com.tiki.server.auth.service;
 
 import com.tiki.server.auth.dto.request.LoginRequest;
-import com.tiki.server.auth.dto.response.UserAllTokenGetResponse;
+import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
 import com.tiki.server.auth.dto.response.UserTokenGetResponse;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.auth.jwt.JwtProvider;
@@ -49,14 +49,15 @@ public class AuthService {
         return jwtGenerator.generateToken(authentication, 12096000L);
     }
 
-    public UserAllTokenGetResponse login(LoginRequest request, HttpServletResponse response) {
+    public AccessTokenGetResponse login(LoginRequest request, HttpServletResponse response) {
         val member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
         val authentication = createAuthentication(member.getId());
-        val token = jwtGenerator.generateAllToken(authentication);
-        tokenSaver.save(member.getId(), token.refreshToken());
-        CookieUtil.addRefreshToken(response, token.refreshToken());
-        return token;
+        val accessToken = jwtGenerator.generateAccessToken(authentication);
+        val refreshToken = jwtGenerator.generateRefreshToken(authentication);
+        tokenSaver.save(member.getId(),refreshToken);
+        CookieUtil.addRefreshToken(response, refreshToken);
+        return AccessTokenGetResponse.from(accessToken);
     }
 
     public UserTokenGetResponse reissue(HttpServletRequest request) {
