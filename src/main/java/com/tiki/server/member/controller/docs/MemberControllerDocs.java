@@ -4,7 +4,7 @@ import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
-import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
+import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,13 +54,9 @@ public interface MemberControllerDocs {
             description = "왼쪽 사이드바의 소속된 팀 정보를 가져옵니다.",
             responses = {
                     @ApiResponse(
-                            responseCode = "201",
+                            responseCode = "200",
                             description = "성공",
                             content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "접근 권한 없음",
-                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
                     @ApiResponse(
                             responseCode = "404",
                             description = "유효하지 않은 회원",
@@ -74,7 +70,7 @@ public interface MemberControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    ResponseEntity<SuccessResponse<List<BelongTeamsResponse>>> getBelongTeam(
+    ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
             @Parameter(hidden = true) Principal principal
     );
 }

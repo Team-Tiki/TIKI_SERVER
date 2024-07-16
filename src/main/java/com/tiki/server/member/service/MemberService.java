@@ -3,18 +3,17 @@ package com.tiki.server.member.service;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
+import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
-import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
+import com.tiki.server.member.dto.response.BelongTeamGetResponse;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 import static com.tiki.server.member.message.ErrorCode.CONFLICT_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
@@ -62,7 +61,12 @@ public class MemberService {
         memberSaver.save(member);
     }
 
-    public List<BelongTeamsResponse> findBelongTeams(long memberId) {
-        return memberTeamManagerFinder.findBelongTeamByMemberId(memberId).stream().map(BelongTeamsResponse::from).toList();
+    public BelongTeamsGetResponse findBelongTeams(long memberId) {
+        return BelongTeamsGetResponse
+                .from(memberTeamManagerFinder
+                        .findBelongTeamByMemberId(memberId)
+                        .stream()
+                        .map(BelongTeamGetResponse::from)
+                        .toList());
     }
 }

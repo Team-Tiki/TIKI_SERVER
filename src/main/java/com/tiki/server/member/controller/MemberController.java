@@ -4,7 +4,7 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.member.controller.docs.MemberControllerDocs;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.common.dto.BaseResponse;
-import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
+import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ public class MemberController implements MemberControllerDocs {
 
     @Override
     @GetMapping("/teams")
-    public ResponseEntity<SuccessResponse<List<BelongTeamsResponse>>> getBelongTeam(
+    public ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
             Principal principal
     ) {
         val memberId = Long.parseLong(principal.getName());

@@ -1,4 +1,4 @@
-package com.tiki.server.memberteammanager.dto.response;
+package com.tiki.server.member.dto.response;
 
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 
@@ -8,13 +8,13 @@ import lombok.NonNull;
 import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
-public record BelongTeamsResponse(
+public record BelongTeamGetResponse(
         long id,
         @NonNull String name,
         String iconImageUrl
 ) {
-    public static BelongTeamsResponse from(MemberTeamManager memberTeamManager) {
-        return BelongTeamsResponse.builder()
+    public static BelongTeamGetResponse from(MemberTeamManager memberTeamManager) {
+        return BelongTeamGetResponse.builder()
                 .id(memberTeamManager.getTeam().getId())
                 .name(memberTeamManager.getTeam().getName())
                 .iconImageUrl(memberTeamManager.getTeam().getIconImageUrl())
