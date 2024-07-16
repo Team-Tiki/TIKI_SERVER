@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PRIVATE;
 import java.time.LocalDate;
 
 import com.tiki.server.common.entity.Position;
+import com.tiki.server.timeblock.entity.BlockType;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
 import lombok.Builder;
@@ -17,8 +18,9 @@ public record TimeBlockVO(
 	@NonNull String color,
 	@NonNull Position accessiblePosition,
 	@NonNull LocalDate startDate,
-	@NonNull LocalDate endDate
-) {
+	@NonNull LocalDate endDate,
+	@NonNull BlockType blockType
+	) {
 
 	public static TimeBlockVO from(TimeBlock timeBlock) {
 		return TimeBlockVO.builder()
@@ -28,6 +30,7 @@ public record TimeBlockVO(
 			.accessiblePosition(timeBlock.getAccessiblePosition())
 			.startDate(timeBlock.getStartDate())
 			.endDate(timeBlock.getEndDate())
+			.blockType(timeBlock.getType())
 			.build();
 	}
 }
