@@ -23,26 +23,26 @@ import static com.tiki.server.auth.message.SuccessMessage.SUCCESS_SIGN_IN;
 @RequestMapping("api/v1/auth")
 public class AuthController {
 
-	private final AuthService authService;
+    private final AuthService authService;
 
-	@GetMapping("/{memberId}")
-	public String getAccessTokenForClient(@PathVariable long memberId) {
-		return authService.getAccessTokenForClient(memberId);
-	}
+    @GetMapping("/{memberId}")
+    public String getAccessTokenForClient(@PathVariable long memberId) {
+        return authService.getAccessTokenForClient(memberId);
+    }
 
-	@PostMapping("/login")
-	public ResponseEntity<SuccessResponse<UserAllTokenGetResponse>> login(
-			HttpServletResponse response,
-			@RequestBody LoginRequest userInfo){
-		val token = authService.login(userInfo,response);
-		return ResponseEntity.created(UriGenerator.getUri("/"))
-				.body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), token));
-	}
+    @PostMapping("/login")
+    public ResponseEntity<SuccessResponse<UserAllTokenGetResponse>> login(
+            HttpServletResponse response,
+            @RequestBody LoginRequest userInfo) {
+        val token = authService.login(userInfo, response);
+        return ResponseEntity.created(UriGenerator.getUri("/"))
+                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), token));
+    }
 
-	@GetMapping("/reissue")
-	public ResponseEntity<SuccessResponse<UserTokenGetResponse>> reissue(HttpServletRequest request){
-		val response = authService.reissue(request);
-		return ResponseEntity.created(UriGenerator.getUri("/"))
-				.body(SuccessResponse.success(SUCCESS_GENERATE_ACCESS_TOKEN.getMessage(), response));
-	}
+    @GetMapping("/reissue")
+    public ResponseEntity<SuccessResponse<UserTokenGetResponse>> reissue(HttpServletRequest request) {
+        val response = authService.reissue(request);
+        return ResponseEntity.created(UriGenerator.getUri("/"))
+                .body(SuccessResponse.success(SUCCESS_GENERATE_ACCESS_TOKEN.getMessage(), response));
+    }
 }

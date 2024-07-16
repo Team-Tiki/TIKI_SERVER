@@ -9,7 +9,7 @@ import static lombok.AccessLevel.PRIVATE;
 public record UserTokenGetResponse(
         @NonNull String accessToken
 ) {
-    public static UserTokenGetResponse from(String accessToken){
+    public static UserTokenGetResponse from(String accessToken) {
         return UserTokenGetResponse.builder().accessToken(accessToken).build();
     }
 }

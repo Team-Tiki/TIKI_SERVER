@@ -83,7 +83,7 @@ public class AuthService {
     }
 
     private void checkPasswordMatching(Member member, String password) {
-        if (!passwordEncoder.matches(password,member.getPassword())) {
+        if (!passwordEncoder.matches(password, member.getPassword())) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
