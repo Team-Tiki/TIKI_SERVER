@@ -4,22 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum Category {
-    ALL("전체"),
-    ARTS("예술/공연"),
-    VOLUNTEER("봉사/사회활동"),
-    NATURALSCIENCE("자연과학"),
-    ENGINEERING("공학"),
-    SOCIALSCIENCE("사회과학"),
-    EMPLOYMENT("창업/취업"),
-    LANGUAGE("어학"),
-    SPORTS("스포츠/레저"),
-    CULTURE("문화/친목"),
-    RELIGION("종교"),
-    OTHERS("기타");
-
-    private final String categoryName;
-
-    Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    전체, 학술연구, 문화예술, 스포츠레저, 사회활동, 취미활동, 창업비즈니스, 과학기술, 종교, 국제교류, 네트워킹,
 }

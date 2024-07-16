@@ -48,6 +48,8 @@ public class TimeBlock extends BaseTime {
 
 	private LocalDate endDate;
 
+	private BlockType type;
+
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "team_id")
 	private Team team;
