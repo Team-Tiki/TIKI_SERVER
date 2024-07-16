@@ -37,7 +37,7 @@ public class MemberController implements MemberControllerDocs {
 
     @Override
     @GetMapping("/teams")
-    public ResponseEntity<SuccessResponse<List<BelongTeamsResponse>>> showBelongTeam(
+    public ResponseEntity<SuccessResponse<List<BelongTeamsResponse>>> getBelongTeam(
             Principal principal
     ) {
         val memberId = Long.parseLong(principal.getName());

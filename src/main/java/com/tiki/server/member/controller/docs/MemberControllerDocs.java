@@ -50,8 +50,8 @@ public interface MemberControllerDocs {
     ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request);
 
     @Operation(
-            summary = "타임 블록 생성",
-            description = "타임 블록을 생성한다.",
+            summary = "소속 팀 가져오기",
+            description = "왼쪽 사이드바의 소속된 팀 정보를 가져옵니다.",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
@@ -74,7 +74,7 @@ public interface MemberControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    ResponseEntity<SuccessResponse<List<BelongTeamsResponse>>> showBelongTeam(
+    ResponseEntity<SuccessResponse<List<BelongTeamsResponse>>> getBelongTeam(
             @Parameter(hidden = true) Principal principal
     );
 }
