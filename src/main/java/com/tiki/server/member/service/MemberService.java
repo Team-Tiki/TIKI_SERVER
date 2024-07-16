@@ -5,12 +5,16 @@ import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.memberteammanager.dto.response.BelongTeamsResponse;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 import static com.tiki.server.member.message.ErrorCode.CONFLICT_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
@@ -23,6 +27,7 @@ public class MemberService {
     private final MemberSaver memberSaver;
     private final MemberFinder memberFinder;
     private final PasswordEncoder passwordEncoder;
+    private final MemberTeamManagerFinder memberTeamManagerFinder;
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
@@ -57,4 +62,7 @@ public class MemberService {
         memberSaver.save(member);
     }
 
+    public List<BelongTeamsResponse> findBelongTeams(long memberId) {
+        return memberTeamManagerFinder.findBelongTeamByMemberId(memberId).stream().map(BelongTeamsResponse::from).toList();
+    }
 }
