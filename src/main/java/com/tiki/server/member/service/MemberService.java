@@ -7,7 +7,6 @@ import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
-import com.tiki.server.member.dto.response.BelongTeamGetResponse;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,11 +61,6 @@ public class MemberService {
     }
 
     public BelongTeamsGetResponse findBelongTeams(long memberId) {
-        return BelongTeamsGetResponse
-                .from(memberTeamManagerFinder
-                        .findBelongTeamByMemberId(memberId)
-                        .stream()
-                        .map(BelongTeamGetResponse::from)
-                        .toList());
+        return BelongTeamsGetResponse.from(memberTeamManagerFinder.findBelongTeamByMemberId(memberId));
     }
 }
