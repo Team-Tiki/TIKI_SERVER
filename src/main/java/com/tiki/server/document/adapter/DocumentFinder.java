@@ -16,6 +16,10 @@ public class DocumentFinder {
 
 	private final DocumentRepository documentRepository;
 
+	public Document findByIdWithTimeBlock(long id) {
+		return documentRepository.findByIdWithTimeBlock(id);
+	}
+
 	public List<DocumentVO> findAllByTimeBlockId(long timeBlockId) {
 		return documentRepository.findAllByTimeBlockId(timeBlockId).stream().map(DocumentVO::from).toList();
 	}
