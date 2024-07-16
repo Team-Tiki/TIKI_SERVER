@@ -5,7 +5,6 @@ import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
-import lombok.NonNull;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

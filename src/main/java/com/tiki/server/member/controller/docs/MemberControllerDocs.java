@@ -42,5 +42,5 @@ public interface MemberControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    public ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request);
+    ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request);
 }
