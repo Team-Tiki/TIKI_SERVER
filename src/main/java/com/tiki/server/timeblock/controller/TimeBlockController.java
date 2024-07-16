@@ -8,6 +8,7 @@ import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIME_
 import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,5 +74,17 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		val memberId = Long.parseLong(principal.getName());
 		val response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TIME_BLOCK_DETAIL.getMessage(), response));
+	}
+
+	@Override
+	@DeleteMapping("/team/{teamId}/time-block/{timeBlockId}")
+	public ResponseEntity<?> deleteTimeBlock(
+		Principal principal,
+		@PathVariable long teamId,
+		@PathVariable long timeBlockId
+	) {
+		val memberId = Long.parseLong(principal.getName());
+		timeBlockService.deleteTimeBlock(memberId, teamId, timeBlockId);
+		return ResponseEntity.noContent().build();
 	}
 }
