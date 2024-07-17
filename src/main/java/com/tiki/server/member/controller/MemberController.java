@@ -2,7 +2,7 @@ package com.tiki.server.member.controller;
 
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.member.controller.docs.MemberControllerDocs;
-import com.tiki.server.member.dto.request.ChangingPasswordRequest;
+import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
@@ -48,9 +48,9 @@ public class MemberController implements MemberControllerDocs {
 
     @PatchMapping("/password")
     public ResponseEntity<BaseResponse> changePassword(
-            @RequestBody ChangingPasswordRequest changingPasswordRequest
+            @RequestBody PasswordChangeRequest passwordChangeRequest
     ) {
-        memberService.changePassword(changingPasswordRequest);
-        return ResponseEntity.created(getUri("/")).body(success(SUCCESS_CHANGING_PASSWORD.getMessage()));
+        memberService.changePassword(passwordChangeRequest);
+        return ResponseEntity.ok().body(success(SUCCESS_CHANGING_PASSWORD.getMessage()));
     }
 }
