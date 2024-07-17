@@ -47,16 +47,15 @@ public class AuthService {
         val authentication = createAuthentication(member.getId());
         val accessToken = jwtGenerator.generateAccessToken(authentication);
         val refreshToken = jwtGenerator.generateRefreshToken(authentication);
-        tokenSaver.save(Token.of(member.getId(),refreshToken));
-        CookieUtil.addRefreshToken(response, refreshToken);
-        return SignInGetResponse.from(accessToken);
+        tokenSaver.save(Token.of(member.getId(), refreshToken));
+        return SignInGetResponse.from(accessToken, refreshToken);
     }
 
     public ReissueGetResponse reissueToken(HttpServletRequest request) {
         val refreshToken = jwtProvider.getTokenFromRequest(request);
         val memberId = jwtProvider.getUserFromJwt(refreshToken);
         val token = tokenFinder.findById(memberId);
-        checkRefreshToken(refreshToken,token);
+        checkRefreshToken(refreshToken, token);
         val authentication = createAuthentication(memberId);
         val accessToken = jwtGenerator.generateAccessToken(authentication);
         return ReissueGetResponse.from(accessToken);
