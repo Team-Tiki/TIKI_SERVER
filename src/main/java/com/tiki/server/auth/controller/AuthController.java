@@ -1,8 +1,8 @@
 package com.tiki.server.auth.controller;
 
 import com.tiki.server.auth.dto.request.LoginRequest;
-import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
-import com.tiki.server.auth.dto.response.UserTokenGetResponse;
+import com.tiki.server.auth.dto.response.SignInGetResponse;
+import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +15,7 @@ import com.tiki.server.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
-import static com.tiki.server.auth.message.SuccessMessage.SUCCESS_GENERATE_ACCESS_TOKEN;
-import static com.tiki.server.auth.message.SuccessMessage.SUCCESS_SIGN_IN;
+import static com.tiki.server.auth.message.SuccessMessage.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,24 +24,20 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/{memberId}")
-    public String getAccessTokenForClient(@PathVariable long memberId) {
-        return authService.getAccessTokenForClient(memberId);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<SuccessResponse<AccessTokenGetResponse>> login(
-            HttpServletResponse response,
-            @RequestBody LoginRequest userInfo) {
-        val token = authService.login(userInfo, response);
+    @PostMapping("/sign-in")
+    public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(
+            HttpServletResponse httpServletResponse,
+            @RequestBody LoginRequest request
+    ) {
+        val response = authService.login(request, httpServletResponse);
         return ResponseEntity.created(UriGenerator.getUri("/"))
-                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), token));
+                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<SuccessResponse<UserTokenGetResponse>> reissue(HttpServletRequest request) {
-        val response = authService.reissue(request);
+    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest httpServletRequest) {
+        val response = authService.reissueToken(httpServletRequest);
         return ResponseEntity.created(UriGenerator.getUri("/"))
-                .body(SuccessResponse.success(SUCCESS_GENERATE_ACCESS_TOKEN.getMessage(), response));
+                .body(SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response));
     }
 }
