@@ -48,7 +48,7 @@ public class Member extends BaseTime {
                 .build();
     }
 
-    public void setPassword(String password) {
+    public void resetPassword(String password) {
         this.password = password;
     }
 }
