@@ -48,8 +48,7 @@ public class AuthService {
         val accessToken = jwtGenerator.generateAccessToken(authentication);
         val refreshToken = jwtGenerator.generateRefreshToken(authentication);
         tokenSaver.save(Token.of(member.getId(),refreshToken));
-        CookieUtil.addRefreshToken(response, refreshToken);
-        return SignInGetResponse.from(accessToken);
+        return SignInGetResponse.from(accessToken,refreshToken);
     }
 
     public ReissueGetResponse reissueToken(HttpServletRequest request) {
