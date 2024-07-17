@@ -1,8 +1,8 @@
 package com.tiki.server.auth.controller.docs;
 
 import com.tiki.server.auth.dto.request.LoginRequest;
-import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
-import com.tiki.server.auth.dto.response.UserTokenGetResponse;
+import com.tiki.server.auth.dto.response.SignInGetResponse;
+import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,7 @@ public interface AuthControllerDocs {
 
     @Operation(
             summary = "로그인",
-            description = "로그인",
+            description = "로그인을 진행한다.",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -41,9 +41,9 @@ public interface AuthControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    ResponseEntity<SuccessResponse<AccessTokenGetResponse>> login(
-            HttpServletResponse response,
-            @RequestBody LoginRequest userInfo);
+    ResponseEntity<SuccessResponse<SignInGetResponse>> login(
+            HttpServletResponse httpServletResponse,
+            @RequestBody LoginRequest request);
 
     @Operation(
             summary = "엑세스 토큰 재발급",
@@ -58,8 +58,8 @@ public interface AuthControllerDocs {
                             description = "유효하지 않은 키",
                             content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
                     @ApiResponse(
-                            responseCode = "403",
-                            description = "권한이 없는 사용자",
+                            responseCode = "401",
+                            description = "인증되지 않은 사용자",
                             content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
                     @ApiResponse(
                             responseCode = "404",
@@ -74,6 +74,6 @@ public interface AuthControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    public ResponseEntity<SuccessResponse<UserTokenGetResponse>> reissue(HttpServletRequest request);
+    ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest request);
 
 }
