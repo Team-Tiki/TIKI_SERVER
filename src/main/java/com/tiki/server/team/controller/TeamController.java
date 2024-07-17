@@ -48,6 +48,7 @@ public class TeamController implements TeamControllerDocs {
         return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
     }
 
+    @Override
     @GetMapping("/category")
     public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
         val response = teamService.getCategories();
