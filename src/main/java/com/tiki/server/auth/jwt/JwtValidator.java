@@ -1,6 +1,5 @@
 package com.tiki.server.auth.jwt;
 
-import com.tiki.server.auth.exception.AuthException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;

@@ -24,7 +24,7 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String getAccessTokenFromRequest(HttpServletRequest request) {
+    public String getTokenFromRequest(HttpServletRequest request) {
         val accessToken = request.getHeader(Constants.AUTHORIZATION);
         if (!StringUtils.hasText(accessToken) || !accessToken.startsWith(Constants.BEARER)) {
             throw new AuthException(INVALID_KEY);

@@ -1,7 +1,5 @@
 package com.tiki.server.mail.constants;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public class MailConstants {
 
     public static final String TIKI_ADDRESS = "hello.wer.tiki@gmail.com";

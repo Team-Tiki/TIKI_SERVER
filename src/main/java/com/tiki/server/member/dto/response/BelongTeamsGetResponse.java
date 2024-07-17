@@ -12,6 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 public record BelongTeamsGetResponse(
         List<BelongTeamGetResponse> belongTeamGetResponses
 ) {
+
     public static BelongTeamsGetResponse from(List<MemberTeamManager> belongTeamGetResponses) {
         return BelongTeamsGetResponse.builder()
                 .belongTeamGetResponses(belongTeamGetResponses.stream().map(BelongTeamGetResponse::from).toList())

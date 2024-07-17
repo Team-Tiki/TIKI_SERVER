@@ -43,6 +43,10 @@ logging:
 jwt:
   secret:
     ${JWT.SECRET}
+  access-token-expire-time:
+    ${JWT.EXPIRE_ACCESS}
+  refresh-token-expire-time:
+    ${JWT.EXPIRE_REFRESH}
 
 aws-property:
   access-key: ${AWS_PROPERTY.ACCESS_KEY}

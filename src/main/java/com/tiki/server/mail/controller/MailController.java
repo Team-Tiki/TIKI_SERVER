@@ -2,6 +2,7 @@ package com.tiki.server.mail.controller;
 
 import com.tiki.server.common.dto.BaseResponse;
 
+import com.tiki.server.mail.controller.docs.MailControllerDocs;
 import com.tiki.server.mail.dto.request.CodeCheck;
 import com.tiki.server.mail.dto.request.MailRequest;
 import com.tiki.server.mail.service.MailService;
@@ -21,7 +22,7 @@ import static com.tiki.server.mail.message.SuccessMessage.SUCCESS_VALIDATION;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/mail")
-public class MailController {
+public class MailController implements MailControllerDocs {
 
     private final MailService mailService;
 

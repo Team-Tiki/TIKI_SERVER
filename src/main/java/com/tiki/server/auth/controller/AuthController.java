@@ -1,23 +1,43 @@
 package com.tiki.server.auth.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.tiki.server.auth.dto.request.LoginRequest;
+import com.tiki.server.auth.dto.response.SignInGetResponse;
+import com.tiki.server.auth.dto.response.ReissueGetResponse;
+import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.common.support.UriGenerator;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.val;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.tiki.server.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
+
+import static com.tiki.server.auth.message.SuccessMessage.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
 public class AuthController {
 
-	private final AuthService authService;
+    private final AuthService authService;
 
-	@GetMapping("/{memberId}")
-	public String getAccessTokenForClient(@PathVariable long memberId) {
-		return authService.getAccessTokenForClient(memberId);
-	}
+    @PostMapping("/sign-in")
+    public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(
+            HttpServletResponse httpServletResponse,
+            @RequestBody LoginRequest request
+    ) {
+        val response = authService.login(request, httpServletResponse);
+        return ResponseEntity.created(UriGenerator.getUri("/"))
+                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));
+    }
+
+    @GetMapping("/reissue")
+    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest httpServletRequest) {
+        val response = authService.reissueToken(httpServletRequest);
+        return ResponseEntity.created(UriGenerator.getUri("/"))
+                .body(SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response));
+    }
 }

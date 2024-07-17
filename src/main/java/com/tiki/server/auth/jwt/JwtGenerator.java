@@ -2,6 +2,7 @@ package com.tiki.server.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -16,30 +17,45 @@ import static java.util.Base64.getEncoder;
 
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Component
 public class JwtGenerator {
 
-	@Value("${jwt.secret}")
-	private String secretKey;
+    @Value("${jwt.secret}")
+    private String secretKey;
 
-	public String generateToken(Authentication authentication, long expiration) {
-		return Jwts.builder()
-			.setHeaderParam(TYPE, JWT_TYPE)
-			.setClaims(generateClaims(authentication))
-			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + expiration))
-			.signWith(getSigningKey())
-			.compact();
-	}
+    @Value("${jwt.access-token-expire-time}")
+    private long ACCESS_TOKEN_EXPIRE_TIME;
 
-	private Claims generateClaims(Authentication authentication) {
-		val claims = Jwts.claims();
-		claims.put("memberId", authentication.getPrincipal());
-		return claims;
-	}
+    @Value("${jwt.refresh-token-expire-time}")
+    public long REFRESH_TOKEN_EXPIRE_TIME;
 
-	private SecretKey getSigningKey() {
-		val encodedKey = getEncoder().encodeToString(secretKey.getBytes());
-		return hmacShaKeyFor(encodedKey.getBytes());
-	}
+    public String generateToken(Authentication authentication, long expiration) {
+        return Jwts.builder()
+                .setHeaderParam(TYPE, JWT_TYPE)
+                .setClaims(generateClaims(authentication))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    public String generateAccessToken(Authentication authentication) {
+        return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
+    }
+
+    public String generateRefreshToken(Authentication authentication) {
+        return generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
+    }
+
+    private Claims generateClaims(Authentication authentication) {
+        val claims = Jwts.claims();
+        claims.put("memberId", authentication.getPrincipal());
+        return claims;
+    }
+
+    private SecretKey getSigningKey() {
+        val encodedKey = getEncoder().encodeToString(secretKey.getBytes());
+        return hmacShaKeyFor(encodedKey.getBytes());
+    }
 }
