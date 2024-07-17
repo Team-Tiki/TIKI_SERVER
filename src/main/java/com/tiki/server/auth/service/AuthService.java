@@ -1,8 +1,8 @@
 package com.tiki.server.auth.service;
 
 import com.tiki.server.auth.dto.request.LoginRequest;
-import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
-import com.tiki.server.auth.dto.response.UserTokenGetResponse;
+import com.tiki.server.auth.dto.response.SignInGetResponse;
+import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.auth.jwt.JwtProvider;
 import com.tiki.server.auth.token.adapter.TokenFinder;
@@ -11,7 +11,7 @@ import com.tiki.server.auth.token.entity.Token;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
-import com.tiki.server.utils.CookieUtil;
+import com.tiki.server.auth.utils.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -25,9 +25,6 @@ import com.tiki.server.auth.jwt.UserAuthentication;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 
-import java.util.Optional;
-
-import static com.tiki.server.auth.message.ErrorCode.UNAUTHORIZED_USER;
 import static com.tiki.server.auth.message.ErrorCode.UNMATCHED_TOKEN;
 import static com.tiki.server.member.message.ErrorCode.INVALID_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
@@ -44,41 +41,33 @@ public class AuthService {
     private final TokenFinder tokenFinder;
     private final PasswordEncoder passwordEncoder;
 
-    public String getAccessTokenForClient(long memberId) {
-        val authentication = new UserAuthentication(memberId, null, null);
-        return jwtGenerator.generateToken(authentication, 12096000L);
-    }
-
-    public AccessTokenGetResponse login(LoginRequest request, HttpServletResponse response) {
+    public SignInGetResponse login(LoginRequest request, HttpServletResponse response) {
         val member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
         val authentication = createAuthentication(member.getId());
         val accessToken = jwtGenerator.generateAccessToken(authentication);
         val refreshToken = jwtGenerator.generateRefreshToken(authentication);
-        tokenSaver.save(member.getId(),refreshToken);
+        tokenSaver.save(Token.of(member.getId(),refreshToken));
         CookieUtil.addRefreshToken(response, refreshToken);
-        return AccessTokenGetResponse.from(accessToken);
+        return SignInGetResponse.from(accessToken);
     }
 
-    public UserTokenGetResponse reissue(HttpServletRequest request) {
-        val getRefreshToken = jwtProvider.getAccessTokenFromRequest(request);
-        val memberId = jwtProvider.getUserFromJwt(getRefreshToken);
+    public ReissueGetResponse reissueToken(HttpServletRequest request) {
+        val refreshToken = jwtProvider.getTokenFromRequest(request);
+        val memberId = jwtProvider.getUserFromJwt(refreshToken);
         val token = tokenFinder.findById(memberId);
-        checkRefreshToken(getRefreshToken, token);
+        checkRefreshToken(refreshToken,token);
         val authentication = createAuthentication(memberId);
         val accessToken = jwtGenerator.generateAccessToken(authentication);
-        return UserTokenGetResponse.from(accessToken);
+        return ReissueGetResponse.from(accessToken);
     }
 
     private Member checkMemberEmpty(LoginRequest request) {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    private void checkRefreshToken(String getRefreshToken, Optional<Token> token) {
-        if (token.isEmpty()) {
-            throw new AuthException(UNAUTHORIZED_USER);
-        }
-        if (!token.get().refreshToken().equals(getRefreshToken)) {
+    private void checkRefreshToken(String getRefreshToken, Token token) {
+        if (!token.refreshToken().equals(getRefreshToken)) {
             throw new AuthException(UNMATCHED_TOKEN);
         }
     }
