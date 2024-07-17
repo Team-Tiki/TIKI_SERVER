@@ -42,22 +42,22 @@ public class MailService {
 
     @Transactional
     public void sendSignUp(MailRequest mailRequest) {
-        val address = mailRequest.address();
-        checkSignUpEmailFormat(address);
-        sendMail(address, MAIL_SUBJECT_SIGN_UP);
+        val email = mailRequest.email();
+        checkSignUpEmailFormat(email);
+        sendMail(email, MAIL_SUBJECT_SIGN_UP);
     }
 
     @Transactional
     public void sendChangingPassword(MailRequest mailRequest) {
-        val address = mailRequest.address();
-        checkPasswordEmailFormat(address);
-        sendMail(address, MAIL_SUBJECT_CHANGING_PASSWORD);
+        val email = mailRequest.email();
+        checkPasswordEmailFormat(email);
+        sendMail(email, MAIL_SUBJECT_CHANGING_PASSWORD);
     }
 
     public void checkCode(CodeCheck codeCheck) {
-        val address = codeCheck.address();
-        checkEmailFormat(address);
-        val mail = mailFinder.findById(address);
+        val email = codeCheck.email();
+        checkEmailFormat(email);
+        val mail = mailFinder.findById(email);
         if (mail.isEmpty()) {
             throw new MailException(INVALID_REQUEST);
         }
@@ -66,52 +66,52 @@ public class MailService {
         }
     }
 
-    private void checkSignUpEmailFormat(String address) {
-        checkMemberPresent(address);
-        checkEmailFormat(address);
+    private void checkSignUpEmailFormat(String email) {
+        checkMemberPresent(email);
+        checkEmailFormat(email);
     }
 
-    private void checkMemberPresent(String address) {
-        memberFinder.findByEmail(address).ifPresent(member -> {
+    private void checkMemberPresent(String email) {
+        memberFinder.findByEmail(email).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
         });
     }
 
-    private void checkPasswordEmailFormat(String address) {
-        checkMemberEmpty(address);
-        checkEmailFormat(address);
+    private void checkPasswordEmailFormat(String email) {
+        checkMemberEmpty(email);
+        checkEmailFormat(email);
     }
 
-    private void checkMemberEmpty(String address) {
-        if (memberFinder.findByEmail(address).isEmpty()) {
+    private void checkMemberEmpty(String email) {
+        if (memberFinder.findByEmail(email).isEmpty()) {
             throw new MemberException(INVALID_MEMBER);
         }
     }
 
-    private void sendMail(String address, String subject) {
-        val mail = makeMail(address, subject);
+    private void sendMail(String email, String subject) {
+        val mail = makeMail(email, subject);
         send(mail);
     }
 
-    private void checkEmailFormat(String address) {
-        if (!(address.endsWith(MAIL_FORMAT_EDU) || address.endsWith(MAIL_FORMAT_AC_KR))) {
+    private void checkEmailFormat(String email) {
+        if (!(email.endsWith(MAIL_FORMAT_EDU) || email.endsWith(MAIL_FORMAT_AC_KR))) {
             throw new MemberException(INVALID_EMAIL);
         }
     }
 
-    private MimeMessage makeMail(String address, String subject) {
+    private MimeMessage makeMail(String email, String subject) {
         val code = generateRandomValue();
-        val message = makeMessage(address, code, subject);
-        mailSaver.save(Mail.of(address, code));
+        val message = makeMessage(email, code, subject);
+        mailSaver.save(Mail.of(email, code));
         return message;
     }
 
-    private MimeMessage makeMessage(String address, String code, String subject) {
+    private MimeMessage makeMessage(String email, String code, String subject) {
         val message = javaMailSender.createMimeMessage();
         try {
             val helper = new MimeMessageHelper(message, true, "utf-8");
-            helper.setFrom(TIKI_ADDRESS);
-            helper.setTo(address);
+            helper.setFrom(TIKI_EMAIL);
+            helper.setTo(email);
             helper.setSubject(subject);
             helper.setText(setContext(code), true);
             helper.addInline("image", new ClassPathResource(IMG_PATH));

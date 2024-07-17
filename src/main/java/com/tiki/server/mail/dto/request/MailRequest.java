@@ -6,6 +6,6 @@ import lombok.NonNull;
 public record MailRequest(
         @Email
         @NonNull
-        String address
+        String email
 ) {
 }

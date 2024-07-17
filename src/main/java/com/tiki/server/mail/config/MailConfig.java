@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-import static com.tiki.server.mail.constants.MailConstants.TIKI_ADDRESS;
+import static com.tiki.server.mail.constants.MailConstants.TIKI_EMAIL;
 
 @Configuration
 public class MailConfig {
@@ -23,7 +23,7 @@ public class MailConfig {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername(TIKI_ADDRESS);
+        mailSender.setUsername(TIKI_EMAIL);
         mailSender.setPassword(mailPassword);
 
         val javaMailProperties = getProperties();

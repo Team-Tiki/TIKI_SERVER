@@ -13,7 +13,7 @@ public class MailFinder {
 
     private final MailRepository mailRepository;
 
-    public Optional<Mail> findById(String address) {
-        return mailRepository.findById(address);
+    public Optional<Mail> findById(String email) {
+        return mailRepository.findById(email);
     }
 }
