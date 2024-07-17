@@ -47,4 +47,8 @@ public class Member extends BaseTime {
                 .univ(univ)
                 .build();
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
