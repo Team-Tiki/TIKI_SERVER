@@ -5,7 +5,7 @@ import lombok.NonNull;
 
 public record CodeCheck(
         @Email
-        String address,
+        String email,
         @NonNull
         String code
 ) {

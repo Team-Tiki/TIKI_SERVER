@@ -22,7 +22,7 @@ public class Mail {
 
     private String code;
 
-    public static Mail of(String address, String code) {
-        return Mail.builder().id(address).code(code).build();
+    public static Mail of(String email, String code) {
+        return Mail.builder().id(email).code(code).build();
     }
 }
