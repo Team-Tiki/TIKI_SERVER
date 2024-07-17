@@ -1,11 +1,9 @@
-package com.tiki.server.utils;
+package com.tiki.server.auth.utils;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 
-import static com.tiki.server.auth.token.constants.TokenConstants.REFRESH_TOKEN_EXPIRED_TIME;
+import static com.tiki.server.auth.token.constants.TokenConstant.REFRESH_TOKEN_EXPIRED_TIME;
 
 public class CookieUtil {
 
