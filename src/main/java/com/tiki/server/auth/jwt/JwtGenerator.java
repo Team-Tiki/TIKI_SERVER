@@ -1,6 +1,5 @@
 package com.tiki.server.auth.jwt;
 
-import com.tiki.server.auth.dto.response.AccessTokenGetResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;

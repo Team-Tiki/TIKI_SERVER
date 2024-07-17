@@ -15,7 +15,7 @@ public enum ErrorCode {
     /* 401 UNAUTHORIZED : 인증 없음 */
     UNAUTHENTICATED_USER(UNAUTHORIZED, "인증되지 않은 사용자입니다."),
     INVALID_KEY(UNAUTHORIZED, "유효하지 않은 키입니다."),
-    UNMATCHED_TOKEN(UNAUTHORIZED,"토큰이 일치하지 않습니다."),
+    UNMATCHED_TOKEN(UNAUTHORIZED, "토큰이 일치하지 않습니다."),
 
     /* 403 FORBIDDEN : 인가 없음 */
     UNAUTHORIZED_USER(FORBIDDEN, "권한이 없는 사용자입니다.");
