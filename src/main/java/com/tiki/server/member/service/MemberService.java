@@ -2,7 +2,7 @@ package com.tiki.server.member.service;
 
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.adapter.MemberSaver;
-import com.tiki.server.member.dto.request.ChangingPasswordRequest;
+import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.member.entity.Member;
@@ -36,13 +36,13 @@ public class MemberService {
     }
 
     @Transactional
-    public void changePassword(ChangingPasswordRequest request) {
+    public void changePassword(PasswordChangeRequest request) {
         val member = checkMemberEmpty(request);
         checkPassword(request.password(), request.passwordChecker());
-        member.setPassword(passwordEncoder.encode(request.password()));
+        member.resetPassword(passwordEncoder.encode(request.password()));
     }
 
-    private Member checkMemberEmpty(ChangingPasswordRequest request) {
+    private Member checkMemberEmpty(PasswordChangeRequest request) {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 

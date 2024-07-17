@@ -3,7 +3,7 @@ package com.tiki.server.member.controller.docs;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.member.dto.request.ChangingPasswordRequest;
+import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -100,6 +100,6 @@ public interface MemberControllerDocs {
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
     ResponseEntity<BaseResponse> changePassword(
-            @RequestBody ChangingPasswordRequest changingPasswordRequest
+            @RequestBody PasswordChangeRequest passwordChangeRequest
     );
 }
