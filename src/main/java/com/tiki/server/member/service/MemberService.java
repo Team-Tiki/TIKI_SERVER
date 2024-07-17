@@ -2,6 +2,7 @@ package com.tiki.server.member.service;
 
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.adapter.MemberSaver;
+import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.member.entity.Member;
@@ -14,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import static com.tiki.server.member.message.ErrorCode.CONFLICT_MEMBER;
-import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
+import static com.tiki.server.member.message.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +33,17 @@ public class MemberService {
         checkPassword(request.password(), request.passwordChecker());
         val member = createMember(request);
         saveMember(member);
+    }
+
+    @Transactional
+    public void changePassword(PasswordChangeRequest request) {
+        val member = checkMemberEmpty(request);
+        checkPassword(request.password(), request.passwordChecker());
+        member.resetPassword(passwordEncoder.encode(request.password()));
+    }
+
+    private Member checkMemberEmpty(PasswordChangeRequest request) {
+        return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
     private void checkMailDuplicate(String email) {
