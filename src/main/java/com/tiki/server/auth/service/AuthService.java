@@ -62,6 +62,11 @@ public class AuthService {
         return ReissueGetResponse.from(accessToken);
     }
 
+    public String getAccessTokenForClient(long memberId) {
+        val authentication = createAuthentication(memberId);
+        return jwtGenerator.generateToken(authentication, 12096000L);
+    }
+
     private Member checkMemberEmpty(LoginRequest request) {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
