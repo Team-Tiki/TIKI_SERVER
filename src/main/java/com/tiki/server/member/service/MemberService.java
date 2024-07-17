@@ -14,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import static com.tiki.server.member.message.ErrorCode.CONFLICT_MEMBER;
-import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
+import static com.tiki.server.mail.constants.MailConstants.MAIL_FORMAT_AC_KR;
+import static com.tiki.server.mail.constants.MailConstants.MAIL_FORMAT_EDU;
+import static com.tiki.server.member.message.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
+        checkMailFormat(request.email());
         checkMailDuplicate(request.email());
         checkPassword(request.password(), request.passwordChecker());
         val member = createMember(request);
@@ -39,6 +41,11 @@ public class MemberService {
         memberFinder.findByEmail(email).ifPresent(member -> {
             throw new MemberException(CONFLICT_MEMBER);
         });
+    }
+    private void checkMailFormat(String email){
+        if (!(email.endsWith(MAIL_FORMAT_EDU) || email.endsWith(MAIL_FORMAT_AC_KR))) {
+            throw new MemberException(INVALID_EMAIL);
+        }
     }
 
     private void checkPassword(String password, String passwordChecker) {
