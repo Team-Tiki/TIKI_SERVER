@@ -1,3 +1,7 @@
+### 🏢 Architecture
+
+![image](https://github.com/user-attachments/assets/16dd8458-9a0e-4020-86f8-28d63fee4315)
+
 ### 📖 Directory
 ```
 📁 TIKI_SERVER
