@@ -2,6 +2,7 @@ package com.tiki.server.team.controller.docs;
 
 import java.security.Principal;
 
+import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,4 +70,23 @@ public interface TeamControllerDocs {
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
     ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeam(Principal principal);
+
+    @Operation(
+        summary = "카테고리 조회",
+        description = "카테고리 리스트를 조회한다.",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "성공",
+                content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(
+                responseCode = "4xx",
+                description = "클라이언트(요청) 오류",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                responseCode = "500",
+                description = "서버 내부 오류",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
+    )
+    ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories();
 }

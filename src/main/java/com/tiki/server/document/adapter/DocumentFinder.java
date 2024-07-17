@@ -24,8 +24,7 @@ public class DocumentFinder {
 		return documentRepository.findAllByTimeBlockId(timeBlockId).stream().map(DocumentVO::from).toList();
 	}
 
-	public List<DocumentVO> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
-		return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition).stream()
-			.map(DocumentVO::from).toList();
+	public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
+		return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 	}
 }
