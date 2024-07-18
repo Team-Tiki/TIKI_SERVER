@@ -12,6 +12,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.val;
 
 @Configuration
@@ -35,9 +36,13 @@ public class SwaggerConfig {
 		info.setDescription("티키 API 명세서");
 		info.setVersion("1.0.0");
 
+		val server = new Server();
+		server.setUrl("https://www.tiki-sopt.p-e.kr");
+
 		return new OpenAPI()
 			.components(components)
 			.security(List.of(securityRequirement))
+			.servers(List.of(server))
 			.info(info);
 	}
 }
