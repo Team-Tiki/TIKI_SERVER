@@ -29,6 +29,7 @@ public class CorsConfig {
 	private CorsConfiguration setCorsConfiguration() {
 		val config = new CorsConfiguration();
 		config.setAllowCredentials(true);
+		config.addAllowedOrigin(("https://tiki-client.vercel.app"));
 		config.addAllowedOrigin("http://localhost:5173");
 		config.addAllowedHeader("*");
 		config.setAllowedMethods(List.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
