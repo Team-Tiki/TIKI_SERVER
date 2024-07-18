@@ -13,25 +13,26 @@ import lombok.val;
 @Configuration
 public class CorsConfig {
 
-	@Bean
-	public CorsFilter corsFilter() {
-		val source = setUrlBasedCorsConfigurationSource();
-		return new CorsFilter(source);
-	}
+    @Bean
+    public CorsFilter corsFilter() {
+        val source = setUrlBasedCorsConfigurationSource();
+        return new CorsFilter(source);
+    }
 
-	private UrlBasedCorsConfigurationSource setUrlBasedCorsConfigurationSource() {
-		val source = new UrlBasedCorsConfigurationSource();
-		val config = setCorsConfiguration();
-		source.registerCorsConfiguration("/**", config);
-		return source;
-	}
+    private UrlBasedCorsConfigurationSource setUrlBasedCorsConfigurationSource() {
+        val source = new UrlBasedCorsConfigurationSource();
+        val config = setCorsConfiguration();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 
-	private CorsConfiguration setCorsConfiguration() {
-		val config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		config.addAllowedOrigin("http://localhost:5173");
-		config.addAllowedHeader("*");
-		config.setAllowedMethods(List.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-		return config;
-	}
+    private CorsConfiguration setCorsConfiguration() {
+        val config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin(("https://tiki-client.vercel.app"));
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedHeader("*");
+        config.setAllowedMethods(List.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        return config;
+    }
 }
