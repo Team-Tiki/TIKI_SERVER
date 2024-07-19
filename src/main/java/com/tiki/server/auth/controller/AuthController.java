@@ -40,9 +40,4 @@ public class AuthController {
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response));
     }
-
-    @GetMapping("/{memberId}")
-    public String getAccessTokenForClient(@PathVariable long memberId) {
-        return authService.getAccessTokenForClient(memberId);
-    }
 }

@@ -11,7 +11,6 @@ import com.tiki.server.auth.token.entity.Token;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
-import com.tiki.server.auth.utils.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -59,11 +58,6 @@ public class AuthService {
         val authentication = createAuthentication(memberId);
         val accessToken = jwtGenerator.generateAccessToken(authentication);
         return ReissueGetResponse.from(accessToken);
-    }
-
-    public String getAccessTokenForClient(long memberId) {
-        val authentication = createAuthentication(memberId);
-        return jwtGenerator.generateToken(authentication, 12096000L);
     }
 
     private Member checkMemberEmpty(LoginRequest request) {

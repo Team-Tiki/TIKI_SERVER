@@ -1,6 +1,5 @@
 package com.tiki.server.auth.config;
 
-import com.tiki.server.auth.exception.handler.CustomAccessDeniedHandler;
 import com.tiki.server.auth.exception.handler.CustomAuthenticationEntryPointHandler;
 import com.tiki.server.auth.filter.ExceptionHandlerFilter;
 import com.tiki.server.auth.filter.JwtAuthenticationFilter;
@@ -21,7 +20,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
@@ -37,16 +35,14 @@ public class SecurityConfig {
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandlingConfigurer ->
                         exceptionHandlingConfigurer
-                                .accessDeniedHandler(customAccessDeniedHandler)
                                 .authenticationEntryPoint(customAuthenticationEntryPointHandler))
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers("/api/v1/auth/login").permitAll()
-                                .requestMatchers("/api/v1/auth/password").permitAll()
+                                .requestMatchers("/api/v1/auth/sign-in").permitAll()
+                                .requestMatchers("/api/v1/auth/reissue").permitAll()
                                 .requestMatchers("/api/v1/members/password").permitAll()
                                 .requestMatchers("/api/v1/members").permitAll()
                                 .requestMatchers("/api/v1/mail/**").permitAll()
-                                .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers("/actuator/health").permitAll()
                                 .anyRequest()
                                 .authenticated())
@@ -61,8 +57,8 @@ public class SecurityConfig {
 
     private void permitSwaggerUri(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-            .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
-            .requestMatchers(new AntPathRequestMatcher("/docs/**")).permitAll());
+                .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/docs/**")).permitAll());
     }
 }
