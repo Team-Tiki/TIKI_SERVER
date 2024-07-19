@@ -11,6 +11,9 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    /* 400 INTERNAL_SERVER_ERROR : 잘못된 요청입니다. */
+    UNCAUGHT_EXCEPTION(BAD_REQUEST, "예상치 못한 오류입니다."),
+
     /* 401 UNAUTHORIZED : 인증 없음 */
     UNAUTHENTICATED_USER(UNAUTHORIZED, "잘못된 토큰 형식입니다."),
     INVALID_KEY(UNAUTHORIZED, "유효하지 않은 키입니다."),
@@ -23,8 +26,7 @@ public enum ErrorCode {
     /* 403 FORBIDDEN : 인가 없음 */
     UNAUTHORIZED_USER(FORBIDDEN, "권한이 없는 사용자입니다."),
 
-    /* 500 INTERNAL_SERVER_ERROR : 서버 내부 오류입니다. */
-    UNCAUGHT_EXCEPTION(INTERNAL_SERVER_ERROR, "서버 내부 오류입니다.");
+    UNCAUGHT_SERVER_EXCEPTION(INTERNAL_SERVER_ERROR,"처리되지 않은 에러ㅜ(서버한테 물어보삼)");
 
     private final HttpStatus httpStatus;
     private final String message;

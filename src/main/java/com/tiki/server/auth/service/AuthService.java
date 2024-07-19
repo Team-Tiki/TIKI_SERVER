@@ -13,6 +13,7 @@ import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,14 @@ import com.tiki.server.auth.jwt.UserAuthentication;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.thymeleaf.util.StringUtils;
 
+import static com.tiki.server.auth.message.ErrorCode.EMPTY_JWT;
 import static com.tiki.server.auth.message.ErrorCode.UNMATCHED_TOKEN;
 import static com.tiki.server.member.message.ErrorCode.INVALID_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -51,7 +55,9 @@ public class AuthService {
     }
 
     public ReissueGetResponse reissueToken(HttpServletRequest request) {
+        System.out.println("1");
         val refreshToken = jwtProvider.getTokenFromRequest(request);
+        checkTokenEmpty(refreshToken);
         val memberId = jwtProvider.getUserFromJwt(refreshToken);
         val token = tokenFinder.findById(memberId);
         checkRefreshToken(refreshToken, token);
@@ -64,7 +70,15 @@ public class AuthService {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
+    private void checkTokenEmpty(String token){
+        if(StringUtils.isEmpty(token)){
+            throw new AuthException(EMPTY_JWT);
+        }
+    }
+
     private void checkRefreshToken(String getRefreshToken, Token token) {
+        log.info("받은 토큰 : " + getRefreshToken);
+        log.info("저장 토큰 : " + token.refreshToken());
         if (!token.refreshToken().equals(getRefreshToken)) {
             throw new AuthException(UNMATCHED_TOKEN);
         }

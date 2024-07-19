@@ -29,9 +29,6 @@ public class JwtValidator {
         } catch (UnsupportedJwtException exception) {
             log.info(exception.getMessage());
             throw new AuthException(UNSUPPORTED_JWT_TOKEN);
-        } catch (IllegalArgumentException exception) {
-            log.info(exception.getMessage());
-            throw new AuthException(EMPTY_JWT);
         }
     }
 }
