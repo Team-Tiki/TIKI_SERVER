@@ -1,5 +1,6 @@
 package com.tiki.server.common.handler;
 
+import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.mail.exception.MailException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,8 @@ import com.tiki.server.timeblock.exception.TimeBlockException;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+
+import static com.tiki.server.auth.message.ErrorCode.UNCAUGHT_SERVER_EXCEPTION;
 
 @Slf4j
 @RestControllerAdvice
@@ -67,6 +70,21 @@ public class ErrorHandler {
 	public ResponseEntity<BaseResponse> MailException(MailException exception) {
 		log.error(exception.getMessage());
 		val errorCode = exception.getErrorCode();
+		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+	}
+
+	@ExceptionHandler(AuthException.class)
+	public ResponseEntity<BaseResponse> AuthException(AuthException exception) {
+		log.error(exception.getMessage());
+		val errorCode = exception.getErrorCode();
+		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<BaseResponse> Exception(Exception exception) {
+		log.info("here!!");
+		log.error(exception.getMessage());
+		val errorCode = UNCAUGHT_SERVER_EXCEPTION;
 		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
 	}
 }

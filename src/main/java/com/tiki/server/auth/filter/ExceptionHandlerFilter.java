@@ -6,6 +6,7 @@ import com.tiki.server.auth.message.ErrorCode;
 import com.tiki.server.common.dto.ErrorResponse;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -33,6 +34,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws IOException {
         try {
+            System.out.println("EHF");
             filterChain.doFilter(request, response);
         } catch (AuthException e) {
             log.info("ExceptionHandlerFilter: AuthException - " + e);
@@ -40,10 +42,17 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         } catch (JwtException e) {
             log.info("ExceptionHandlerFilter: JWTException - " + e);
             handleJwtException(response);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            log.info("ExceptionHandlerFilter: IllegalArgumentException - " + e);
+            handleIllegalArgumentException(response);
+        } catch (ServletException e) {
             log.info("ExceptionHandlerFilter: Exception - " + e);
-            handleUncaughtException(response, e);
+            throw new RuntimeException(e);
         }
+//        catch (Exception e) {
+//            log.info("ExceptionHandlerFilter: Exception - " + e);
+//            handleUncaughtException(response);
+//        }
     }
 
     private void handleAuthException(HttpServletResponse response, AuthException e) throws IOException {
@@ -57,7 +66,12 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         setResponse(response, jwtException.getHttpStatus(), jwtException.getMessage());
     }
 
-    private void handleUncaughtException(HttpServletResponse response, Exception e) throws IOException {
+    private void handleIllegalArgumentException(HttpServletResponse response) throws IOException {
+        val uncaughtException = ErrorCode.EMPTY_JWT;
+        setResponse(response, uncaughtException.getHttpStatus(), uncaughtException.getMessage());
+    }
+
+    private void handleUncaughtException(HttpServletResponse response) throws IOException {
         val uncaughtException = ErrorCode.UNCAUGHT_EXCEPTION;
         setResponse(response, uncaughtException.getHttpStatus(), uncaughtException.getMessage());
     }
