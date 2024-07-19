@@ -1,7 +1,12 @@
 package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
+import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
 
+import java.util.List;
+
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
@@ -19,6 +24,7 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
+import com.tiki.server.team.exception.TeamException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -31,6 +37,8 @@ public class TeamService {
     private final TeamSaver teamSaver;
     private final TeamFinder teamFinder;
     private final MemberFinder memberFinder;
+    private final MemberTeamManagerFinder memberTeamManagerFinder;
+    private final MemberTeamManagerDeleter memberTeamManagerDeleter;
     private final MemberTeamManagerSaver memberTeamManagerSaver;
 
     @Transactional
@@ -53,11 +61,24 @@ public class TeamService {
         return CategoriesGetResponse.from(categories);
     }
 
+    @Transactional
+    public void deleteTeam(long memberId, long teamId) {
+        val memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        checkIsAdmin(memberTeamManager.getPosition());
+
+    }
+
     private Team createTeam(TeamCreateRequest request, University univ) {
         return Team.of(request, univ);
     }
 
     private MemberTeamManager createMemberTeamManager(Member member, Team team, Position position) {
         return MemberTeamManager.of(member, team, position);
+    }
+
+    private void checkIsAdmin(Position position) {
+        if (!position.equals(ADMIN)) {
+            throw new TeamException(INVALID_AUTHORIZATION_DELETE);
+        }
     }
 }
