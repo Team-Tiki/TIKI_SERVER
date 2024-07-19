@@ -31,6 +31,7 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin(("https://tiki-client.vercel.app"));
         config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://www.tiki-sopt.p-e.kr");
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         return config;
