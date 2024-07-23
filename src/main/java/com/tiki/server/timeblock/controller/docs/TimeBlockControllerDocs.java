@@ -29,10 +29,7 @@ public interface TimeBlockControllerDocs {
 		summary = "타임 블록 생성",
 		description = "타임 블록을 생성한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "201",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "201", description = "성공"),
 			@ApiResponse(
 				responseCode = "400",
 				description = "타입 오류",
@@ -76,10 +73,7 @@ public interface TimeBlockControllerDocs {
 		summary = "타임라인 조회",
 		description = "타임라인을 조회한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "200", description = "성공"),
 			@ApiResponse(
 				responseCode = "400",
 				description = "타입 오류",
@@ -128,10 +122,7 @@ public interface TimeBlockControllerDocs {
 		summary = "타임 블록 상세 조회",
 		description = "타임 블록을 상세 조회한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "200", description = "성공"),
 			@ApiResponse(
 				responseCode = "403",
 				description = "접근 권한 없음",
@@ -171,10 +162,7 @@ public interface TimeBlockControllerDocs {
 		summary = "타임 블록 삭제",
 		description = "타임 블록을 삭제한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "204",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "204", description = "성공"),
 			@ApiResponse(
 				responseCode = "403",
 				description = "접근 권한 없음",
