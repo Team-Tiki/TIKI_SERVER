@@ -14,7 +14,4 @@ public interface TimeBlockRepository extends JpaRepository<TimeBlock, Long> {
 		+ "(to_char(start_date, 'YYYY-MM') <= :date and to_char(end_date, 'YYYY-MM') >= :date) "
 		+ "order by start_date asc", nativeQuery = true)
 	List<TimeBlock> findByTeamAndAccessiblePositionAndDate(long teamId, String position, String date);
-
-	@Query("select t from TimeBlock t join fetch d.timeBlock where d.id = :documentId")
-	List<TimeBlock> findByTeamId(long teamId);
 }

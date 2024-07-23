@@ -36,8 +36,4 @@ public class TimeBlockFinder {
 			.map(TimeBlockVO::from)
 			.toList();
 	}
-
-	public List<TimeBlock> findByTeamId(long teamId) {
-		return timeBlockRepository.findByTeamId(teamId);
-	}
 }
