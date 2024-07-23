@@ -25,10 +25,7 @@ public interface S3ControllerDocs {
 		summary = "Presigned Url 생성",
 		description = "s3로부터 Presigned Url을 생성한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "200", description = "성공"),
 			@ApiResponse(
 				responseCode = "4xx",
 				description = "클라이언트(요청) 오류",
@@ -51,10 +48,7 @@ public interface S3ControllerDocs {
 		summary = "s3 파일 삭제",
 		description = "s3의 파일 삭제한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "200", description = "성공"),
 			@ApiResponse(
 				responseCode = "4xx",
 				description = "클라이언트(요청) 오류",
