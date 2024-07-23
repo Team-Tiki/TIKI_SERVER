@@ -15,6 +15,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 		+ "where t.team.id = :teamId and t.accessiblePosition = :position order by d.createdAt asc")
 	List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position position);
 
+	@Query("select d from Document d join fetch d.timeBlock t where t.team.id = :teamId")
+	List<Document> findAllByTeamId(long teamId);
+
 	@Query("select d from Document d join fetch d.timeBlock where d.id = :documentId")
 	Document findByIdWithTimeBlock(long documentId);
 }
