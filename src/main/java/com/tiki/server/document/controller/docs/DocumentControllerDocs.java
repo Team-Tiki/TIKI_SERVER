@@ -25,7 +25,10 @@ public interface DocumentControllerDocs {
 		summary = "전체 문서 조회",
 		description = "전체 문서를 조회한다.",
 		responses = {
-			@ApiResponse(responseCode = "200", description = "성공"),
+			@ApiResponse(
+				responseCode = "200",
+				description = "성공",
+				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
 			@ApiResponse(
 				responseCode = "403",
 				description = "접근 권한 없음",
@@ -64,7 +67,10 @@ public interface DocumentControllerDocs {
 		summary = "문서 삭제",
 		description = "문서를 삭제한다.",
 		responses = {
-			@ApiResponse(responseCode = "204", description = "성공"),
+			@ApiResponse(
+				responseCode = "204",
+				description = "성공",
+				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
 			@ApiResponse(
 				responseCode = "403",
 				description = "접근 권한 없음",

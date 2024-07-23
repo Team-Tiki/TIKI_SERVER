@@ -20,7 +20,10 @@ public interface MailControllerDocs {
             summary = "회원가입 메일 전송",
             description = "회원 가입을 진행한다.",
             responses = {
-                @ApiResponse(responseCode = "1", description = "성공"),
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "성공",
+                            content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "이메일 형식 오류",
@@ -44,7 +47,10 @@ public interface MailControllerDocs {
             summary = "비밀번호 재설정 메일 전송",
             description = "비밀번호 재설정을 위한 이메일을 보낸다.",
             responses = {
-                @ApiResponse(responseCode = "201", description = "성공"),
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "성공",
+                            content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "이메일 형식 오류",
@@ -68,7 +74,10 @@ public interface MailControllerDocs {
             summary = "메일 인증",
             description = "인증번호 확인",
             responses = {
-                @ApiResponse(responseCode = "200", description = "성공"),
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "성공",
+                            content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
                     @ApiResponse(
                             responseCode = "400",
                             description = "이메일 형식 오류",
