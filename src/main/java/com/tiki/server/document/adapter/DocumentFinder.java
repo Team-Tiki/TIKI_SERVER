@@ -27,4 +27,8 @@ public class DocumentFinder {
 	public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
 		return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 	}
+
+	public List<Document> findAllByTeamId(long teamId) {
+		return documentRepository.findAllByTeamId(teamId);
+	}
 }
