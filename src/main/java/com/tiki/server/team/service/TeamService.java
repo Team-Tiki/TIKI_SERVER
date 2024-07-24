@@ -77,10 +77,8 @@ public class TeamService {
 		val memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
 		memberTeamManagerDeleter.deleteAll(memberTeamManagers);
 		val documents = documentFinder.findAllByTeamId(teamId);
-		val timeBlocks = new HashSet<TimeBlock>();
-		documents.forEach(document -> timeBlocks.add(document.getTimeBlock()));
 		documentDeleter.deleteAll(documents);
-		timeBlockDeleter.deleteAll(timeBlocks);
+		timeBlockDeleter.deleteAllByTeamId(teamId);
 		teamDeleter.deleteById(teamId);
 	}
 

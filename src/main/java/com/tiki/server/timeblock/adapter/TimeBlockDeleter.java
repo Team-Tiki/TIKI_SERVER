@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.tiki.server.common.support.RepositoryAdapter;
+import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.repository.TimeBlockRepository;
 
@@ -21,5 +22,9 @@ public class TimeBlockDeleter {
 
 	public void deleteAll(HashSet<TimeBlock> timeBlocks) {
 		timeBlockRepository.deleteAll(timeBlocks);
+	}
+
+	public void deleteAllByTeamId(long teamId) {
+		timeBlockRepository.deleteAllByTeamId(teamId);
 	}
 }
