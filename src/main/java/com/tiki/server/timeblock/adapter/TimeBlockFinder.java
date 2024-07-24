@@ -7,6 +7,7 @@ import java.util.List;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.team.entity.Team;
+import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.exception.TimeBlockException;
 import com.tiki.server.timeblock.message.ErrorCode;
 import com.tiki.server.timeblock.repository.TimeBlockRepository;

@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
 public interface TimeBlockRepository extends JpaRepository<TimeBlock, Long> {
+
+	void deleteAllByTeamId(long teamId);
 
 	@Query(value = "select * from time_block "
 		+ "where team_id = :teamId and accessible_position = :position and "

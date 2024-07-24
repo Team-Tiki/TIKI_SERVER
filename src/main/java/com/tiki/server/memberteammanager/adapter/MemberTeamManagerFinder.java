@@ -25,4 +25,8 @@ public class MemberTeamManagerFinder {
     public List<MemberTeamManager> findBelongTeamByMemberId(long memberId) {
         return teamManagerRepository.findAllBelongTeamByMemberId(memberId).stream().toList();
     }
+
+    public List<MemberTeamManager> findAllByTeamId(long teamId) {
+        return teamManagerRepository.findAllByTeamId(teamId);
+    }
 }

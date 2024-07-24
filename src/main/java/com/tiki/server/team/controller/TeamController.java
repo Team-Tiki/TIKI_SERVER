@@ -5,6 +5,7 @@ import static com.tiki.server.team.message.SuccessMessage.*;
 
 import java.security.Principal;
 
+import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +54,15 @@ public class TeamController implements TeamControllerDocs {
     public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
         val response = teamService.getCategories();
         return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
+    }
+
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<BaseResponse> deleteTeam(
+        Principal principal,
+        @PathVariable long teamId
+    ) {
+        val memberId = Long.parseLong(principal.getName());
+        teamService.deleteTeam(memberId, teamId);
+        return ResponseEntity.noContent().build();
     }
 }
