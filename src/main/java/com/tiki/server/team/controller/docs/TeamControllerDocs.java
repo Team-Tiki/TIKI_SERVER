@@ -2,10 +2,12 @@ package com.tiki.server.team.controller.docs;
 
 import java.security.Principal;
 
+import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.tiki.server.common.dto.ErrorResponse;
@@ -15,6 +17,7 @@ import com.tiki.server.team.dto.response.TeamCreateResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -64,7 +67,9 @@ public interface TeamControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeam(Principal principal);
+	ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeam(
+		@Parameter(hidden = true) Principal principal
+	);
 
 	@Operation(
 		summary = "카테고리 조회",
@@ -81,4 +86,33 @@ public interface TeamControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories();
+
+	@Operation(
+		summary = "팀 삭제",
+		description = "팀을 삭제한다.",
+		responses = {
+			@ApiResponse(responseCode = "204", description = "성공"),
+			@ApiResponse(
+				responseCode = "404",
+				description = "유효하지 않은 회원",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(
+				responseCode = "4xx",
+				description = "클라이언트(요청) 오류",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
+	)
+	ResponseEntity<BaseResponse> deleteTeam(
+		@Parameter(hidden = true) Principal principal,
+		@Parameter(
+			name = "teamId",
+			description = "팀 id",
+			in = ParameterIn.PATH,
+			example = "1"
+		)
+		@PathVariable long teamId
+	);
 }
