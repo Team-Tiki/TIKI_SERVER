@@ -97,5 +97,6 @@ public class TeamService {
 		if (!memberTeamManager.getPosition().equals(ADMIN)) {
 			throw new TeamException(INVALID_AUTHORIZATION_DELETE);
 		}
+		memberTeamManagerDeleter.delete(memberTeamManager);
 	}
 }
