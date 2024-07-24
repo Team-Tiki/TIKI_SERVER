@@ -22,10 +22,7 @@ public interface MailControllerDocs {
 		summary = "회원가입 메일 전송",
 		description = "회원 가입을 진행한다.",
 		responses = {
-			@ApiResponse(
-				responseCode = "201",
-				description = "성공",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "201", description = "성공"),
 			@ApiResponse(
 				responseCode = "400",
 				description = "이메일 형식 오류",
