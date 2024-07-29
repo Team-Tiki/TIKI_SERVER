@@ -31,45 +31,22 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
-        checkMailFormat(request.email());
-        checkMailDuplicate(request.email());
-        checkPassword(request.password(), request.passwordChecker());
+        memberFinder.checkPresent(request.email());
         val member = createMember(request);
         saveMember(member);
     }
 
     @Transactional
     public void changePassword(PasswordChangeRequest request) {
-        val member = checkMemberEmpty(request);
-        checkPassword(request.password(), request.passwordChecker());
+        val member = memberFinder.checkEmpty(request.email());
         member.resetPassword(passwordEncoder.encode(request.password()));
-    }
-
-    private Member checkMemberEmpty(PasswordChangeRequest request) {
-        return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
-    }
-
-    private void checkMailDuplicate(String email) {
-        memberFinder.findByEmail(email).ifPresent(member -> {
-            throw new MemberException(CONFLICT_MEMBER);
-        });
-    }
-    private void checkMailFormat(String email){
-        if (!(email.endsWith(MAIL_FORMAT_EDU) || email.endsWith(MAIL_FORMAT_AC_KR))) {
-            throw new MemberException(INVALID_EMAIL);
-        }
-    }
-
-    private void checkPassword(String password, String passwordChecker) {
-        if (!password.equals(passwordChecker)) {
-            throw new MemberException(UNMATCHED_PASSWORD);
-        }
     }
 
     private Member createMember(MemberProfileCreateRequest request) {
         return Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
+                passwordEncoder.encode(request.passwordChecker()),
                 request.name(),
                 request.birth(),
                 request.univ());
