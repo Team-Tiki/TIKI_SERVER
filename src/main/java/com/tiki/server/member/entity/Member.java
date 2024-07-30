@@ -55,24 +55,16 @@ public class Member extends BaseTime {
                 .build();
 
         member.checkMailFormat();
-        member.checkPassword(passwordChecker);
         return member;
     }
 
     public void resetPassword(String password) {
-        checkPassword(password);
         this.password = password;
     }
 
     private void checkMailFormat() {
         if (!(this.email.endsWith(MAIL_FORMAT_EDU) || this.email.endsWith(MAIL_FORMAT_AC_KR))) {
             throw new MemberException(INVALID_EMAIL);
-        }
-    }
-
-    private void checkPassword(String passwordChecker) {
-        if (!this.password.equals(passwordChecker)) {
-            throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
 }

@@ -6,6 +6,7 @@ import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.member.entity.Member;
+import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +32,7 @@ public class MemberService {
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
         memberFinder.checkPresent(request.email());
+        checkPassword(request.password(), request.passwordChecker());
         val member = createMember(request);
         saveMember(member);
     }
@@ -38,6 +40,7 @@ public class MemberService {
     @Transactional
     public void changePassword(PasswordChangeRequest request) {
         val member = memberFinder.checkEmpty(request.email());
+        checkPassword(request.password(), request.passwordChecker());
         member.resetPassword(passwordEncoder.encode(request.password()));
     }
 
@@ -51,9 +54,16 @@ public class MemberService {
                 request.univ());
     }
 
+    private void checkPassword(String password, String passwordChecker) {
+        if (password.equals(passwordChecker)) {
+            throw new MemberException(UNMATCHED_PASSWORD);
+        }
+    }
+
     private void saveMember(Member member) {
         memberSaver.save(member);
     }
+
 
     public BelongTeamsGetResponse findBelongTeams(long memberId) {
         return BelongTeamsGetResponse.from(memberTeamManagerFinder.findBelongTeamByMemberId(memberId));
