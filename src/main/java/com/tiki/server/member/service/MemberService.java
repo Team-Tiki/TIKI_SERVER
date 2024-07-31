@@ -64,7 +64,6 @@ public class MemberService {
         memberSaver.save(member);
     }
 
-
     public BelongTeamsGetResponse findBelongTeams(long memberId) {
         return BelongTeamsGetResponse.from(memberTeamManagerFinder.findBelongTeamByMemberId(memberId));
     }

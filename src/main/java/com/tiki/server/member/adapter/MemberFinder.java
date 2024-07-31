@@ -23,8 +23,7 @@ public class MemberFinder {
     }
 
     public Member findById(long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(INVALID_MEMBER));
+        return memberRepository.findById(memberId).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
     public Member checkEmpty(String email) {
