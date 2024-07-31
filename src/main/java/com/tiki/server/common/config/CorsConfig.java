@@ -29,7 +29,7 @@ public class CorsConfig {
     private CorsConfiguration setCorsConfiguration() {
         val config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin(("https://tiki-client.vercel.app"));
+        config.addAllowedOrigin(("https://ti-kii.com"));
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("https://www.tiki-sopt.p-e.kr");
         config.addAllowedHeader("*");
