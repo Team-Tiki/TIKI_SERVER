@@ -48,14 +48,13 @@ public class MemberService {
         return Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
-                passwordEncoder.encode(request.passwordChecker()),
                 request.name(),
                 request.birth(),
                 request.univ());
     }
 
     private void checkPassword(String password, String passwordChecker) {
-        if (password.equals(passwordChecker)) {
+        if (!password.equals(passwordChecker)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
