@@ -1,7 +1,7 @@
 services:
   redis:
     container_name: redis
-    image: alpine
+    image: redis:alpine
     hostname: redis
     ports:
       - "6379:6379"
