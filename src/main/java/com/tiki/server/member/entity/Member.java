@@ -46,7 +46,6 @@ public class Member extends BaseTime {
     public static Member of(
             String email,
             String password,
-            String passwordChecker,
             String name,
             LocalDate birth,
             University univ) {
