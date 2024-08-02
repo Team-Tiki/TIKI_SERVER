@@ -1,15 +1,13 @@
 package com.tiki.server.auth.controller;
-
 import com.tiki.server.auth.dto.request.LoginRequest;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.common.support.CookieGenerator;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.member.dto.response.AccessTokenGetResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +22,6 @@ import static com.tiki.server.auth.message.SuccessMessage.*;
 @RequestMapping("api/v1/auth")
 public class AuthController {
 
-    @Value("${JWT.EXPIRE_REFRESH}")
-    private int COOKIE_MAX_AGE;
-    private final static String REFRESH_TOKEN = "refreshToken";
     private final AuthService authService;
 
     @PostMapping("/sign-in")
@@ -35,17 +30,11 @@ public class AuthController {
             @RequestBody LoginRequest request
     ) {
         val response = authService.login(request, httpServletResponse);
-        ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN, response.refreshToken())
-                .maxAge(COOKIE_MAX_AGE)
-                .path("/")
-                .secure(true)
-                .sameSite("None")
-                .httpOnly(true)
-                .build();
+        val cookie = CookieGenerator.setRefreshTokenToCookie(response.refreshToken());
         httpServletResponse.setHeader("Set-Cookie", cookie.toString());
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(),
-                        AccessTokenGetResponse.of(response.accessToken())));
+                        AccessTokenGetResponse.from(response.accessToken())));
     }
 
     @GetMapping("/reissue")
