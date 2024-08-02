@@ -1,9 +1,12 @@
 package com.tiki.server.member.dto.response;
 
+import lombok.NonNull;
+
 public record AccessTokenGetResponse(
-        String accessToken
+        @NonNull String accessToken
 ) {
-    public static AccessTokenGetResponse of(
+
+    public static AccessTokenGetResponse from(
             final String accessToken
     ) {
         return new AccessTokenGetResponse(accessToken);
