@@ -11,7 +11,6 @@ import com.tiki.server.auth.token.entity.Token;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -54,9 +53,7 @@ public class AuthService {
         return SignInGetResponse.from(accessToken, refreshToken);
     }
 
-    public ReissueGetResponse reissueToken(HttpServletRequest request) {
-        System.out.println("1");
-        val refreshToken = jwtProvider.getTokenFromRequest(request);
+    public ReissueGetResponse reissueToken(String refreshToken) {
         checkTokenEmpty(refreshToken);
         val memberId = jwtProvider.getUserFromJwt(refreshToken);
         val token = tokenFinder.findById(memberId);
@@ -70,8 +67,8 @@ public class AuthService {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    private void checkTokenEmpty(String token){
-        if(StringUtils.isEmpty(token)){
+    private void checkTokenEmpty(String token) {
+        if (StringUtils.isEmpty(token)) {
             throw new AuthException(EMPTY_JWT);
         }
     }

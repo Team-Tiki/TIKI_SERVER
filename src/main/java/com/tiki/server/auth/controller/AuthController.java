@@ -1,4 +1,5 @@
 package com.tiki.server.auth.controller;
+
 import com.tiki.server.auth.dto.request.LoginRequest;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
@@ -38,8 +39,10 @@ public class AuthController {
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest httpServletRequest) {
-        val response = authService.reissueToken(httpServletRequest);
+    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(
+            @CookieValue(name = "refreshToken") String refreshToken
+    ) {
+        val response = authService.reissueToken(refreshToken);
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response));
     }
