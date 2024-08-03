@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CookieGenerator {
 
-    @Value("${JWT.EXPIRE_REFRESH}")
-    private static int COOKIE_MAX_AGE;
+
+    private final static int COOKIE_MAX_AGE = 14 * 24 * 60 * 60;
     private final static String REFRESH_TOKEN = "refreshToken";
 
     public static ResponseCookie setRefreshTokenToCookie(String value){
