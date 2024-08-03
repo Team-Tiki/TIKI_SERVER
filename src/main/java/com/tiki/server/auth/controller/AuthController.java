@@ -4,7 +4,7 @@ import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.CookieGenerator;
 import com.tiki.server.common.support.UriGenerator;
-import com.tiki.server.member.dto.response.AccessTokenGetResponse;
+import com.tiki.server.member.dto.response.SignInResultGetResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
@@ -25,7 +25,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<SuccessResponse<AccessTokenGetResponse>> signIn(
+    public ResponseEntity<SuccessResponse<SignInResultGetResponse>> signIn(
             HttpServletResponse httpServletResponse,
             @RequestBody LoginRequest request
     ) {
@@ -34,7 +34,7 @@ public class AuthController {
         httpServletResponse.setHeader("Set-Cookie", cookie.toString());
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(),
-                        AccessTokenGetResponse.from(response.accessToken())));
+                        SignInResultGetResponse.from(response.accessToken())));
     }
 
     @GetMapping("/reissue")

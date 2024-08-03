@@ -2,13 +2,13 @@ package com.tiki.server.member.dto.response;
 
 import lombok.NonNull;
 
-public record AccessTokenGetResponse(
+public record SignInResultGetResponse(
         @NonNull String accessToken
 ) {
 
-    public static AccessTokenGetResponse from(
+    public static SignInResultGetResponse from(
             final String accessToken
     ) {
-        return new AccessTokenGetResponse(accessToken);
+        return new SignInResultGetResponse(accessToken);
     }
 }
