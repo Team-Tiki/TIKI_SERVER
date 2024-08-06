@@ -22,6 +22,14 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
+    public static final String[] AUTH_WHITE_LIST = {
+            "/api/v1/auth/sign-in",
+            "/api/v1/auth/reissue",
+            "/api/v1/members/password",
+            "/api/v1/members",
+            "/api/v1/mail/**",
+            "/actuator/health"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,12 +46,7 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(customAuthenticationEntryPointHandler))
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers("/api/v1/auth/sign-in").permitAll()
-                                .requestMatchers("/api/v1/auth/reissue").permitAll()
-                                .requestMatchers("/api/v1/members/password").permitAll()
-                                .requestMatchers("/api/v1/members").permitAll()
-                                .requestMatchers("/api/v1/mail/**").permitAll()
-                                .requestMatchers("/actuator/health").permitAll()
+                                .requestMatchers(AUTH_WHITE_LIST).permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .addFilterBefore(
