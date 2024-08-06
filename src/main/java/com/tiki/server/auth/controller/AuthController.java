@@ -2,8 +2,8 @@ package com.tiki.server.auth.controller;
 
 import com.tiki.server.auth.dto.request.LoginRequest;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
+import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.common.support.CookieGenerator;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.member.dto.response.SignInResultGetResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,23 +26,15 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<SuccessResponse<SignInResultGetResponse>> signIn(
-            HttpServletResponse httpServletResponse,
-            @RequestBody LoginRequest request
-    ) {
-        val response = authService.login(request, httpServletResponse);
-        val cookie = CookieGenerator.setRefreshTokenToCookie(response.refreshToken());
-        httpServletResponse.setHeader("Set-Cookie", cookie.toString());
+    public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody LoginRequest request) {
+        val response = authService.login(request);
         return ResponseEntity.created(UriGenerator.getUri("/"))
-                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(),
-                        SignInResultGetResponse.from(response.accessToken())));
+                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(
-            @CookieValue(name = "refreshToken") String refreshToken
-    ) {
-        val response = authService.reissueToken(refreshToken);
+    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest httpServletRequest) {
+        val response = authService.reissueToken(httpServletRequest);
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response));
     }
