@@ -1,6 +1,6 @@
 package com.tiki.server.auth.controller.docs;
 
-import com.tiki.server.auth.dto.request.LoginRequest;
+import com.tiki.server.auth.dto.request.SignInRequest;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.common.dto.ErrorResponse;
@@ -42,7 +42,7 @@ public interface AuthControllerDocs {
 	)
 	ResponseEntity<SuccessResponse<SignInGetResponse>> login(
 		HttpServletResponse httpServletResponse,
-		@RequestBody LoginRequest request);
+		@RequestBody SignInRequest request);
 
 	@Operation(
 		summary = "엑세스 토큰 재발급",

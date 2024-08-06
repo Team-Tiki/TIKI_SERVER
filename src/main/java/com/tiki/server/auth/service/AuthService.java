@@ -1,6 +1,6 @@
 package com.tiki.server.auth.service;
 
-import com.tiki.server.auth.dto.request.LoginRequest;
+import com.tiki.server.auth.dto.request.SignInRequest;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.exception.AuthException;
@@ -11,7 +11,7 @@ import com.tiki.server.auth.token.entity.Token;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,7 +43,7 @@ public class AuthService {
     private final TokenFinder tokenFinder;
     private final PasswordEncoder passwordEncoder;
 
-    public SignInGetResponse login(LoginRequest request, HttpServletResponse response) {
+    public SignInGetResponse signIn(SignInRequest request) {
         val member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
         val authentication = createAuthentication(member.getId());
@@ -53,7 +53,8 @@ public class AuthService {
         return SignInGetResponse.from(accessToken, refreshToken);
     }
 
-    public ReissueGetResponse reissueToken(String refreshToken) {
+    public ReissueGetResponse reissueToken(HttpServletRequest request) {
+        val refreshToken = jwtProvider.getTokenFromRequest(request);
         checkTokenEmpty(refreshToken);
         val memberId = jwtProvider.getUserFromJwt(refreshToken);
         val token = tokenFinder.findById(memberId);
@@ -63,7 +64,7 @@ public class AuthService {
         return ReissueGetResponse.from(accessToken);
     }
 
-    private Member checkMemberEmpty(LoginRequest request) {
+    private Member checkMemberEmpty(SignInRequest request) {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
