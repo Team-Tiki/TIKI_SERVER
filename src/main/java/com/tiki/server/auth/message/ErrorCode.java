@@ -15,12 +15,10 @@ public enum ErrorCode {
     UNCAUGHT_EXCEPTION(BAD_REQUEST, "예상치 못한 오류입니다."),
 
     /* 401 UNAUTHORIZED : 인증 없음 */
-    UNAUTHENTICATED_USER(UNAUTHORIZED, "잘못된 토큰 형식입니다."),
-    INVALID_KEY(UNAUTHORIZED, "유효하지 않은 키입니다."),
+    UNAUTHENTICATED(UNAUTHORIZED, "인증과정중 오류가 발생했습니다"),
     UNMATCHED_TOKEN(UNAUTHORIZED, "토큰이 일치하지 않습니다."),
     INVALID_JWT_TOKEN(UNAUTHORIZED, "잘못된 토큰 형식입니다."),
     EXPIRED_JWT_TOKEN(UNAUTHORIZED, "만료된 토큰입니다."),
-    UNSUPPORTED_JWT_TOKEN(UNAUTHORIZED, "지원하지 않은 토큰입니다."),
     EMPTY_JWT(UNAUTHORIZED, "빈 토큰입니다."),
 
     /* 403 FORBIDDEN : 인가 없음 */
