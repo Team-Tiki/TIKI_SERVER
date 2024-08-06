@@ -19,10 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final ExceptionHandlerFilter exceptionHandlerFilter;
-    public static final String[] AUTH_WHITE_LIST = {
+    private static final String[] AUTH_WHITE_LIST = {
             "/api/v1/auth/sign-in",
             "/api/v1/auth/reissue",
             "/api/v1/members/password",
@@ -30,6 +27,10 @@ public class SecurityConfig {
             "/api/v1/mail/**",
             "/actuator/health"
     };
+
+    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
