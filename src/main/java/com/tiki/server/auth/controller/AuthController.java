@@ -1,6 +1,6 @@
 package com.tiki.server.auth.controller;
 
-import com.tiki.server.auth.dto.request.LoginRequest;
+import com.tiki.server.auth.dto.request.SignInRequest;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
@@ -24,7 +24,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody LoginRequest request) {
+    public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody SignInRequest request) {
         val response = authService.signIn(request);
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));

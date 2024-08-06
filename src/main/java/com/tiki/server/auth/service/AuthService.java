@@ -1,6 +1,6 @@
 package com.tiki.server.auth.service;
 
-import com.tiki.server.auth.dto.request.LoginRequest;
+import com.tiki.server.auth.dto.request.SignInRequest;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.exception.AuthException;
@@ -43,7 +43,7 @@ public class AuthService {
     private final TokenFinder tokenFinder;
     private final PasswordEncoder passwordEncoder;
 
-    public SignInGetResponse signIn(LoginRequest request) {
+    public SignInGetResponse signIn(SignInRequest request) {
         val member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
         val authentication = createAuthentication(member.getId());
@@ -64,7 +64,7 @@ public class AuthService {
         return ReissueGetResponse.from(accessToken);
     }
 
-    private Member checkMemberEmpty(LoginRequest request) {
+    private Member checkMemberEmpty(SignInRequest request) {
         return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
