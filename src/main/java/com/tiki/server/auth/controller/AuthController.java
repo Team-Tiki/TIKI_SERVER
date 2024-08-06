@@ -5,9 +5,7 @@ import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
-import com.tiki.server.member.dto.response.SignInResultGetResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody LoginRequest request) {
-        val response = authService.login(request);
+        val response = authService.signIn(request);
         return ResponseEntity.created(UriGenerator.getUri("/"))
                 .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));
     }

@@ -12,7 +12,6 @@ import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,7 +43,7 @@ public class AuthService {
     private final TokenFinder tokenFinder;
     private final PasswordEncoder passwordEncoder;
 
-    public SignInGetResponse login(LoginRequest request) {
+    public SignInGetResponse signIn(LoginRequest request) {
         val member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
         val authentication = createAuthentication(member.getId());
