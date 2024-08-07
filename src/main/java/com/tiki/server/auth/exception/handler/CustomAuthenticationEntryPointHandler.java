@@ -29,8 +29,8 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
             HttpServletResponse response,
             AuthenticationException authException
     ) throws IOException {
-        log.info("-EntryPoint-");
-        setResponse(response, ErrorCode.UNAUTHENTICATED_USER.getMessage());
+        log.info("[AuthenticationEntryPoint] " + authException.getMessage());
+        setResponse(response, ErrorCode.UNAUTHENTICATED.getMessage());
     }
 
     private void setResponse(HttpServletResponse response, String errorMessage) throws IOException {

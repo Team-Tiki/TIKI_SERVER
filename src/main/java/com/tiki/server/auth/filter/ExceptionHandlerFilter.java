@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.auth.message.ErrorCode;
 import com.tiki.server.common.dto.ErrorResponse;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
@@ -34,25 +32,14 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws IOException {
         try {
-            System.out.println("EHF");
             filterChain.doFilter(request, response);
         } catch (AuthException e) {
-            log.info("ExceptionHandlerFilter: AuthException - " + e);
+            log.info("[ExceptionHandlerFilter] - AuthException : " + e);
             handleAuthException(response, e);
-        } catch (JwtException e) {
-            log.info("ExceptionHandlerFilter: JWTException - " + e);
-            handleJwtException(response);
-        } catch (IllegalArgumentException e) {
-            log.info("ExceptionHandlerFilter: IllegalArgumentException - " + e);
-            handleIllegalArgumentException(response);
-        } catch (ServletException e) {
-            log.info("ExceptionHandlerFilter: Exception - " + e);
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.info("[ExceptionHandlerFilter] - UncaughtException : " + e);
+            handleUncaughtException(response);
         }
-//        catch (Exception e) {
-//            log.info("ExceptionHandlerFilter: Exception - " + e);
-//            handleUncaughtException(response);
-//        }
     }
 
     private void handleAuthException(HttpServletResponse response, AuthException e) throws IOException {
@@ -61,22 +48,13 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         setResponse(response, httpStatus, errorMessage);
     }
 
-    private void handleJwtException(HttpServletResponse response) throws IOException {
-        val jwtException = ErrorCode.INVALID_JWT_TOKEN;
-        setResponse(response, jwtException.getHttpStatus(), jwtException.getMessage());
-    }
-
-    private void handleIllegalArgumentException(HttpServletResponse response) throws IOException {
-        val uncaughtException = ErrorCode.EMPTY_JWT;
-        setResponse(response, uncaughtException.getHttpStatus(), uncaughtException.getMessage());
-    }
-
     private void handleUncaughtException(HttpServletResponse response) throws IOException {
         val uncaughtException = ErrorCode.UNCAUGHT_EXCEPTION;
         setResponse(response, uncaughtException.getHttpStatus(), uncaughtException.getMessage());
     }
 
-    private void setResponse(HttpServletResponse response, HttpStatus httpStatus, String errorMessage) throws IOException {
+    private void setResponse(HttpServletResponse response, HttpStatus httpStatus, String errorMessage)
+            throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(httpStatus.value());
