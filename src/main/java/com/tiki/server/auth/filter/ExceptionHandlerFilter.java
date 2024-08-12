@@ -1,9 +1,11 @@
 package com.tiki.server.auth.filter;
 
+import static com.tiki.server.auth.message.ErrorCode.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.auth.message.ErrorCode;
-import com.tiki.server.common.dto.ErrorResponse;
+import com.tiki.server.common.dto.AuthResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +13,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,30 +36,19 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (AuthException e) {
             log.info("[ExceptionHandlerFilter] - AuthException : " + e);
-            handleAuthException(response, e);
+            setResponse(response, e.getErrorCode());
         } catch (Exception e) {
             log.info("[ExceptionHandlerFilter] - UncaughtException : " + e);
-            handleUncaughtException(response);
+            setResponse(response, UNCAUGHT_EXCEPTION);
         }
     }
 
-    private void handleAuthException(HttpServletResponse response, AuthException e) throws IOException {
-        val errorMessage = e.getErrorCode().getMessage();
-        val httpStatus = e.getErrorCode().getHttpStatus();
-        setResponse(response, httpStatus, errorMessage);
-    }
-
-    private void handleUncaughtException(HttpServletResponse response) throws IOException {
-        val uncaughtException = ErrorCode.UNCAUGHT_EXCEPTION;
-        setResponse(response, uncaughtException.getHttpStatus(), uncaughtException.getMessage());
-    }
-
-    private void setResponse(HttpServletResponse response, HttpStatus httpStatus, String errorMessage)
+    private void setResponse(HttpServletResponse response, ErrorCode errorCode)
             throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(httpStatus.value());
+        response.setStatus(errorCode.getHttpStatus().value());
         val writer = response.getWriter();
-        writer.write(objectMapper.writeValueAsString(ErrorResponse.of(errorMessage)));
+        writer.write(objectMapper.writeValueAsString(AuthResponse.of(errorCode.getCode(), errorCode.getMessage())));
     }
 }
