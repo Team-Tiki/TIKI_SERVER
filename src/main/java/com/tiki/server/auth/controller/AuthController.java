@@ -1,5 +1,6 @@
 package com.tiki.server.auth.controller;
 
+import com.tiki.server.auth.controller.docs.AuthControllerDocs;
 import com.tiki.server.auth.dto.request.SignInRequest;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
@@ -19,10 +20,11 @@ import static com.tiki.server.auth.message.SuccessMessage.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final AuthService authService;
 
+    @Override
     @PostMapping("/sign-in")
     public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody SignInRequest request) {
         val response = authService.signIn(request);
@@ -30,6 +32,7 @@ public class AuthController {
                 .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));
     }
 
+    @Override
     @GetMapping("/reissue")
     public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest httpServletRequest) {
         val response = authService.reissueToken(httpServletRequest);
