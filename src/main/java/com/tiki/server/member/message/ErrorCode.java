@@ -11,7 +11,7 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 public enum ErrorCode {
 
-    /* 400 BAD REQUEST: 잘못된 요청 */
+    /* 400 BAD REQUEST : 잘못된 요청 */
     UNMATCHED_PASSWORD(BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     INVALID_EMAIL(BAD_REQUEST, "잘못된 이메일 형식입니다."),
 

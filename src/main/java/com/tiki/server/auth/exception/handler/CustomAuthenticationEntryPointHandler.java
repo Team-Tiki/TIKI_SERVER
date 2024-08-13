@@ -1,8 +1,9 @@
 package com.tiki.server.auth.exception.handler;
 
+import static com.tiki.server.auth.message.ErrorCode.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tiki.server.auth.message.ErrorCode;
-import com.tiki.server.common.dto.ErrorResponse;
+import com.tiki.server.common.dto.ErrorCodeResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +31,15 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
             AuthenticationException authException
     ) throws IOException {
         log.info("[AuthenticationEntryPoint] " + authException.getMessage());
-        setResponse(response, ErrorCode.UNAUTHENTICATED.getMessage());
+        setResponse(response);
     }
 
-    private void setResponse(HttpServletResponse response, String errorMessage) throws IOException {
+    private void setResponse(HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         val writer = response.getWriter();
-        writer.write(objectMapper.writeValueAsString(ErrorResponse.of(errorMessage)));
+        writer.write(objectMapper.writeValueAsString(
+            ErrorCodeResponse.of(UNAUTHENTICATED.getCode(), UNAUTHENTICATED.getMessage())));
     }
 }

@@ -40,9 +40,7 @@ public interface AuthControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<SignInGetResponse>> login(
-		HttpServletResponse httpServletResponse,
-		@RequestBody SignInRequest request);
+	ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody SignInRequest request);
 
 	@Operation(
 		summary = "엑세스 토큰 재발급",
