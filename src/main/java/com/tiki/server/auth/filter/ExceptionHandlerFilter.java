@@ -5,7 +5,7 @@ import static com.tiki.server.auth.message.ErrorCode.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.auth.message.ErrorCode;
-import com.tiki.server.common.dto.AuthResponse;
+import com.tiki.server.common.dto.ErrorCodeResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,6 +49,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(errorCode.getHttpStatus().value());
         val writer = response.getWriter();
-        writer.write(objectMapper.writeValueAsString(AuthResponse.of(errorCode.getCode(), errorCode.getMessage())));
+        writer.write(objectMapper.writeValueAsString(ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage())));
     }
 }

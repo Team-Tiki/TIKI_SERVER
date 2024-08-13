@@ -3,7 +3,7 @@ package com.tiki.server.auth.exception.handler;
 import static com.tiki.server.auth.message.ErrorCode.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tiki.server.common.dto.AuthResponse;
+import com.tiki.server.common.dto.ErrorCodeResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +40,6 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         val writer = response.getWriter();
         writer.write(objectMapper.writeValueAsString(
-            AuthResponse.of(UNAUTHENTICATED.getCode(), UNAUTHENTICATED.getMessage())));
+            ErrorCodeResponse.of(UNAUTHENTICATED.getCode(), UNAUTHENTICATED.getMessage())));
     }
 }

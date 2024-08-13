@@ -1,7 +1,7 @@
 package com.tiki.server.common.handler;
 
 import com.tiki.server.auth.exception.AuthException;
-import com.tiki.server.common.dto.AuthResponse;
+import com.tiki.server.common.dto.ErrorCodeResponse;
 import com.tiki.server.mail.exception.MailException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -79,7 +79,7 @@ public class ErrorHandler {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(
-            AuthResponse.of(errorCode.getCode(), errorCode.getMessage()));
+            ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
