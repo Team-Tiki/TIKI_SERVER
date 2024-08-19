@@ -16,8 +16,8 @@ public class DocumentFinder {
 
 	private final DocumentRepository documentRepository;
 
-	public Document findByIdWithTimeBlock(long id) {
-		return documentRepository.findByIdWithTimeBlock(id);
+	public Document findByIdWithTimeBlock(long documentId) {
+		return documentRepository.findByIdWithTimeBlock(documentId);
 	}
 
 	public List<DocumentVO> findAllByTimeBlockId(long timeBlockId) {
