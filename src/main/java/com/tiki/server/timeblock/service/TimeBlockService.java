@@ -4,6 +4,7 @@ import static com.tiki.server.timeblock.message.ErrorCode.INVALID_TYPE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
 import static com.tiki.server.timeblock.constant.TimeBlockConstant.MEMBER;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -14,7 +15,9 @@ import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.document.vo.DocumentVO;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
@@ -26,6 +29,7 @@ import com.tiki.server.timeblock.dto.response.TimeBlockDetailGetResponse;
 import com.tiki.server.timeblock.dto.response.TimelineGetResponse;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.exception.TimeBlockException;
+import com.tiki.server.timeblock.vo.TimeBlockVO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -51,39 +55,39 @@ public class TimeBlockService {
 		String type,
 		TimeBlockCreateRequest request
 	) {
-		val team = teamFinder.findById(teamId);
-		val memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		val accessiblePosition = getAccessiblePosition(type);
+		Team team = teamFinder.findById(teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		Position accessiblePosition = getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
-		val timeBlock = saveTimeBlock(team, accessiblePosition, request);
+		TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
 		saveDocuments(request.files(), timeBlock);
 		return TimeBlockCreateResponse.of(timeBlock.getId());
 	}
 
 	public TimelineGetResponse getTimeline(long memberId, long teamId, String type, String date) {
-		val team = teamFinder.findById(teamId);
-		val memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		val accessiblePosition = getAccessiblePosition(type);
+		Team team = teamFinder.findById(teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		Position accessiblePosition = getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
-		val timeBlocks = timeBlockFinder.findByTeamAndAccessiblePositionAndDate(
+		List<TimeBlockVO> timeBlocks = timeBlockFinder.findByTeamAndAccessiblePositionAndDate(
 			team.getId(), accessiblePosition.name(), date);
 		return TimelineGetResponse.from(timeBlocks);
 	}
 
 	public TimeBlockDetailGetResponse getTimeBlockDetail(long memberId, long teamId, long timeBlockId) {
-		val memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		val timeBlock = timeBlockFinder.findById(timeBlockId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		TimeBlockVO timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.accessiblePosition());
-		val documents = documentFinder.findAllByTimeBlockId(timeBlockId);
+		List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
 		return TimeBlockDetailGetResponse.from(documents);
 	}
 
 	@Transactional
 	public void deleteTimeBlock(long memberId, long teamId, long timeBlockId) {
-		val memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		val timeBlock = timeBlockFinder.findById(timeBlockId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		TimeBlockVO timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.accessiblePosition());
-		val documents = documentFinder.findAllByTimeBlockId(timeBlockId);
+		List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
 		documentDeleter.deleteAllById(documents);
 		timeBlockDeleter.deleteById(timeBlock.timeBlockId());
 	}
