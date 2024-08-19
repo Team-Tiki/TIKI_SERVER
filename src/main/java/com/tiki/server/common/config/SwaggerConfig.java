@@ -36,13 +36,15 @@ public class SwaggerConfig {
 		info.setDescription("티키 API 명세서");
 		info.setVersion("1.0.0");
 
-		val server = new Server();
-		server.setUrl("https://www.tiki-sopt.p-e.kr");
+		val localServer = new Server();
+		val devServer = new Server();
+		devServer.setUrl("https://www.tiki-sopt.p-e.kr");
+		localServer.setUrl("http://localhost:8080");
 
 		return new OpenAPI()
 			.components(components)
 			.security(List.of(securityRequirement))
-			.servers(List.of(server))
+			.servers(List.of(localServer, devServer))
 			.info(info);
 	}
 }
