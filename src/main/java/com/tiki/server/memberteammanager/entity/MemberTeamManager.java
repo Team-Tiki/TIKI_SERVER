@@ -1,5 +1,7 @@
 package com.tiki.server.memberteammanager.entity;
 
+import static com.tiki.server.memberteammanager.message.ErrorCode.*;
+import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -9,6 +11,8 @@ import static lombok.AccessLevel.PROTECTED;
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.member.entity.Member;
+import com.tiki.server.memberteammanager.exception.MemberTeamManagerException;
+import com.tiki.server.memberteammanager.message.ErrorCode;
 import com.tiki.server.team.entity.Team;
 
 import jakarta.persistence.Column;
@@ -55,5 +59,11 @@ public class MemberTeamManager extends BaseTime {
 			.name(member.getName())
 			.position(position)
 			.build();
+	}
+
+	public void checkMemberAccessible(Position accesiblePosition) {
+		if (this.position.getAuthorization() > accesiblePosition.getAuthorization()) {
+			throw new MemberTeamManagerException(INVALID_AUTHORIZATION);
+		}
 	}
 }
