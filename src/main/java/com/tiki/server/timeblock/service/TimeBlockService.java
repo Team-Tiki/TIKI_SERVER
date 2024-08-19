@@ -87,8 +87,7 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		TimeBlockVO timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.accessiblePosition());
-		List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
-		documentDeleter.deleteAllById(documents);
+		documentDeleter.deleteAllByTimeBlockId(timeBlock.timeBlockId());
 		timeBlockDeleter.deleteById(timeBlock.timeBlockId());
 	}
 

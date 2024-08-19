@@ -20,4 +20,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	@Query("select d from Document d join fetch d.timeBlock where d.id = :documentId")
 	Document findByIdWithTimeBlock(long documentId);
+
+	void deleteAllByTimeBlockId(long timeBlockId);
 }
