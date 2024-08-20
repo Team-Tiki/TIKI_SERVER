@@ -1,7 +1,6 @@
 package com.tiki.server.memberteammanager.entity;
 
 import static com.tiki.server.memberteammanager.message.ErrorCode.*;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -12,7 +11,6 @@ import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.memberteammanager.exception.MemberTeamManagerException;
-import com.tiki.server.memberteammanager.message.ErrorCode;
 import com.tiki.server.team.entity.Team;
 
 import jakarta.persistence.Column;
