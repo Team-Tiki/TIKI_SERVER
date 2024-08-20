@@ -39,7 +39,6 @@ public class DocumentService {
 	public void deleteDocument(long memberId, long teamId, long documentId) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Document document = documentFinder.findByIdWithTimeBlock(documentId);
-		checkDocumentExist(document);
 		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
 		documentDeleter.delete(document);
 	}
@@ -47,11 +46,5 @@ public class DocumentService {
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
-	}
-
-	private void checkDocumentExist(Document document) {
-		if (Objects.isNull(document)) {
-			throw new DocumentException(INVALID_DOCUMENT);
-		}
 	}
 }
