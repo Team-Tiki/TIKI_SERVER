@@ -1,9 +1,5 @@
 package com.tiki.server.timeblock.service;
 
-import static com.tiki.server.timeblock.message.ErrorCode.INVALID_TYPE;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.MEMBER;
-
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +53,7 @@ public class TimeBlockService {
 	) {
 		Team team = teamFinder.findById(teamId);
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Position accessiblePosition = getAccessiblePosition(type);
+		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
 		saveDocuments(request.files(), timeBlock);
@@ -67,7 +63,7 @@ public class TimeBlockService {
 	public TimelineGetResponse getTimeline(long memberId, long teamId, String type, String date) {
 		Team team = teamFinder.findById(teamId);
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Position accessiblePosition = getAccessiblePosition(type);
+		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		List<TimeBlockVO> timeBlocks = timeBlockFinder.findByTeamAndAccessiblePositionAndDate(
 			team.getId(), accessiblePosition.name(), date);
@@ -89,14 +85,6 @@ public class TimeBlockService {
 		memberTeamManager.checkMemberAccessible(timeBlock.accessiblePosition());
 		documentDeleter.deleteAllByTimeBlockId(timeBlock.timeBlockId());
 		timeBlockDeleter.deleteById(timeBlock.timeBlockId());
-	}
-
-	private Position getAccessiblePosition(String type) {
-		return switch (type) {
-			case EXECUTIVE -> Position.EXECUTIVE;
-			case MEMBER -> Position.MEMBER;
-			default -> throw new TimeBlockException(INVALID_TYPE);
-		};
 	}
 
 	private TimeBlock saveTimeBlock(Team team, Position accessiblePosition, TimeBlockCreateRequest request) {

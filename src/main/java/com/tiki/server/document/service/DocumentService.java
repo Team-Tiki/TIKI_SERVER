@@ -1,9 +1,6 @@
 package com.tiki.server.document.service;
 
 import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
-import static com.tiki.server.document.message.ErrorCode.INVALID_TYPE;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.EXECUTIVE;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.MEMBER;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +30,7 @@ public class DocumentService {
 
 	public DocumentsGetResponse getAllDocuments(long memberId, long teamId, String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Position accessiblePosition = getAccessiblePosition(type);
+		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		return getAllDocumentsByType(teamId, accessiblePosition);
 	}
@@ -45,14 +42,6 @@ public class DocumentService {
 		checkDocumentExist(document);
 		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
 		documentDeleter.delete(document);
-	}
-
-	private Position getAccessiblePosition(String type) {
-		return switch (type) {
-			case EXECUTIVE -> Position.EXECUTIVE;
-			case MEMBER -> Position.MEMBER;
-			default -> throw new DocumentException(INVALID_TYPE);
-		};
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
