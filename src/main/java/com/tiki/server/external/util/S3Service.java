@@ -3,7 +3,7 @@ package com.tiki.server.external.util;
 import static com.tiki.server.external.constant.ExternalConstant.FILE_SAVE_PREFIX;
 import static com.tiki.server.external.constant.ExternalConstant.PRE_SIGNED_URL_EXPIRE_MINUTE;
 import static com.tiki.server.external.message.ErrorCode.*;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.FILE_DELIMITER;
+import static com.tiki.server.external.constant.ExternalConstant.FILE_DELIMITER;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -17,7 +17,6 @@ import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
