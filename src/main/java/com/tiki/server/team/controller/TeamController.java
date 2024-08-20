@@ -8,6 +8,7 @@ import java.security.Principal;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,43 +27,43 @@ import lombok.val;
 @RequestMapping("api/v1/teams")
 public class TeamController implements TeamControllerDocs {
 
-    private final TeamService teamService;
+	private final TeamService teamService;
 
-    @Override
-    @PostMapping
-    public ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
-            Principal principal,
-            @RequestBody TeamCreateRequest request
-    ) {
-        val memberId = Long.parseLong(principal.getName());
-        val response = teamService.createTeam(memberId, request);
-        return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/teams/" + response.teamId())
-        ).body(success(SUCCESS_CREATE_TEAM.getMessage(), response));
-    }
+	@Override
+	@PostMapping
+	public ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
+		Principal principal,
+		@RequestBody TeamCreateRequest request
+	) {
+		val memberId = Long.parseLong(principal.getName());
+		val response = teamService.createTeam(memberId, request);
+		return ResponseEntity.created(
+			UriGenerator.getUri("/api/v1/teams/" + response.teamId())
+		).body(success(SUCCESS_CREATE_TEAM.getMessage(), response));
+	}
 
-    @Override
-    @GetMapping
-    public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeam(Principal principal) {
-        val memberId = Long.parseLong(principal.getName());
-        val response = teamService.getAllTeam(memberId);
-        return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
-    }
+	@Override
+	@GetMapping
+	public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(Principal principal) {
+		val memberId = Long.parseLong(principal.getName());
+		val response = teamService.getAllTeams(memberId);
+		return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
+	}
 
-    @Override
-    @GetMapping("/category")
-    public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
-        val response = teamService.getCategories();
-        return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
-    }
+	@Override
+	@GetMapping("/category")
+	public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
+		val response = teamService.getCategories();
+		return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
+	}
 
-    @DeleteMapping("/{teamId}")
-    public ResponseEntity<BaseResponse> deleteTeam(
-        Principal principal,
-        @PathVariable long teamId
-    ) {
-        val memberId = Long.parseLong(principal.getName());
-        teamService.deleteTeam(memberId, teamId);
-        return ResponseEntity.noContent().build();
-    }
+	@DeleteMapping("/{teamId}")
+	public ResponseEntity<BaseResponse> deleteTeam(
+		Principal principal,
+		@PathVariable long teamId
+	) {
+		val memberId = Long.parseLong(principal.getName());
+		teamService.deleteTeam(memberId, teamId);
+		return ResponseEntity.noContent().build();
+	}
 }

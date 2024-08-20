@@ -13,36 +13,37 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import lombok.val;
 
 @Configuration
 public class SwaggerConfig {
 
 	@Bean
 	public OpenAPI openApi() {
-		val securityScheme = new SecurityScheme();
+		SecurityScheme securityScheme = new SecurityScheme();
 		securityScheme.setType(HTTP);
 		securityScheme.setScheme("bearer");
 		securityScheme.setBearerFormat("JWT");
 
-		val components = new Components();
+		Components components = new Components();
 		components.addSecuritySchemes("BearerAuthentication", securityScheme);
 
-		val securityRequirement = new SecurityRequirement();
+		SecurityRequirement securityRequirement = new SecurityRequirement();
 		securityRequirement.addList("BearerAuthentication");
 
-		val info = new Info();
+		Info info = new Info();
 		info.setTitle("TIKI API Document");
 		info.setDescription("티키 API 명세서");
 		info.setVersion("1.0.0");
 
-		val server = new Server();
-		server.setUrl("https://www.tiki-sopt.p-e.kr");
+		Server localServer = new Server();
+		Server devServer = new Server();
+		devServer.setUrl("https://www.tiki-sopt.p-e.kr");
+		localServer.setUrl("http://localhost:8080");
 
 		return new OpenAPI()
 			.components(components)
 			.security(List.of(securityRequirement))
-			.servers(List.of(server))
+			.servers(List.of(localServer, devServer))
 			.info(info);
 	}
 }

@@ -19,11 +19,11 @@ public class DocumentDeleter {
 		documentRepository.delete(document);
 	}
 
-	public void deleteAllById(List<DocumentVO> documents) {
-		documents.forEach(documentVO -> documentRepository.deleteById(documentVO.documentId()));
-	}
-
 	public void deleteAll(List<Document> documents) {
 		documentRepository.deleteAll(documents);
+	}
+
+	public void deleteAllByTimeBlockId(long timeBlockId) {
+		documentRepository.deleteAllByTimeBlockId(timeBlockId);
 	}
 }

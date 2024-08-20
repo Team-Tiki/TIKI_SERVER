@@ -59,7 +59,7 @@ public class TeamService {
 		return TeamCreateResponse.from(team);
 	}
 
-	public TeamsGetResponse getAllTeam(long memberId) {
+	public TeamsGetResponse getAllTeams(long memberId) {
 		val member = memberFinder.findById(memberId);
 		val univ = member.getUniv();
 		val team = teamFinder.findAllByUniv(univ);

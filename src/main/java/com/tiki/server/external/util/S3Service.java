@@ -3,7 +3,7 @@ package com.tiki.server.external.util;
 import static com.tiki.server.external.constant.ExternalConstant.FILE_SAVE_PREFIX;
 import static com.tiki.server.external.constant.ExternalConstant.PRE_SIGNED_URL_EXPIRE_MINUTE;
 import static com.tiki.server.external.message.ErrorCode.*;
-import static com.tiki.server.timeblock.constant.TimeBlockConstant.FILE_DELIMITER;
+import static com.tiki.server.external.constant.ExternalConstant.FILE_DELIMITER;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -17,9 +17,10 @@ import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @Component
@@ -31,17 +32,14 @@ public class S3Service {
 	@Value("${aws-property.bucket}")
 	private String bucket;
 
-	@Value("${aws-property.s3-url}")
-	private String s3URL;
-
 	public PreSignedUrlResponse getUploadPreSignedUrl(String fileFormat) {
 		try {
-			val fileName = generateFileName(fileFormat);
-			val key = FILE_SAVE_PREFIX + fileName;
-			val preSigner = awsConfig.getS3PreSigner();
-			val putObjectRequest = createPutObjectRequest(key);
-			val putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
-			val url = preSigner.presignPutObject(putObjectPresignRequest).url().toString();
+			String fileName = generateFileName(fileFormat);
+			String key = FILE_SAVE_PREFIX + fileName;
+			S3Presigner preSigner = awsConfig.getS3PreSigner();
+			PutObjectRequest putObjectRequest = createPutObjectRequest(key);
+			PutObjectPresignRequest putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
+			String url = preSigner.presignPutObject(putObjectPresignRequest).url().toString();
 			return PreSignedUrlResponse.of(fileName, url);
 		} catch (RuntimeException e) {
 			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
@@ -50,7 +48,7 @@ public class S3Service {
 
 	public void deleteFile(S3DeleteRequest request) {
 		try {
-			val s3Client = awsConfig.getS3Client();
+			S3Client s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->
 				builder.bucket(bucket)
 					.key(request.fileName())

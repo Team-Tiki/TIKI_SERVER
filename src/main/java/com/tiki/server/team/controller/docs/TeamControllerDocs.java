@@ -67,7 +67,7 @@ public interface TeamControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeam(
+	ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(
 		@Parameter(hidden = true) Principal principal
 	);
 

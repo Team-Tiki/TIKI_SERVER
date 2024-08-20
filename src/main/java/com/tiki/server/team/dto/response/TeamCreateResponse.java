@@ -8,12 +8,12 @@ import lombok.Builder;
 
 @Builder(access = PRIVATE)
 public record TeamCreateResponse(
-        long teamId
+	long teamId
 ) {
 
-    public static TeamCreateResponse from(Team team) {
-        return TeamCreateResponse.builder()
-                .teamId(team.getId())
-                .build();
-    }
+	public static TeamCreateResponse from(Team team) {
+		return TeamCreateResponse.builder()
+			.teamId(team.getId())
+			.build();
+	}
 }
