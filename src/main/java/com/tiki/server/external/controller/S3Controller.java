@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.external.controller.docs.S3ControllerDocs;
-import com.tiki.server.external.dto.request.PreSignedUrlRequest;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.util.S3Service;
