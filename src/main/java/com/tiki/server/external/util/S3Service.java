@@ -31,9 +31,6 @@ public class S3Service {
 	@Value("${aws-property.bucket}")
 	private String bucket;
 
-	@Value("${aws-property.s3-url}")
-	private String s3URL;
-
 	public PreSignedUrlResponse getUploadPreSignedUrl(String fileFormat) {
 		try {
 			val fileName = generateFileName(fileFormat);
