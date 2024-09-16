@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,7 +22,7 @@ public class JwtProvider {
     private String secretKey;
 
     public String getTokenFromRequest(HttpServletRequest request) {
-        val accessToken = request.getHeader(Constants.AUTHORIZATION);
+        String accessToken = request.getHeader(Constants.AUTHORIZATION);
         if (!StringUtils.hasText(accessToken) || !accessToken.startsWith(Constants.BEARER)) {
             return null;
         }
@@ -31,7 +30,7 @@ public class JwtProvider {
     }
 
     public long getUserFromJwt(String token) {
-        val claims = getBodyFromJwt(token);
+        Claims claims = getBodyFromJwt(token);
         return Long.parseLong(claims.get("memberId").toString());
     }
 
@@ -44,7 +43,7 @@ public class JwtProvider {
     }
 
     private SecretKey getSigningKey() {
-        val encodedKey = getEncoder().encodeToString(secretKey.getBytes());
+        String encodedKey = getEncoder().encodeToString(secretKey.getBytes());
         return hmacShaKeyFor(encodedKey.getBytes());
     }
 }

@@ -4,9 +4,11 @@ import static com.tiki.server.common.entity.Position.ADMIN;
 import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
 
 import java.util.HashSet;
+import java.util.List;
 
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
@@ -29,11 +31,10 @@ import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.team.exception.TeamException;
+import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
-import com.tiki.server.timeblock.entity.TimeBlock;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @Service
 @RequiredArgsConstructor
@@ -53,30 +54,30 @@ public class TeamService {
 
 	@Transactional
 	public TeamCreateResponse createTeam(long memberId, TeamCreateRequest request) {
-		val member = memberFinder.findById(memberId);
-		val team = teamSaver.save(createTeam(request, member.getUniv()));
+		Member member = memberFinder.findById(memberId);
+		Team team = teamSaver.save(createTeam(request, member.getUniv()));
 		memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
 		return TeamCreateResponse.from(team);
 	}
 
 	public TeamsGetResponse getAllTeams(long memberId) {
-		val member = memberFinder.findById(memberId);
-		val univ = member.getUniv();
-		val team = teamFinder.findAllByUniv(univ);
+		Member member = memberFinder.findById(memberId);
+		University univ = member.getUniv();
+		List<TeamVO> team = teamFinder.findAllByUniv(univ);
 		return TeamsGetResponse.from(team);
 	}
 
 	public CategoriesGetResponse getCategories() {
-		val categories = Category.values();
+		Category[] categories = Category.values();
 		return CategoriesGetResponse.from(categories);
 	}
 
 	@Transactional
 	public void deleteTeam(long memberId, long teamId) {
 		checkIsAdmin(memberId, teamId);
-		val memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
+		List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
 		memberTeamManagerDeleter.deleteAll(memberTeamManagers);
-		val documents = documentFinder.findAllByTeamId(teamId);
+		List<Document> documents = documentFinder.findAllByTeamId(teamId);
 		documentDeleter.deleteAll(documents);
 		timeBlockDeleter.deleteAllByTeamId(teamId);
 		teamDeleter.deleteById(teamId);
@@ -91,7 +92,7 @@ public class TeamService {
 	}
 
 	private void checkIsAdmin(long memberId, long teamId) {
-		val memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		if (!memberTeamManager.getPosition().equals(ADMIN)) {
 			throw new TeamException(INVALID_AUTHORIZATION_DELETE);
 		}

@@ -20,7 +20,6 @@ import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.util.S3Service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class S3Controller implements S3ControllerDocs {
 	@Override
 	@GetMapping("/upload")
 	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(@RequestParam String fileFormat) {
-		val response = s3Service.getUploadPreSignedUrl(fileFormat);
+		PreSignedUrlResponse response = s3Service.getUploadPreSignedUrl(fileFormat);
 		return ResponseEntity.ok(success(PRESIGNED_URL_GET_SUCCESS.getMessage(), response));
 	}
 

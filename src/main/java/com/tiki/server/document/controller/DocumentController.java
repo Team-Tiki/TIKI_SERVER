@@ -18,7 +18,6 @@ import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,8 +33,8 @@ public class DocumentController implements DocumentControllerDocs {
 		@PathVariable long teamId,
 		@RequestParam String type
 	) {
-		val memberId = Long.parseLong(principal.getName());
-		val response = documentService.getAllDocuments(memberId, teamId, type);
+		long memberId = Long.parseLong(principal.getName());
+		DocumentsGetResponse response = documentService.getAllDocuments(memberId, teamId, type);
 		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
 	}
 
@@ -46,7 +45,7 @@ public class DocumentController implements DocumentControllerDocs {
 		@PathVariable long teamId,
 		@PathVariable long documentId
 	) {
-		val memberId = Long.parseLong(principal.getName());
+		long memberId = Long.parseLong(principal.getName());
 		documentService.deleteDocument(memberId, teamId, documentId);
 		return ResponseEntity.noContent().build();
 	}

@@ -3,7 +3,6 @@ package com.tiki.server.auth.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -49,13 +48,13 @@ public class JwtGenerator {
     }
 
     private Claims generateClaims(Authentication authentication) {
-        val claims = Jwts.claims();
+        Claims claims = Jwts.claims();
         claims.put("memberId", authentication.getPrincipal());
         return claims;
     }
 
     private SecretKey getSigningKey() {
-        val encodedKey = getEncoder().encodeToString(secretKey.getBytes());
+        String encodedKey = getEncoder().encodeToString(secretKey.getBytes());
         return hmacShaKeyFor(encodedKey.getBytes());
     }
 }
