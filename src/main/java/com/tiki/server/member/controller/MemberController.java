@@ -6,7 +6,6 @@ import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +40,8 @@ public class MemberController implements MemberControllerDocs {
     public ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
             Principal principal
     ) {
-        val memberId = Long.parseLong(principal.getName());
-        val response = memberService.findBelongTeams(memberId);
+        long memberId = Long.parseLong(principal.getName());
+        BelongTeamsGetResponse response = memberService.findBelongTeams(memberId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_JOINED_TEAM.getMessage(), response));
     }
 

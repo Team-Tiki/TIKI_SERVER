@@ -20,7 +20,6 @@ import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.service.TeamService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,8 +34,8 @@ public class TeamController implements TeamControllerDocs {
 		Principal principal,
 		@RequestBody TeamCreateRequest request
 	) {
-		val memberId = Long.parseLong(principal.getName());
-		val response = teamService.createTeam(memberId, request);
+		long memberId = Long.parseLong(principal.getName());
+		TeamCreateResponse response = teamService.createTeam(memberId, request);
 		return ResponseEntity.created(
 			UriGenerator.getUri("/api/v1/teams/" + response.teamId())
 		).body(success(SUCCESS_CREATE_TEAM.getMessage(), response));
@@ -45,15 +44,15 @@ public class TeamController implements TeamControllerDocs {
 	@Override
 	@GetMapping
 	public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(Principal principal) {
-		val memberId = Long.parseLong(principal.getName());
-		val response = teamService.getAllTeams(memberId);
+		long memberId = Long.parseLong(principal.getName());
+		TeamsGetResponse response = teamService.getAllTeams(memberId);
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
 	}
 
 	@Override
 	@GetMapping("/category")
 	public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
-		val response = teamService.getCategories();
+		CategoriesGetResponse response = teamService.getCategories();
 		return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
 	}
 
@@ -62,7 +61,7 @@ public class TeamController implements TeamControllerDocs {
 		Principal principal,
 		@PathVariable long teamId
 	) {
-		val memberId = Long.parseLong(principal.getName());
+		long memberId = Long.parseLong(principal.getName());
 		teamService.deleteTeam(memberId, teamId);
 		return ResponseEntity.noContent().build();
 	}

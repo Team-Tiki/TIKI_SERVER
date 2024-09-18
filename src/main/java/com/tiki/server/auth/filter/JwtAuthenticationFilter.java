@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws IOException, ServletException {
-        val token = jwtProvider.getTokenFromRequest(request);
+        String token = jwtProvider.getTokenFromRequest(request);
         if (StringUtils.hasText(token)) {
             jwtValidator.validateToken(token);
             setAuthenticationContextHolder(jwtProvider.getUserFromJwt((token)), request);
@@ -42,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationContextHolder(long memberId, HttpServletRequest request) {
-        val authentication = new UserAuthentication(memberId, null, null);
+        UserAuthentication authentication = new UserAuthentication(memberId, null, null);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
