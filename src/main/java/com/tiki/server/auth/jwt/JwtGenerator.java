@@ -49,13 +49,13 @@ public class JwtGenerator {
     }
 
     private Claims generateClaims(Authentication authentication) {
-        val claims = Jwts.claims();
+        Claims claims = Jwts.claims();
         claims.put("memberId", authentication.getPrincipal());
         return claims;
     }
 
     private SecretKey getSigningKey() {
-        val encodedKey = getEncoder().encodeToString(secretKey.getBytes());
+        String encodedKey = getEncoder().encodeToString(secretKey.getBytes());
         return hmacShaKeyFor(encodedKey.getBytes());
     }
 }

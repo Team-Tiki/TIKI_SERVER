@@ -44,23 +44,23 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public SignInGetResponse signIn(SignInRequest request) {
-        val member = checkMemberEmpty(request);
+        Member member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
-        val authentication = createAuthentication(member.getId());
-        val accessToken = jwtGenerator.generateAccessToken(authentication);
-        val refreshToken = jwtGenerator.generateRefreshToken(authentication);
+        Authentication authentication = createAuthentication(member.getId());
+        String accessToken = jwtGenerator.generateAccessToken(authentication);
+        String refreshToken = jwtGenerator.generateRefreshToken(authentication);
         tokenSaver.save(Token.of(member.getId(), refreshToken));
         return SignInGetResponse.from(accessToken, refreshToken);
     }
 
     public ReissueGetResponse reissueToken(HttpServletRequest request) {
-        val refreshToken = jwtProvider.getTokenFromRequest(request);
+        String refreshToken = jwtProvider.getTokenFromRequest(request);
         checkTokenEmpty(refreshToken);
-        val memberId = jwtProvider.getUserFromJwt(refreshToken);
-        val token = tokenFinder.findById(memberId);
+        long memberId = jwtProvider.getUserFromJwt(refreshToken);
+        Token token = tokenFinder.findById(memberId);
         checkRefreshToken(refreshToken, token);
-        val authentication = createAuthentication(memberId);
-        val accessToken = jwtGenerator.generateAccessToken(authentication);
+        Authentication authentication = createAuthentication(memberId);
+        String accessToken = jwtGenerator.generateAccessToken(authentication);
         return ReissueGetResponse.from(accessToken);
     }
 

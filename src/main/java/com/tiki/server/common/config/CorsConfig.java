@@ -15,19 +15,19 @@ public class CorsConfig {
 
     @Bean
     public CorsFilter corsFilter() {
-        val source = setUrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = setUrlBasedCorsConfigurationSource();
         return new CorsFilter(source);
     }
 
     private UrlBasedCorsConfigurationSource setUrlBasedCorsConfigurationSource() {
-        val source = new UrlBasedCorsConfigurationSource();
-        val config = setCorsConfiguration();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = setCorsConfiguration();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
 
     private CorsConfiguration setCorsConfiguration() {
-        val config = new CorsConfiguration();
+        CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin(("https://ti-kii.com"));
         config.addAllowedOrigin("http://localhost:5173");

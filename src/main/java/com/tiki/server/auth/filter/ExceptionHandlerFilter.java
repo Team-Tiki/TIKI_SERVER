@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 @Component
@@ -48,7 +49,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(errorCode.getHttpStatus().value());
-        val writer = response.getWriter();
+        PrintWriter writer = response.getWriter();
         writer.write(objectMapper.writeValueAsString(ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage())));
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 @Component
@@ -38,7 +39,7 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        val writer = response.getWriter();
+        PrintWriter writer = response.getWriter();
         writer.write(objectMapper.writeValueAsString(
             ErrorCodeResponse.of(UNAUTHENTICATED.getCode(), UNAUTHENTICATED.getMessage())));
     }

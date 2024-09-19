@@ -26,7 +26,7 @@ public class MailConfig {
         mailSender.setUsername(TIKI_EMAIL);
         mailSender.setPassword(mailPassword);
 
-        val javaMailProperties = getProperties();
+        Properties javaMailProperties = getProperties();
 
         mailSender.setJavaMailProperties(javaMailProperties);
 

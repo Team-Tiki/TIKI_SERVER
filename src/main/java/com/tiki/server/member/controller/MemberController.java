@@ -41,8 +41,8 @@ public class MemberController implements MemberControllerDocs {
     public ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
             Principal principal
     ) {
-        val memberId = Long.parseLong(principal.getName());
-        val response = memberService.findBelongTeams(memberId);
+        long memberId = Long.parseLong(principal.getName());
+        BelongTeamsGetResponse response = memberService.findBelongTeams(memberId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_JOINED_TEAM.getMessage(), response));
     }
 
