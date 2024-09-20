@@ -5,18 +5,16 @@ import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
+import com.tiki.server.common.entity.Email;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
-import lombok.val;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import static com.tiki.server.mail.constants.MailConstants.MAIL_FORMAT_AC_KR;
-import static com.tiki.server.mail.constants.MailConstants.MAIL_FORMAT_EDU;
 import static com.tiki.server.member.message.ErrorCode.*;
 
 @Service
@@ -31,15 +29,15 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
-        memberFinder.checkPresent(request.email());
+        memberFinder.checkPresent(Email.from(request.email()));
         checkPassword(request.password(), request.passwordChecker());
-        val member = createMember(request);
+        Member member = createMember(request);
         saveMember(member);
     }
 
     @Transactional
     public void changePassword(PasswordChangeRequest request) {
-        val member = memberFinder.checkEmpty(request.email());
+        Member member = memberFinder.checkEmpty(Email.from(request.email()));
         checkPassword(request.password(), request.passwordChecker());
         member.resetPassword(passwordEncoder.encode(request.password()));
     }

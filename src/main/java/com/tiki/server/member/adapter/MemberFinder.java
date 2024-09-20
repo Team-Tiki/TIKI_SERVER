@@ -4,6 +4,7 @@ import static com.tiki.server.member.message.ErrorCode.CONFLICT_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.INVALID_MEMBER;
 
 import com.tiki.server.common.support.RepositoryAdapter;
+import com.tiki.server.common.entity.Email;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.member.repository.MemberRepository;
@@ -18,7 +19,7 @@ public class MemberFinder {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findByEmail(String email) {
+    public Optional<Member> findByEmail(Email email) {
         return memberRepository.findByEmail(email);
     }
 
@@ -26,11 +27,11 @@ public class MemberFinder {
         return memberRepository.findById(memberId).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    public Member checkEmpty(String email) {
-        return findByEmail(email).orElseThrow(() -> new MemberException(INVALID_MEMBER));
+    public Member checkEmpty(Email email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    public void checkPresent(String email) {
+    public void checkPresent(Email email) {
         findByEmail(email).ifPresent((member) -> {
             throw new MemberException(CONFLICT_MEMBER);
         });
