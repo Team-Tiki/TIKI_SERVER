@@ -1,5 +1,6 @@
-package com.tiki.server.mail.entity;
+package com.tiki.server.emailVerification.domain;
 
+import com.tiki.server.common.entity.Email;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 @Builder
 @RedisHash(value = "mailVerification", timeToLive = 180)
-public class Mail {
+public class EmailVerification {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -22,7 +23,7 @@ public class Mail {
 
     private String code;
 
-    public static Mail of(String email, String code) {
-        return Mail.builder().id(email).code(code).build();
+    public static EmailVerification of(Email email, String code) {
+        return EmailVerification.builder().id(email.getEmail()).code(code).build();
     }
 }
