@@ -10,7 +10,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
 public record BelongTeamsGetResponse(
-        List<BelongTeamGetResponse> belongTeamGetResponses
+        @NonNull List<BelongTeamGetResponse> belongTeamGetResponses
 ) {
 
     public static BelongTeamsGetResponse from(List<MemberTeamManager> belongTeamGetResponses) {
