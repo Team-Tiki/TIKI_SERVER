@@ -6,7 +6,6 @@ import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -23,7 +23,6 @@ import com.tiki.server.auth.jwt.JwtGenerator;
 import com.tiki.server.auth.jwt.UserAuthentication;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.thymeleaf.util.StringUtils;
 
 import static com.tiki.server.auth.message.ErrorCode.EMPTY_JWT;

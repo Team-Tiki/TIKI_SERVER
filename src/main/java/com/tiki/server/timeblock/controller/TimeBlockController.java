@@ -27,7 +27,6 @@ import com.tiki.server.timeblock.dto.response.TimelineGetResponse;
 import com.tiki.server.timeblock.service.TimeBlockService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,8 +43,8 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		@RequestParam String type,
 		@RequestBody TimeBlockCreateRequest request
 	) {
-		val memberId = Long.parseLong(principal.getName());
-		val response = timeBlockService.createTimeBlock(memberId, teamId, type, request);
+		long memberId = Long.parseLong(principal.getName());
+		TimeBlockCreateResponse response = timeBlockService.createTimeBlock(memberId, teamId, type, request);
 		return ResponseEntity.created(
 			UriGenerator.getUri("/api/v1/time-blocks/team/" + teamId + "/time-block")
 		).body(success(SUCCESS_CREATE_TIME_BLOCK.getMessage(), response));
@@ -59,8 +58,8 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		@RequestParam String type,
 		@RequestParam String date
 	) {
-		val memberId = Long.parseLong(principal.getName());
-		val response = timeBlockService.getTimeline(memberId, teamId, type, date);
+		long memberId = Long.parseLong(principal.getName());
+		TimelineGetResponse response = timeBlockService.getTimeline(memberId, teamId, type, date);
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TIMELINE.getMessage(), response));
 	}
 
@@ -71,8 +70,8 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		@PathVariable long teamId,
 		@PathVariable long timeBlockId
 	) {
-		val memberId = Long.parseLong(principal.getName());
-		val response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
+		long memberId = Long.parseLong(principal.getName());
+		TimeBlockDetailGetResponse response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
 		return ResponseEntity.ok().body(success(SUCCESS_GET_TIME_BLOCK_DETAIL.getMessage(), response));
 	}
 
@@ -83,7 +82,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		@PathVariable long teamId,
 		@PathVariable long timeBlockId
 	) {
-		val memberId = Long.parseLong(principal.getName());
+		long memberId = Long.parseLong(principal.getName());
 		timeBlockService.deleteTimeBlock(memberId, teamId, timeBlockId);
 		return ResponseEntity.noContent().build();
 	}

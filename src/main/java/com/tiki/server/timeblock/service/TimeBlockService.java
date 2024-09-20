@@ -24,11 +24,9 @@ import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
 import com.tiki.server.timeblock.dto.response.TimeBlockDetailGetResponse;
 import com.tiki.server.timeblock.dto.response.TimelineGetResponse;
 import com.tiki.server.timeblock.entity.TimeBlock;
-import com.tiki.server.timeblock.exception.TimeBlockException;
 import com.tiki.server.timeblock.vo.TimeBlockVO;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @Service
 @RequiredArgsConstructor
