@@ -1,6 +1,6 @@
-package com.tiki.server.mail.constants;
+package com.tiki.server.emailVerification.constants;
 
-public class MailConstants {
+public class EmailConstants {
 
     public static final String TIKI_EMAIL = "hello.wer.tiki@gmail.com";
     public static final String MAIL_SUBJECT_SIGN_UP = "[Ti.Ki] 회원가입: 이메일 인증번호 안내";
