@@ -9,14 +9,11 @@ import com.tiki.server.emailVerification.domain.EmailVerification;
 import com.tiki.server.emailVerification.domain.MailSender;
 import com.tiki.server.emailVerification.exception.EmailVerificationException;
 import com.tiki.server.member.adapter.MemberFinder;
-import com.tiki.server.member.exception.MemberException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.tiki.server.emailVerification.message.ErrorCode.*;
-import static com.tiki.server.member.message.ErrorCode.*;
 import static com.tiki.server.emailVerification.constants.EmailConstants.*;
 
 @Slf4j
@@ -32,24 +29,22 @@ public class EmailVerificationService {
 
     @Transactional
     public void sendSignUp(EmailRequest mailRequest) {
-        Email email = mailRequest.email();
+        Email email = Email.from(mailRequest.email());
         memberFinder.checkPresent(email);
         mailSaver.save(mailSender.sendVerificationMail(email, MAIL_SUBJECT_SIGN_UP));
     }
 
     @Transactional
     public void sendChangingPassword(EmailRequest mailRequest) {
-        Email email = mailRequest.email();
+        Email email = Email.from(mailRequest.email());
         memberFinder.checkEmpty(email);
         mailSaver.save(mailSender.sendVerificationMail(email, MAIL_SUBJECT_CHANGING_PASSWORD));
     }
 
     public void checkCode(CodeVerificationRequest codeVerificationRequest) {
-        Email email = codeVerificationRequest.email();
-        EmailVerification EmailVerification = emailVerificationFinder.findById(email.getEmail());
+        Email email = Email.from(codeVerificationRequest.email());
+        EmailVerification emailVerification = emailVerificationFinder.findById(email.getEmail());
 
-        if (!EmailVerification.getCode().equals(codeVerificationRequest.code())) {
-            throw new EmailVerificationException(INVALID_MATCHED);
-        }
+        emailVerification.verify(codeVerificationRequest.code());
     }
 }
