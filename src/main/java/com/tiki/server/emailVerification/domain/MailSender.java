@@ -28,12 +28,8 @@ public class MailSender {
     public EmailVerification sendVerificationMail(Email email, String subject) {
         String code = generateRandomValue();
         MimeMessage message = makeMessage(email, code, subject);
-        send(message);
+        javaMailSender.send(message);
         return EmailVerification.of(email, code);
-    }
-
-    private void send(MimeMessage email) {
-        javaMailSender.send(email);
     }
 
     private static String generateRandomValue() {
