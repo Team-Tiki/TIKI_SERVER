@@ -7,7 +7,6 @@ import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
