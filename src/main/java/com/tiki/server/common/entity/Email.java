@@ -3,6 +3,7 @@ package com.tiki.server.common.entity;
 import com.tiki.server.member.exception.MemberException;
 import jakarta.persistence.Embeddable;
 import lombok.*;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import static com.tiki.server.emailVerification.constants.EmailConstants.MAIL_FORMAT_AC_KR;
 import static com.tiki.server.emailVerification.constants.EmailConstants.MAIL_FORMAT_EDU;
@@ -21,7 +22,7 @@ public class Email {
     }
 
     private static void checkMailFormat(String email) {
-        if (!email.contains("@") || !(email.endsWith(MAIL_FORMAT_EDU) || email.endsWith(MAIL_FORMAT_AC_KR))) {
+        if (!EmailValidator.getInstance().isValid(email) || !(email.endsWith(MAIL_FORMAT_EDU) || email.endsWith(MAIL_FORMAT_AC_KR))) {
             throw new MemberException(INVALID_EMAIL);
         }
     }
