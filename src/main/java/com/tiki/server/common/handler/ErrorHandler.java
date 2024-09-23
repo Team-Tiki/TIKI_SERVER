@@ -2,7 +2,7 @@ package com.tiki.server.common.handler;
 
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
-import com.tiki.server.emailVerification.exception.EmailVerificationException;
+import com.tiki.server.emailverification.exception.EmailVerificationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

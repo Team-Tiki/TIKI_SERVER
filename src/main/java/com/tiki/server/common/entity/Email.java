@@ -5,8 +5,8 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 import org.apache.commons.validator.routines.EmailValidator;
 
-import static com.tiki.server.emailVerification.constants.EmailConstants.MAIL_FORMAT_AC_KR;
-import static com.tiki.server.emailVerification.constants.EmailConstants.MAIL_FORMAT_EDU;
+import static com.tiki.server.emailverification.constants.EmailConstants.MAIL_FORMAT_AC_KR;
+import static com.tiki.server.emailverification.constants.EmailConstants.MAIL_FORMAT_EDU;
 import static com.tiki.server.member.message.ErrorCode.INVALID_EMAIL;
 
 @Getter
