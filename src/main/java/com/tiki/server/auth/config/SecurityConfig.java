@@ -24,7 +24,7 @@ public class SecurityConfig {
             "/api/v1/auth/reissue",
             "/api/v1/members/password",
             "/api/v1/members",
-            "/api/v1/mail/**",
+            "/api/v1/email-verification/**",
             "/actuator/health"
     };
 
