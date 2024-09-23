@@ -64,6 +64,9 @@ dependencies {
 
 	//thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	//Validation
+	implementation 'commons-validator:commons-validator:1.7'
 }
 
 tasks.named('test') {
