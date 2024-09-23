@@ -1,4 +1,4 @@
-package com.tiki.server.emailVerification.config;
+package com.tiki.server.emailverification.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-import static com.tiki.server.emailVerification.constants.EmailConstants.TIKI_EMAIL;
+import static com.tiki.server.emailverification.constants.EmailConstants.TIKI_EMAIL;
 
 @Configuration
 public class EmailConfig {

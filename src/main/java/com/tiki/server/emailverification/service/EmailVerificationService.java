@@ -1,19 +1,19 @@
-package com.tiki.server.emailVerification.service;
+package com.tiki.server.emailverification.service;
 
 import com.tiki.server.common.entity.Email;
-import com.tiki.server.emailVerification.adapter.EmailVerificationFinder;
-import com.tiki.server.emailVerification.adapter.EmailVerificationSaver;
-import com.tiki.server.emailVerification.dto.request.EmailRequest;
-import com.tiki.server.emailVerification.dto.request.CodeVerificationRequest;
-import com.tiki.server.emailVerification.domain.EmailVerification;
-import com.tiki.server.emailVerification.domain.MailSender;
+import com.tiki.server.emailverification.adapter.EmailVerificationFinder;
+import com.tiki.server.emailverification.adapter.EmailVerificationSaver;
+import com.tiki.server.emailverification.dto.request.EmailRequest;
+import com.tiki.server.emailverification.dto.request.CodeVerificationRequest;
+import com.tiki.server.emailverification.domain.EmailVerification;
+import com.tiki.server.emailverification.domain.MailSender;
 import com.tiki.server.member.adapter.MemberFinder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.tiki.server.emailVerification.constants.EmailConstants.*;
+import static com.tiki.server.emailverification.constants.EmailConstants.*;
 
 @Slf4j
 @Service

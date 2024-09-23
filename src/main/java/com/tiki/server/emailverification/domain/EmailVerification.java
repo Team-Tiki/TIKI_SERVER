@@ -1,7 +1,7 @@
-package com.tiki.server.emailVerification.domain;
+package com.tiki.server.emailverification.domain;
 
 import com.tiki.server.common.entity.Email;
-import com.tiki.server.emailVerification.exception.EmailVerificationException;
+import com.tiki.server.emailverification.exception.EmailVerificationException;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
 
-import static com.tiki.server.emailVerification.message.ErrorCode.INVALID_MATCHED;
+import static com.tiki.server.emailverification.message.ErrorCode.INVALID_MATCHED;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 

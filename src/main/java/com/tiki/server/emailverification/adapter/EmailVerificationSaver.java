@@ -1,8 +1,8 @@
-package com.tiki.server.emailVerification.adapter;
+package com.tiki.server.emailverification.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
-import com.tiki.server.emailVerification.domain.EmailVerification;
-import com.tiki.server.emailVerification.repository.EmailVerificationRepository;
+import com.tiki.server.emailverification.domain.EmailVerification;
+import com.tiki.server.emailverification.repository.EmailVerificationRepository;
 import lombok.RequiredArgsConstructor;
 
 @RepositoryAdapter

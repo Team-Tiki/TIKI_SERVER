@@ -1,6 +1,6 @@
-package com.tiki.server.emailVerification.exception;
+package com.tiki.server.emailverification.exception;
 
-import com.tiki.server.emailVerification.message.ErrorCode;
+import com.tiki.server.emailverification.message.ErrorCode;
 import lombok.Getter;
 
 @Getter

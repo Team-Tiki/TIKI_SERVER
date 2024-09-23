@@ -1,11 +1,11 @@
-package com.tiki.server.emailVerification.controller;
+package com.tiki.server.emailverification.controller;
 
 import com.tiki.server.common.dto.BaseResponse;
 
-import com.tiki.server.emailVerification.controller.docs.EmailVerificationControllerDocs;
-import com.tiki.server.emailVerification.dto.request.EmailRequest;
-import com.tiki.server.emailVerification.dto.request.CodeVerificationRequest;
-import com.tiki.server.emailVerification.service.EmailVerificationService;
+import com.tiki.server.emailverification.controller.docs.EmailVerificationControllerDocs;
+import com.tiki.server.emailverification.dto.request.EmailRequest;
+import com.tiki.server.emailverification.dto.request.CodeVerificationRequest;
+import com.tiki.server.emailverification.service.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.common.support.UriGenerator.getUri;
-import static com.tiki.server.emailVerification.message.SuccessMessage.SUCCESS_SEND_EMAIL;
-import static com.tiki.server.emailVerification.message.SuccessMessage.SUCCESS_VALIDATION;
+import static com.tiki.server.emailverification.message.SuccessMessage.SUCCESS_SEND_EMAIL;
+import static com.tiki.server.emailverification.message.SuccessMessage.SUCCESS_VALIDATION;
 
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/mail")
+@RequestMapping("/api/v1/email-verification")
 public class EmailVerificationController implements EmailVerificationControllerDocs {
 
     private final EmailVerificationService emailVerificationService;

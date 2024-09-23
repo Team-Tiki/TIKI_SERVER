@@ -1,7 +1,7 @@
-package com.tiki.server.emailVerification.domain;
+package com.tiki.server.emailverification.domain;
 
 import com.tiki.server.common.entity.Email;
-import com.tiki.server.emailVerification.exception.EmailVerificationException;
+import com.tiki.server.emailverification.exception.EmailVerificationException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
@@ -15,8 +15,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.tiki.server.emailVerification.constants.EmailConstants.*;
-import static com.tiki.server.emailVerification.message.ErrorCode.MESSAGE_HELPER_ERROR;
+import static com.tiki.server.emailverification.constants.EmailConstants.*;
+import static com.tiki.server.emailverification.message.ErrorCode.MESSAGE_HELPER_ERROR;
 
 @Component
 @RequiredArgsConstructor
@@ -34,7 +34,7 @@ public class MailSender {
 
     private static String generateRandomValue() {
         Random random = new Random();
-        return IntStream.range(0, 6).mapToObj(i -> String.valueOf(random.nextInt(10))).collect(Collectors.joining());
+        return IntStream.range(0, CODE_LENGTH).mapToObj(i -> String.valueOf(random.nextInt(CODE_NUM_MAX_VALUE_PER_WORD))).collect(Collectors.joining());
     }
 
     private MimeMessage makeMessage(Email email, String code, String subject) {
@@ -45,7 +45,7 @@ public class MailSender {
             helper.setTo(email.getEmail());
             helper.setSubject(subject);
             helper.setText(setContext(code), true);
-            helper.addInline("image", new ClassPathResource(IMG_PATH));
+            helper.addInline(CERTIFICATION_PAGE_LOGO_IMAGE_VAR, new ClassPathResource(IMG_PATH));
             return message;
         } catch (Exception e) {
             throw new EmailVerificationException(MESSAGE_HELPER_ERROR);
@@ -54,7 +54,7 @@ public class MailSender {
 
     private String setContext(String code) {
         Context context = new Context();
-        context.setVariable("code", code);
+        context.setVariable(CERTIFICATION_PAGE_CODEE_VAR, code);
         return templateEngine.process(TEMPLATE_NAME, context);
     }
 }
