@@ -7,7 +7,6 @@ import com.tiki.server.emailVerification.dto.request.EmailRequest;
 import com.tiki.server.emailVerification.dto.request.CodeVerificationRequest;
 import com.tiki.server.emailVerification.domain.EmailVerification;
 import com.tiki.server.emailVerification.domain.MailSender;
-import com.tiki.server.emailVerification.exception.EmailVerificationException;
 import com.tiki.server.member.adapter.MemberFinder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +43,6 @@ public class EmailVerificationService {
     public void checkCode(CodeVerificationRequest codeVerificationRequest) {
         Email email = Email.from(codeVerificationRequest.email());
         EmailVerification emailVerification = emailVerificationFinder.findById(email.getEmail());
-
         emailVerification.verify(codeVerificationRequest.code());
     }
 }
