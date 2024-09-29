@@ -34,7 +34,7 @@ public class MailSender {
 
     private static String generateRandomValue() {
         Random random = new Random();
-        return IntStream.range(0, CODE_LENGTH).mapToObj(i -> String.valueOf(random.nextInt(CODE_NUM_MAX_VALUE_PER_WORD))).collect(Collectors.joining());
+        return IntStream.range(INIT_NUM, CODE_LENGTH).mapToObj(i -> String.valueOf(random.nextInt(CODE_NUM_MAX_VALUE_PER_WORD))).collect(Collectors.joining());
     }
 
     private MimeMessage makeMessage(Email email, String code, String subject) {

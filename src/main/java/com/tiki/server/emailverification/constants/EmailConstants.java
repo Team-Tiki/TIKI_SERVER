@@ -9,6 +9,7 @@ public class EmailConstants {
     public static final String MAIL_FORMAT_EDU = ".edu";
     public static final String MAIL_FORMAT_AC_KR = ".ac.kr";
     public static final String TEMPLATE_NAME = "certification";
+    public static final int INIT_NUM = 0;
     public static final int CODE_LENGTH = 6;
     public static final int CODE_NUM_MAX_VALUE_PER_WORD = 10;
     public static final String CERTIFICATION_PAGE_LOGO_IMAGE_VAR = "image";
