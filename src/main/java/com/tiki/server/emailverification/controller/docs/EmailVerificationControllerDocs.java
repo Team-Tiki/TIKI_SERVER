@@ -1,11 +1,10 @@
-package com.tiki.server.mail.controller.docs;
+package com.tiki.server.emailverification.controller.docs;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
-import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.mail.dto.request.CodeCheck;
-import com.tiki.server.mail.dto.request.MailRequest;
+import com.tiki.server.emailverification.dto.request.EmailRequest;
 
+import com.tiki.server.emailverification.dto.request.CodeVerificationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,8 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "mail", description = "메일 인증 API")
-public interface MailControllerDocs {
+@Tag(name = "EmailVerification", description = "메일 인증 API")
+public interface EmailVerificationControllerDocs {
 
 	@Operation(
 		summary = "회원가입 메일 전송",
@@ -40,7 +39,7 @@ public interface MailControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody MailRequest mailRequest);
+	ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody EmailRequest mailRequest);
 
 	@Operation(
 		summary = "비밀번호 재설정 메일 전송",
@@ -64,7 +63,7 @@ public interface MailControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody MailRequest mailRequest);
+	ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest);
 
 	@Operation(
 		summary = "메일 인증",
@@ -92,5 +91,5 @@ public interface MailControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> checkCode(@RequestBody CodeCheck codeCheck);
+	ResponseEntity<BaseResponse> checkCode(@RequestBody CodeVerificationRequest verificationCodeRequest);
 }

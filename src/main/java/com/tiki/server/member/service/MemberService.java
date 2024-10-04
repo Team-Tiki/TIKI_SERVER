@@ -5,6 +5,7 @@ import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
+import com.tiki.server.common.entity.Email;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
@@ -28,7 +29,7 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberProfileCreateRequest request) {
-        memberFinder.checkPresent(request.email());
+        memberFinder.checkPresent(Email.from(request.email()));
         checkPassword(request.password(), request.passwordChecker());
         Member member = createMember(request);
         saveMember(member);
@@ -36,7 +37,7 @@ public class MemberService {
 
     @Transactional
     public void changePassword(PasswordChangeRequest request) {
-        Member member = memberFinder.checkEmpty(request.email());
+        Member member = memberFinder.checkEmpty(Email.from(request.email()));
         checkPassword(request.password(), request.passwordChecker());
         member.resetPassword(passwordEncoder.encode(request.password()));
     }

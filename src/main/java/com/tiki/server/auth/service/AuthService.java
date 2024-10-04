@@ -8,6 +8,7 @@ import com.tiki.server.auth.jwt.JwtProvider;
 import com.tiki.server.auth.token.adapter.TokenFinder;
 import com.tiki.server.auth.token.adapter.TokenSaver;
 import com.tiki.server.auth.token.entity.Token;
+import com.tiki.server.common.entity.Email;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
@@ -64,7 +65,7 @@ public class AuthService {
     }
 
     private Member checkMemberEmpty(SignInRequest request) {
-        return memberFinder.findByEmail(request.email()).orElseThrow(() -> new MemberException(INVALID_MEMBER));
+        return memberFinder.findByEmail(Email.from(request.email())).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
     private void checkTokenEmpty(String token) {

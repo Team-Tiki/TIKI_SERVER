@@ -1,4 +1,4 @@
-package com.tiki.server.mail.message;
+package com.tiki.server.emailverification.message;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

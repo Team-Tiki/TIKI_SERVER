@@ -3,7 +3,6 @@ package com.tiki.server.team.service;
 import static com.tiki.server.common.entity.Position.ADMIN;
 import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
 
-import java.util.HashSet;
 import java.util.List;
 
 import com.tiki.server.document.adapter.DocumentDeleter;
