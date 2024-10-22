@@ -37,6 +37,8 @@ public class Document extends BaseTime {
 
 	private Long folderId;
 
+	private double capacity;
+
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "block_id")
 	private TimeBlock timeBlock;
