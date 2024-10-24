@@ -6,4 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SuccessMessage {
+
+	SUCCESS_CREATE_FOLDER("폴더 생성 성공");
+
+	private final String message;
 }
