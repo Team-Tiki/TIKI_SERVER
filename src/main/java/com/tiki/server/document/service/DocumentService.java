@@ -1,9 +1,6 @@
 package com.tiki.server.document.service;
 
-import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
-
 import java.util.List;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +10,6 @@ import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 
