@@ -50,7 +50,7 @@ public class DocumentService {
 	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		checkFolderIsExist(request.folderId());
-		List<Long> documentIds = request.requests().stream()
+		List<Long> documentIds = request.documents().stream()
 			.map(document -> saveDocument(teamId, request.folderId(), document).getId())
 			.toList();
 		return DocumentsCreateResponse.from(documentIds);
