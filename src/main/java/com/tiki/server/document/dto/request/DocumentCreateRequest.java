@@ -5,7 +5,6 @@ import lombok.NonNull;
 public record DocumentCreateRequest(
 	@NonNull String fileName,
 	@NonNull String fileUrl,
-	double capacity,
-	Long folderId
+	double capacity
 ) {
 }
