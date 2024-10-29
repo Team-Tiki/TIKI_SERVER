@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.response.DocumentCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DocumentService {
 
+	private final DocumentSaver documentSaver;
 	private final DocumentFinder documentFinder;
 	private final DocumentDeleter documentDeleter;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
