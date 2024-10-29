@@ -1,6 +1,6 @@
 package com.tiki.server.document.controller;
 
-import static com.tiki.server.document.message.SuccessMessage.SUCCESS_CREATE_DOCUMENT;
+import static com.tiki.server.document.message.SuccessMessage.SUCCESS_CREATE_DOCUMENTS;
 import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_DOCUMENTS;
 
 import java.security.Principal;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
-import com.tiki.server.document.dto.request.DocumentCreateRequest;
+import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DocumentCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
@@ -58,14 +58,14 @@ public class DocumentController implements DocumentControllerDocs {
 	}
 
 	@PostMapping
-	public ResponseEntity<SuccessResponse<DocumentCreateResponse>> createDocument(
+	public ResponseEntity<SuccessResponse<DocumentCreateResponse>> createDocuments(
 		Principal principal,
 		@RequestHeader("team-id") long teamId,
-		@RequestBody DocumentCreateRequest request
+		@RequestBody DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		DocumentCreateResponse response = documentService.createDocument(memberId, teamId, request);
-		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents/" + response.documentId()))
-			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENT.getMessage(), response));
+		DocumentCreateResponse response = documentService.createDocuments(memberId, teamId, request);
+		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents"))
+			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
 	}
 }
