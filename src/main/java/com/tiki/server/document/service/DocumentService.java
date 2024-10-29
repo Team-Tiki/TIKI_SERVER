@@ -10,6 +10,7 @@ import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
+import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DocumentCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
@@ -46,7 +47,7 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
+	public DocumentCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		checkFolderIsExist(request.folderId());
 		Document document = saveDocument(teamId, request);
