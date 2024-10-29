@@ -49,6 +49,7 @@ public class DocumentService {
 		Document document = Document.of(
 			request.fileName(), request.fileUrl(), request.capacity(), teamId, request.folderId());
 		Document savedDocument = documentSaver.save(document);
+		return DocumentCreateResponse.from(savedDocument.getId());
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
