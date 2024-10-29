@@ -37,6 +37,8 @@ public class Document extends BaseTime {
 
 	private double capacity;
 
+	private long teamId;
+
 	private Long folderId;
 
 	@ManyToOne(fetch = LAZY)
