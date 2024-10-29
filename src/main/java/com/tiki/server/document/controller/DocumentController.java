@@ -8,12 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
+import com.tiki.server.document.dto.request.DocumentCreateRequest;
+import com.tiki.server.document.dto.response.DocumentCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
 
@@ -48,5 +52,13 @@ public class DocumentController implements DocumentControllerDocs {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.deleteDocument(memberId, teamId, documentId);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping
+	public ResponseEntity<SuccessResponse<DocumentCreateResponse>> createDocument(
+		Principal principal,
+		@RequestHeader("team-id") long teamId,
+		DocumentCreateRequest request
+	) {
 	}
 }
