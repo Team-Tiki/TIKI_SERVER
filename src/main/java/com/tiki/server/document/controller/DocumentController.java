@@ -60,5 +60,6 @@ public class DocumentController implements DocumentControllerDocs {
 		@RequestHeader("team-id") long teamId,
 		DocumentCreateRequest request
 	) {
+		long memberId = Long.parseLong(principal.getName());
 	}
 }
