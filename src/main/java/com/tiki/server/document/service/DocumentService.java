@@ -46,14 +46,18 @@ public class DocumentService {
 	@Transactional
 	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Document document = Document.of(
-			request.fileName(), request.fileUrl(), request.capacity(), teamId, request.folderId());
-		Document savedDocument = documentSaver.save(document);
-		return DocumentCreateResponse.from(savedDocument.getId());
+		Document document = saveDocument(teamId, request);
+		return DocumentCreateResponse.from(document.getId());
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
+	}
+
+	private Document saveDocument(long teamId, DocumentCreateRequest request) {
+		Document document = Document.of(
+			request.fileName(), request.fileUrl(), request.capacity(), teamId, request.folderId());
+		return documentSaver.save(document);
 	}
 }
