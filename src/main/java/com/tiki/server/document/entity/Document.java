@@ -49,6 +49,9 @@ public class Document extends BaseTime {
 		return Document.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
+			.capacity(0)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
+			.teamId(1)		// TODO : 타임 블록 생성 api 수정 후 제거 예정
+			.folderId(null) // TODO : 타임 블록 생성 api 수정 후 제거 예정
 			.timeBlock(timeBlock)
 			.build();
 	}
