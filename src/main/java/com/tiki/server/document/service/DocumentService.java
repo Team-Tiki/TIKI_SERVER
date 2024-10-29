@@ -11,7 +11,7 @@ import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
-import com.tiki.server.document.dto.response.DocumentCreateResponse;
+import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.folder.adapter.FolderFinder;
@@ -47,11 +47,13 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public DocumentCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
+	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		checkFolderIsExist(request.folderId());
-		Document document = saveDocument(teamId, request);
-		return DocumentCreateResponse.from(document.getId());
+		List<Long> documentIds = request.requests().stream()
+			.map(document -> saveDocument(teamId, request.folderId(), document).getId())
+			.toList();
+		return DocumentsCreateResponse.from(documentIds);
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
@@ -66,9 +68,9 @@ public class DocumentService {
 		folderFinder.findById(folderId);
 	}
 
-	private Document saveDocument(long teamId, DocumentCreateRequest request) {
+	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
 		Document document = Document.of(
-			request.fileName(), request.fileUrl(), request.capacity(), teamId, request.folderId());
+			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
 		return documentSaver.save(document);
 	}
 }
