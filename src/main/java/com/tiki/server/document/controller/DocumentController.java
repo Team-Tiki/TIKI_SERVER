@@ -61,5 +61,6 @@ public class DocumentController implements DocumentControllerDocs {
 		DocumentCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
+		DocumentCreateResponse response = documentService.createDocument(memberId, teamId, request);
 	}
 }
