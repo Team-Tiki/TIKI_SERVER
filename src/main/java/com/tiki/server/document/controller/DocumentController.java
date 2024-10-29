@@ -1,5 +1,6 @@
 package com.tiki.server.document.controller;
 
+import static com.tiki.server.document.message.SuccessMessage.SUCCESS_CREATE_DOCUMENT;
 import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_DOCUMENTS;
 
 import java.security.Principal;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.response.DocumentCreateResponse;
@@ -62,5 +64,7 @@ public class DocumentController implements DocumentControllerDocs {
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentCreateResponse response = documentService.createDocument(memberId, teamId, request);
+		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents/" + response.documentId()))
+			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENT.getMessage(), response));
 	}
 }
