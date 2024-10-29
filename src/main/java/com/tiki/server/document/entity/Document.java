@@ -35,9 +35,9 @@ public class Document extends BaseTime {
 
 	private String fileUrl;
 
-	private Long folderId;
-
 	private double capacity;
+
+	private Long folderId;
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "block_id")
