@@ -48,6 +48,7 @@ public class DocumentService {
 	@Transactional
 	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		folderFinder.findById(request.folderId());
 		Document document = saveDocument(teamId, request);
 		return DocumentCreateResponse.from(document.getId());
 	}
