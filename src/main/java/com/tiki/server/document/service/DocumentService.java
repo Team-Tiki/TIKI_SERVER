@@ -48,7 +48,7 @@ public class DocumentService {
 	@Transactional
 	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		folderFinder.findById(request.folderId());
+		checkFolderIsExist(request.folderId());
 		Document document = saveDocument(teamId, request);
 		return DocumentCreateResponse.from(document.getId());
 	}
@@ -56,6 +56,13 @@ public class DocumentService {
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
+	}
+
+	private void checkFolderIsExist(Long folderId) {
+		if (folderId == null) {
+			return;
+		}
+		folderFinder.findById(folderId);
 	}
 
 	private Document saveDocument(long teamId, DocumentCreateRequest request) {
