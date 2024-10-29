@@ -53,11 +53,12 @@ public class Document extends BaseTime {
 			.build();
 	}
 
-	public static Document of(String fileName, String fileUrl, double capacity, Long folderId) {
+	public static Document of(String fileName, String fileUrl, double capacity, long teamId, Long folderId) {
 		return Document.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
 			.capacity(capacity)
+			.teamId(teamId)
 			.folderId(folderId)
 			.timeBlock(null)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
 			.build();
