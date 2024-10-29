@@ -13,6 +13,7 @@ import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.response.DocumentCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 
@@ -26,6 +27,7 @@ public class DocumentService {
 	private final DocumentSaver documentSaver;
 	private final DocumentFinder documentFinder;
 	private final DocumentDeleter documentDeleter;
+	private final FolderFinder folderFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
 	public DocumentsGetResponse getAllDocuments(long memberId, long teamId, String type) {
