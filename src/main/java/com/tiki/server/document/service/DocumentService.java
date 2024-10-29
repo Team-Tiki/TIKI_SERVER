@@ -47,6 +47,7 @@ public class DocumentService {
 	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Document document = Document.of(request.fileName(), request.fileUrl(), request.capacity(), request.folderId());
+		Document savedDocument = documentSaver.save(document);
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
