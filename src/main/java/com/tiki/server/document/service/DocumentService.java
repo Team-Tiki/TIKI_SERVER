@@ -46,6 +46,7 @@ public class DocumentService {
 	@Transactional
 	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		Document document = Document.of(request.fileName(), request.fileUrl(), request.capacity(), request.folderId());
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
