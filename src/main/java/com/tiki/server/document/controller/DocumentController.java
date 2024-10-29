@@ -20,7 +20,7 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
-import com.tiki.server.document.dto.response.DocumentCreateResponse;
+import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
 
@@ -58,13 +58,13 @@ public class DocumentController implements DocumentControllerDocs {
 	}
 
 	@PostMapping
-	public ResponseEntity<SuccessResponse<DocumentCreateResponse>> createDocuments(
+	public ResponseEntity<SuccessResponse<DocumentsCreateResponse>> createDocuments(
 		Principal principal,
 		@RequestHeader("team-id") long teamId,
 		@RequestBody DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		DocumentCreateResponse response = documentService.createDocuments(memberId, teamId, request);
+		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, request);
 		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents"))
 			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
 	}
