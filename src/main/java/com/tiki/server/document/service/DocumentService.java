@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.dto.request.DocumentCreateRequest;
+import com.tiki.server.document.dto.response.DocumentCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
@@ -37,6 +39,11 @@ public class DocumentService {
 		Document document = documentFinder.findByIdWithTimeBlock(documentId);
 		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
 		documentDeleter.delete(document);
+	}
+
+	@Transactional
+	public DocumentCreateResponse createDocument(long memberId, long teamId, DocumentCreateRequest request) {
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
