@@ -50,6 +50,7 @@ public class NoteFree implements Note {
         this.startDate = startDate;
         this.endDate = endDate;
         this.contents = contents;
+        this.team = team;
     }
 
     public static NoteFree of(
