@@ -3,7 +3,9 @@ package com.tiki.server.common.handler;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
 import com.tiki.server.emailverification.exception.EmailVerificationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import static com.tiki.server.auth.message.ErrorCode.UNCAUGHT_SERVER_EXCEPTION;
+import static com.tiki.server.common.Constants.WRONG_INPUT;
 
 @Slf4j
 @RestControllerAdvice
@@ -79,7 +82,14 @@ public class ErrorHandler {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(
-            ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage()));
+                ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponse> HttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponse.of(WRONG_INPUT));
     }
 
     @ExceptionHandler(Exception.class)
