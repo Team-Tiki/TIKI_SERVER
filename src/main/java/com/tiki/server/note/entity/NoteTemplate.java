@@ -1,5 +1,6 @@
 package com.tiki.server.note.entity;
 
+import com.tiki.server.common.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class NoteTemplate{
+public class NoteTemplate extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,28 +41,6 @@ public class NoteTemplate{
     private String answerHowToFix;
 
     private long teamId;
-
-    private NoteTemplate(
-            final String title,
-            final boolean complete,
-            final LocalDate endDate,
-            final LocalDate startDate,
-            final String answerWhatActivity,
-            final String answerHowToPrepare,
-            final String answerWhatIsDisappointedThing,
-            final String answerHowToFix,
-            final long teamId
-    ) {
-        this.title = title;
-        this.complete = complete;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.answerWhatActivity = answerWhatActivity;
-        this.answerHowToPrepare = answerHowToPrepare;
-        this.answerWhatIsDisappointedThing = answerWhatIsDisappointedThing;
-        this.answerHowToFix = answerHowToFix;
-        this.teamId = teamId;
-    }
 
     public static NoteTemplate of(
             final String title,

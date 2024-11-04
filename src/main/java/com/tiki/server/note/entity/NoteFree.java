@@ -1,5 +1,6 @@
 package com.tiki.server.note.entity;
 
+import com.tiki.server.common.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class NoteFree {
+public class NoteFree extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,21 +35,6 @@ public class NoteFree {
     private String contents;
 
     private long teamId;
-
-    private NoteFree(
-            final String title,
-            final boolean complete,
-            final LocalDate startDate,
-            final LocalDate endDate,
-            final String contents,
-            final long teamId) {
-        this.title = title;
-        this.complete = complete;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.contents = contents;
-        this.teamId = teamId;
-    }
 
     public static NoteFree of(
             final String title,
