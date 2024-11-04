@@ -1,6 +1,7 @@
 package com.tiki.server.note.entity;
 
 import com.tiki.server.common.entity.BaseTime;
+import com.tiki.server.note.entity.vo.TitleVo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ public class NoteFree extends BaseTime {
     @Column(name = "note_id")
     private Long id;
 
-    private String title;
+    private TitleVo title;
 
     private boolean complete;
 
@@ -37,7 +38,7 @@ public class NoteFree extends BaseTime {
     private long teamId;
 
     public static NoteFree of(
-            final String title,
+            final TitleVo title,
             final boolean complete,
             final LocalDate startDate,
             final LocalDate endDate,

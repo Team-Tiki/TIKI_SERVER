@@ -1,6 +1,7 @@
 package com.tiki.server.note.entity;
 
 import com.tiki.server.common.entity.BaseTime;
+import com.tiki.server.note.entity.vo.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ public class NoteTemplate extends BaseTime {
     @Column(name = "note_id")
     private Long id;
 
-    private String title;
+    private TitleVo title;
 
     private boolean complete;
 
@@ -32,25 +33,25 @@ public class NoteTemplate extends BaseTime {
 
     private LocalDate endDate;
 
-    private String answerWhatActivity;
+    private AnswerWhatActivityVO answerWhatActivity;
 
-    private String answerHowToPrepare;
+    private AnswerHowToPrepareVO answerHowToPrepare;
 
-    private String answerWhatIsDisappointedThing;
+    private AnswerWhatIsDisappointedThingVO answerWhatIsDisappointedThing;
 
-    private String answerHowToFix;
+    private AnswerHowToFixVO answerHowToFix;
 
     private long teamId;
 
     public static NoteTemplate of(
-            final String title,
+            final TitleVo title,
             final boolean complete,
             final LocalDate startDate,
             final LocalDate endDate,
-            final String answerWhatActivity,
-            final String answerHowToPrepare,
-            final String answerWhatIsDisappointedThing,
-            final String answerHowToFix,
+            final AnswerWhatActivityVO answerWhatActivity,
+            final AnswerHowToPrepareVO answerHowToPrepare,
+            final AnswerWhatIsDisappointedThingVO answerWhatIsDisappointedThing,
+            final AnswerHowToFixVO answerHowToFix,
             final long teamId
     ) {
         return NoteTemplate.builder()
