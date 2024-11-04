@@ -1,4 +1,4 @@
-package com.tiki.server.note.dto.request;
+package com.tiki.server.note.controller.dto.request;
 
 import jakarta.validation.constraints.Size;
 import lombok.NonNull;
@@ -6,7 +6,7 @@ import lombok.NonNull;
 import java.time.LocalDate;
 
 public record NoteTemplateCreateRequest(
-        @NonNull @Size(max = 100, message = "제목은 100자 이하로 입력해야 합니다.")
+        @NonNull
         String title,
         boolean complete,
         @NonNull LocalDate startDate,
