@@ -20,16 +20,16 @@ public class TitleVo {
     private String title;
 
 
-    public static TitleVo from(final String title){
+    public static TitleVo from(final String title) {
         validTitleLength(title);
         return new TitleVo(title);
     }
 
-    public static void validTitleLength(final String title){
-        if (title.isEmpty()){
+    public static void validTitleLength(final String title) {
+        if (title.isEmpty()) {
             throw new NoteException(TITLE_IS_EMPTY);
         }
-        if(title.length() > 100){
+        if (title.length() > 100) {
             throw new NoteException(TITLE_LENGTH_OVER);
         }
     }
