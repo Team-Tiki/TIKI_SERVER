@@ -65,7 +65,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(NoteException.class)
-    public ResponseEntity<BaseResponse> documentException(NoteException exception) {
+    public ResponseEntity<BaseResponse> noteException(NoteException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
@@ -94,7 +94,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<BaseResponse> HttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<BaseResponse> httpMessageNotReadableException(HttpMessageNotReadableException exception) {
         log.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponse.of(WRONG_INPUT));
