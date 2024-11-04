@@ -2,10 +2,13 @@ package com.tiki.server.note.controller;
 
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
-import com.tiki.server.note.dto.request.NoteFreeCreateRequest;
-import com.tiki.server.note.dto.request.NoteTemplateCreateRequest;
-import com.tiki.server.note.dto.response.NoteCreateResponse;
+import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
+import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
+import com.tiki.server.note.entity.vo.*;
 import com.tiki.server.note.service.NoteService;
+import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
+import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
+import com.tiki.server.note.service.dto.response.NoteCreateResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +20,6 @@ import java.security.Principal;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.note.message.SuccessMessage.CREATE_NOTE_FREE;
-import static com.tiki.server.team.message.SuccessMessage.SUCCESS_CREATE_TEAM;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,24 +29,46 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping("/free")
-    public ResponseEntity<SuccessResponse<NoteCreateResponse>> createNoteFree(
+    public ResponseEntity<SuccessResponse<NoteCreateResponseDTO>> createNoteFree(
             final Principal principal,
             @RequestBody final NoteFreeCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteCreateResponse response = noteService.createNoteFree(memberId, request);
+        NoteCreateResponseDTO response = noteService.createNoteFree(
+                NoteFreeCreateDTO.of(
+                        TitleVo.from(request.title()),
+                        request.complete(),
+                        request.startDate(),
+                        request.endDate(),
+                        request.contents(),
+                        request.teamId(),
+                        memberId
+                )
+        );
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
     }
 
     @PostMapping("/template")
-    public ResponseEntity<SuccessResponse<NoteCreateResponse>> createNoteTemplate(
+    public ResponseEntity<SuccessResponse<NoteCreateResponseDTO>> createNoteTemplate(
             final Principal principal,
             @RequestBody final NoteTemplateCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteCreateResponse response = noteService.createNoteTemplate(memberId, request);
+        NoteCreateResponseDTO response = noteService.createNoteTemplate(
+                NoteTemplateCreateDTO.of(
+                        TitleVo.from(request.title()),
+                        request.complete(),
+                        request.startDate(),
+                        request.endDate(),
+                        AnswerWhatActivityVO.from(request.answerWhatActivity()),
+                        AnswerHowToPrepareVO.from(request.answerHowToPrepare()),
+                        AnswerWhatIsDisappointedThingVO.from(request.answerWhatIsDisappointedThing()),
+                        AnswerHowToFixVO.from(request.answerHowToFix()),
+                        request.teamId(),
+                        memberId
+                ));
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
