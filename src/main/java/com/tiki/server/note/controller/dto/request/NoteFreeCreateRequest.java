@@ -5,14 +5,14 @@ import lombok.NonNull;
 import java.time.LocalDate;
 import java.util.List;
 
-public record NoteCreateRequest(
+public record NoteFreeCreateRequest(
         @NonNull
         String title,
         boolean complete,
         @NonNull LocalDate startDate,
         @NonNull LocalDate endDate,
         @NonNull String contents,
-        List<Long> timBlockIds,
+        List<Long> timeBlockIds,
         List<Long> documentIds,
         long teamId
 

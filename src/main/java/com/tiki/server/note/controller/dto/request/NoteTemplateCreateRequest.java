@@ -1,9 +1,9 @@
 package com.tiki.server.note.controller.dto.request;
 
-import jakarta.validation.constraints.Size;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record NoteTemplateCreateRequest(
         @NonNull
@@ -15,6 +15,8 @@ public record NoteTemplateCreateRequest(
         @NonNull String answerHowToPrepare,
         @NonNull String answerWhatIsDisappointedThing,
         @NonNull String answerHowToFix,
+        @NonNull List<Long> timeBlockIds,
+        @NonNull List<Long> documentIds,
         long teamId
 ) {
 }
