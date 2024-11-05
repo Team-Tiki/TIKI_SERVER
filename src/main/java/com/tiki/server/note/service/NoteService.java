@@ -18,14 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class NoteService {
 
     private final MemberTeamManagerFinder memberTeamManagerFinder;
-    private final NoteSaver noteFreeSaver;
+    private final NoteSaver noteSaver;
     private final NoteTimeBlockManagerSaver noteTimeBlockManagerSaver;
     private final NoteDocumentManagerSaver noteDocumentManagerSaver;
 
     @Transactional
     public NoteCreateResponseDTO createNoteFree(final NoteCreateDTO request) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
-        Note note = noteFreeSaver.createNoteFree(
+        Note note = noteSaver.createNote(
                 Note.of(
                         request.title(),
                         request.complete(),
