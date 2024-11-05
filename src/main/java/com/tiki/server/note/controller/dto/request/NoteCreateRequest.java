@@ -3,6 +3,7 @@ package com.tiki.server.note.controller.dto.request;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record NoteCreateRequest(
         @NonNull
@@ -11,6 +12,9 @@ public record NoteCreateRequest(
         @NonNull LocalDate startDate,
         @NonNull LocalDate endDate,
         @NonNull String contents,
+        List<Long> timBlockIds,
+        List<Long> documentIds,
         long teamId
+
 ) {
 }
