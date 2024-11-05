@@ -8,6 +8,7 @@ import com.tiki.server.note.entity.NoteTemplate;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
 import com.tiki.server.note.service.dto.response.NoteCreateResponseDTO;
+import com.tiki.server.note.service.dto.response.NoteGetResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,10 @@ public class NoteService {
                         request.teamId()
                 ));
         return NoteCreateResponseDTO.from(noteTemplate.getId());
+    }
+
+    public NoteGetResponseDTO getNote(final long teamId,final long memberId){
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        return null;
     }
 }
