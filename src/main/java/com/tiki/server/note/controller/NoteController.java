@@ -8,17 +8,16 @@ import com.tiki.server.note.service.NoteService;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
 import com.tiki.server.note.service.dto.response.NoteCreateResponseDTO;
+import com.tiki.server.note.service.dto.response.NoteGetResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.note.message.SuccessMessage.CREATE_NOTE_FREE;
+import static com.tiki.server.note.message.SuccessMessage.GET_NOTE;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,5 +48,15 @@ public class NoteController {
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
+    }
+
+    @GetMapping("/{teamId}")
+    public ResponseEntity<SuccessResponse<NoteGetResponseDTO>> getNote(
+            final Principal principal,
+            @PathVariable long teamId
+    ){
+        long memberId = Long.parseLong(principal.getName());
+        NoteGetResponseDTO response = noteService.getNote(teamId,memberId);
+        return ResponseEntity.ok().body(success(GET_NOTE.getMessage(), response));
     }
 }
