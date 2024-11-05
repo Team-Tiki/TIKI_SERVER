@@ -1,11 +1,10 @@
 package com.tiki.server.note.controller.dto.request;
 
-import jakarta.validation.constraints.Size;
 import lombok.NonNull;
 
 import java.time.LocalDate;
 
-public record NoteFreeCreateRequest(
+public record NoteCreateRequest(
         @NonNull
         String title,
         boolean complete,

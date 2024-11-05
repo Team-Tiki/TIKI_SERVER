@@ -1,11 +1,11 @@
 package com.tiki.server.note.service.dto.request;
 
-import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
+import com.tiki.server.note.controller.dto.request.NoteCreateRequest;
 import lombok.NonNull;
 
 import java.time.LocalDate;
 
-public record NoteFreeCreateDTO(
+public record NoteCreateDTO(
         @NonNull String title,
         boolean complete,
         @NonNull LocalDate startDate,
@@ -14,11 +14,11 @@ public record NoteFreeCreateDTO(
         long teamId,
         long memberId
 ) {
-    public static NoteFreeCreateDTO of(
-            final NoteFreeCreateRequest request,
+    public static NoteCreateDTO of(
+            final NoteCreateRequest request,
             final long memberId
     ) {
-        return new NoteFreeCreateDTO(
+        return new NoteCreateDTO(
                 request.title(),
                 request.complete(),
                 request.startDate(),

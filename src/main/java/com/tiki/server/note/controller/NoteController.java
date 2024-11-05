@@ -2,11 +2,9 @@ package com.tiki.server.note.controller;
 
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
-import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
-import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
+import com.tiki.server.note.controller.dto.request.NoteCreateRequest;
 import com.tiki.server.note.service.NoteService;
-import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
-import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
+import com.tiki.server.note.service.dto.request.NoteCreateDTO;
 import com.tiki.server.note.service.dto.response.NoteCreateResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,27 +25,15 @@ public class NoteController {
 
     private final NoteService noteService;
 
-    @PostMapping("/free")
-    public ResponseEntity<SuccessResponse<NoteCreateResponseDTO>> createNoteFree(
+    @PostMapping
+    public ResponseEntity<SuccessResponse<NoteCreateResponseDTO>> createNote(
             final Principal principal,
-            @RequestBody final NoteFreeCreateRequest request
+            @RequestBody final NoteCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteCreateResponseDTO response = noteService.createNoteFree(NoteFreeCreateDTO.of(request, memberId));
+        NoteCreateResponseDTO response = noteService.createNoteFree(NoteCreateDTO.of(request, memberId));
         return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
-        ).body(success(CREATE_NOTE_FREE.getMessage(), response));
-    }
-
-    @PostMapping("/template")
-    public ResponseEntity<SuccessResponse<NoteCreateResponseDTO>> createNoteTemplate(
-            final Principal principal,
-            @RequestBody final NoteTemplateCreateRequest request
-    ) {
-        long memberId = Long.parseLong(principal.getName());
-        NoteCreateResponseDTO response = noteService.createNoteTemplate(NoteTemplateCreateDTO.of(request, memberId));
-        return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
+                UriGenerator.getUri("/api/v1/notes" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
     }
 }
