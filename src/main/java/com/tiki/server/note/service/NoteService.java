@@ -23,7 +23,7 @@ public class NoteService {
         memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
         NoteFree noteFree = noteFreeSaver.createNoteFree(
                 NoteFree.of(
-                        request.titleVo(),
+                        request.title(),
                         request.complete(),
                         request.startDate(),
                         request.endDate(),
@@ -37,7 +37,7 @@ public class NoteService {
         memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
         NoteTemplate noteTemplate = noteTemplateSaver.createNoteTemplate(
                 NoteTemplate.of(
-                        request.titleVo(),
+                        request.title(),
                         request.complete(),
                         request.startDate(),
                         request.endDate(),

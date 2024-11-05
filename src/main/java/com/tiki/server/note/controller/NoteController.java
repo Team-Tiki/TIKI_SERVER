@@ -4,7 +4,6 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
 import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
-import com.tiki.server.note.entity.vo.*;
 import com.tiki.server.note.service.NoteService;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
@@ -34,17 +33,7 @@ public class NoteController {
             @RequestBody final NoteFreeCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteCreateResponseDTO response = noteService.createNoteFree(
-                NoteFreeCreateDTO.of(
-                        TitleVo.from(request.title()),
-                        request.complete(),
-                        request.startDate(),
-                        request.endDate(),
-                        request.contents(),
-                        request.teamId(),
-                        memberId
-                )
-        );
+        NoteCreateResponseDTO response = noteService.createNoteFree(NoteFreeCreateDTO.of(request, memberId));
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
@@ -56,19 +45,7 @@ public class NoteController {
             @RequestBody final NoteTemplateCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteCreateResponseDTO response = noteService.createNoteTemplate(
-                NoteTemplateCreateDTO.of(
-                        TitleVo.from(request.title()),
-                        request.complete(),
-                        request.startDate(),
-                        request.endDate(),
-                        AnswerWhatActivityVO.from(request.answerWhatActivity()),
-                        AnswerHowToPrepareVO.from(request.answerHowToPrepare()),
-                        AnswerWhatIsDisappointedThingVO.from(request.answerWhatIsDisappointedThing()),
-                        AnswerHowToFixVO.from(request.answerHowToFix()),
-                        request.teamId(),
-                        memberId
-                ));
+        NoteCreateResponseDTO response = noteService.createNoteTemplate(NoteTemplateCreateDTO.of(request, memberId));
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
