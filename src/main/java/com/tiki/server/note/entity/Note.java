@@ -39,6 +39,8 @@ public class Note extends BaseTime {
 
     private String contents;
 
+    private NoteType noteType;
+
     public static Note of(
             final String title,
             final boolean complete,
@@ -46,7 +48,8 @@ public class Note extends BaseTime {
             final LocalDate endDate,
             final String contents,
             final long memberId,
-            final long teamId
+            final long teamId,
+            final NoteType noteType
     ) {
         return Note.builder()
                 .title(title)
@@ -56,6 +59,7 @@ public class Note extends BaseTime {
                 .memberId(memberId)
                 .teamId(teamId)
                 .contents(contents)
+                .noteType(noteType)
                 .build();
     }
 }
