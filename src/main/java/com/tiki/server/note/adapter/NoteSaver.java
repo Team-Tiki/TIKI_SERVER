@@ -11,7 +11,7 @@ public class NoteSaver {
 
     private final NoteRepository noteRepository;
 
-    public Note createNoteFree(final Note note){
+    public Note createNote(final Note note) {
         return noteRepository.save(note);
     }
 }
