@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-    CREATE_NOTE_FREE("노트 생성 성공")
+    CREATE_NOTE_FREE("노트 생성 성공"),
+    GET_NOTE("노트 불러오기 성공")
     ;
 
     private final String message;
