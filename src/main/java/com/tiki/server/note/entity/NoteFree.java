@@ -1,8 +1,6 @@
 package com.tiki.server.note.entity;
 
-import com.tiki.server.common.entity.BaseTime;
-import com.tiki.server.note.entity.vo.TitleVo;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,39 +16,32 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class NoteFree extends BaseTime {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "note_id")
-    private Long id;
-
-    private TitleVo title;
-
-    private boolean complete;
-
-    private LocalDate startDate;
-
-    private LocalDate endDate;
+public class NoteFree extends Note {
 
     private String contents;
 
-    private long teamId;
-
+    // 정적 팩토리 메서드
     public static NoteFree of(
-            final TitleVo title,
-            final boolean complete,
-            final LocalDate startDate,
-            final LocalDate endDate,
-            final String contents,
-            final long teamId) {
-        return NoteFree.builder()
-                .title(title)
-                .complete(complete)
-                .startDate(startDate)
-                .endDate(endDate)
-                .contents(contents)
-                .teamId(teamId)
-                .build();
+            String title,
+            boolean complete,
+            LocalDate startDate,
+            LocalDate endDate,
+            String contents,
+            long teamId
+    ) {
+        return new NoteFree(title, complete, startDate, endDate, contents, teamId);
+    }
+
+    // 생성자
+    private NoteFree(
+            String title,
+            boolean complete,
+            LocalDate startDate,
+            LocalDate endDate,
+            String contents,
+            long teamId
+    ) {
+        super(title, complete, startDate, endDate, teamId);
+        this.contents = contents;
     }
 }

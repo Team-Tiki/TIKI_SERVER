@@ -1,8 +1,6 @@
 package com.tiki.server.note.entity;
 
-import com.tiki.server.common.entity.BaseTime;
-import com.tiki.server.note.entity.vo.*;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,53 +16,55 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class NoteTemplate extends BaseTime {
+public class NoteTemplate extends Note {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "note_id")
-    private Long id;
+    private String answerWhatActivity;
+    private String answerHowToPrepare;
+    private String answerWhatIsDisappointedThing;
+    private String answerHowToFix;
 
-    private TitleVo title;
-
-    private boolean complete;
-
-    private LocalDate startDate;
-
-    private LocalDate endDate;
-
-    private AnswerWhatActivityVO answerWhatActivity;
-
-    private AnswerHowToPrepareVO answerHowToPrepare;
-
-    private AnswerWhatIsDisappointedThingVO answerWhatIsDisappointedThing;
-
-    private AnswerHowToFixVO answerHowToFix;
-
-    private long teamId;
-
+    // 정적 팩토리 메서드
     public static NoteTemplate of(
-            final TitleVo title,
-            final boolean complete,
-            final LocalDate startDate,
-            final LocalDate endDate,
-            final AnswerWhatActivityVO answerWhatActivity,
-            final AnswerHowToPrepareVO answerHowToPrepare,
-            final AnswerWhatIsDisappointedThingVO answerWhatIsDisappointedThing,
-            final AnswerHowToFixVO answerHowToFix,
-            final long teamId
+            String title,
+            boolean complete,
+            LocalDate startDate,
+            LocalDate endDate,
+            String answerWhatActivity,
+            String answerHowToPrepare,
+            String answerWhatIsDisappointedThing,
+            String answerHowToFix,
+            long teamId
     ) {
-        return NoteTemplate.builder()
-                .title(title)
-                .complete(complete)
-                .startDate(startDate)
-                .endDate(endDate)
-                .answerWhatActivity(answerWhatActivity)
-                .answerHowToPrepare(answerHowToPrepare)
-                .answerWhatIsDisappointedThing(answerWhatIsDisappointedThing)
-                .answerHowToFix(answerHowToFix)
-                .teamId(teamId)
-                .build();
+        return new NoteTemplate(
+                title,
+                complete,
+                startDate,
+                endDate,
+                answerWhatActivity,
+                answerHowToPrepare,
+                answerWhatIsDisappointedThing,
+                answerHowToFix,
+                teamId
+        );
+    }
+
+    // 생성자
+    private NoteTemplate(
+            String title,
+            boolean complete,
+            LocalDate startDate,
+            LocalDate endDate,
+            String answerWhatActivity,
+            String answerHowToPrepare,
+            String answerWhatIsDisappointedThing,
+            String answerHowToFix,
+            long teamId
+    ) {
+        super(title, complete, startDate, endDate, teamId);
+        this.answerWhatActivity = answerWhatActivity;
+        this.answerHowToPrepare = answerHowToPrepare;
+        this.answerWhatIsDisappointedThing = answerWhatIsDisappointedThing;
+        this.answerHowToFix = answerHowToFix;
     }
 
     public String getContent() {
