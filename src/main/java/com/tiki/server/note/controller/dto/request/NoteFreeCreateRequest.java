@@ -1,9 +1,9 @@
 package com.tiki.server.note.controller.dto.request;
 
-import jakarta.validation.constraints.Size;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record NoteFreeCreateRequest(
         @NonNull
@@ -12,6 +12,8 @@ public record NoteFreeCreateRequest(
         @NonNull LocalDate startDate,
         @NonNull LocalDate endDate,
         @NonNull String contents,
+        List<Long> timeBlockIds,
+        List<Long> documentIds,
         long teamId
 ) {
 }

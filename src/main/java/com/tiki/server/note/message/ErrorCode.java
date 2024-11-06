@@ -12,8 +12,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     /* 400 BAD REQUEST : 잘못된 요청 */
-    TITLE_IS_EMPTY(BAD_REQUEST,"제목은 필수 입력값 입니다."),
-    TITLE_LENGTH_OVER(BAD_REQUEST,"제목은 100자를 넘길 수 없습니다."),
+    TITLE_IS_EMPTY(BAD_REQUEST, "제목은 필수 입력값 입니다."),
+    TITLE_LENGTH_OVER(BAD_REQUEST, "제목은 100자를 넘길 수 없습니다."),
 
     /* 404 NOT_FOUND : 자원을 찾을 수 없음 */
     INVALID_NOTE(NOT_FOUND, "유효하지 않은 노트입니다.");

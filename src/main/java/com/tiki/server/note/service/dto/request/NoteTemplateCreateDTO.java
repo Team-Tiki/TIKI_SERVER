@@ -4,9 +4,9 @@ import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record NoteTemplateCreateDTO(
-
         @NonNull String title,
         boolean complete,
         @NonNull LocalDate startDate,
@@ -16,9 +16,10 @@ public record NoteTemplateCreateDTO(
         @NonNull String answerWhatIsDisappointedThing,
         @NonNull String answerHowToFix,
         long teamId,
+        List<Long> timeBlockIds,
+        List<Long> documentIds,
         long memberId
 ) {
-
     public static NoteTemplateCreateDTO of(
             final NoteTemplateCreateRequest request,
             final long memberId
@@ -33,6 +34,8 @@ public record NoteTemplateCreateDTO(
                 request.answerWhatIsDisappointedThing(),
                 request.answerHowToFix(),
                 request.teamId(),
+                request.timeBlockIds(),
+                request.documentIds(),
                 memberId
         );
     }

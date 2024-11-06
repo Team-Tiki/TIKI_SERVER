@@ -34,7 +34,7 @@ public class NoteController {
         long memberId = Long.parseLong(principal.getName());
         NoteCreateResponseDTO response = noteService.createNoteFree(NoteFreeCreateDTO.of(request, memberId));
         return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
+                UriGenerator.getUri("/api/v1/notes" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
     }
 
@@ -46,7 +46,7 @@ public class NoteController {
         long memberId = Long.parseLong(principal.getName());
         NoteCreateResponseDTO response = noteService.createNoteTemplate(NoteTemplateCreateDTO.of(request, memberId));
         return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/notes/free" + response.noteId())
+                UriGenerator.getUri("/api/v1/notes" + response.noteId())
         ).body(success(CREATE_NOTE_FREE.getMessage(), response));
     }
 

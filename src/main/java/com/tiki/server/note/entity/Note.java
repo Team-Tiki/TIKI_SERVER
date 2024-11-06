@@ -2,20 +2,26 @@ package com.tiki.server.note.entity;
 
 import com.tiki.server.common.entity.BaseTime;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+@Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-@MappedSuperclass
-public abstract class Note extends BaseTime {
+public class Note extends BaseTime {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "note_id")
     private Long id;
 
@@ -27,13 +33,33 @@ public abstract class Note extends BaseTime {
 
     private LocalDate endDate;
 
+    private long memberId;
+
     private long teamId;
 
-    protected Note(String title, boolean complete, LocalDate startDate, LocalDate endDate, long teamId) {
-        this.title = title;
-        this.complete = complete;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.teamId = teamId;
+    private String contents;
+
+    private NoteType noteType;
+
+    public static Note of(
+            final String title,
+            final boolean complete,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final String contents,
+            final long memberId,
+            final long teamId,
+            final NoteType noteType
+    ) {
+        return Note.builder()
+                .title(title)
+                .complete(complete)
+                .startDate(startDate)
+                .endDate(endDate)
+                .memberId(memberId)
+                .teamId(teamId)
+                .contents(contents)
+                .noteType(noteType)
+                .build();
     }
 }
