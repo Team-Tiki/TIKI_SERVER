@@ -15,6 +15,5 @@ public record NoteFreeCreateRequest(
         List<Long> timeBlockIds,
         List<Long> documentIds,
         long teamId
-
 ) {
 }
