@@ -4,6 +4,7 @@ import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.common.support.RepositoryAdapter;
@@ -18,25 +19,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DocumentFinder {
 
-	private final DocumentRepository documentRepository;
+    private final DocumentRepository documentRepository;
 
-	public Document findByIdWithTimeBlock(long documentId) {
-		Document document = documentRepository.findByIdWithTimeBlock(documentId);
-		if (Objects.isNull(document)) {
-			throw new DocumentException(INVALID_DOCUMENT);
-		}
-		return document;
-	}
+    public Optional<Document> findById(final long documentId) {
+        return documentRepository.findById(documentId);
+    }
 
-	public List<DocumentVO> findAllByTimeBlockId(long timeBlockId) {
-		return documentRepository.findAllByTimeBlockId(timeBlockId).stream().map(DocumentVO::from).toList();
-	}
+    public Document findByIdWithTimeBlock(long documentId) {
+        Document document = documentRepository.findByIdWithTimeBlock(documentId);
+        if (Objects.isNull(document)) {
+            throw new DocumentException(INVALID_DOCUMENT);
+        }
+        return document;
+    }
 
-	public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
-		return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
-	}
+    public List<DocumentVO> findAllByTimeBlockId(long timeBlockId) {
+        return documentRepository.findAllByTimeBlockId(timeBlockId).stream().map(DocumentVO::from).toList();
+    }
 
-	public List<Document> findAllByTeamId(long teamId) {
-		return documentRepository.findAllByTeamId(teamId);
-	}
+    public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
+        return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
+    }
+
+    public List<Document> findAllByTeamId(long teamId) {
+        return documentRepository.findAllByTeamId(teamId);
+    }
 }
