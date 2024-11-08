@@ -1,11 +1,12 @@
 package com.tiki.server.note.service.dto.request;
 
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;
-
 public record NoteFreeCreateDTO(
         @NonNull String title,
         boolean complete,
