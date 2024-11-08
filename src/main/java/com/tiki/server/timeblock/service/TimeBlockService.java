@@ -64,13 +64,13 @@ public class TimeBlockService {
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		List<TimeBlockVO> timeBlocks = timeBlockFinder.findByTeamAndAccessiblePositionAndDate(
-			team.getId(), accessiblePosition.name(), date);
+			    team.getId(), accessiblePosition.name(), date);
 		return TimelineGetResponse.from(timeBlocks);
 	}
 
 	public TimeBlockDetailGetResponse getTimeBlockDetail(long memberId, long teamId, long timeBlockId) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		TimeBlockVO timeBlock = timeBlockFinder.findById(timeBlockId);
+		TimeBlockVO timeBlock = timeBlockFinder.findByIdOrElseThrow(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.accessiblePosition());
 		List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
 		return TimeBlockDetailGetResponse.from(documents);
@@ -79,7 +79,7 @@ public class TimeBlockService {
 	@Transactional
 	public void deleteTimeBlock(long memberId, long teamId, long timeBlockId) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		TimeBlockVO timeBlock = timeBlockFinder.findById(timeBlockId);
+		TimeBlockVO timeBlock = timeBlockFinder.findByIdOrElseThrow(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.accessiblePosition());
 		documentDeleter.deleteAllByTimeBlockId(timeBlock.timeBlockId());
 		timeBlockDeleter.deleteById(timeBlock.timeBlockId());
