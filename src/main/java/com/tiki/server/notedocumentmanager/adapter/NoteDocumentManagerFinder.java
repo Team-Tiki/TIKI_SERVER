@@ -5,13 +5,16 @@ import com.tiki.server.notedocumentmanager.entity.NoteDocumentManager;
 import com.tiki.server.notedocumentmanager.repository.NoteDocumentManagerRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RepositoryAdapter
 @RequiredArgsConstructor
-public class NoteDocumentManagerSaver {
+public class NoteDocumentManagerFinder {
 
-    private NoteDocumentManagerRepository noteDocumentManagerRepository;
+    private final NoteDocumentManagerRepository noteDocumentManagerRepository;
 
-    public NoteDocumentManager save(final NoteDocumentManager noteDocumentManager) {
-        return noteDocumentManagerRepository.save(noteDocumentManager);
+    public List<NoteDocumentManager> findAllByNoteId(final long noteId){
+        return noteDocumentManagerRepository.findAllByNoteId(noteId);
+
     }
 }
