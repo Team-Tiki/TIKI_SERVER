@@ -12,7 +12,11 @@ public class NoteTimeBlockManagerDeleter {
 
     private final NoteTimeBlockManagerRepository noteTimeBlockManagerRepository;
 
-    public void noteDeleteByIds(final List<Long> noteIds) {
+    public void noteTimeBlockManagerDeleteById(final long noteId) {
+        noteTimeBlockManagerRepository.deleteAllByNoteId(noteId);
+    }
+
+    public void noteTimeBlockManagerDeleteByIds(final List<Long> noteIds) {
         noteIds.forEach(noteTimeBlockManagerRepository::deleteAllByNoteId);
     }
 }
