@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.regex.Pattern;
+
+import static com.tiki.server.member.Constants.PASSWORD_PATTERN;
 import static com.tiki.server.member.message.ErrorCode.*;
 
 @Service
@@ -28,21 +31,23 @@ public class MemberService {
     private final MemberTeamManagerFinder memberTeamManagerFinder;
 
     @Transactional
-    public void signUp(MemberProfileCreateRequest request) {
+    public void signUp(final MemberProfileCreateRequest request) {
         memberFinder.checkPresent(Email.from(request.email()));
+        checkPasswordFormat(request.password());
         checkPassword(request.password(), request.passwordChecker());
         Member member = createMember(request);
         saveMember(member);
     }
 
     @Transactional
-    public void changePassword(PasswordChangeRequest request) {
+    public void changePassword(final PasswordChangeRequest request) {
         Member member = memberFinder.checkEmpty(Email.from(request.email()));
+        checkPasswordFormat(request.password());
         checkPassword(request.password(), request.passwordChecker());
         member.resetPassword(passwordEncoder.encode(request.password()));
     }
 
-    private Member createMember(MemberProfileCreateRequest request) {
+    private Member createMember(final MemberProfileCreateRequest request) {
         return Member.of(
                 request.email(),
                 passwordEncoder.encode(request.password()),
@@ -51,17 +56,23 @@ public class MemberService {
                 request.univ());
     }
 
-    private void checkPassword(String password, String passwordChecker) {
+    private void checkPasswordFormat(final String password) {
+        if (!(password != null && !password.contains(" ") && Pattern.matches(PASSWORD_PATTERN, password))) {
+            throw new MemberException(INVALID_PASSWORD);
+        }
+    }
+
+    private void checkPassword(final String password, final String passwordChecker) {
         if (!password.equals(passwordChecker)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
 
-    private void saveMember(Member member) {
+    private void saveMember(final Member member) {
         memberSaver.save(member);
     }
 
-    public BelongTeamsGetResponse findBelongTeams(long memberId) {
+    public BelongTeamsGetResponse findBelongTeams(final long memberId) {
         return BelongTeamsGetResponse.from(memberTeamManagerFinder.findBelongTeamByMemberId(memberId));
     }
 }
