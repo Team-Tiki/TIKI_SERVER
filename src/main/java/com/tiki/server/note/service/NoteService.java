@@ -34,7 +34,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,7 +52,6 @@ public class NoteService {
     private final NoteDocumentManagerDeleter noteDocumentManagerDeleter;
     private final TimeBlockFinder timeBlockFinder;
     private final DocumentFinder documentFinder;
-    private final MemberFinder memberFinder;
 
     @Transactional
     public NoteCreateResponseDTO createNoteFree(final NoteFreeCreateDTO request) {
@@ -100,22 +98,27 @@ public class NoteService {
     public NoteGetDetailResponseDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         Note note = noteFinder.findById(noteId);
-        List<Long> documentIdList = noteDocumentManagerFinder.findAllByNoteId(noteId).stream()
-                .map(NoteDocumentManager::getDocumentId)
-                .toList();
-        List<Optional<Document>> documentList = documentIdList.stream()
-                .map(documentFinder::findById)
-                .toList();
+        List<Document> documentList = getDocumentListMappedByNote(noteId);
+        List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
+        return NoteGetDetailResponseDTO.of(note, documentList, timeBlockList);
+    }
 
+    private List<TimeBlock> getTimeBlocksMappedByNote(long noteId) {
         List<Long> timblockIdList = noteTimeBlockManagerFinder.findAllByNoteId(noteId).stream()
                 .map(NoteTimeBlockManager::getTimeBlockId)
                 .toList();
-        List<Optional<TimeBlock>> timeBlockList = timblockIdList.stream()
-                .map(timeBlockFinder::findById)
+        return timblockIdList.stream()
+                .map(timeBlockFinder::findByIdOrElseThrow)
                 .toList();
+    }
 
-
-        return NoteGetDetailResponseDTO.of(null, null, null, null);
+    private List<Document> getDocumentListMappedByNote(long noteId) {
+        List<Long> documentIdList = noteDocumentManagerFinder.findAllByNoteId(noteId).stream()
+                .map(NoteDocumentManager::getDocumentId)
+                .toList();
+        return documentIdList.stream()
+                .map(documentFinder::findByIdOrElseThrow)
+                .toList();
     }
 
     private Note createNote(final NoteBaseDTO request, final String author, final String encryptedContents, final NoteType noteType) {
