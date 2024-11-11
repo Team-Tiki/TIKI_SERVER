@@ -44,6 +44,7 @@ public class Note extends BaseTime {
 
     private String contents;
 
+    @Enumerated(EnumType.STRING)
     private NoteType noteType;
 
     public static Note of(
