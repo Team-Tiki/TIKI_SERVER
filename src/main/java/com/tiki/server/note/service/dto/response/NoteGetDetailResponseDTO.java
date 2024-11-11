@@ -1,5 +1,6 @@
 package com.tiki.server.note.service.dto.response;
 
+import com.tiki.server.common.util.ContentDecoder;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.service.dto.response.DocumentDownloadDTO;
 import com.tiki.server.note.entity.Note;
@@ -8,7 +9,6 @@ import com.tiki.server.timeblock.service.dto.response.TimeBlockNameDTO;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public record NoteGetDetailResponseDTO(
         String author,
@@ -21,18 +21,17 @@ public record NoteGetDetailResponseDTO(
 ) {
     public static NoteGetDetailResponseDTO of(
             final Note note,
-            final String decryptedContents,
-            final List<DocumentDownloadDTO> documentList,
-            final List<TimeBlockNameDTO> timeBlockList
+            final List<Document> documentList,
+            final List<TimeBlock> timeBlockList
     ) {
         return new NoteGetDetailResponseDTO(
                 note.getAuthor(),
                 note.getStartDate(),
                 note.getEndDate(),
                 note.isComplete(),
-                decryptedContents,
-                documentList,
-                timeBlockList
+                ContentDecoder.encodeNoteFree(note.getContents()),
+                documentList.stream().map(DocumentDownloadDTO::from).toList(),
+                timeBlockList.stream().map(TimeBlockNameDTO::from).toList()
         );
     }
 }
