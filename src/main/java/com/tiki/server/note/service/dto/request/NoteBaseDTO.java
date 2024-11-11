@@ -1,42 +1,44 @@
 package com.tiki.server.note.service.dto.request;
 
+import lombok.NonNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public record NoteBaseDTO(
-        String title,
+        @NonNull String title,
         boolean complete,
-        LocalDate startDate,
-        LocalDate endDate,
+        @NonNull LocalDate startDate,
+        @NonNull LocalDate endDate,
         long memberId,
         long teamId,
         List<Long> timeBlockIds,
         List<Long> documentIds
 ) {
 
-    public static NoteBaseDTO of(final NoteFreeCreateDTO noteFreeCreateDTO) {
+    public static NoteBaseDTO of(final NoteFreeCreateServiceRequest noteFreeCreateServiceRequest) {
         return new NoteBaseDTO(
-                noteFreeCreateDTO.title(),
-                noteFreeCreateDTO.complete(),
-                noteFreeCreateDTO.startDate(),
-                noteFreeCreateDTO.endDate(),
-                noteFreeCreateDTO.memberId(),
-                noteFreeCreateDTO.teamId(),
-                noteFreeCreateDTO.timeBlockIds(),
-                noteFreeCreateDTO.documentIds()
+                noteFreeCreateServiceRequest.title(),
+                noteFreeCreateServiceRequest.complete(),
+                noteFreeCreateServiceRequest.startDate(),
+                noteFreeCreateServiceRequest.endDate(),
+                noteFreeCreateServiceRequest.memberId(),
+                noteFreeCreateServiceRequest.teamId(),
+                noteFreeCreateServiceRequest.timeBlockIds(),
+                noteFreeCreateServiceRequest.documentIds()
         );
     }
 
-    public static NoteBaseDTO of(final NoteTemplateCreateDTO noteTemplateCreateDTO) {
+    public static NoteBaseDTO of(final NoteTemplateCreateServiceRequest noteTemplateCreateServiceRequest) {
         return new NoteBaseDTO(
-                noteTemplateCreateDTO.title(),
-                noteTemplateCreateDTO.complete(),
-                noteTemplateCreateDTO.startDate(),
-                noteTemplateCreateDTO.endDate(),
-                noteTemplateCreateDTO.memberId(),
-                noteTemplateCreateDTO.teamId(),
-                noteTemplateCreateDTO.timeBlockIds(),
-                noteTemplateCreateDTO.documentIds()
+                noteTemplateCreateServiceRequest.title(),
+                noteTemplateCreateServiceRequest.complete(),
+                noteTemplateCreateServiceRequest.startDate(),
+                noteTemplateCreateServiceRequest.endDate(),
+                noteTemplateCreateServiceRequest.memberId(),
+                noteTemplateCreateServiceRequest.teamId(),
+                noteTemplateCreateServiceRequest.timeBlockIds(),
+                noteTemplateCreateServiceRequest.documentIds()
         );
     }
 }

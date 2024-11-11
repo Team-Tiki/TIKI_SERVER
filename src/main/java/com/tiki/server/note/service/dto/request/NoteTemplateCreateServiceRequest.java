@@ -1,33 +1,38 @@
 package com.tiki.server.note.service.dto.request;
 
-import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
 import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;
-public record NoteFreeCreateDTO(
+
+public record NoteTemplateCreateServiceRequest(
         @NonNull String title,
         boolean complete,
         @NonNull LocalDate startDate,
         @NonNull LocalDate endDate,
-        @NonNull String contents,
+        @NonNull String answerWhatActivity,
+        @NonNull String answerHowToPrepare,
+        @NonNull String answerWhatIsDisappointedThing,
+        @NonNull String answerHowToFix,
         long teamId,
         List<Long> timeBlockIds,
         List<Long> documentIds,
         long memberId
 ) {
-    public static NoteFreeCreateDTO of(
-            final NoteFreeCreateRequest request,
+    public static NoteTemplateCreateServiceRequest of(
+            final NoteTemplateCreateRequest request,
             final long memberId
     ) {
-        return new NoteFreeCreateDTO(
+        return new NoteTemplateCreateServiceRequest(
                 request.title(),
                 request.complete(),
                 request.startDate(),
                 request.endDate(),
-                request.contents(),
+                request.answerWhatActivity(),
+                request.answerHowToPrepare(),
+                request.answerWhatIsDisappointedThing(),
+                request.answerHowToFix(),
                 request.teamId(),
                 request.timeBlockIds(),
                 request.documentIds(),

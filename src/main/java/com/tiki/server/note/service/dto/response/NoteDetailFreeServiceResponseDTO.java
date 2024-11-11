@@ -7,28 +7,29 @@ import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.service.dto.response.TimeBlockNameDTO;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public record NoteGetDetailFreeResponseDTO(
-        NoteType noteType,
-        String title,
-        String author,
-        LocalDate startDate,
-        LocalDate endDate,
+public record NoteDetailFreeServiceResponseDTO(
+        @NonNull NoteType noteType,
+        @NonNull String title,
+        @NonNull String author,
+        @NonNull LocalDate startDate,
+        @NonNull LocalDate endDate,
         boolean complete,
-        String contents,
+        @NonNull String contents,
         List<DocumentDownloadDTO> documentList,
         List<TimeBlockNameDTO> timeBlockList
-) implements NoteGetDetailViewDTO {
+) implements NoteDetailGetServiceResponse {
 
-    public static NoteGetDetailFreeResponseDTO of(
+    public static NoteDetailFreeServiceResponseDTO of(
             final Note note,
             final List<Document> documentList,
             final List<TimeBlock> timeBlockList
     ) {
-        return new NoteGetDetailFreeResponseDTO(
+        return new NoteDetailFreeServiceResponseDTO(
                 NoteType.FREE,
                 note.getTitle(),
                 note.getAuthor(),

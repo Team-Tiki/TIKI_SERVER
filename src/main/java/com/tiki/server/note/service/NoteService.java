@@ -11,9 +11,8 @@ import com.tiki.server.note.adapter.NoteSaver;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
 import com.tiki.server.note.service.dto.request.NoteBaseDTO;
-import com.tiki.server.note.service.dto.request.NoteDeleteDTO;
-import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
-import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
+import com.tiki.server.note.service.dto.request.NoteFreeCreateServiceRequest;
+import com.tiki.server.note.service.dto.request.NoteTemplateCreateServiceRequest;
 import com.tiki.server.note.service.dto.response.*;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerDeleter;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerFinder;
@@ -55,15 +54,15 @@ public class NoteService {
     private final DocumentFinder documentFinder;
 
     @Transactional
-    public NoteCreateResponseDTO createNoteFree(final NoteFreeCreateDTO request) {
+    public NoteCreateServiceResponse createNoteFree(final NoteFreeCreateServiceRequest request) {
         String author = memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId()).getName();
         String encryptedContents = ContentEncoder.encodeNoteFree(request.contents());
         Note note = createNote(NoteBaseDTO.of(request), author, encryptedContents, NoteType.FREE);
-        return NoteCreateResponseDTO.from(note.getId());
+        return NoteCreateServiceResponse.from(note.getId());
     }
 
     @Transactional
-    public NoteCreateResponseDTO createNoteTemplate(final NoteTemplateCreateDTO request) {
+    public NoteCreateServiceResponse createNoteTemplate(final NoteTemplateCreateServiceRequest request) {
         String author = memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId()).getName();
         String encryptedContents = ContentEncoder.encodeNoteTemplate(
                 request.answerWhatActivity(),
@@ -72,36 +71,36 @@ public class NoteService {
                 request.answerHowToFix()
         );
         Note note = createNote(NoteBaseDTO.of(request), author, encryptedContents, NoteType.TEMPLATE);
-        return NoteCreateResponseDTO.from(note.getId());
+        return NoteCreateServiceResponse.from(note.getId());
     }
 
     @Transactional
-    public void deleteNotes(final NoteDeleteDTO request) {
-        memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
-        noteDocumentManagerDeleter.noteDeleteByIds(request.notesIds());
-        noteTimeBlockManagerDeleter.noteDeleteByIds(request.notesIds());
-        noteDeleter.deleteNoteByIds(request.notesIds());
+    public void deleteNotes(final List<Long> noteIds, final long teamId, final long memberId) {
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        noteDocumentManagerDeleter.noteDeleteByIds(noteIds);
+        noteTimeBlockManagerDeleter.noteDeleteByIds(noteIds);
+        noteDeleter.deleteNoteByIds(noteIds);
     }
 
-    public NoteGetListResponseDTO getNote(final long teamId, final long memberId, final LocalDateTime lastUpdatedAt, final SortOrder sortOrder) {
+    public NoteListGetServiceResponse getNote(final long teamId, final long memberId, final LocalDateTime lastUpdatedAt, final SortOrder sortOrder) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
         List<Note> noteList = getNotes(lastUpdatedAt, sortOrder, pageable);
         List<NoteGetResponseDTO> noteGetResponseDTOList = noteList.stream()
                 .map(NoteGetResponseDTO::of)
                 .collect(Collectors.toList());
-        return new NoteGetListResponseDTO(noteGetResponseDTOList);
+        return new NoteListGetServiceResponse(noteGetResponseDTOList);
 
     }
 
-    public NoteGetDetailViewDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
+    public NoteDetailGetServiceResponse getNoteDetail(final long teamId, final long memberId, final long noteId) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         Note note = noteFinder.findById(noteId);
         List<Document> documentList = getDocumentListMappedByNote(noteId);
         List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
         return note.getNoteType() == NoteType.FREE ?
-                NoteGetDetailFreeResponseDTO.of(note, documentList, timeBlockList) :
-                NoteGetDetailTemplateResponseDTO.of(note, documentList, timeBlockList);
+                NoteDetailFreeServiceResponseDTO.of(note, documentList, timeBlockList) :
+                NoteDetailTemplateServiceResponseDTO.of(note, documentList, timeBlockList);
     }
 
     private List<Note> getNotes(LocalDateTime lastUpdatedAt, SortOrder sortOrder, PageRequest pageable) {
