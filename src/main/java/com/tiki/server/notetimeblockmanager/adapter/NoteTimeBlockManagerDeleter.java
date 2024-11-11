@@ -15,5 +15,4 @@ public class NoteTimeBlockManagerDeleter {
     public void noteDeleteByIds(final List<Long> noteIds) {
         noteIds.forEach(noteTimeBlockManagerRepository::deleteAllByNoteId);
     }
-
 }

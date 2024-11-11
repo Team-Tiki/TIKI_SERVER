@@ -94,6 +94,16 @@ public class NoteService {
 
     }
 
+    public NoteGetDetailViewDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        Note note = noteFinder.findById(noteId);
+        List<Document> documentList = getDocumentListMappedByNote(noteId);
+        List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
+        return note.getNoteType() == NoteType.FREE ?
+                NoteGetDetailFreeResponseDTO.of(note, documentList, timeBlockList) :
+                NoteGetDetailTemplateResponseDTO.of(note, documentList, timeBlockList);
+    }
+
     private List<Note> getNotes(LocalDateTime lastUpdatedAt, SortOrder sortOrder, PageRequest pageable) {
         List<Note> noteList = null;
         if (sortOrder == SortOrder.DESC) {
@@ -103,16 +113,6 @@ public class NoteService {
             noteList = noteFinder.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt, pageable);
         }
         return noteList;
-    }
-
-    public NoteGetDetailViewDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
-        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        Note note = noteFinder.findById(noteId);
-        List<Document> documentList = getDocumentListMappedByNote(noteId);
-        List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
-        return note.getNoteType() == NoteType.FREE ?
-                NoteGetDetailFreeResponseDTO.of(note, documentList, timeBlockList) :
-                NoteGetDetailTemplateResponseDTO.of(note, documentList, timeBlockList);
     }
 
     private List<TimeBlock> getTimeBlocksMappedByNote(long noteId) {

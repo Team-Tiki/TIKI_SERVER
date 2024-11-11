@@ -22,6 +22,7 @@ public record NoteGetDetailFreeResponseDTO(
         List<DocumentDownloadDTO> documentList,
         List<TimeBlockNameDTO> timeBlockList
 ) implements NoteGetDetailViewDTO {
+
     public static NoteGetDetailFreeResponseDTO of(
             final Note note,
             final List<Document> documentList,

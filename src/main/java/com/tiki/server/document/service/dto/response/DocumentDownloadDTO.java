@@ -8,6 +8,7 @@ public record DocumentDownloadDTO(
         String fileUrl,
         double capacity
 ) {
+
     public static DocumentDownloadDTO from(final Document document) {
         return new DocumentDownloadDTO(
                 document.getId(),

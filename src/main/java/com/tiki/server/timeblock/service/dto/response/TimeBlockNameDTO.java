@@ -7,6 +7,7 @@ public record TimeBlockNameDTO(
         String name,
         String color
 ) {
+
     public static TimeBlockNameDTO from(final TimeBlock timeBlock){
         return new TimeBlockNameDTO(timeBlock.getId(), timeBlock.getName(), timeBlock.getColor());
     }

@@ -16,6 +16,14 @@ public record NoteGetResponseDTO(
 ) {
 
     public static NoteGetResponseDTO of(final Note note) {
-        return new NoteGetResponseDTO(note.getId(), note.getTitle(), note.getStartDate(), note.getEndDate(), note.getAuthor(), note.isComplete(), note.getUpdatedAt());
+        return new NoteGetResponseDTO(
+                note.getId(),
+                note.getTitle(),
+                note.getStartDate(),
+                note.getEndDate(),
+                note.getAuthor(),
+                note.isComplete(),
+                note.getUpdatedAt()
+        );
     }
 }

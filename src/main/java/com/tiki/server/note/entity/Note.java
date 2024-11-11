@@ -26,6 +26,7 @@ public class Note extends BaseTime {
     private Long id;
 
     private String title;
+
     private String author;
 
     private boolean complete;

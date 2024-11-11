@@ -27,7 +27,7 @@ public class TimeBlockFinder {
             String accessiblePosition,
             String date
     ) {
-        return timeBlockRepository.findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream()
-                .toList();
+        return timeBlockRepository.
+                findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream().toList();
     }
 }

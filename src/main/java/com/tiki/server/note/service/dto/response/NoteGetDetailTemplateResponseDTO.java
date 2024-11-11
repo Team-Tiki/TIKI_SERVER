@@ -26,6 +26,7 @@ public record NoteGetDetailTemplateResponseDTO(
         List<DocumentDownloadDTO> documentList,
         List<TimeBlockNameDTO> timeBlockList
 ) implements NoteGetDetailViewDTO {
+
     public static NoteGetDetailTemplateResponseDTO of(
             final Note note,
             final List<Document> documentList,

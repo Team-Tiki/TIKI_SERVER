@@ -15,6 +15,5 @@ public class NoteDocumentManagerFinder {
 
     public List<NoteDocumentManager> findAllByNoteId(final long noteId){
         return noteDocumentManagerRepository.findAllByNoteId(noteId);
-
     }
 }

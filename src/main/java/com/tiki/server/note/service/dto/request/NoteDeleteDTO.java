@@ -7,6 +7,7 @@ public record NoteDeleteDTO(
         long teamId,
         long memberId
 ) {
+
     public static NoteDeleteDTO of(List<Long> notesIds,long teamId,long memberId){
         return new NoteDeleteDTO(notesIds, teamId, memberId);
     }
