@@ -43,4 +43,8 @@ public class DocumentFinder {
     public List<Document> findAllByTeamId(long teamId) {
         return documentRepository.findAllByTeamId(teamId);
     }
+
+    public boolean existsById(Long timeBlockId) {
+        return documentRepository.existsById(timeBlockId);
+    }
 }
