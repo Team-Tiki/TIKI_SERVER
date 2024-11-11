@@ -9,7 +9,7 @@ import com.tiki.server.note.service.dto.request.NoteDeleteDTO;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
 import com.tiki.server.note.service.dto.response.NoteCreateResponseDTO;
-import com.tiki.server.note.service.dto.response.NoteGetDetailResponseDTO;
+import com.tiki.server.note.service.dto.response.NoteGetDetailViewDTO;
 import com.tiki.server.note.service.dto.response.NoteGetListResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -63,13 +63,13 @@ public class NoteController {
     }
 
     @GetMapping("/{teamId}/{noteId}")
-    public ResponseEntity<SuccessResponse<NoteGetDetailResponseDTO>> getNoteDetail(
+    public ResponseEntity<SuccessResponse<NoteGetDetailViewDTO>> getNoteDetail(
             final Principal principal,
             @PathVariable final long teamId,
             @PathVariable final long noteId
     ){
         long memberId = Long.parseLong(principal.getName());
-        NoteGetDetailResponseDTO response = noteService.getNoteDetail(teamId,memberId,noteId);
+        NoteGetDetailViewDTO response = noteService.getNoteDetail(teamId,memberId,noteId);
         return ResponseEntity.ok().body(success(GET_NOTE_DETAIL.getMessage(), response));
     }
 
