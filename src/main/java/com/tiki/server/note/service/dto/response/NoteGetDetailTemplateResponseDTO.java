@@ -7,7 +7,6 @@ import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.service.dto.response.TimeBlockNameDTO;
-import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.List;
