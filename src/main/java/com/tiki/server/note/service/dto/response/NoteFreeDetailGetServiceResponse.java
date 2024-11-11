@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record NoteFreeDetailGetServiceResponse(
+        long noteId,
         @NonNull NoteType noteType,
         @NonNull String title,
         @NonNull String author,
@@ -30,6 +31,7 @@ public record NoteFreeDetailGetServiceResponse(
             final List<TimeBlock> timeBlockList
     ) {
         return new NoteFreeDetailGetServiceResponse(
+                note.getId(),
                 NoteType.FREE,
                 note.getTitle(),
                 note.getAuthor(),

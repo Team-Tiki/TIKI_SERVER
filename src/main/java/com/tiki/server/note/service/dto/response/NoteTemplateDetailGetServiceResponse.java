@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record NoteTemplateDetailGetServiceResponse(
+        long noteId,
         @NonNull NoteType noteType,
         @NonNull String title,
         @NonNull String author,
@@ -34,6 +35,7 @@ public record NoteTemplateDetailGetServiceResponse(
     ) {
         List<String> contents = ContentDecoder.decodeNoteTemplate(note.getContents());
         return new NoteTemplateDetailGetServiceResponse(
+                note.getId(),
                 NoteType.TEMPLATE,
                 note.getTitle(),
                 note.getAuthor(),
