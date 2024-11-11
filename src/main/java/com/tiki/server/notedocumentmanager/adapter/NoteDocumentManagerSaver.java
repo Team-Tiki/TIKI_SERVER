@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoteDocumentManagerSaver {
 
-    private NoteDocumentManagerRepository noteDocumentManagerRepository;
+    private final NoteDocumentManagerRepository noteDocumentManagerRepository;
 
     public NoteDocumentManager save(final NoteDocumentManager noteDocumentManager) {
         return noteDocumentManagerRepository.save(noteDocumentManager);

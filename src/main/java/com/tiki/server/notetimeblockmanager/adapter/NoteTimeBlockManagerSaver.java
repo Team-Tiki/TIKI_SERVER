@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoteTimeBlockManagerSaver {
 
-    private NoteTimeBlockManagerRepository noteTimeBlockManagerRepository;
+    private final NoteTimeBlockManagerRepository noteTimeBlockManagerRepository;
 
     public NoteTimeBlockManager save(final NoteTimeBlockManager noteTimeBlockManager) {
         return noteTimeBlockManagerRepository.save(noteTimeBlockManager);
