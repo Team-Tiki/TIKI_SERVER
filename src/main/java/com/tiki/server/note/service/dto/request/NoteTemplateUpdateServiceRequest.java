@@ -21,6 +21,7 @@ public record NoteTemplateUpdateServiceRequest(
         List<Long> documentIds,
         long memberId
 ) {
+
     public static NoteTemplateUpdateServiceRequest of(
             final NoteTemplateUpdateRequest request,
             final long noteId,
