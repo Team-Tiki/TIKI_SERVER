@@ -27,6 +27,8 @@ public class Note extends BaseTime {
 
     private String title;
 
+    private String author;
+
     private boolean complete;
 
     private LocalDate startDate;
@@ -43,6 +45,7 @@ public class Note extends BaseTime {
 
     public static Note of(
             final String title,
+            final String author,
             final boolean complete,
             final LocalDate startDate,
             final LocalDate endDate,
@@ -53,6 +56,7 @@ public class Note extends BaseTime {
     ) {
         return Note.builder()
                 .title(title)
+                .author(author)
                 .complete(complete)
                 .startDate(startDate)
                 .endDate(endDate)

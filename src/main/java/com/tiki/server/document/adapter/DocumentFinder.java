@@ -18,25 +18,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DocumentFinder {
 
-	private final DocumentRepository documentRepository;
+    private final DocumentRepository documentRepository;
 
-	public Document findByIdWithTimeBlock(long documentId) {
-		Document document = documentRepository.findByIdWithTimeBlock(documentId);
-		if (Objects.isNull(document)) {
-			throw new DocumentException(INVALID_DOCUMENT);
-		}
-		return document;
-	}
+    public Document findByIdOrElseThrow(final long documentId) {
+        return documentRepository.findById(documentId).orElseThrow(()-> new DocumentException(INVALID_DOCUMENT));
+    }
 
-	public List<DocumentVO> findAllByTimeBlockId(long timeBlockId) {
-		return documentRepository.findAllByTimeBlockId(timeBlockId).stream().map(DocumentVO::from).toList();
-	}
+    public Document findByIdWithTimeBlock(long documentId) {
+        Document document = documentRepository.findByIdWithTimeBlock(documentId);
+        if (Objects.isNull(document)) {
+            throw new DocumentException(INVALID_DOCUMENT);
+        }
+        return document;
+    }
 
-	public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
-		return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
-	}
+    public List<DocumentVO> findAllByTimeBlockId(long timeBlockId) {
+        return documentRepository.findAllByTimeBlockId(timeBlockId).stream().map(DocumentVO::from).toList();
+    }
 
-	public List<Document> findAllByTeamId(long teamId) {
-		return documentRepository.findAllByTeamId(teamId);
-	}
+    public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
+        return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
+    }
+
+    public List<Document> findAllByTeamId(long teamId) {
+        return documentRepository.findAllByTeamId(teamId);
+    }
 }
