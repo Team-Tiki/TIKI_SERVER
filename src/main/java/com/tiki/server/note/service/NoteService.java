@@ -58,6 +58,8 @@ public class NoteService {
         String author = memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId()).getName();
         String encryptedContents = ContentEncoder.encodeNoteFree(request.contents());
         Note note = createNote(NoteBase.of(request), author, encryptedContents, NoteType.FREE);
+        createNoteTimeBlockManagers(request.timeBlockIds(), note.getId());
+        createNoteDocumentManagers(request.documentIds(), note.getId());
         return NoteCreateServiceResponse.from(note.getId());
     }
 
@@ -71,6 +73,8 @@ public class NoteService {
                 request.answerHowToFix()
         );
         Note note = createNote(NoteBase.of(request), author, encryptedContents, NoteType.TEMPLATE);
+        createNoteTimeBlockManagers(request.timeBlockIds(), note.getId());
+        createNoteDocumentManagers(request.documentIds(), note.getId());
         return NoteCreateServiceResponse.from(note.getId());
     }
 
@@ -129,7 +133,7 @@ public class NoteService {
     }
 
     private Note createNote(final NoteBase request, final String author, final String encryptedContents, final NoteType noteType) {
-        Note note = noteSaver.createNote(
+        return noteSaver.createNote(
                 Note.of(
                         request.title(),
                         author,
@@ -141,19 +145,18 @@ public class NoteService {
                         request.teamId(),
                         noteType
                 ));
-        createNoteTimeBlockManagers(request.timeBlockIds(), note.getId());
-        createNoteDocumentManagers(request.documentIds(), note.getId());
-        return note;
     }
 
     private void createNoteTimeBlockManagers(final List<Long> timeBlockIds, final long noteId) {
         timeBlockIds.stream()
+                .filter(timeBlockFinder::existsById)
                 .map(timeBlockId -> NoteTimeBlockManager.of(noteId, timeBlockId))
                 .forEach(noteTimeBlockManagerSaver::save);
     }
 
     private void createNoteDocumentManagers(final List<Long> documentIds, final long noteId) {
         documentIds.stream()
+                .filter(documentFinder::existsById)
                 .map(documentId -> NoteDocumentManager.of(noteId, documentId))
                 .forEach(noteDocumentManagerSaver::save);
     }
