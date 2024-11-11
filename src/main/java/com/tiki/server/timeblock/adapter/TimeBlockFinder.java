@@ -9,7 +9,6 @@ import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.exception.TimeBlockException;
 import com.tiki.server.timeblock.repository.TimeBlockRepository;
-import com.tiki.server.timeblock.vo.TimeBlockVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,23 +18,17 @@ public class TimeBlockFinder {
 
     private final TimeBlockRepository timeBlockRepository;
 
-    public TimeBlockVO findByIdOrElseThrow(long id) {
+    public TimeBlock findByIdOrElseThrow(long id) {
         return timeBlockRepository.findById(id)
-                .map(TimeBlockVO::from)
                 .orElseThrow(() -> new TimeBlockException(INVALID_TIME_BLOCK));
     }
 
-    public Optional<TimeBlock> findById(final long id) {
-        return timeBlockRepository.findById(id);
-    }
-
-    public List<TimeBlockVO> findByTeamAndAccessiblePositionAndDate(
+    public List<TimeBlock> findByTeamAndAccessiblePositionAndDate(
             long teamId,
             String accessiblePosition,
             String date
     ) {
         return timeBlockRepository.findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream()
-                .map(TimeBlockVO::from)
                 .toList();
     }
 }
