@@ -14,10 +14,7 @@ import com.tiki.server.note.service.dto.request.NoteBaseDTO;
 import com.tiki.server.note.service.dto.request.NoteDeleteDTO;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateDTO;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateDTO;
-import com.tiki.server.note.service.dto.response.NoteCreateResponseDTO;
-import com.tiki.server.note.service.dto.response.NoteGetDetailResponseDTO;
-import com.tiki.server.note.service.dto.response.NoteGetListResponseDTO;
-import com.tiki.server.note.service.dto.response.NoteGetResponseDTO;
+import com.tiki.server.note.service.dto.response.*;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerDeleter;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerFinder;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerSaver;
@@ -94,12 +91,14 @@ public class NoteService {
 
     }
 
-    public NoteGetDetailResponseDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
+    public NoteGetDetailViewDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         Note note = noteFinder.findById(noteId);
         List<Document> documentList = getDocumentListMappedByNote(noteId);
         List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
-        return NoteGetDetailResponseDTO.of(note, documentList, timeBlockList);
+        return note.getNoteType() == NoteType.FREE ?
+                NoteGetDetailFreeResponseDTO.of(note, documentList, timeBlockList):
+                NoteGetDetailTemplateResponseDTO.of(note,documentList,timeBlockList);
     }
 
     private List<TimeBlock> getTimeBlocksMappedByNote(long noteId) {
