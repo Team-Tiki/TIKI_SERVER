@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.tiki.server.common.Constants.INIT_NUM;
 import static com.tiki.server.emailverification.constants.EmailConstants.*;
 import static com.tiki.server.emailverification.message.ErrorCode.MESSAGE_HELPER_ERROR;
 
