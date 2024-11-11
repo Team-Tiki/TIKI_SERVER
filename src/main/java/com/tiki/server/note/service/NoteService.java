@@ -3,7 +3,6 @@ package com.tiki.server.note.service;
 import com.tiki.server.common.util.ContentEncoder;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.note.adapter.NoteDeleter;

@@ -4,7 +4,6 @@ import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.common.support.RepositoryAdapter;

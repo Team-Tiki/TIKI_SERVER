@@ -3,7 +3,6 @@ package com.tiki.server.timeblock.adapter;
 import static com.tiki.server.timeblock.message.ErrorCode.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.timeblock.entity.TimeBlock;
