@@ -30,4 +30,8 @@ public class TimeBlockFinder {
         return timeBlockRepository.
                 findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream().toList();
     }
+
+    public boolean existsById(Long timeBlockId) {
+        return timeBlockRepository.existsById(timeBlockId);
+    }
 }
