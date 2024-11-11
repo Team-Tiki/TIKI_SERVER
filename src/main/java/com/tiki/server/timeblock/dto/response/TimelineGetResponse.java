@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.tiki.server.timeblock.entity.BlockType;
-import com.tiki.server.timeblock.vo.TimeBlockVO;
+import com.tiki.server.timeblock.entity.TimeBlock;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -16,9 +16,9 @@ public record TimelineGetResponse(
 	List<TimeBlockGetResponse> timeBlocks
 ) {
 
-	public static TimelineGetResponse from(List<TimeBlockVO> timeBlockVOs) {
+	public static TimelineGetResponse from(List<TimeBlock> timeBlocks) {
 		return TimelineGetResponse.builder()
-			.timeBlocks(timeBlockVOs.stream().map(TimeBlockGetResponse::from).toList())
+			.timeBlocks(timeBlocks.stream().map(TimeBlockGetResponse::from).toList())
 			.build();
 	}
 
@@ -32,14 +32,14 @@ public record TimelineGetResponse(
 		@NonNull BlockType blockType
 		) {
 
-		public static TimeBlockGetResponse from(TimeBlockVO timeBlockVO) {
+		public static TimeBlockGetResponse from(TimeBlock timeBlock) {
 			return TimeBlockGetResponse.builder()
-				.timeBlockId(timeBlockVO.timeBlockId())
-				.name(timeBlockVO.name())
-				.color(timeBlockVO.color())
-				.startDate(timeBlockVO.startDate())
-				.endDate(timeBlockVO.endDate())
-				.blockType(timeBlockVO.blockType())
+				.timeBlockId(timeBlock.getId())
+				.name(timeBlock.getName())
+				.color(timeBlock.getColor())
+				.startDate(timeBlock.getStartDate())
+				.endDate(timeBlock.getEndDate())
+				.blockType(timeBlock.getType())
 				.build();
 		}
 	}
