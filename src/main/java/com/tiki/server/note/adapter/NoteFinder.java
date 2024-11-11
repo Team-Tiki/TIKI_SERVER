@@ -19,11 +19,11 @@ public class NoteFinder {
     private final NoteRepository noteRepository;
 
     public List<Note> findByModifiedAtBeforeOrderByModifiedAtDesc(final LocalDateTime lastUpdatedAt, final PageRequest pageRequest) {
-        return noteRepository.findByModifiedAtBeforeOrderByModifiedAtDesc(lastUpdatedAt,pageRequest);
+        return noteRepository.findByModifiedAtBeforeOrderByModifiedAtDesc(lastUpdatedAt, pageRequest);
     }
 
     public List<Note> findByModifiedAtAfterOrderByModifiedAtAsc(final LocalDateTime lastUpdatedAt, final PageRequest pageRequest) {
-        return noteRepository.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt,pageRequest);
+        return noteRepository.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt, pageRequest);
     }
 
     public Note findById(final long noteId) {
