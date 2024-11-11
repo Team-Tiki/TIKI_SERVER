@@ -2,7 +2,7 @@ package com.tiki.server.note.service.dto.response;
 
 import com.tiki.server.common.util.ContentDecoder;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.document.service.dto.response.DocumentTagServiceResponse;
+import com.tiki.server.document.service.dto.response.DocumentTagGetServiceResponse;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
 import com.tiki.server.timeblock.entity.TimeBlock;
@@ -24,7 +24,7 @@ public record NoteTemplateDetailGetServiceResponse(
         @NonNull String answerHowToPrepare,
         @NonNull String answerWhatIsDisappointedThing,
         @NonNull String answerHowToFix,
-        List<DocumentTagServiceResponse> documentList,
+        List<DocumentTagGetServiceResponse> documentList,
         List<TimeBlockTagServiceResponse> timeBlockList
 ) implements NoteDetailGetServiceResponse {
 
@@ -46,7 +46,7 @@ public record NoteTemplateDetailGetServiceResponse(
                 contents.get(1),
                 contents.get(2),
                 contents.get(3),
-                documentList.stream().map(DocumentTagServiceResponse::from).toList(),
+                documentList.stream().map(DocumentTagGetServiceResponse::from).toList(),
                 timeBlockList.stream().map(TimeBlockTagServiceResponse::from).toList()
         );
     }
