@@ -104,14 +104,10 @@ public class NoteService {
     }
 
     private List<Note> getNotes(LocalDateTime lastUpdatedAt, SortOrder sortOrder, PageRequest pageable) {
-        List<Note> noteList = null;
         if (sortOrder == SortOrder.DESC) {
-            noteList = noteFinder.findByModifiedAtBeforeOrderByModifiedAtDesc(lastUpdatedAt, pageable);
+            return noteFinder.findByModifiedAtBeforeOrderByModifiedAtDesc(lastUpdatedAt, pageable);
         }
-        if (sortOrder == SortOrder.ASC) {
-            noteList = noteFinder.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt, pageable);
-        }
-        return noteList;
+        return noteFinder.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt, pageable);
     }
 
     private List<TimeBlock> getTimeBlocksMappedByNote(long noteId) {
