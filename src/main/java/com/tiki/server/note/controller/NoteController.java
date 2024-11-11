@@ -1,6 +1,7 @@
 package com.tiki.server.note.controller;
 
 import com.tiki.server.common.dto.SuccessResponse;
+import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
 import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
@@ -55,10 +57,15 @@ public class NoteController {
     @GetMapping("/{teamId}")
     public ResponseEntity<SuccessResponse<NoteGetListResponseDTO>> getNote(
             final Principal principal,
-            @PathVariable long teamId
-    ){
+            @PathVariable long teamId,
+            @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+            @RequestParam(defaultValue = "DESC") SortOrder sortOrder
+    ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteGetListResponseDTO response = noteService.getNote(teamId,memberId);
+        if (lastUpdatedAt == null) {
+            lastUpdatedAt = (sortOrder == SortOrder.DESC) ? LocalDateTime.now() : LocalDateTime.of(1970, 1, 1, 0, 0);
+        }
+        NoteGetListResponseDTO response = noteService.getNote(teamId, memberId, lastUpdatedAt, sortOrder);
         return ResponseEntity.ok().body(success(GET_NOTE.getMessage(), response));
     }
 
@@ -67,9 +74,9 @@ public class NoteController {
             final Principal principal,
             @PathVariable final long teamId,
             @PathVariable final long noteId
-    ){
+    ) {
         long memberId = Long.parseLong(principal.getName());
-        NoteGetDetailViewDTO response = noteService.getNoteDetail(teamId,memberId,noteId);
+        NoteGetDetailViewDTO response = noteService.getNoteDetail(teamId, memberId, noteId);
         return ResponseEntity.ok().body(success(GET_NOTE_DETAIL.getMessage(), response));
     }
 
@@ -78,9 +85,9 @@ public class NoteController {
             final Principal principal,
             @PathVariable long teamId,
             @RequestParam List<Long> noteIds
-    ){
+    ) {
         long memberId = Long.parseLong(principal.getName());
-        noteService.deleteNotes(NoteDeleteDTO.of(noteIds,teamId,memberId));
-        return ResponseEntity.ok().body(success(DELETE_NOTE.getMessage(),null));
+        noteService.deleteNotes(NoteDeleteDTO.of(noteIds, teamId, memberId));
+        return ResponseEntity.ok().body(success(DELETE_NOTE.getMessage(), null));
     }
 }
