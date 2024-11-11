@@ -5,7 +5,7 @@ import com.tiki.server.note.entity.Note;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record NoteGetResponseDTO(
+public record NoteGetResponse(
         long noteId,
         String title,
         LocalDate startDate,
@@ -15,8 +15,8 @@ public record NoteGetResponseDTO(
         LocalDateTime lastUpdatedAt
 ) {
 
-    public static NoteGetResponseDTO of(final Note note) {
-        return new NoteGetResponseDTO(
+    public static NoteGetResponse of(final Note note) {
+        return new NoteGetResponse(
                 note.getId(),
                 note.getTitle(),
                 note.getStartDate(),

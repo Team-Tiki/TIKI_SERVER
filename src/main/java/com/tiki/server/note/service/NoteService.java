@@ -10,7 +10,7 @@ import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.adapter.NoteSaver;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
-import com.tiki.server.note.service.dto.request.NoteBaseDTO;
+import com.tiki.server.note.service.dto.request.NoteBase;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateServiceRequest;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateServiceRequest;
 import com.tiki.server.note.service.dto.response.*;
@@ -57,7 +57,7 @@ public class NoteService {
     public NoteCreateServiceResponse createNoteFree(final NoteFreeCreateServiceRequest request) {
         String author = memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId()).getName();
         String encryptedContents = ContentEncoder.encodeNoteFree(request.contents());
-        Note note = createNote(NoteBaseDTO.of(request), author, encryptedContents, NoteType.FREE);
+        Note note = createNote(NoteBase.of(request), author, encryptedContents, NoteType.FREE);
         return NoteCreateServiceResponse.from(note.getId());
     }
 
@@ -70,7 +70,7 @@ public class NoteService {
                 request.answerWhatIsDisappointedThing(),
                 request.answerHowToFix()
         );
-        Note note = createNote(NoteBaseDTO.of(request), author, encryptedContents, NoteType.TEMPLATE);
+        Note note = createNote(NoteBase.of(request), author, encryptedContents, NoteType.TEMPLATE);
         return NoteCreateServiceResponse.from(note.getId());
     }
 
@@ -86,10 +86,10 @@ public class NoteService {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
         List<Note> noteList = getNotes(lastUpdatedAt, sortOrder, pageable);
-        List<NoteGetResponseDTO> noteGetResponseDTOList = noteList.stream()
-                .map(NoteGetResponseDTO::of)
+        List<NoteGetResponse> noteGetResponseList = noteList.stream()
+                .map(NoteGetResponse::of)
                 .collect(Collectors.toList());
-        return new NoteListGetServiceResponse(noteGetResponseDTOList);
+        return new NoteListGetServiceResponse(noteGetResponseList);
 
     }
 
@@ -99,8 +99,8 @@ public class NoteService {
         List<Document> documentList = getDocumentListMappedByNote(noteId);
         List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
         return note.getNoteType() == NoteType.FREE ?
-                NoteDetailFreeServiceResponseDTO.of(note, documentList, timeBlockList) :
-                NoteDetailTemplateServiceResponseDTO.of(note, documentList, timeBlockList);
+                NoteFreeDetailGetServiceResponse.of(note, documentList, timeBlockList) :
+                NoteTemplateDetailGetServiceResponse.of(note, documentList, timeBlockList);
     }
 
     private List<Note> getNotes(LocalDateTime lastUpdatedAt, SortOrder sortOrder, PageRequest pageable) {
@@ -132,7 +132,7 @@ public class NoteService {
                 .toList();
     }
 
-    private Note createNote(final NoteBaseDTO request, final String author, final String encryptedContents, final NoteType noteType) {
+    private Note createNote(final NoteBase request, final String author, final String encryptedContents, final NoteType noteType) {
         Note note = noteSaver.createNote(
                 Note.of(
                         request.title(),

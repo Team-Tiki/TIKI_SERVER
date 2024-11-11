@@ -12,31 +12,38 @@ import lombok.NonNull;
 import java.time.LocalDate;
 import java.util.List;
 
-public record NoteDetailFreeServiceResponseDTO(
+public record NoteTemplateDetailGetServiceResponse(
         @NonNull NoteType noteType,
         @NonNull String title,
         @NonNull String author,
         @NonNull LocalDate startDate,
         @NonNull LocalDate endDate,
         boolean complete,
-        @NonNull String contents,
+        @NonNull String answerWhatActivity,
+        @NonNull String answerHowToPrepare,
+        @NonNull String answerWhatIsDisappointedThing,
+        @NonNull String answerHowToFix,
         List<DocumentDownloadDTO> documentList,
         List<TimeBlockNameDTO> timeBlockList
 ) implements NoteDetailGetServiceResponse {
 
-    public static NoteDetailFreeServiceResponseDTO of(
+    public static NoteTemplateDetailGetServiceResponse of(
             final Note note,
             final List<Document> documentList,
             final List<TimeBlock> timeBlockList
     ) {
-        return new NoteDetailFreeServiceResponseDTO(
-                NoteType.FREE,
+        List<String> contents = ContentDecoder.decodeNoteTemplate(note.getContents());
+        return new NoteTemplateDetailGetServiceResponse(
+                NoteType.TEMPLATE,
                 note.getTitle(),
                 note.getAuthor(),
                 note.getStartDate(),
                 note.getEndDate(),
                 note.isComplete(),
-                ContentDecoder.decodeNoteFree(note.getContents()),
+                contents.get(0),
+                contents.get(1),
+                contents.get(2),
+                contents.get(3),
                 documentList.stream().map(DocumentDownloadDTO::from).toList(),
                 timeBlockList.stream().map(TimeBlockNameDTO::from).toList()
         );

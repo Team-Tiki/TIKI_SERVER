@@ -5,7 +5,7 @@ import lombok.NonNull;
 import java.time.LocalDate;
 import java.util.List;
 
-public record NoteBaseDTO(
+public record NoteBase(
         @NonNull String title,
         boolean complete,
         @NonNull LocalDate startDate,
@@ -16,8 +16,8 @@ public record NoteBaseDTO(
         List<Long> documentIds
 ) {
 
-    public static NoteBaseDTO of(final NoteFreeCreateServiceRequest noteFreeCreateServiceRequest) {
-        return new NoteBaseDTO(
+    public static NoteBase of(final NoteFreeCreateServiceRequest noteFreeCreateServiceRequest) {
+        return new NoteBase(
                 noteFreeCreateServiceRequest.title(),
                 noteFreeCreateServiceRequest.complete(),
                 noteFreeCreateServiceRequest.startDate(),
@@ -29,8 +29,8 @@ public record NoteBaseDTO(
         );
     }
 
-    public static NoteBaseDTO of(final NoteTemplateCreateServiceRequest noteTemplateCreateServiceRequest) {
-        return new NoteBaseDTO(
+    public static NoteBase of(final NoteTemplateCreateServiceRequest noteTemplateCreateServiceRequest) {
+        return new NoteBase(
                 noteTemplateCreateServiceRequest.title(),
                 noteTemplateCreateServiceRequest.complete(),
                 noteTemplateCreateServiceRequest.startDate(),
