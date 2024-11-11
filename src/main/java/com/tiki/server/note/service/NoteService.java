@@ -1,10 +1,10 @@
 package com.tiki.server.note.service;
 
+import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.util.ContentEncoder;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
-import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.note.adapter.NoteDeleter;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.adapter.NoteSaver;
@@ -26,11 +26,16 @@ import com.tiki.server.notetimeblockmanager.entity.NoteTimeBlockManager;
 import com.tiki.server.timeblock.adapter.TimeBlockFinder;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.tiki.server.common.Constants.INIT_NUM;
+import static com.tiki.server.note.constants.NoteConstants.PAGE_SIZE;
 
 @Service
 @RequiredArgsConstructor
@@ -78,17 +83,26 @@ public class NoteService {
         noteDeleter.deleteNoteByIds(request.notesIds());
     }
 
-    public NoteGetListResponseDTO getNote(final long teamId, final long memberId) {
+    public NoteGetListResponseDTO getNote(final long teamId, final long memberId, final LocalDateTime lastUpdatedAt, final SortOrder sortOrder) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        List<Note> noteList = noteFinder.findAllByTeamId(teamId);
+        PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
+        List<Note> noteList = getNotes(lastUpdatedAt, sortOrder, pageable);
         List<NoteGetResponseDTO> noteGetResponseDTOList = noteList.stream()
-                .map(note -> {
-                    MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(note.getMemberId(), teamId);
-                    return NoteGetResponseDTO.of(note, memberTeamManager.getName());
-                })
+                .map(NoteGetResponseDTO::of)
                 .collect(Collectors.toList());
         return new NoteGetListResponseDTO(noteGetResponseDTOList);
 
+    }
+
+    private List<Note> getNotes(LocalDateTime lastUpdatedAt, SortOrder sortOrder, PageRequest pageable) {
+        List<Note> noteList = null;
+        if (sortOrder == SortOrder.DESC) {
+            noteList = noteFinder.findByModifiedAtBeforeOrderByModifiedAtDesc(lastUpdatedAt, pageable);
+        }
+        if (sortOrder == SortOrder.ASC) {
+            noteList = noteFinder.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt, pageable);
+        }
+        return noteList;
     }
 
     public NoteGetDetailViewDTO getNoteDetail(final long teamId, final long memberId, final long noteId) {
@@ -97,8 +111,8 @@ public class NoteService {
         List<Document> documentList = getDocumentListMappedByNote(noteId);
         List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
         return note.getNoteType() == NoteType.FREE ?
-                NoteGetDetailFreeResponseDTO.of(note, documentList, timeBlockList):
-                NoteGetDetailTemplateResponseDTO.of(note,documentList,timeBlockList);
+                NoteGetDetailFreeResponseDTO.of(note, documentList, timeBlockList) :
+                NoteGetDetailTemplateResponseDTO.of(note, documentList, timeBlockList);
     }
 
     private List<TimeBlock> getTimeBlocksMappedByNote(long noteId) {
