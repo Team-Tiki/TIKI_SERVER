@@ -2,11 +2,11 @@ package com.tiki.server.note.service.dto.response;
 
 import com.tiki.server.common.util.ContentDecoder;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.document.service.dto.response.DocumentDownloadDTO;
+import com.tiki.server.document.service.dto.response.DocumentTagServiceResponse;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
 import com.tiki.server.timeblock.entity.TimeBlock;
-import com.tiki.server.timeblock.service.dto.response.TimeBlockNameDTO;
+import com.tiki.server.timeblock.service.dto.response.TimeBlockTagServiceResponse;
 import lombok.NonNull;
 
 import java.time.LocalDate;
@@ -23,8 +23,8 @@ public record NoteTemplateDetailGetServiceResponse(
         @NonNull String answerHowToPrepare,
         @NonNull String answerWhatIsDisappointedThing,
         @NonNull String answerHowToFix,
-        List<DocumentDownloadDTO> documentList,
-        List<TimeBlockNameDTO> timeBlockList
+        List<DocumentTagServiceResponse> documentList,
+        List<TimeBlockTagServiceResponse> timeBlockList
 ) implements NoteDetailGetServiceResponse {
 
     public static NoteTemplateDetailGetServiceResponse of(
@@ -44,8 +44,8 @@ public record NoteTemplateDetailGetServiceResponse(
                 contents.get(1),
                 contents.get(2),
                 contents.get(3),
-                documentList.stream().map(DocumentDownloadDTO::from).toList(),
-                timeBlockList.stream().map(TimeBlockNameDTO::from).toList()
+                documentList.stream().map(DocumentTagServiceResponse::from).toList(),
+                timeBlockList.stream().map(TimeBlockTagServiceResponse::from).toList()
         );
     }
 }

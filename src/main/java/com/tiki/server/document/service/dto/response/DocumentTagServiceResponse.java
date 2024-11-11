@@ -2,15 +2,15 @@ package com.tiki.server.document.service.dto.response;
 
 import com.tiki.server.document.entity.Document;
 
-public record DocumentDownloadDTO(
+public record DocumentTagServiceResponse(
         long id,
         String fileName,
         String fileUrl,
         double capacity
 ) {
 
-    public static DocumentDownloadDTO from(final Document document) {
-        return new DocumentDownloadDTO(
+    public static DocumentTagServiceResponse from(final Document document) {
+        return new DocumentTagServiceResponse(
                 document.getId(),
                 document.getFileName(),
                 document.getFileUrl(),
