@@ -21,7 +21,7 @@ public class DocumentFinder {
     private final DocumentRepository documentRepository;
 
     public Document findByIdOrElseThrow(final long documentId) {
-        return documentRepository.findById(documentId).orElseThrow(()-> new DocumentException(INVALID_DOCUMENT));
+        return documentRepository.findById(documentId).orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }
 
     public Document findByIdWithTimeBlock(long documentId) {
