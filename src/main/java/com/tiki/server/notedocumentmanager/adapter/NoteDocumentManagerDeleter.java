@@ -12,7 +12,11 @@ public class NoteDocumentManagerDeleter {
 
     private final NoteDocumentManagerRepository noteDocumentManagerRepository;
 
-    public void noteDeleteByIds(final List<Long> noteIds) {
+    public void noteDocumentMangerDeleteByNoteId(final long noteId) {
+        noteDocumentManagerRepository.deleteAllByNoteId(noteId);
+    }
+
+    public void noteDocumentManagerDeleteByNoteIds(final List<Long> noteIds) {
         noteIds.forEach(noteDocumentManagerRepository::deleteAllByNoteId);
     }
 }
