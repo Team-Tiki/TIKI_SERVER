@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface NoteTimeBlockManagerRepository extends JpaRepository<NoteTimeBlockManager, Long> {
 
-    public void deleteAllByNoteId(long noteId);
+    void deleteAllByNoteId(final long noteId);
 
-    public List<NoteTimeBlockManager> findAllByNoteId(final long NoteId);
+    void deleteByNoteIdAndTimeBlockId(final long noteId, final long timeBlockId);
+
+    List<NoteTimeBlockManager> findAllByNoteId(final long NoteId);
 }

@@ -1,13 +1,18 @@
 package com.tiki.server.note.controller;
 
+import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
+import com.tiki.server.note.controller.dto.request.NoteFreeUpdateRequest;
 import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
+import com.tiki.server.note.controller.dto.request.NoteTemplateUpdateRequest;
 import com.tiki.server.note.service.NoteService;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateServiceRequest;
+import com.tiki.server.note.service.dto.request.NoteFreeUpdateServiceRequest;
 import com.tiki.server.note.service.dto.request.NoteTemplateCreateServiceRequest;
+import com.tiki.server.note.service.dto.request.NoteTemplateUpdateServiceRequest;
 import com.tiki.server.note.service.dto.response.NoteCreateServiceResponse;
 import com.tiki.server.note.service.dto.response.NoteDetailGetServiceResponse;
 import com.tiki.server.note.service.dto.response.NoteListGetServiceResponse;
@@ -51,6 +56,28 @@ public class NoteController {
         return ResponseEntity.created(
                 UriGenerator.getUri("/api/v1/notes" + response.noteId())
         ).body(success(CREATE_NOTE.getMessage(), response));
+    }
+
+    @PatchMapping("/free/{noteId}")
+    public ResponseEntity<BaseResponse> updateNoteFree(
+            final Principal principal,
+            @PathVariable final long noteId,
+            @RequestBody final NoteFreeUpdateRequest request
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        noteService.updateNoteFree(NoteFreeUpdateServiceRequest.of(request, noteId, memberId));
+        return ResponseEntity.ok().body(success(UPDATE_NOTE.getMessage()));
+    }
+
+    @PatchMapping("/template/{noteId}")
+    public ResponseEntity<BaseResponse> updateNoteTemplate(
+            final Principal principal,
+            @PathVariable final long noteId,
+            @RequestBody final NoteTemplateUpdateRequest request
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        noteService.updateNoteTemplate(NoteTemplateUpdateServiceRequest.of(request, noteId, memberId));
+        return ResponseEntity.ok().body(success(UPDATE_NOTE.getMessage()));
     }
 
     @GetMapping("/{teamId}")
