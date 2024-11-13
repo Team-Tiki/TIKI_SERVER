@@ -1,6 +1,7 @@
 package com.tiki.server.note.entity;
 
 import com.tiki.server.common.entity.BaseTime;
+import com.tiki.server.note.exception.NoteException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import static com.tiki.server.note.message.ErrorCode.UPDATE_ONLY_AUTHOR;
+import static com.tiki.server.note.message.ErrorCode.UPDATE_ONLY_BELONGING_TEAM;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -41,6 +44,7 @@ public class Note extends BaseTime {
 
     private String contents;
 
+    @Enumerated(EnumType.STRING)
     private NoteType noteType;
 
     public static Note of(
@@ -65,5 +69,37 @@ public class Note extends BaseTime {
                 .contents(contents)
                 .noteType(noteType)
                 .build();
+    }
+
+    public void updateValue(
+            final long clientId,
+            final long clientTeamId,
+            final String title,
+            final String contents,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final boolean complete,
+            final NoteType noteType
+    ) {
+        checkAuthor(clientId);
+        checkTeam(clientTeamId);
+        this.title = title;
+        this.contents = contents;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.complete = complete;
+        this.noteType = noteType;
+    }
+
+    private void checkAuthor(final long clientId) {
+        if (this.memberId != clientId) {
+            throw new NoteException(UPDATE_ONLY_AUTHOR);
+        }
+    }
+
+    private void checkTeam(final long clientTeamId) {
+        if (this.teamId != clientTeamId) {
+            throw new NoteException(UPDATE_ONLY_BELONGING_TEAM);
+        }
     }
 }
