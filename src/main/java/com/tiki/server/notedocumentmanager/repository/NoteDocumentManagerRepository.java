@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface NoteDocumentManagerRepository extends JpaRepository<NoteDocumentManager, Long> {
 
-    public void deleteAllByNoteId(long noteId);
+    void deleteAllByNoteId(final long noteId);
 
-    public List<NoteDocumentManager> findAllByNoteId(final long noteId);
+    void deleteByNoteIdAndDocumentId(final long noteId, final long documentId);
+
+    List<NoteDocumentManager> findAllByNoteId(final long noteId);
 }
