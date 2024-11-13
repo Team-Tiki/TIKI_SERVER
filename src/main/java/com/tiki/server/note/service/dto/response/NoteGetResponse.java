@@ -15,13 +15,13 @@ public record NoteGetResponse(
         LocalDateTime lastUpdatedAt
 ) {
 
-    public static NoteGetResponse of(final Note note) {
+    public static NoteGetResponse of(final Note note, final String author) {
         return new NoteGetResponse(
                 note.getId(),
                 note.getTitle(),
                 note.getStartDate(),
                 note.getEndDate(),
-                note.getAuthor(),
+                author,
                 note.isComplete(),
                 note.getUpdatedAt()
         );

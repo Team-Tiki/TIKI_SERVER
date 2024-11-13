@@ -27,6 +27,7 @@ public record NoteFreeDetailGetServiceResponse(
 
     public static NoteFreeDetailGetServiceResponse of(
             final Note note,
+            final String author,
             final List<Document> documentList,
             final List<TimeBlock> timeBlockList
     ) {
@@ -34,7 +35,7 @@ public record NoteFreeDetailGetServiceResponse(
                 note.getId(),
                 NoteType.FREE,
                 note.getTitle(),
-                note.getAuthor(),
+                author,
                 note.getStartDate(),
                 note.getEndDate(),
                 note.isComplete(),

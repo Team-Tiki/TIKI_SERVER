@@ -30,6 +30,7 @@ public record NoteTemplateDetailGetServiceResponse(
 
     public static NoteTemplateDetailGetServiceResponse of(
             final Note note,
+            final String author,
             final List<Document> documentList,
             final List<TimeBlock> timeBlockList
     ) {
@@ -38,7 +39,7 @@ public record NoteTemplateDetailGetServiceResponse(
                 note.getId(),
                 NoteType.TEMPLATE,
                 note.getTitle(),
-                note.getAuthor(),
+                author,
                 note.getStartDate(),
                 note.getEndDate(),
                 note.isComplete(),
