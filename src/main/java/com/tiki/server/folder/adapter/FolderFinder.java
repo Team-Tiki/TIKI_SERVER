@@ -24,9 +24,6 @@ public class FolderFinder {
 	}
 
 	public List<Folder> findByPath(final String path) {
-		if (path.equals(ROOT_PATH)) {
-			return folderRepository.findFolderByPath(path);
-		}
-		return folderRepository.findFolderByPathStartingWith(path);
+		return folderRepository.findAllByPath(path);
 	}
 }
