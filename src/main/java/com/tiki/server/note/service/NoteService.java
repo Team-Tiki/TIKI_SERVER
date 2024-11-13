@@ -91,8 +91,8 @@ public class NoteService {
                 request.complete(),
                 NoteType.FREE
         );
-        updateNoteTimeBlockManager(request.timeBlockIds(), note);
-        updateNoteDocumentManager(request.documentIds(), note);
+        updateNoteTimeBlockManager(request.timeBlockIds(), note.getId());
+        updateNoteDocumentManager(request.documentIds(), note.getId());
     }
 
     @Transactional
@@ -115,14 +115,14 @@ public class NoteService {
                 request.complete(),
                 NoteType.TEMPLATE
         );
-        updateNoteTimeBlockManager(request.timeBlockIds(), note);
-        updateNoteDocumentManager(request.documentIds(), note);
+        updateNoteTimeBlockManager(request.timeBlockIds(), request.noteId());
+        updateNoteDocumentManager(request.documentIds(), request.noteId());
     }
 
     @Transactional
     public void deleteNotes(final List<Long> noteIds, final long teamId, final long memberId) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        noteDocumentManagerDeleter.noteDocumentManagerDeleteByNoteIds(noteIds);
+        noteDocumentManagerDeleter.deleteByNoteIds(noteIds);
         noteTimeBlockManagerDeleter.noteTimeBlockManagerDeleteByIds(noteIds);
         noteDeleter.deleteNoteByIds(noteIds);
     }
@@ -152,14 +152,32 @@ public class NoteService {
                 NoteTemplateDetailGetServiceResponse.of(note, documentList, timeBlockList);
     }
 
-    private void updateNoteDocumentManager(final List<Long> noteIds, final Note note) {
-        noteDocumentManagerDeleter.noteDocumentMangerDeleteByNoteId(note.getId());
-        createNoteDocumentManagers(noteIds, note.getId());
+    private void updateNoteDocumentManager(final List<Long> documentIds, final long noteId) {
+        List<Long> existingNoteDocumentIds = noteDocumentManagerFinder.findAllByNoteId(noteId).stream()
+                .map(NoteDocumentManager::getDocumentId)
+                .toList();
+        List<Long> idsToAdd = documentIds.stream()
+                .filter(id -> !existingNoteDocumentIds.contains(id))
+                .toList();
+        List<Long> idsToRemove = existingNoteDocumentIds.stream()
+                .filter(id -> !documentIds.contains(id))
+                .toList();
+        createNoteDocumentManagers(idsToAdd, noteId);
+        noteDocumentManagerDeleter.deleteByNoteIdAndDocumentId(noteId, idsToRemove);
     }
 
-    private void updateNoteTimeBlockManager(final List<Long> noteIds, final Note note) {
-        noteTimeBlockManagerDeleter.noteTimeBlockManagerDeleteById(note.getId());
-        createNoteTimeBlockManagers(noteIds, note.getId());
+    private void updateNoteTimeBlockManager(final List<Long> timeBlockIds, final long noteId) {
+        List<Long> existingNoteTimeBlockIds = noteTimeBlockManagerFinder.findAllByNoteId(noteId).stream()
+                .map(NoteTimeBlockManager::getTimeBlockId)
+                .toList();
+        List<Long> idsToAdd = timeBlockIds.stream()
+                .filter(id -> !existingNoteTimeBlockIds.contains(id))
+                .toList();
+        List<Long> idsToRemove = existingNoteTimeBlockIds.stream()
+                .filter(id -> !timeBlockIds.contains(id))
+                .toList();
+        createNoteTimeBlockManagers(idsToAdd, noteId);
+        noteTimeBlockManagerDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
     }
 
     private List<Note> getNotes(final LocalDateTime lastUpdatedAt, final SortOrder sortOrder, final PageRequest pageable) {
