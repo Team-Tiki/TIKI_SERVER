@@ -1,6 +1,9 @@
 package com.tiki.server.folder.adapter;
 
+import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
 import static com.tiki.server.folder.message.ErrorCode.INVALID_FOLDER;
+
+import java.util.List;
 
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.folder.entity.Folder;
@@ -18,5 +21,12 @@ public class FolderFinder {
 	public Folder findById(long id) {
 		return folderRepository.findById(id)
 			.orElseThrow(() -> new FolderException(INVALID_FOLDER));
+	}
+
+	public List<Folder> findByTeamIdAndPath(final long teamId, final String path) {
+		if (path.equals(ROOT_PATH)) {
+			return folderRepository.findAllByTeamIdAndPath(teamId, path);
+		}
+		return folderRepository.findAllByPath(path);
 	}
 }
