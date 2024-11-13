@@ -84,14 +84,14 @@ public class NoteController {
     public ResponseEntity<SuccessResponse<NoteListGetServiceResponse>> getNote(
             final Principal principal,
             @PathVariable long teamId,
-            @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+            @RequestParam(required = false) LocalDateTime createdAt,
             @RequestParam(defaultValue = "DESC") SortOrder sortOrder
     ) {
         long memberId = Long.parseLong(principal.getName());
-        if (lastUpdatedAt == null) {
-            lastUpdatedAt = (sortOrder == SortOrder.DESC) ? LocalDateTime.now() : LocalDateTime.of(1970, 1, 1, 0, 0);
+        if (createdAt == null) {
+            createdAt = (sortOrder == SortOrder.DESC) ? LocalDateTime.now() : LocalDateTime.of(1970, 1, 1, 0, 0);
         }
-        NoteListGetServiceResponse response = noteService.getNote(teamId, memberId, lastUpdatedAt, sortOrder);
+        NoteListGetServiceResponse response = noteService.getNote(teamId, memberId, createdAt, sortOrder);
         return ResponseEntity.ok().body(success(GET_NOTE.getMessage(), response));
     }
 
