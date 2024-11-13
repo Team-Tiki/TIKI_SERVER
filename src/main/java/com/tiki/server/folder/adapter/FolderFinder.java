@@ -23,7 +23,10 @@ public class FolderFinder {
 			.orElseThrow(() -> new FolderException(INVALID_FOLDER));
 	}
 
-	public List<Folder> findByPath(final String path) {
+	public List<Folder> findByTeamIdAndPath(final long teamId, final String path) {
+		if (path.equals(ROOT_PATH)) {
+			return folderRepository.findAllByTeamIdAndPath(teamId, path);
+		}
 		return folderRepository.findAllByPath(path);
 	}
 }
