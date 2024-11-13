@@ -1,5 +1,7 @@
 package com.tiki.server.folder.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,8 @@ public class FolderService {
 
 	public FoldersGetResponse get(final long memberId, final long teamId, final String path) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		List<Folder> folders = folderFinder.findByPath(path);
+		return FoldersGetResponse.from(folders);
 	}
 
 	@Transactional
