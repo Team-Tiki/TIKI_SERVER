@@ -23,6 +23,7 @@ public class FolderService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
 	public FoldersGetResponse get(final long memberId, final long teamId, final String path) {
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 	}
 
 	@Transactional
