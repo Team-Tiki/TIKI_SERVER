@@ -1,5 +1,7 @@
 package com.tiki.server.folder.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,6 +9,7 @@ import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.adapter.FolderSaver;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
+import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 
@@ -20,6 +23,12 @@ public class FolderService {
 	private final FolderFinder folderFinder;
 	private final FolderSaver folderSaver;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
+
+	public FoldersGetResponse get(final long memberId, final long teamId, final String path) {
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
+		return FoldersGetResponse.from(folders);
+	}
 
 	@Transactional
 	public FolderCreateResponse create(long memberId, long teamId, FolderCreateRequest request) {
