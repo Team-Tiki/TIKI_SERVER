@@ -10,23 +10,28 @@ import com.tiki.server.memberteammanager.repository.MemberTeamManagerRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
 public class MemberTeamManagerFinder {
 
-    private final MemberTeamManagerRepository teamManagerRepository;
+    private final MemberTeamManagerRepository memberTeamManagerRepository;
 
-    public MemberTeamManager findByMemberIdAndTeamId(long memberId, long teamId) {
-        return teamManagerRepository.findByMemberIdAndTeamId(memberId, teamId)
+    public MemberTeamManager findByMemberIdAndTeamIdOrElseThrow(long memberId, long teamId) {
+        return memberTeamManagerRepository.findByMemberIdAndTeamId(memberId, teamId)
                 .orElseThrow(() -> new MemberTeamManagerException(INVALID_MEMBER_TEAM_MANAGER));
     }
 
+    public Optional<MemberTeamManager> findByMemberIdAndTeamId(final long memberId, final long teamId) {
+        return memberTeamManagerRepository.findByMemberIdAndTeamId(memberId, teamId);
+    }
+
     public List<MemberTeamManager> findBelongTeamByMemberId(long memberId) {
-        return teamManagerRepository.findAllBelongTeamByMemberId(memberId).stream().toList();
+        return memberTeamManagerRepository.findAllBelongTeamByMemberId(memberId).stream().toList();
     }
 
     public List<MemberTeamManager> findAllByTeamId(long teamId) {
-        return teamManagerRepository.findAllByTeamId(teamId);
+        return memberTeamManagerRepository.findAllByTeamId(teamId);
     }
 }

@@ -32,7 +32,7 @@ public class DocumentService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
 	public DocumentsGetResponse getAllDocuments(long memberId, long teamId, String type) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		return getAllDocumentsByType(teamId, accessiblePosition);
@@ -40,7 +40,7 @@ public class DocumentService {
 
 	@Transactional
 	public void deleteDocument(long memberId, long teamId, long documentId) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Document document = documentFinder.findByIdWithTimeBlock(documentId);
 		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
 		documentDeleter.delete(document);
@@ -48,7 +48,7 @@ public class DocumentService {
 
 	@Transactional
 	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
-		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		checkFolderIsExist(request.folderId());
 		List<Long> documentIds = request.documents().stream()
 			.map(document -> saveDocument(teamId, request.folderId(), document).getId())
