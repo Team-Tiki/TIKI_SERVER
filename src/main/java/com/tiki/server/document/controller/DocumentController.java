@@ -68,4 +68,15 @@ public class DocumentController implements DocumentControllerDocs {
 		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents"))
 			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
 	}
+
+	@GetMapping("/teams/{teamId}/documents")
+	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
+		final Principal principal,
+		@PathVariable long teamId,
+		@RequestParam(required = false) Long folderId
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		DocumentsGetResponse response = documentService.get(memberId, teamId, folderId);
+		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
+	}
 }
