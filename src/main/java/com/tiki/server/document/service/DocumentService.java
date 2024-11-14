@@ -56,6 +56,12 @@ public class DocumentService {
 		return DocumentsCreateResponse.from(documentIds);
 	}
 
+	public DocumentsGetResponse get(final long memberId, final long teamId, final Long folderId) {
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
+		return DocumentsGetResponse.from(documents);
+	}
+
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
