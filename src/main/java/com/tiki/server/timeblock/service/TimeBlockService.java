@@ -3,6 +3,10 @@ package com.tiki.server.timeblock.service;
 import java.util.List;
 import java.util.Map;
 
+import com.tiki.server.note.adapter.NoteFinder;
+import com.tiki.server.note.entity.Note;
+import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerFinder;
+import com.tiki.server.notetimeblockmanager.entity.NoteTimeBlockManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +43,8 @@ public class TimeBlockService {
     private final DocumentSaver documentSaver;
     private final DocumentFinder documentFinder;
     private final DocumentDeleter documentDeleter;
+    private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
+    private final NoteFinder noteFinder;
 
     @Transactional
     public TimeBlockCreateResponse createTimeBlock(
@@ -71,7 +77,8 @@ public class TimeBlockService {
         TimeBlock timeBlock = timeBlockFinder.findByIdOrElseThrow(timeBlockId);
         memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
         List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
-        return TimeBlockDetailGetResponse.from(documents);
+        List<Note> notes = getNotes(timeBlock.getId());
+        return TimeBlockDetailGetResponse.from(documents, notes);
     }
 
     @Transactional
@@ -89,5 +96,12 @@ public class TimeBlockService {
 
     private void saveDocuments(Map<String, String> files, TimeBlock timeBlock) {
         files.forEach((fileName, fileUrl) -> documentSaver.save(Document.of(fileName, fileUrl, timeBlock)));
+    }
+
+    private List<Note> getNotes(final long timeBlockId) {
+        List<NoteTimeBlockManager> noteTimeBlockManagers = noteTimeBlockManagerFinder.findAllByTimeBlockId(timeBlockId);
+        return noteTimeBlockManagers.stream()
+                .map(noteTimeBlockManager -> noteFinder.findById(noteTimeBlockManager.getNoteId()))
+                .toList();
     }
 }
