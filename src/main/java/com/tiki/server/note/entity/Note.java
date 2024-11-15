@@ -36,7 +36,7 @@ public class Note extends BaseTime {
 
     private LocalDate endDate;
 
-    private long memberId;
+    private Long memberId;
 
     private long teamId;
 
