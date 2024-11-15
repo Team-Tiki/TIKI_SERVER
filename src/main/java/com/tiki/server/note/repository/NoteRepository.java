@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
-    @Query("SELECT n FROM Note n WHERE n.updatedAt < :lastModifiedAt ORDER BY n.updatedAt DESC")
-    List<Note> findByModifiedAtBeforeOrderByModifiedAtDesc(@Param("lastModifiedAt") LocalDateTime lastModifiedAt, Pageable pageable);
+    @Query("SELECT n FROM Note n WHERE n.createdAt < :createdAt ORDER BY n.createdAt DESC")
+    List<Note> findByCreatedAtBeforeOrderByModifiedAtDesc(@Param("createdAt") LocalDateTime createdAt, Pageable pageable);
 
-    @Query("SELECT n FROM Note n WHERE n.updatedAt > :lastModifiedAt ORDER BY n.updatedAt ASC")
-    List<Note> findByModifiedAtAfterOrderByModifiedAtAsc(@Param("lastModifiedAt") LocalDateTime lastModifiedAt, Pageable pageable);
+    @Query("SELECT n FROM Note n WHERE n.createdAt > :createdAt ORDER BY n.createdAt ASC")
+    List<Note> findByCreatedAtAfterOrderByModifiedAtAsc(@Param("createdAt") LocalDateTime createdAt, Pageable pageable);
 }

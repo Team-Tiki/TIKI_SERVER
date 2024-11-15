@@ -33,7 +33,7 @@ public class FolderService {
 	@Transactional
 	public FolderCreateResponse create(long memberId, long teamId, FolderCreateRequest request) {
 		// 같은 레벨 파일명 중복 방지 로직 추가 필요
-		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Folder parentFolder = getFolder(request.parentId());
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());

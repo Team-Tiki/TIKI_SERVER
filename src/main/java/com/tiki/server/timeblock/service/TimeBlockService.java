@@ -48,7 +48,7 @@ public class TimeBlockService {
             TimeBlockCreateRequest request
     ) {
         Team team = teamFinder.findById(teamId);
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         Position accessiblePosition = Position.getAccessiblePosition(type);
         memberTeamManager.checkMemberAccessible(accessiblePosition);
         TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
@@ -58,7 +58,7 @@ public class TimeBlockService {
 
     public TimelineGetResponse getTimeline(long memberId, long teamId, String type, String date) {
         Team team = teamFinder.findById(teamId);
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         Position accessiblePosition = Position.getAccessiblePosition(type);
         memberTeamManager.checkMemberAccessible(accessiblePosition);
         List<TimeBlock> timeBlocks = timeBlockFinder.findByTeamAndAccessiblePositionAndDate(
@@ -67,7 +67,7 @@ public class TimeBlockService {
     }
 
     public TimeBlockDetailGetResponse getTimeBlockDetail(long memberId, long teamId, long timeBlockId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         TimeBlock timeBlock = timeBlockFinder.findByIdOrElseThrow(timeBlockId);
         memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
         List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
@@ -76,7 +76,7 @@ public class TimeBlockService {
 
     @Transactional
     public void deleteTimeBlock(long memberId, long teamId, long timeBlockId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         TimeBlock timeBlock = timeBlockFinder.findByIdOrElseThrow(timeBlockId);
         memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
         documentDeleter.deleteAllByTimeBlockId(timeBlock.getId());

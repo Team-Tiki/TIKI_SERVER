@@ -18,12 +18,12 @@ public class NoteFinder {
 
     private final NoteRepository noteRepository;
 
-    public List<Note> findByModifiedAtBeforeOrderByModifiedAtDesc(final LocalDateTime lastUpdatedAt, final PageRequest pageRequest) {
-        return noteRepository.findByModifiedAtBeforeOrderByModifiedAtDesc(lastUpdatedAt, pageRequest);
+    public List<Note> findByCreatedAtBeforeOrderByModifiedAtDesc(final LocalDateTime createdAt, final PageRequest pageRequest) {
+        return noteRepository.findByCreatedAtBeforeOrderByModifiedAtDesc(createdAt, pageRequest);
     }
 
-    public List<Note> findByModifiedAtAfterOrderByModifiedAtAsc(final LocalDateTime lastUpdatedAt, final PageRequest pageRequest) {
-        return noteRepository.findByModifiedAtAfterOrderByModifiedAtAsc(lastUpdatedAt, pageRequest);
+    public List<Note> findByCreatedAtAfterOrderByModifiedAtAsc(final LocalDateTime createdAt, final PageRequest pageRequest) {
+        return noteRepository.findByCreatedAtAfterOrderByModifiedAtAsc(createdAt, pageRequest);
     }
 
     public Note findById(final long noteId) {
