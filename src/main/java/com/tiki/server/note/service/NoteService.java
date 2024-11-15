@@ -140,34 +140,27 @@ public class NoteService {
         memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
         List<Note> noteList = getNotes(createdAt, sortOrder, pageable);
-        List<NoteGetResponse> noteGetResponseList = noteList.stream()
-                .map(note -> {
-                    Optional<MemberTeamManager> memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(note.getMemberId(), teamId);
-                    return NoteGetResponse.of(note, memberTeamManager.isEmpty() ? "알 수 없음" : memberTeamManager.get().getName());
-                })
-                .collect(Collectors.toList());
-        return new NoteListGetServiceResponse(noteGetResponseList);
+        List<NoteGetResponse> noteGetResponses = noteList.stream()
+                .map(note -> NoteGetResponse.of(note, getMemberName(note.getMemberId(), teamId)))
+                .toList();
+        return new NoteListGetServiceResponse(noteGetResponses);
     }
 
     public NoteDetailGetServiceResponse getNoteDetail(final long teamId, final long memberId, final long noteId) {
         memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         Note note = noteFinder.findById(noteId);
-        Optional<MemberTeamManager> memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(note.getMemberId(), teamId);
         List<Document> documentList = getDocumentListMappedByNote(noteId);
         List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
-        return note.getNoteType() == NoteType.FREE ?
-                NoteFreeDetailGetServiceResponse.of(
-                        note,
-                        memberTeamManager.isEmpty() ? "알 수 없음" : memberTeamManager.get().getName(),
-                        documentList,
-                        timeBlockList
-                ) :
-                NoteTemplateDetailGetServiceResponse.of(
-                        note,
-                        memberTeamManager.isEmpty() ? "알 수 없음" : memberTeamManager.get().getName(),
-                        documentList,
-                        timeBlockList
-                );
+        String memberName = getMemberName(note.getMemberId(), teamId);
+        return note.getNoteType() == NoteType.FREE
+                ? NoteFreeDetailGetServiceResponse.of(note, memberName, documentList, timeBlockList)
+                : NoteTemplateDetailGetServiceResponse.of(note, memberName, documentList, timeBlockList);
+    }
+
+    private String getMemberName(final Long noteMemberId, final long teamId) {
+        return Optional.ofNullable(noteMemberId)
+                .map(id -> memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(id, teamId).getName())
+                .orElse("알 수 없음");
     }
 
     private void updateNoteDocumentManager(final List<Long> documentIds, final long noteId) {
