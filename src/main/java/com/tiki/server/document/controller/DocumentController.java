@@ -28,13 +28,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/documents")
+@RequestMapping("api/v1")
 public class DocumentController implements DocumentControllerDocs {
 
 	private final DocumentService documentService;
 
 	@Override
-	@GetMapping("/team/{teamId}/timeline")
+	@GetMapping("/documents/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
 		Principal principal,
 		@PathVariable long teamId,
@@ -46,7 +46,7 @@ public class DocumentController implements DocumentControllerDocs {
 	}
 
 	@Override
-	@DeleteMapping("/team/{teamId}/document/{documentId}")
+	@DeleteMapping("/documents/team/{teamId}/document/{documentId}")
 	public ResponseEntity<?> deleteDocument(
 		Principal principal,
 		@PathVariable long teamId,
@@ -57,7 +57,7 @@ public class DocumentController implements DocumentControllerDocs {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping
+	@PostMapping("/documents")
 	public ResponseEntity<SuccessResponse<DocumentsCreateResponse>> createDocuments(
 		Principal principal,
 		@RequestHeader("team-id") long teamId,
@@ -67,5 +67,16 @@ public class DocumentController implements DocumentControllerDocs {
 		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, request);
 		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents"))
 			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
+	}
+
+	@GetMapping("/teams/{teamId}/documents")
+	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
+		final Principal principal,
+		@PathVariable long teamId,
+		@RequestParam(required = false) Long folderId
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		DocumentsGetResponse response = documentService.get(memberId, teamId, folderId);
+		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
 	}
 }

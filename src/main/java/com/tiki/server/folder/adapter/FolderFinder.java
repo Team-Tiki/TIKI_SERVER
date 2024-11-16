@@ -25,8 +25,8 @@ public class FolderFinder {
 
 	public List<Folder> findByTeamIdAndPath(final long teamId, final String path) {
 		if (path.equals(ROOT_PATH)) {
-			return folderRepository.findAllByTeamIdAndPath(teamId, path);
+			return folderRepository.findAllByTeamIdAndPathOrderByCreatedAtDesc(teamId, path);
 		}
-		return folderRepository.findAllByPath(path);
+		return folderRepository.findAllByPathOrderByCreatedAtDesc(path);
 	}
 }
