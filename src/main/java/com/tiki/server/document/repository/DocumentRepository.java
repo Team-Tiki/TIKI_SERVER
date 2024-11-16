@@ -22,4 +22,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	Document findByIdWithTimeBlock(long documentId);
 
 	void deleteAllByTimeBlockId(long timeBlockId);
+
+	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(long teamId, Long folderId);
 }
