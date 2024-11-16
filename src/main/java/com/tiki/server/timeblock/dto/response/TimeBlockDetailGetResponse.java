@@ -39,13 +39,17 @@ public record TimeBlockDetailGetResponse(
         }
     }
 
+    @Builder(access = PRIVATE)
     public record NoteNameGetResponse(
             long noteId,
             @NonNull String noteName
     ) {
 
         public static NoteNameGetResponse from(final Note note) {
-            return new NoteNameGetResponse(note.getId(), note.getTitle());
+            return NoteNameGetResponse.builder()
+                    .noteId(note.getId())
+                    .noteName(note.getTitle())
+                    .build();
         }
     }
 }
