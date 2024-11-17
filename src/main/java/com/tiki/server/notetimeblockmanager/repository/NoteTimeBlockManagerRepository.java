@@ -12,4 +12,6 @@ public interface NoteTimeBlockManagerRepository extends JpaRepository<NoteTimeBl
     void deleteByNoteIdAndTimeBlockId(final long noteId, final long timeBlockId);
 
     List<NoteTimeBlockManager> findAllByNoteId(final long NoteId);
+
+    List<NoteTimeBlockManager> findAllByTimeBlockId(final long timeBlockId);
 }
