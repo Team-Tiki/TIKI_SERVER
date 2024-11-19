@@ -25,9 +25,10 @@ public class FolderService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
 	public FoldersGetResponse get(final long memberId, final long teamId,
-			final Long folderId, final String path) {
+			final Long folderId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Folder folder = getFolder(teamId, folderId);
+		String path = folder.getPath();
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
 		return FoldersGetResponse.from(folders);
 	}
