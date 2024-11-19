@@ -1,5 +1,6 @@
 package com.tiki.server.document.service;
 
+import static com.tiki.server.document.message.ErrorCode.DOCUMENT_NAME_DUPLICATE;
 import static com.tiki.server.document.message.ErrorCode.INVALID_AUTHORIZATION;
 
 import java.util.List;
@@ -54,10 +55,9 @@ public class DocumentService {
 	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		validateFolder(request.folderId(), teamId);
-		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, request.folderId());
+		validateFileName(request.folderId(), teamId, request);
 		checkFolderIsExist(request.folderId());
 		List<Long> documentIds = request.documents().stream()
-				.filter(document -> checkFileNameIsNotDuplicated(document.fileName(), documents))
 				.map(document -> saveDocument(teamId, request.folderId(), document).getId())
 				.toList();
 		return DocumentsCreateResponse.from(documentIds);
@@ -97,8 +97,16 @@ public class DocumentService {
 		return documentSaver.save(document);
 	}
 
-	private boolean checkFileNameIsNotDuplicated(final String fileName, final List<Document> documents) {
-		return documents.stream()
-				.noneMatch(document -> document.getFileName().equals(fileName));
+	private void validateFileName(final Long folderId, final long teamId, final DocumentsCreateRequest request) {
+		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
+		for (Document document : documents) {
+			checkFileNameIsDuplicated(document.getFileName(), request);
+		}
+	}
+
+	private void checkFileNameIsDuplicated(final String fileName, final DocumentsCreateRequest request) {
+		if (request.documents().stream().anyMatch(document -> document.fileName().equals(fileName))) {
+			throw new DocumentException(DOCUMENT_NAME_DUPLICATE);
+		}
 	}
 }
