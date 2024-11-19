@@ -36,10 +36,11 @@ public class FolderController {
 	public ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		final Principal principal,
 		@PathVariable long teamId,
+		@RequestParam(required = false) Long folderId,
 		@RequestParam(defaultValue = ROOT_PATH) String path
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		FoldersGetResponse response = folderService.get(memberId, teamId, path);
+		FoldersGetResponse response = folderService.get(memberId, teamId, folderId, path);
 		return ResponseEntity.ok(success(SUCCESS_GET_FOLDERS.getMessage(), response));
 	}
 
@@ -47,10 +48,11 @@ public class FolderController {
 	public ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
 		Principal principal,
 		@PathVariable long teamId,
+		@RequestParam(required = false) Long folderId,
 		@RequestBody FolderCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		FolderCreateResponse response = folderService.create(memberId, teamId, request);
+		FolderCreateResponse response = folderService.create(memberId, teamId, folderId, request);
 		return ResponseEntity.created(UriGenerator.getUri("api/v1/folders/" + response.folderId()))
 			.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
 	}
