@@ -79,18 +79,6 @@ public class DocumentService {
 		folder.validateTeamId(teamId);
 	}
 
-	private List<Long> saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
-		return request.documents().stream()
-				.map(document -> saveDocument(teamId, folderId, document).getId())
-				.toList();
-	}
-
-	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
-		Document document = Document.of(
-			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
-		return documentSaver.save(document);
-	}
-
 	private void validateFileName(final Long folderId, final long teamId, final DocumentsCreateRequest request) {
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
 		for (Document document : documents) {
@@ -102,5 +90,17 @@ public class DocumentService {
 		if (request.documents().stream().anyMatch(document -> document.fileName().equals(fileName))) {
 			throw new DocumentException(DOCUMENT_NAME_DUPLICATE);
 		}
+	}
+
+	private List<Long> saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
+		return request.documents().stream()
+				.map(document -> saveDocument(teamId, folderId, document).getId())
+				.toList();
+	}
+
+	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
+		Document document = Document.of(
+			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
+		return documentSaver.save(document);
 	}
 }
