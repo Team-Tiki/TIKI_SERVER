@@ -24,25 +24,30 @@ public class FolderService {
 	private final FolderSaver folderSaver;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
-	public FoldersGetResponse get(final long memberId, final long teamId, final String path) {
+	public FoldersGetResponse get(final long memberId, final long teamId,
+			final Long folderId, final String path) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		Folder folder = getFolder(teamId, folderId);
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
 		return FoldersGetResponse.from(folders);
 	}
 
 	@Transactional
-	public FolderCreateResponse create(long memberId, long teamId, FolderCreateRequest request) {
+	public FolderCreateResponse create(final long memberId, final long teamId,
+			final Long folderId, final FolderCreateRequest request) {
 		// 같은 레벨 파일명 중복 방지 로직 추가 필요
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-		Folder parentFolder = getFolder(request.parentId());
+		Folder parentFolder = getFolder(teamId, request.parentId());
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
 	}
 
-	private Folder getFolder(Long folderId) {
+	private Folder getFolder(final long teamId, final Long folderId) {
 		if (folderId == null) {
 			return null;
 		}
-		return folderFinder.findById(folderId);
+		Folder folder = folderFinder.findById(folderId);
+		folder.validateTeamId(teamId);
+		return folder;
 	}
 }
