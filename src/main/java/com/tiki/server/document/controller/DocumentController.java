@@ -57,10 +57,11 @@ public class DocumentController implements DocumentControllerDocs {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping("/documents")
+	@PostMapping("/teams/{teamId}/documents")
 	public ResponseEntity<SuccessResponse<DocumentsCreateResponse>> createDocuments(
 		Principal principal,
-		@RequestHeader("team-id") long teamId,
+		@PathVariable long teamId,
+		@RequestParam(required = false) long folderId,
 		@RequestBody DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
