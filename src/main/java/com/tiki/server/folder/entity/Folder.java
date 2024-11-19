@@ -39,6 +39,10 @@ public class Folder extends BaseTime {
 		}
 	}
 
+	public String getChildPath() {
+		return path + "/" + id;
+	}
+
 	private String generatePath(Folder parentFolder) {
 		if (parentFolder == null) {
 			return "";
