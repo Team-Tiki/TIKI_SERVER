@@ -57,16 +57,16 @@ public class DocumentController implements DocumentControllerDocs {
 	}
 
 	@PostMapping("/teams/{teamId}/documents")
-	public ResponseEntity<SuccessResponse<DocumentsCreateResponse>> createDocuments(
+	public ResponseEntity<SuccessResponse<?>> createDocuments(
 		Principal principal,
 		@PathVariable long teamId,
 		@RequestParam(required = false) Long folderId,
 		@RequestBody DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, folderId, request);
+		documentService.createDocuments(memberId, teamId, folderId, request);
 		return ResponseEntity.created(UriGenerator.getUri("teams/" + teamId + "/documents"))
-			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
+			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage()));
 	}
 
 	@GetMapping("/teams/{teamId}/documents")
