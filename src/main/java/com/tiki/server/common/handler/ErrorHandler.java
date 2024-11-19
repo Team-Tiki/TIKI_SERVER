@@ -3,6 +3,7 @@ package com.tiki.server.common.handler;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
 import com.tiki.server.emailverification.exception.EmailVerificationException;
+import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,13 @@ public class ErrorHandler {
 
     @ExceptionHandler(EmailVerificationException.class)
     public ResponseEntity<BaseResponse> MailException(EmailVerificationException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(FolderException.class)
+    public ResponseEntity<BaseResponse> folderException(FolderException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
