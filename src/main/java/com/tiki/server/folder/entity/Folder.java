@@ -1,6 +1,8 @@
 package com.tiki.server.folder.entity;
 
 import static com.tiki.server.document.message.ErrorCode.INVALID_AUTHORIZATION;
+import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
+import static com.tiki.server.folder.constant.Constant.SEPARATOR;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import com.tiki.server.common.entity.BaseTime;
@@ -40,13 +42,13 @@ public class Folder extends BaseTime {
 	}
 
 	public String getChildPath() {
-		return path + "/" + id;
+		return path + SEPARATOR + id;
 	}
 
 	private String generatePath(Folder parentFolder) {
 		if (parentFolder == null) {
-			return "";
+			return ROOT_PATH;
 		}
-		return parentFolder.getPath() + "/" + parentFolder.getId();
+		return parentFolder.getPath() + SEPARATOR + parentFolder.getId();
 	}
 }
