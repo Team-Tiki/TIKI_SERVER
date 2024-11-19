@@ -65,7 +65,7 @@ public class DocumentController implements DocumentControllerDocs {
 		@RequestBody DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, request);
+		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, folderId, request);
 		return ResponseEntity.created(UriGenerator.getUri("teams/" + teamId + "/documents"))
 			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
 	}
