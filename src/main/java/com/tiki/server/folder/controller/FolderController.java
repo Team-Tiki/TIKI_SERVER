@@ -36,11 +36,10 @@ public class FolderController {
 	public ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		final Principal principal,
 		@PathVariable long teamId,
-		@RequestParam(required = false) Long folderId,
-		@RequestParam(defaultValue = ROOT_PATH) String path
+		@RequestParam(required = false) Long folderId
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		FoldersGetResponse response = folderService.get(memberId, teamId, folderId, path);
+		FoldersGetResponse response = folderService.get(memberId, teamId, folderId);
 		return ResponseEntity.ok(success(SUCCESS_GET_FOLDERS.getMessage(), response));
 	}
 
