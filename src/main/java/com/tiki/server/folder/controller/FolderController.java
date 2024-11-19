@@ -27,12 +27,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/folders")
+@RequestMapping("api/v1")
 public class FolderController {
 
 	private final FolderService folderService;
 
-	@GetMapping()
+	@GetMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		final Principal principal,
 		@RequestHeader("team-id") long teamId,
@@ -43,7 +43,7 @@ public class FolderController {
 		return ResponseEntity.ok(success(SUCCESS_GET_FOLDERS.getMessage(), response));
 	}
 
-	@PostMapping()
+	@PostMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
 		Principal principal,
 		@RequestHeader("team-id") long teamId,
