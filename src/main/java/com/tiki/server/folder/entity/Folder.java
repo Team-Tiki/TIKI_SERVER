@@ -1,8 +1,10 @@
 package com.tiki.server.folder.entity;
 
+import static com.tiki.server.document.message.ErrorCode.INVALID_AUTHORIZATION;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import com.tiki.server.common.entity.BaseTime;
+import com.tiki.server.document.exception.DocumentException;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,12 @@ public class Folder extends BaseTime {
 		this.name = name;
 		this.path = generatePath(parentFolder);
 		this.teamId = teamId;
+	}
+
+	public void validateTeamId(final long teamId) {
+		if (this.teamId != teamId) {
+			throw new DocumentException(INVALID_AUTHORIZATION);
+		}
 	}
 
 	private String generatePath(Folder parentFolder) {
