@@ -54,10 +54,12 @@ public class DocumentService {
 	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		validateFolder(request.folderId(), teamId);
+		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, request.folderId());
 		checkFolderIsExist(request.folderId());
 		List<Long> documentIds = request.documents().stream()
-			.map(document -> saveDocument(teamId, request.folderId(), document).getId())
-			.toList();
+				.filter(document -> checkFileNameIsNotDuplicated(document.fileName(), documents))
+				.map(document -> saveDocument(teamId, request.folderId(), document).getId())
+				.toList();
 		return DocumentsCreateResponse.from(documentIds);
 	}
 
@@ -93,5 +95,10 @@ public class DocumentService {
 		Document document = Document.of(
 			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
 		return documentSaver.save(document);
+	}
+
+	private boolean checkFileNameIsNotDuplicated(final String fileName, final List<Document> documents) {
+		return documents.stream()
+				.noneMatch(document -> document.getFileName().equals(fileName));
 	}
 }
