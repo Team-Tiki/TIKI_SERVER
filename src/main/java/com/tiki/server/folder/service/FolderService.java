@@ -1,5 +1,7 @@
 package com.tiki.server.folder.service;
 
+import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,8 +29,7 @@ public class FolderService {
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Folder folder = getFolder(teamId, folderId);
-		String path = folder.getPath();
+		String path = getFolderPath(teamId, folderId);
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
 		return FoldersGetResponse.from(folders);
 	}
@@ -50,5 +51,14 @@ public class FolderService {
 		Folder folder = folderFinder.findById(folderId);
 		folder.validateTeamId(teamId);
 		return folder;
+	}
+
+	private String getFolderPath(final long teamId, final Long folderId) {
+		if (folderId == null) {
+			return ROOT_PATH;
+		}
+		Folder folder = folderFinder.findById(folderId);
+		folder.validateTeamId(teamId);
+		return folder.getPath();
 	}
 }
