@@ -1,5 +1,7 @@
 package com.tiki.server.document.service;
 
+import static com.tiki.server.document.message.ErrorCode.INVALID_AUTHORIZATION;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,7 +16,9 @@ import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.folder.adapter.FolderFinder;
+import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 
@@ -49,6 +53,7 @@ public class DocumentService {
 	@Transactional
 	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		validateFolder(request.folderId(), teamId);
 		checkFolderIsExist(request.folderId());
 		List<Long> documentIds = request.documents().stream()
 			.map(document -> saveDocument(teamId, request.folderId(), document).getId())
@@ -65,6 +70,16 @@ public class DocumentService {
 	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
+	}
+
+	private void validateFolder(Long folderId, long teamId) {
+		if (folderId == null) {
+			return;
+		}
+		Folder folder = folderFinder.findById(folderId);
+		if (folder.getTeamId() != teamId) {
+			throw new DocumentException(INVALID_AUTHORIZATION);
+		}
 	}
 
 	private void checkFolderIsExist(Long folderId) {
