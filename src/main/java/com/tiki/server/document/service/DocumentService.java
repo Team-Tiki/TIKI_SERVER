@@ -56,9 +56,7 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		validateFolder(folderId, teamId);
 		validateFileName(folderId, teamId, request);
-		List<Long> documentIds = request.documents().stream()
-				.map(document -> saveDocument(teamId, folderId, document).getId())
-				.toList();
+		List<Long> documentIds = saveDocuments(teamId, folderId, request);
 		return DocumentsCreateResponse.from(documentIds);
 	}
 
@@ -79,6 +77,12 @@ public class DocumentService {
 		}
 		Folder folder = folderFinder.findById(folderId);
 		folder.validateTeamId(teamId);
+	}
+
+	private List<Long> saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
+		return request.documents().stream()
+				.map(document -> saveDocument(teamId, folderId, document).getId())
+				.toList();
 	}
 
 	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
