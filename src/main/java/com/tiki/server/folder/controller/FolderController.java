@@ -9,9 +9,9 @@ import java.security.Principal;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +35,7 @@ public class FolderController {
 	@GetMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		final Principal principal,
-		@RequestHeader("team-id") long teamId,
+		@PathVariable long teamId,
 		@RequestParam(defaultValue = ROOT_PATH) String path
 	) {
 		long memberId = Long.parseLong(principal.getName());
@@ -46,7 +46,7 @@ public class FolderController {
 	@PostMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
 		Principal principal,
-		@RequestHeader("team-id") long teamId,
+		@PathVariable long teamId,
 		@RequestBody FolderCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
