@@ -31,7 +31,8 @@ public class FolderService {
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		String path = getFolderPath(teamId, folderId);
+		Folder folder = getFolder(teamId, folderId);
+		String path = getFolderPath(folder);
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
 		return FoldersGetResponse.from(folders);
 	}
@@ -41,7 +42,7 @@ public class FolderService {
 			final Long folderId, final FolderCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Folder parentFolder = getFolder(teamId, folderId);
-		String path = getFolderPath(teamId, folderId);
+		String path = getFolderPath(parentFolder);
 		validateFolderName(teamId, path, request);
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
@@ -56,12 +57,10 @@ public class FolderService {
 		return folder;
 	}
 
-	private String getFolderPath(final long teamId, final Long folderId) {
-		if (folderId == null) {
+	private String getFolderPath(final Folder folder) {
+		if (folder == null) {
 			return ROOT_PATH;
 		}
-		Folder folder = folderFinder.findById(folderId);
-		folder.validateTeamId(teamId);
 		return folder.getChildPath();
 	}
 
