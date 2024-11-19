@@ -51,13 +51,12 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public DocumentsCreateResponse createDocuments(final long memberId, final long teamId,
+	public void createDocuments(final long memberId, final long teamId,
 			final Long folderId, final DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		validateFolder(folderId, teamId);
 		validateFileName(folderId, teamId, request);
-		List<Long> documentIds = saveDocuments(teamId, folderId, request);
-		return DocumentsCreateResponse.from(documentIds);
+		saveDocuments(teamId, folderId, request);
 	}
 
 	public DocumentsGetResponse get(final long memberId, final long teamId, final Long folderId) {
@@ -92,15 +91,13 @@ public class DocumentService {
 		}
 	}
 
-	private List<Long> saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
-		return request.documents().stream()
-				.map(document -> saveDocument(teamId, folderId, document).getId())
-				.toList();
+	private void saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
+		request.documents().forEach(document -> saveDocument(teamId, folderId, document));
 	}
 
-	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
+	private void saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
 		Document document = Document.of(
 			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
-		return documentSaver.save(document);
+		documentSaver.save(document);
 	}
 }
