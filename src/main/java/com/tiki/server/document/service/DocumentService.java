@@ -56,7 +56,6 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		validateFolder(request.folderId(), teamId);
 		validateFileName(request.folderId(), teamId, request);
-		checkFolderIsExist(request.folderId());
 		List<Long> documentIds = request.documents().stream()
 				.map(document -> saveDocument(teamId, request.folderId(), document).getId())
 				.toList();
@@ -82,13 +81,6 @@ public class DocumentService {
 		if (folder.getTeamId() != teamId) {
 			throw new DocumentException(INVALID_AUTHORIZATION);
 		}
-	}
-
-	private void checkFolderIsExist(Long folderId) {
-		if (folderId == null) {
-			return;
-		}
-		folderFinder.findById(folderId);
 	}
 
 	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
