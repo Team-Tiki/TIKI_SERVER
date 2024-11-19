@@ -51,12 +51,13 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public DocumentsCreateResponse createDocuments(long memberId, long teamId, DocumentsCreateRequest request) {
+	public DocumentsCreateResponse createDocuments(final long memberId, final long teamId,
+			final Long folderId, final DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-		validateFolder(request.folderId(), teamId);
-		validateFileName(request.folderId(), teamId, request);
+		validateFolder(folderId, teamId);
+		validateFileName(folderId, teamId, request);
 		List<Long> documentIds = request.documents().stream()
-				.map(document -> saveDocument(teamId, request.folderId(), document).getId())
+				.map(document -> saveDocument(teamId, folderId, document).getId())
 				.toList();
 		return DocumentsCreateResponse.from(documentIds);
 	}
