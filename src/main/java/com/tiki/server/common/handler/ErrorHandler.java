@@ -80,7 +80,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(EmailVerificationException.class)
-    public ResponseEntity<BaseResponse> MailException(EmailVerificationException exception) {
+    public ResponseEntity<BaseResponse> mailException(EmailVerificationException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
@@ -94,7 +94,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(AuthException.class)
-    public ResponseEntity<BaseResponse> AuthException(AuthException exception) {
+    public ResponseEntity<BaseResponse> authException(AuthException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(
@@ -109,7 +109,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<BaseResponse> Exception(Exception exception) {
+    public ResponseEntity<BaseResponse> exception(Exception exception) {
         log.error(exception.getMessage());
         val errorCode = UNCAUGHT_SERVER_EXCEPTION;
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
