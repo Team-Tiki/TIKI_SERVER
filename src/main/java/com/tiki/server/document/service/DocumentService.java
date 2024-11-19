@@ -1,7 +1,6 @@
 package com.tiki.server.document.service;
 
 import static com.tiki.server.document.message.ErrorCode.DOCUMENT_NAME_DUPLICATE;
-import static com.tiki.server.document.message.ErrorCode.INVALID_AUTHORIZATION;
 
 import java.util.List;
 
@@ -78,9 +77,7 @@ public class DocumentService {
 			return;
 		}
 		Folder folder = folderFinder.findById(folderId);
-		if (folder.getTeamId() != teamId) {
-			throw new DocumentException(INVALID_AUTHORIZATION);
-		}
+		folder.validateTeamId(teamId);
 	}
 
 	private Document saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
