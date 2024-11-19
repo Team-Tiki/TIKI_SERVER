@@ -1,6 +1,7 @@
 package com.tiki.server.folder.service;
 
 import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
+import static com.tiki.server.folder.message.ErrorCode.FOLDER_NAME_DUPLICATE;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.tiki.server.folder.dto.request.FolderCreateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
 import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
+import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 
 import lombok.RequiredArgsConstructor;
@@ -37,9 +39,10 @@ public class FolderService {
 	@Transactional
 	public FolderCreateResponse create(final long memberId, final long teamId,
 			final Long folderId, final FolderCreateRequest request) {
-		// 같은 레벨 파일명 중복 방지 로직 추가 필요
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-		Folder parentFolder = getFolder(teamId, request.parentId());
+		Folder parentFolder = getFolder(teamId, folderId);
+		String path = parentFolder.getChildPath();
+		validateFolderName(teamId, path, request);
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
 	}
@@ -60,5 +63,12 @@ public class FolderService {
 		Folder folder = folderFinder.findById(folderId);
 		folder.validateTeamId(teamId);
 		return folder.getPath();
+	}
+
+	private void validateFolderName(final long teamId, final String path, final FolderCreateRequest request) {
+		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
+		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
+			throw new FolderException(FOLDER_NAME_DUPLICATE);
+		}
 	}
 }
