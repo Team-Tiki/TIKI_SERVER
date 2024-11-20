@@ -68,6 +68,16 @@ public class TeamController implements TeamControllerDocs {
 		return ResponseEntity.noContent().build();
 	}
 
+	@DeleteMapping("/{teamId}/leave")
+	public ResponseEntity<BaseResponse> leaveTeam(
+			Principal principal,
+			@PathVariable long teamId
+	){
+		long memberId = Long.parseLong(principal.getName());
+		teamService.leaveTeam(memberId, teamId);
+		return ResponseEntity.noContent().build();
+	}
+
 	@DeleteMapping("/{teamId}")
 	public ResponseEntity<BaseResponse> deleteTeam(
 		Principal principal,
