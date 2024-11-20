@@ -60,7 +60,7 @@ public class DocumentService {
 	}
 
 	public DocumentsGetResponse get(final long memberId, final long teamId, final Long folderId) {
-		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
 		return DocumentsGetResponse.from(documents);
 	}
