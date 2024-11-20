@@ -92,6 +92,11 @@ public class TeamService {
                 .forEach(memberTeamManagerDeleter::delete);
     }
 
+    public void leaveTeam(final long memberId, final long teamId) {
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        memberTeamManagerDeleter.delete(memberTeamManager);
+    }
+
     private Team createTeam(TeamCreateRequest request, University univ) {
         return Team.of(request, univ);
     }
