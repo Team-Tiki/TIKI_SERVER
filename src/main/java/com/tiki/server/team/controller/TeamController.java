@@ -4,6 +4,7 @@ import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.team.message.SuccessMessage.*;
 
 import java.security.Principal;
+import java.util.List;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
@@ -54,6 +55,17 @@ public class TeamController implements TeamControllerDocs {
 	public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
 		CategoriesGetResponse response = teamService.getCategories();
 		return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
+	}
+
+	@DeleteMapping("/{teamId}/members")
+	public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
+			Principal principal,
+			@PathVariable long teamId,
+			@RequestParam List<Long> kickOutMemberIds
+	){
+		long memberId = Long.parseLong(principal.getName());
+		teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberIds);
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/{teamId}")
