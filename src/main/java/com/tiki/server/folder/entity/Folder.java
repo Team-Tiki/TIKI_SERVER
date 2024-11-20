@@ -29,7 +29,7 @@ public class Folder extends BaseTime {
 
 	private long teamId;
 
-	public Folder(String name, Folder parentFolder, long teamId) {
+	public Folder(final String name, final Folder parentFolder, final long teamId) {
 		this.name = name;
 		this.path = generatePath(parentFolder);
 		this.teamId = teamId;
@@ -45,7 +45,7 @@ public class Folder extends BaseTime {
 		return path + SEPARATOR + id;
 	}
 
-	private String generatePath(Folder parentFolder) {
+	private String generatePath(final Folder parentFolder) {
 		if (parentFolder == null) {
 			return ROOT_PATH;
 		}
