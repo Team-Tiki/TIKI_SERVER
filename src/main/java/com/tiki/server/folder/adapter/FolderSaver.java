@@ -12,7 +12,7 @@ public class FolderSaver {
 
 	private final FolderRepository folderRepository;
 
-	public Folder save(Folder folder) {
+	public Folder save(final Folder folder) {
 		return folderRepository.save(folder);
 	}
 }
