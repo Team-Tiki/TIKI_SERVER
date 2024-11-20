@@ -35,8 +35,8 @@ public class FolderController {
 	@GetMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		final Principal principal,
-		@PathVariable long teamId,
-		@RequestParam(required = false) Long folderId
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		FoldersGetResponse response = folderService.get(memberId, teamId, folderId);
@@ -46,9 +46,9 @@ public class FolderController {
 	@PostMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
 		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam(required = false) Long folderId,
-		@RequestBody FolderCreateRequest request
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId,
+		@RequestBody final FolderCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		FolderCreateResponse response = folderService.create(memberId, teamId, folderId, request);
