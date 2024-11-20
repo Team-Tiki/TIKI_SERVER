@@ -35,9 +35,9 @@ public class DocumentController implements DocumentControllerDocs {
 	@Override
 	@GetMapping("/documents/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam String type
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final String type
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.getAllDocuments(memberId, teamId, type);
@@ -47,9 +47,9 @@ public class DocumentController implements DocumentControllerDocs {
 	@Override
 	@DeleteMapping("/documents/team/{teamId}/document/{documentId}")
 	public ResponseEntity<?> deleteDocument(
-		Principal principal,
-		@PathVariable long teamId,
-		@PathVariable long documentId
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long documentId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.deleteDocument(memberId, teamId, documentId);
@@ -58,10 +58,10 @@ public class DocumentController implements DocumentControllerDocs {
 
 	@PostMapping("/teams/{teamId}/documents")
 	public ResponseEntity<SuccessResponse<?>> createDocuments(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam(required = false) Long folderId,
-		@RequestBody DocumentsCreateRequest request
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId,
+		@RequestBody final DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.createDocuments(memberId, teamId, folderId, request);
@@ -72,8 +72,8 @@ public class DocumentController implements DocumentControllerDocs {
 	@GetMapping("/teams/{teamId}/documents")
 	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
 		final Principal principal,
-		@PathVariable long teamId,
-		@RequestParam(required = false) Long folderId
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.get(memberId, teamId, folderId);
