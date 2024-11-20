@@ -13,7 +13,6 @@ import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
-import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
@@ -35,7 +34,7 @@ public class DocumentService {
 	private final FolderFinder folderFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
-	public DocumentsGetResponse getAllDocuments(long memberId, long teamId, String type) {
+	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
@@ -43,7 +42,7 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public void deleteDocument(long memberId, long teamId, long documentId) {
+	public void deleteDocument(final long memberId, final long teamId, final long documentId) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Document document = documentFinder.findByIdWithTimeBlock(documentId);
 		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
@@ -65,12 +64,12 @@ public class DocumentService {
 		return DocumentsGetResponse.from(documents);
 	}
 
-	private DocumentsGetResponse getAllDocumentsByType(long teamId, Position accessiblePosition) {
+	private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
 	}
 
-	private void validateFolder(Long folderId, long teamId) {
+	private void validateFolder(final Long folderId, final long teamId) {
 		if (folderId == null) {
 			return;
 		}
@@ -95,7 +94,7 @@ public class DocumentService {
 		request.documents().forEach(document -> saveDocument(teamId, folderId, document));
 	}
 
-	private void saveDocument(long teamId, Long folderId, DocumentCreateRequest request) {
+	private void saveDocument(final long teamId, final Long folderId, final DocumentCreateRequest request) {
 		Document document = Document.of(
 			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
 		documentSaver.save(document);
