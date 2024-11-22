@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,9 +35,9 @@ public class DocumentController implements DocumentControllerDocs {
 	@Override
 	@GetMapping("/documents/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam String type
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final String type
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.getAllDocuments(memberId, teamId, type);
@@ -48,32 +47,33 @@ public class DocumentController implements DocumentControllerDocs {
 	@Override
 	@DeleteMapping("/documents/team/{teamId}/document/{documentId}")
 	public ResponseEntity<?> deleteDocument(
-		Principal principal,
-		@PathVariable long teamId,
-		@PathVariable long documentId
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long documentId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.deleteDocument(memberId, teamId, documentId);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PostMapping("/documents")
-	public ResponseEntity<SuccessResponse<DocumentsCreateResponse>> createDocuments(
-		Principal principal,
-		@RequestHeader("team-id") long teamId,
-		@RequestBody DocumentsCreateRequest request
+	@PostMapping("/teams/{teamId}/documents")
+	public ResponseEntity<SuccessResponse<?>> createDocuments(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId,
+		@RequestBody final DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, request);
-		return ResponseEntity.created(UriGenerator.getUri("api/v1/documents"))
-			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response));
+		documentService.createDocuments(memberId, teamId, folderId, request);
+		return ResponseEntity.created(UriGenerator.getUri("teams/" + teamId + "/documents"))
+			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage()));
 	}
 
 	@GetMapping("/teams/{teamId}/documents")
 	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
 		final Principal principal,
-		@PathVariable long teamId,
-		@RequestParam(required = false) Long folderId
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.get(memberId, teamId, folderId);

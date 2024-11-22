@@ -1,5 +1,8 @@
 package com.tiki.server.folder.service;
 
+import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
+import static com.tiki.server.folder.message.ErrorCode.FOLDER_NAME_DUPLICATE;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import com.tiki.server.folder.dto.request.FolderCreateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
 import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
+import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 
 import lombok.RequiredArgsConstructor;
@@ -24,25 +28,46 @@ public class FolderService {
 	private final FolderSaver folderSaver;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 
-	public FoldersGetResponse get(final long memberId, final long teamId, final String path) {
-		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+	public FoldersGetResponse get(final long memberId, final long teamId,
+			final Long folderId) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		Folder folder = getFolder(teamId, folderId);
+		String path = getChildFolderPath(folder);
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
 		return FoldersGetResponse.from(folders);
 	}
 
 	@Transactional
-	public FolderCreateResponse create(long memberId, long teamId, FolderCreateRequest request) {
-		// 같은 레벨 파일명 중복 방지 로직 추가 필요
+	public FolderCreateResponse create(final long memberId, final long teamId,
+			final Long folderId, final FolderCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-		Folder parentFolder = getFolder(request.parentId());
+		Folder parentFolder = getFolder(teamId, folderId);
+		String path = getChildFolderPath(parentFolder);
+		validateFolderName(teamId, path, request);
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
 	}
 
-	private Folder getFolder(Long folderId) {
+	private Folder getFolder(final long teamId, final Long folderId) {
 		if (folderId == null) {
 			return null;
 		}
-		return folderFinder.findById(folderId);
+		Folder folder = folderFinder.findById(folderId);
+		folder.validateTeamId(teamId);
+		return folder;
+	}
+
+	private String getChildFolderPath(final Folder folder) {
+		if (folder == null) {
+			return ROOT_PATH;
+		}
+		return folder.getChildPath();
+	}
+
+	private void validateFolderName(final long teamId, final String path, final FolderCreateRequest request) {
+		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
+		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
+			throw new FolderException(FOLDER_NAME_DUPLICATE);
+		}
 	}
 }

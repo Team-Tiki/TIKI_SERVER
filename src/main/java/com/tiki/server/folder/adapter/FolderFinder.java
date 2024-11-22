@@ -18,7 +18,7 @@ public class FolderFinder {
 
 	private final FolderRepository folderRepository;
 
-	public Folder findById(long id) {
+	public Folder findById(final long id) {
 		return folderRepository.findById(id)
 			.orElseThrow(() -> new FolderException(INVALID_FOLDER));
 	}
