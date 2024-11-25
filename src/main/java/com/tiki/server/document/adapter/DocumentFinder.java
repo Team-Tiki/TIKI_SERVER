@@ -20,9 +20,9 @@ public class DocumentFinder {
 
     private final DocumentRepository documentRepository;
 
-    public List<Document> findAllById(final List<Long> documentIds) {
+    public List<Document> findAllById(final List<Long> documentIds, final long teamId) {
         return documentIds.stream()
-                .map(this::findByIdOrElseThrow)
+                .map(id -> findByIdAndTeamId(id, teamId))
                 .toList();
     }
 
@@ -56,5 +56,10 @@ public class DocumentFinder {
 
     public List<Document> findByTeamIdAndFolderId(final long teamId, final Long folderId) {
         return documentRepository.findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(teamId, folderId);
+    }
+
+    private Document findByIdAndTeamId(long documentId, long teamId) {
+        return documentRepository.findByIdAndTeamId(documentId, teamId)
+                .orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }
 }
