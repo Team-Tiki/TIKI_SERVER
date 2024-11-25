@@ -1,6 +1,7 @@
 package com.tiki.server.document.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	void deleteAllByTimeBlockId(long timeBlockId);
 
 	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(long teamId, Long folderId);
+
+	Optional<Document> findByIdAndTeamId(long id, long teamId);
 }
