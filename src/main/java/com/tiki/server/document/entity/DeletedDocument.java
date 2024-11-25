@@ -26,13 +26,19 @@ public class DeletedDocument {
 
 	private String fileUrl;
 
+	private long teamId;
+
+	private double capacity;
+
 	private LocalDate deletedDate;
 
 	@Builder
-	public static DeletedDocument of(String fileName, String fileUrl, LocalDate deletedDate) {
+	public static DeletedDocument of(String fileName, String fileUrl, long teamId, double capacity, LocalDate deletedDate) {
 		return DeletedDocument.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
+			.teamId(teamId)
+			.capacity(capacity)
 			.deletedDate(deletedDate)
 			.build();
 	}
