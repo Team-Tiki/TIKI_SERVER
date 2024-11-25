@@ -15,6 +15,7 @@ import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
+import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.folder.adapter.FolderFinder;
@@ -72,6 +73,13 @@ public class DocumentService {
 		List<Document> documents = documentFinder.findAllById(documentIds, teamId);
 		deletedDocumentAdapter.save(documents, teamId);
 		documentDeleter.deleteAll(documents);
+	}
+
+	@Transactional
+	public void deleteTrash(final long memberId, final long teamId, final List<Long> documentIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
+		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
