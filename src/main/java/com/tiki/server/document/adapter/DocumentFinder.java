@@ -1,7 +1,6 @@
 package com.tiki.server.document.adapter;
 
 import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
-import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
 
 import java.util.List;
 import java.util.Objects;
