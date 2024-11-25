@@ -4,6 +4,7 @@ import static com.tiki.server.document.message.SuccessMessage.SUCCESS_CREATE_DOC
 import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_DOCUMENTS;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -78,5 +79,16 @@ public class DocumentController implements DocumentControllerDocs {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.get(memberId, teamId, folderId);
 		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
+	}
+
+	@DeleteMapping("/teams/{teamId}/documents")
+	public ResponseEntity<?> delete(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final List<Long> documentIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		documentService.delete(memberId, teamId, documentIds);
+		return ResponseEntity.noContent().build();
 	}
 }
