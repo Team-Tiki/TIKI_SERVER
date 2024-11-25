@@ -82,6 +82,14 @@ public class DocumentService {
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
+	@Transactional
+	public void restore(final long memberId, final long teamId, final List<Long> documentIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
+		documentSaver.restore(deletedDocuments);
+		deletedDocumentAdapter.deleteAll(deletedDocuments);
+	}
+
 	private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
