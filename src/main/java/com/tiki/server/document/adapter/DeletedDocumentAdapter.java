@@ -28,6 +28,10 @@ public class DeletedDocumentAdapter {
 				.toList();
 	}
 
+	public void deleteAll(final List<DeletedDocument> deletedDocuments) {
+		deletedDocumentRepository.deleteAll(deletedDocuments);
+	}
+
 	private DeletedDocument create(final Document document, final long teamId) {
 		return DeletedDocument.of(document.getFileName(), document.getFileUrl(), teamId, document.getCapacity());
 	}
