@@ -15,15 +15,15 @@ public class DocumentSaver {
 
 	private final DocumentRepository documentRepository;
 
-	public Document save(Document document) {
+	public Document save(final Document document) {
 		return documentRepository.save(document);
 	}
 
-	public void restore(List<DeletedDocument> deletedDocuments) {
+	public void restore(final List<DeletedDocument> deletedDocuments) {
 		deletedDocuments.forEach(document -> documentRepository.save(create(document)));
 	}
 
-	private Document create(DeletedDocument deletedDocument) {
+	private Document create(final DeletedDocument deletedDocument) {
 		return Document.restore(
 				deletedDocument.getFileName(),
 				deletedDocument.getFileUrl(),
