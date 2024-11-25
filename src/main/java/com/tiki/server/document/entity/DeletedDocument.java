@@ -4,6 +4,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
 
+import com.tiki.server.common.entity.BaseTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class DeletedDocument {
+public class DeletedDocument extends BaseTime {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -30,17 +32,14 @@ public class DeletedDocument {
 
 	private double capacity;
 
-	private LocalDate deletedDate;
-
 	@Builder
 	public static DeletedDocument of(final String fileName, final String fileUrl, final long teamId,
-			final double capacity, final LocalDate deletedDate) {
+			final double capacity) {
 		return DeletedDocument.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
 			.teamId(teamId)
 			.capacity(capacity)
-			.deletedDate(deletedDate)
 			.build();
 	}
 }
