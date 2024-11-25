@@ -21,6 +21,12 @@ public class DocumentFinder {
 
     private final DocumentRepository documentRepository;
 
+    public List<Document> findAllById(final List<Long> documentIds) {
+        return documentIds.stream()
+                .map(this::findByIdOrElseThrow)
+                .toList();
+    }
+
     public Document findByIdOrElseThrow(final long documentId) {
         return documentRepository.findById(documentId).orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }
