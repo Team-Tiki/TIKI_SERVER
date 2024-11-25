@@ -33,7 +33,8 @@ public class DeletedDocument {
 	private LocalDate deletedDate;
 
 	@Builder
-	public static DeletedDocument of(String fileName, String fileUrl, long teamId, double capacity, LocalDate deletedDate) {
+	public static DeletedDocument of(final String fileName, final String fileUrl, final long teamId,
+			final double capacity, final LocalDate deletedDate) {
 		return DeletedDocument.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
