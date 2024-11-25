@@ -66,4 +66,15 @@ public class Document extends BaseTime {
 			.timeBlock(null)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
 			.build();
 	}
+
+	public static Document restore(String fileName, String fileUrl, double capacity, long teamId) {
+		return Document.builder()
+				.fileName(fileName)
+				.fileUrl(fileUrl)
+				.capacity(capacity)
+				.teamId(teamId)
+				.folderId(null)
+				.timeBlock(null)
+				.build();
+	}
 }
