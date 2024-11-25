@@ -102,4 +102,15 @@ public class DocumentController implements DocumentControllerDocs {
 		documentService.deleteTrash(memberId, teamId, deletedDocumentIds);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PostMapping("/teams/{teamId}/trash")
+	public ResponseEntity<?> restore(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final List<Long> deletedDocumentIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		documentService.restore(memberId, teamId, deletedDocumentIds);
+		return ResponseEntity.noContent().build();
+	}
 }
