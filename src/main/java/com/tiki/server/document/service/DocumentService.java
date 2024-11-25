@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
+import com.tiki.server.document.adapter.DeletedDocumentAdapter;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
@@ -33,6 +34,7 @@ public class DocumentService {
 	private final DocumentDeleter documentDeleter;
 	private final FolderFinder folderFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
+	private final DeletedDocumentAdapter deletedDocumentAdapter;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
@@ -62,6 +64,14 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
 		return DocumentsGetResponse.from(documents);
+	}
+
+	@Transactional
+	public void delete(final long memberId, final long teamId, final List<Long> documentIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<Document> documents = documentFinder.findAllById(documentIds);
+		deletedDocumentAdapter.save(documents, teamId);
+		documentDeleter.deleteAll(documents);
 	}
 
 	private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
