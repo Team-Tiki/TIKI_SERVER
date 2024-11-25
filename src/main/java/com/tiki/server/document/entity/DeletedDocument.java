@@ -4,8 +4,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
-import java.time.LocalDate;
-
 import com.tiki.server.common.entity.BaseTime;
 
 import jakarta.persistence.Column;
