@@ -61,8 +61,8 @@ public class FolderService {
 	public void delete(final long memberId, final long teamId, final List<Long> folderIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		List<Folder> folders = folderFinder.findAllById(folderIds, teamId);
-		deleteFolders(folders, teamId);
-		folders.forEach(folder -> deleteDocuments(folder, teamId));
+		deleteFolders(folders);
+		folders.forEach(this::deleteDocuments);
 	}
 
 	private Folder getFolder(final long teamId, final Long folderId) {
@@ -88,20 +88,20 @@ public class FolderService {
 		}
 	}
 
-	private void deleteFolders(final List<Folder> folders, final long teamId) {
-		folders.forEach(folder -> deleteChildFolders(folder, teamId));
+	private void deleteFolders(final List<Folder> folders) {
+		folders.forEach(this::deleteChildFolders);
 		folderDeleter.deleteAll(folders);
 	}
 
-	private void deleteChildFolders(final Folder folder, final long teamId) {
+	private void deleteChildFolders(final Folder folder) {
 		List<Folder> childFolders = folderFinder.findAllStartWithPath(folder.getChildPath());
-		childFolders.forEach(childFolder -> deleteDocuments(childFolder, teamId));
+		childFolders.forEach(this::deleteDocuments);
 		folderDeleter.deleteAll(childFolders);
 	}
 
-	private void deleteDocuments(final Folder folder, final long teamId) {
+	private void deleteDocuments(final Folder folder) {
 		List<Document> documents = documentFinder.findAllByFolderId(folder.getId());
-		deletedDocumentAdapter.save(documents, teamId);
+		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
 	}
 }
