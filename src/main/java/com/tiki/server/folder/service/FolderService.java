@@ -12,6 +12,7 @@ import com.tiki.server.document.adapter.DeletedDocumentAdapter;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.folder.adapter.FolderDeleter;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.adapter.FolderSaver;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
@@ -19,6 +20,7 @@ import com.tiki.server.folder.dto.response.FolderCreateResponse;
 import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.folder.exception.FolderException;
+import com.tiki.server.folder.repository.FolderRepository;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class FolderService {
 	private final DocumentFinder documentFinder;
 	private final DocumentDeleter documentDeleter;
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
+	private final FolderDeleter folderDeleter;
 
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
@@ -76,6 +79,12 @@ public class FolderService {
 		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
 			throw new FolderException(FOLDER_NAME_DUPLICATE);
 		}
+	}
+
+	private void deleteChildFolders(final Folder folder, final long teamId) {
+		List<Folder> childFolders = folderFinder.findAllStartWithPath(folder.getChildPath());
+		childFolders.forEach(childFolder -> deleteDocuments(childFolder, teamId));
+		folderDeleter.deleteAll(childFolders);
 	}
 
 	private void deleteDocuments(final Folder folder, final long teamId) {
