@@ -20,7 +20,7 @@ public class DocumentFinder {
 
     private final DocumentRepository documentRepository;
 
-    public List<Document> findAllById(final List<Long> documentIds, final long teamId) {
+    public List<Document> findAllByIdAndTeamId(final List<Long> documentIds, final long teamId) {
         return documentIds.stream()
                 .map(id -> findByIdAndTeamId(id, teamId))
                 .toList();
