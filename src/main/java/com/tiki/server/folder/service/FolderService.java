@@ -20,7 +20,6 @@ import com.tiki.server.folder.dto.response.FolderCreateResponse;
 import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.folder.exception.FolderException;
-import com.tiki.server.folder.repository.FolderRepository;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 
 import lombok.RequiredArgsConstructor;
@@ -79,6 +78,11 @@ public class FolderService {
 		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
 			throw new FolderException(FOLDER_NAME_DUPLICATE);
 		}
+	}
+
+	private void deleteFolders(final List<Folder> folders, final long teamId) {
+		folders.forEach(folder -> deleteChildFolders(folder, teamId));
+		folderDeleter.deleteAll(folders);
 	}
 
 	private void deleteChildFolders(final Folder folder, final long teamId) {
