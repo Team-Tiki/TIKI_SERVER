@@ -62,6 +62,7 @@ public class FolderService {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		List<Folder> folders = folderFinder.findAllById(folderIds, teamId);
 		deleteFolders(folders, teamId);
+		folders.forEach(folder -> deleteDocuments(folder, teamId));
 	}
 
 	private Folder getFolder(final long teamId, final Long folderId) {
