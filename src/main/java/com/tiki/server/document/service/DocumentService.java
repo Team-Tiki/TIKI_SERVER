@@ -71,7 +71,7 @@ public class DocumentService {
 	public void delete(final long memberId, final long teamId, final List<Long> documentIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		List<Document> documents = documentFinder.findAllById(documentIds, teamId);
-		deletedDocumentAdapter.save(documents, teamId);
+		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
 	}
 
