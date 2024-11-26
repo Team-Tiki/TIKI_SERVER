@@ -53,8 +53,9 @@ public class FolderController {
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		FolderCreateResponse response = folderService.create(memberId, teamId, folderId, request);
-		return ResponseEntity.created(UriGenerator.getUri("api/v1/folders/" + response.folderId()))
-			.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
+		return ResponseEntity.created(
+				UriGenerator.getUri("api/v1/teams/" + teamId + "/folders/" + response.folderId()))
+				.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
 	}
 
 	@DeleteMapping("/teams/{teamId}/folders")
