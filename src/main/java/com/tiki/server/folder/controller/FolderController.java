@@ -1,7 +1,6 @@
 package com.tiki.server.folder.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.*;
-import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_CREATE_FOLDER;
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_GET_FOLDERS;
 
