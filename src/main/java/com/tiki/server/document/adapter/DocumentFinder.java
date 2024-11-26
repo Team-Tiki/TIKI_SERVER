@@ -58,6 +58,10 @@ public class DocumentFinder {
         return documentRepository.findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(teamId, folderId);
     }
 
+    public List<Document> findAllByFolderId(final long folderId) {
+        return documentRepository.findAllByFolderId(folderId);
+    }
+
     private Document findByIdAndTeamId(long documentId, long teamId) {
         return documentRepository.findByIdAndTeamId(documentId, teamId)
                 .orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
