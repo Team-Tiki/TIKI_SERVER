@@ -6,8 +6,10 @@ import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_CREATE_FOLDE
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_GET_FOLDERS;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,5 +56,16 @@ public class FolderController {
 		FolderCreateResponse response = folderService.create(memberId, teamId, folderId, request);
 		return ResponseEntity.created(UriGenerator.getUri("api/v1/folders/" + response.folderId()))
 			.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
+	}
+
+	@DeleteMapping("/teams/{teamId}/folders")
+	public ResponseEntity<?> delete(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final List<Long> folderIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		folderService.delete(memberId, teamId, folderIds);
+		return ResponseEntity.noContent().build();
 	}
 }
