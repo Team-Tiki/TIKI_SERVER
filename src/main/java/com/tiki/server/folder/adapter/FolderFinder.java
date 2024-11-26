@@ -29,4 +29,8 @@ public class FolderFinder {
 		}
 		return folderRepository.findAllByPathOrderByCreatedAtDesc(path);
 	}
+
+	public List<Folder> findAllStartWithPath(final String path) {
+		return folderRepository.findAllByPathStartsWith(path);
+	}
 }
