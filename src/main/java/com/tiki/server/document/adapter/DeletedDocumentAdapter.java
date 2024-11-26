@@ -18,8 +18,8 @@ public class DeletedDocumentAdapter {
 
 	private final DeletedDocumentRepository deletedDocumentRepository;
 
-	public void save(final List<Document> documents, final long teamId) {
-		documents.forEach(document -> deletedDocumentRepository.save(create(document, teamId)));
+	public void save(final List<Document> documents) {
+		documents.forEach(document -> deletedDocumentRepository.save(create(document, document.getTeamId())));
 	}
 
 	public List<DeletedDocument> get(final List<Long> deletedDocumentIds, final long teamId) {
