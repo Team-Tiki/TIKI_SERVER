@@ -105,9 +105,7 @@ public class DocumentService {
 
 	private void validateFileName(final Long folderId, final long teamId, final DocumentsCreateRequest request) {
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
-		for (Document document : documents) {
-			checkFileNameIsDuplicated(document.getFileName(), request);
-		}
+		documents.forEach(document -> checkFileNameIsDuplicated(document.getFileName(), request));
 	}
 
 	private void checkFileNameIsDuplicated(final String fileName, final DocumentsCreateRequest request) {
