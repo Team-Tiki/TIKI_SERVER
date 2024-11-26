@@ -11,4 +11,5 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
 	List<Folder> findAllByTeamIdAndPathOrderByCreatedAtDesc(long teamId, String path);
 	List<Folder> findAllByPathOrderByCreatedAtDesc(String path);
 	Optional<Folder> findByIdAndTeamId(long id, long teamId);
+	List<Folder> findAllByPathStartsWith(String path);
 }
