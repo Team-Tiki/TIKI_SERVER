@@ -62,7 +62,7 @@ public class FolderController {
 	public ResponseEntity<?> delete(
 		final Principal principal,
 		@PathVariable final long teamId,
-		@RequestParam final List<Long> folderIds
+		@RequestParam("folderId") final List<Long> folderIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		folderService.delete(memberId, teamId, folderIds);
