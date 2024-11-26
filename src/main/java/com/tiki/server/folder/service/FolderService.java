@@ -8,6 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tiki.server.document.adapter.DeletedDocumentAdapter;
+import com.tiki.server.document.adapter.DocumentDeleter;
+import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.entity.Document;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.adapter.FolderSaver;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
@@ -27,6 +31,9 @@ public class FolderService {
 	private final FolderFinder folderFinder;
 	private final FolderSaver folderSaver;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
+	private final DocumentFinder documentFinder;
+	private final DocumentDeleter documentDeleter;
+	private final DeletedDocumentAdapter deletedDocumentAdapter;
 
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
@@ -69,5 +76,11 @@ public class FolderService {
 		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
 			throw new FolderException(FOLDER_NAME_DUPLICATE);
 		}
+	}
+
+	private void deleteDocuments(final Folder folder, final long teamId) {
+		List<Document> documents = documentFinder.findAllByFolderId(folder.getId());
+		deletedDocumentAdapter.save(documents, teamId);
+		documentDeleter.deleteAll(documents);
 	}
 }
