@@ -57,6 +57,13 @@ public class FolderService {
 		return FolderCreateResponse.from(folder.getId());
 	}
 
+	@Transactional
+	public void delete(final long memberId, final long teamId, final List<Long> folderIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<Folder> folders = folderFinder.findAllById(folderIds, teamId);
+		deleteFolders(folders, teamId);
+	}
+
 	private Folder getFolder(final long teamId, final Long folderId) {
 		if (folderId == null) {
 			return null;
