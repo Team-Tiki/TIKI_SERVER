@@ -85,7 +85,7 @@ public class DocumentController implements DocumentControllerDocs {
 	public ResponseEntity<?> delete(
 		final Principal principal,
 		@PathVariable final long teamId,
-		@RequestParam final List<Long> documentIds
+		@RequestParam("documentId") final List<Long> documentIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.delete(memberId, teamId, documentIds);
@@ -96,7 +96,7 @@ public class DocumentController implements DocumentControllerDocs {
 	public ResponseEntity<?> deleteTrash(
 		final Principal principal,
 		@PathVariable final long teamId,
-		@RequestParam final List<Long> deletedDocumentIds
+		@RequestParam("documentId") final List<Long> deletedDocumentIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.deleteTrash(memberId, teamId, deletedDocumentIds);
@@ -107,7 +107,7 @@ public class DocumentController implements DocumentControllerDocs {
 	public ResponseEntity<?> restore(
 		final Principal principal,
 		@PathVariable final long teamId,
-		@RequestParam final List<Long> deletedDocumentIds
+		@RequestParam("documentId") final List<Long> deletedDocumentIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.restore(memberId, teamId, deletedDocumentIds);
