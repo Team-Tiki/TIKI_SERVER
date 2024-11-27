@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
+import com.tiki.server.document.adapter.DeletedDocumentAdapter;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
+import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
+import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.folder.adapter.FolderFinder;
@@ -33,6 +36,7 @@ public class DocumentService {
 	private final DocumentDeleter documentDeleter;
 	private final FolderFinder folderFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
+	private final DeletedDocumentAdapter deletedDocumentAdapter;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
@@ -64,6 +68,35 @@ public class DocumentService {
 		return DocumentsGetResponse.from(documents);
 	}
 
+	@Transactional
+	public void delete(final long memberId, final long teamId, final List<Long> documentIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<Document> documents = documentFinder.findAllByIdAndTeamId(documentIds, teamId);
+		deletedDocumentAdapter.save(documents);
+		documentDeleter.deleteAll(documents);
+	}
+
+	@Transactional
+	public void deleteTrash(final long memberId, final long teamId, final List<Long> documentIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
+		deletedDocumentAdapter.deleteAll(deletedDocuments);
+	}
+
+	@Transactional
+	public void restore(final long memberId, final long teamId, final List<Long> documentIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
+		documentSaver.restore(deletedDocuments);
+		deletedDocumentAdapter.deleteAll(deletedDocuments);
+	}
+
+	public DeletedDocumentsGetResponse getTrash(final long memberId, final long teamId) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(teamId);
+		return DeletedDocumentsGetResponse.from(deletedDocuments);
+	}
+
 	private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
 		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
 		return DocumentsGetResponse.from(documents);
@@ -79,9 +112,7 @@ public class DocumentService {
 
 	private void validateFileName(final Long folderId, final long teamId, final DocumentsCreateRequest request) {
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
-		for (Document document : documents) {
-			checkFileNameIsDuplicated(document.getFileName(), request);
-		}
+		documents.forEach(document -> checkFileNameIsDuplicated(document.getFileName(), request));
 	}
 
 	private void checkFileNameIsDuplicated(final String fileName, final DocumentsCreateRequest request) {

@@ -29,4 +29,19 @@ public class FolderFinder {
 		}
 		return folderRepository.findAllByPathOrderByCreatedAtDesc(path);
 	}
+
+	public List<Folder> findAllById(final List<Long> folderIds, final long teamId) {
+		return folderIds.stream()
+				.map(id -> findByIdAndTeamId(id, teamId))
+				.toList();
+	}
+
+	public List<Folder> findAllStartWithPath(final String path) {
+		return folderRepository.findAllByPathStartsWith(path);
+	}
+
+	private Folder findByIdAndTeamId(final long id, final long teamId) {
+		return folderRepository.findByIdAndTeamId(id, teamId)
+				.orElseThrow(() -> new FolderException(INVALID_FOLDER));
+	}
 }

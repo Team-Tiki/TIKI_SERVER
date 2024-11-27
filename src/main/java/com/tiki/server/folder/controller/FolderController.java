@@ -1,13 +1,14 @@
 package com.tiki.server.folder.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.*;
-import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_CREATE_FOLDER;
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_GET_FOLDERS;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,19 @@ public class FolderController {
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		FolderCreateResponse response = folderService.create(memberId, teamId, folderId, request);
-		return ResponseEntity.created(UriGenerator.getUri("api/v1/folders/" + response.folderId()))
-			.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
+		return ResponseEntity.created(
+				UriGenerator.getUri("api/v1/teams/" + teamId + "/folders/" + response.folderId()))
+				.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
+	}
+
+	@DeleteMapping("/teams/{teamId}/folders")
+	public ResponseEntity<?> delete(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam("folderId") final List<Long> folderIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		folderService.delete(memberId, teamId, folderIds);
+		return ResponseEntity.noContent().build();
 	}
 }

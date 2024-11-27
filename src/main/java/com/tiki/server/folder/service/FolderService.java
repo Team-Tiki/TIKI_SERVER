@@ -8,6 +8,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tiki.server.document.adapter.DeletedDocumentAdapter;
+import com.tiki.server.document.adapter.DocumentDeleter;
+import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.entity.Document;
+import com.tiki.server.folder.adapter.FolderDeleter;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.adapter.FolderSaver;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
@@ -27,6 +32,10 @@ public class FolderService {
 	private final FolderFinder folderFinder;
 	private final FolderSaver folderSaver;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
+	private final DocumentFinder documentFinder;
+	private final DocumentDeleter documentDeleter;
+	private final DeletedDocumentAdapter deletedDocumentAdapter;
+	private final FolderDeleter folderDeleter;
 
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
@@ -46,6 +55,13 @@ public class FolderService {
 		validateFolderName(teamId, path, request);
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
+	}
+
+	@Transactional
+	public void delete(final long memberId, final long teamId, final List<Long> folderIds) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		List<Folder> folders = folderFinder.findAllById(folderIds, teamId);
+		deleteFolders(folders);
 	}
 
 	private Folder getFolder(final long teamId, final Long folderId) {
@@ -69,5 +85,23 @@ public class FolderService {
 		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
 			throw new FolderException(FOLDER_NAME_DUPLICATE);
 		}
+	}
+
+	private void deleteFolders(final List<Folder> folders) {
+		folders.forEach(this::deleteChildFolders);
+		folders.forEach(this::deleteDocuments);
+		folderDeleter.deleteAll(folders);
+	}
+
+	private void deleteChildFolders(final Folder folder) {
+		List<Folder> childFolders = folderFinder.findAllStartWithPath(folder.getChildPath());
+		childFolders.forEach(this::deleteDocuments);
+		folderDeleter.deleteAll(childFolders);
+	}
+
+	private void deleteDocuments(final Folder folder) {
+		List<Document> documents = documentFinder.findAllByFolderId(folder.getId());
+		deletedDocumentAdapter.save(documents);
+		documentDeleter.deleteAll(documents);
 	}
 }
