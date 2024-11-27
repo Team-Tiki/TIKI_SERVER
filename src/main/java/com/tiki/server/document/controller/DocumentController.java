@@ -2,6 +2,7 @@ package com.tiki.server.document.controller;
 
 import static com.tiki.server.document.message.SuccessMessage.SUCCESS_CREATE_DOCUMENTS;
 import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_DOCUMENTS;
+import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_TRASH;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
+import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
 import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
@@ -112,5 +114,15 @@ public class DocumentController implements DocumentControllerDocs {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.restore(memberId, teamId, deletedDocumentIds);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/teams/{teamId}/trash")
+	public ResponseEntity<SuccessResponse<DeletedDocumentsGetResponse>> getTrash(
+		final Principal principal,
+		@PathVariable final long teamId
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		DeletedDocumentsGetResponse response = documentService.getTrash(memberId, teamId);
+		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_TRASH.getMessage(), response));
 	}
 }
