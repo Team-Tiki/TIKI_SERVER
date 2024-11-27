@@ -10,6 +10,7 @@ import com.tiki.server.common.entity.Position;
 import com.tiki.server.document.entity.Document;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
+
 	List<Document> findAllByTimeBlockId(long timeBlockId);
 
 	List<Document> findAllByFolderId(long folderId);
