@@ -87,7 +87,7 @@ public class Note extends BaseTime {
         this.noteType = noteType;
     }
 
-    public void deleteMemberDependency(){
+    public void deleteMemberDependency() {
         this.memberId = null;
     }
 
