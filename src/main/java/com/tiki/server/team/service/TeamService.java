@@ -2,18 +2,14 @@ package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
 import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
-import static com.tiki.server.team.message.ErrorCode.TOO_HIGH_AUTHORIZATION;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
-import com.tiki.server.note.adapter.NoteFinder;
-import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
@@ -48,7 +44,6 @@ public class TeamService {
     private final TeamFinder teamFinder;
     private final TeamDeleter teamDeleter;
     private final MemberFinder memberFinder;
-    private final NoteFinder noteFinder;
     private final DocumentFinder documentFinder;
     private final DocumentDeleter documentDeleter;
     private final TimeBlockDeleter timeBlockDeleter;
@@ -87,26 +82,6 @@ public class TeamService {
         teamDeleter.deleteById(teamId);
     }
 
-    @Transactional
-    public void kickOutMemberFromTeam(final long memberId, final long teamId, final long kickOutMemberId) {
-        checkIsAdmin(memberId, teamId);
-        Optional<MemberTeamManager> memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(kickOutMemberId, teamId);
-        deleteNoteDependency(memberId, teamId);
-        memberTeamManager.ifPresent(memberTeamManagerDeleter::delete);
-    }
-
-    @Transactional
-    public void leaveTeam(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = checkIsNotAdmin(memberId, teamId);
-        deleteNoteDependency(memberId, teamId);
-        memberTeamManagerDeleter.delete(memberTeamManager);
-    }
-
-    private void deleteNoteDependency(final long memberId, final long teamId) {
-        List<Note> notes = noteFinder.findAllByMemberIdAndTeamId(memberId, teamId);
-        notes.forEach(Note::deleteMemberDependency);
-    }
-
     private Team createTeam(final TeamCreateRequest request, final University univ) {
         return Team.of(request, univ);
     }
@@ -120,13 +95,5 @@ public class TeamService {
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(INVALID_AUTHORIZATION_DELETE);
         }
-    }
-
-    private MemberTeamManager checkIsNotAdmin(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-        if (memberTeamManager.getPosition().equals(ADMIN)) {
-            throw new TeamException(TOO_HIGH_AUTHORIZATION);
-        }
-        return memberTeamManager;
     }
 }

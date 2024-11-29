@@ -56,27 +56,6 @@ public class TeamController implements TeamControllerDocs {
         return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
     }
 
-    @DeleteMapping("/{teamId}/members/{kickOutMemberId}")
-    public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
-            final Principal principal,
-            @PathVariable final long teamId,
-            @PathVariable final long kickOutMemberId
-    ) {
-        long memberId = Long.parseLong(principal.getName());
-        teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberId);
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("/{teamId}/leave")
-    public ResponseEntity<BaseResponse> leaveTeam(
-            final Principal principal,
-            @PathVariable final long teamId
-    ) {
-        long memberId = Long.parseLong(principal.getName());
-        teamService.leaveTeam(memberId, teamId);
-        return ResponseEntity.noContent().build();
-    }
-
     @DeleteMapping("/{teamId}")
     public ResponseEntity<BaseResponse> deleteTeam(
             final Principal principal,
