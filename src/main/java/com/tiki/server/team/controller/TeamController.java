@@ -56,11 +56,11 @@ public class TeamController implements TeamControllerDocs {
 		return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
 	}
 
-	@DeleteMapping("/{teamId}/members")
+	@DeleteMapping("/{teamId}/members/{kickOutMemberId}")
 	public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
 			Principal principal,
 			@PathVariable long teamId,
-			@RequestParam long kickOutMemberId
+			@PathVariable long kickOutMemberId
 	){
 		long memberId = Long.parseLong(principal.getName());
 		teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberId);
