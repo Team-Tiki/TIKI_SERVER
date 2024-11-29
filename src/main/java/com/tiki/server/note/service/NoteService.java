@@ -6,7 +6,6 @@ import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
-import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.note.adapter.NoteDeleter;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.adapter.NoteSaver;
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.tiki.server.common.Constants.INIT_NUM;
 import static com.tiki.server.note.constants.NoteConstants.PAGE_SIZE;
@@ -57,7 +55,7 @@ public class NoteService {
 
     @Transactional
     public NoteCreateServiceResponse createNoteFree(final NoteFreeCreateServiceRequest request) {
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(request.memberId(), request.teamId());
+        memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
         String encryptedContents = ContentEncoder.encodeNoteFree(request.contents());
         Note note = createNote(NoteBase.of(request), encryptedContents, NoteType.FREE);
         createNoteTimeBlockManagers(request.timeBlockIds(), note.getId());
@@ -67,7 +65,7 @@ public class NoteService {
 
     @Transactional
     public NoteCreateServiceResponse createNoteTemplate(final NoteTemplateCreateServiceRequest request) {
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(request.memberId(), request.teamId());
+        memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
         String encryptedContents = ContentEncoder.encodeNoteTemplate(
                 request.answerWhatActivity(),
                 request.answerHowToPrepare(),
@@ -83,7 +81,7 @@ public class NoteService {
     @Transactional
     public void updateNoteFree(final NoteFreeUpdateServiceRequest request) {
         Note note = noteFinder.findById(request.noteId());
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(request.memberId(), request.teamId());
+        memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
         String encryptedContents = ContentEncoder.encodeNoteFree(request.contents());
         note.updateValue(
                 request.memberId(),
@@ -102,7 +100,7 @@ public class NoteService {
     @Transactional
     public void updateNoteTemplate(final NoteTemplateUpdateServiceRequest request) {
         Note note = noteFinder.findById(request.noteId());
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(request.memberId(), request.teamId());
+        memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(), request.teamId());
         String encryptedContents = ContentEncoder.encodeNoteTemplate(
                 request.answerWhatActivity(),
                 request.answerHowToPrepare(),
@@ -125,7 +123,7 @@ public class NoteService {
 
     @Transactional
     public void deleteNotes(final List<Long> noteIds, final long teamId, final long memberId) {
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         noteDocumentManagerDeleter.deleteByNoteIds(noteIds);
         noteTimeBlockManagerDeleter.noteTimeBlockManagerDeleteByIds(noteIds);
         noteDeleter.deleteNoteByIds(noteIds);
@@ -137,7 +135,7 @@ public class NoteService {
             final LocalDateTime createdAt,
             final SortOrder sortOrder
     ) {
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
         List<Note> noteList = getNotes(createdAt, sortOrder, pageable, teamId);
         List<NoteGetResponse> noteGetResponses = noteList.stream()
@@ -147,7 +145,7 @@ public class NoteService {
     }
 
     public NoteDetailGetServiceResponse getNoteDetail(final long teamId, final long memberId, final long noteId) {
-        memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         Note note = noteFinder.findById(noteId);
         List<Document> documentList = getDocumentListMappedByNote(noteId);
         List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
@@ -159,7 +157,7 @@ public class NoteService {
 
     private String getMemberName(final Long noteMemberId, final long teamId) {
         return Optional.ofNullable(noteMemberId)
-                .map(id -> memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(id, teamId).getName())
+                .map(id -> memberTeamManagerFinder.findByMemberIdAndTeamId(id, teamId).getName())
                 .orElse("알 수 없음");
     }
 

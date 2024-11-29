@@ -91,7 +91,7 @@ public class TeamService {
     }
 
     private void checkIsAdmin(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(INVALID_AUTHORIZATION_DELETE);
         }
