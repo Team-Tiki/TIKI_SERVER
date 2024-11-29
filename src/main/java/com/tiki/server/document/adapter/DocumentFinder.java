@@ -1,7 +1,6 @@
 package com.tiki.server.document.adapter;
 
 import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
-import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +19,12 @@ import lombok.RequiredArgsConstructor;
 public class DocumentFinder {
 
     private final DocumentRepository documentRepository;
+
+    public List<Document> findAllByIdAndTeamId(final List<Long> documentIds, final long teamId) {
+        return documentIds.stream()
+                .map(id -> findByIdAndTeamId(id, teamId))
+                .toList();
+    }
 
     public Document findByIdOrElseThrow(final long documentId) {
         return documentRepository.findById(documentId).orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
@@ -51,5 +56,14 @@ public class DocumentFinder {
 
     public List<Document> findByTeamIdAndFolderId(final long teamId, final Long folderId) {
         return documentRepository.findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(teamId, folderId);
+    }
+
+    public List<Document> findAllByFolderId(final long folderId) {
+        return documentRepository.findAllByFolderId(folderId);
+    }
+
+    private Document findByIdAndTeamId(long documentId, long teamId) {
+        return documentRepository.findByIdAndTeamId(documentId, teamId)
+                .orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }
 }

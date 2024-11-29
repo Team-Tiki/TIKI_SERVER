@@ -1,6 +1,7 @@
 package com.tiki.server.document.message;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -20,7 +21,10 @@ public enum ErrorCode {
 	INVALID_AUTHORIZATION(FORBIDDEN, "문서에 대한 권한이 없습니다."),
 
 	/* 404 NOT_FOUND : 자원을 찾을 수 없음 */
-	INVALID_DOCUMENT(NOT_FOUND, "유효하지 않은 문서입니다.");
+	INVALID_DOCUMENT(NOT_FOUND, "유효하지 않은 문서입니다."),
+
+	/* 409 CONFLICT : 중복된 자원 */
+	DOCUMENT_NAME_DUPLICATE(CONFLICT, "중복된 파일 이름입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

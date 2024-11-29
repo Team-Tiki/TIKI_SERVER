@@ -45,7 +45,7 @@ public class Document extends BaseTime {
 	@JoinColumn(name = "block_id")
 	private TimeBlock timeBlock;
 
-	public static Document of(String fileName, String fileUrl, TimeBlock timeBlock) {
+	public static Document of(final String fileName, final String fileUrl, final TimeBlock timeBlock) {
 		return Document.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
@@ -56,7 +56,8 @@ public class Document extends BaseTime {
 			.build();
 	}
 
-	public static Document of(String fileName, String fileUrl, double capacity, long teamId, Long folderId) {
+	public static Document of(final String fileName, final String fileUrl,
+			final double capacity, final long teamId, final Long folderId) {
 		return Document.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)
@@ -65,5 +66,17 @@ public class Document extends BaseTime {
 			.folderId(folderId)
 			.timeBlock(null)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
 			.build();
+	}
+
+	public static Document restore(final String fileName, final String fileUrl,
+			final double capacity, final long teamId) {
+		return Document.builder()
+				.fileName(fileName)
+				.fileUrl(fileUrl)
+				.capacity(capacity)
+				.teamId(teamId)
+				.folderId(null)
+				.timeBlock(null)
+				.build();
 	}
 }

@@ -1,17 +1,18 @@
 package com.tiki.server.folder.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.*;
-import static com.tiki.server.folder.constant.Constant.ROOT_PATH;
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_CREATE_FOLDER;
 import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_GET_FOLDERS;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,31 +28,44 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/folders")
+@RequestMapping("api/v1")
 public class FolderController {
 
 	private final FolderService folderService;
 
-	@GetMapping()
+	@GetMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		final Principal principal,
-		@RequestHeader("team-id") long teamId,
-		@RequestParam(defaultValue = ROOT_PATH) String path
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		FoldersGetResponse response = folderService.get(memberId, teamId, path);
+		FoldersGetResponse response = folderService.get(memberId, teamId, folderId);
 		return ResponseEntity.ok(success(SUCCESS_GET_FOLDERS.getMessage(), response));
 	}
 
-	@PostMapping()
+	@PostMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
 		Principal principal,
-		@RequestHeader("team-id") long teamId,
-		@RequestBody FolderCreateRequest request
+		@PathVariable final long teamId,
+		@RequestParam(required = false) final Long folderId,
+		@RequestBody final FolderCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		FolderCreateResponse response = folderService.create(memberId, teamId, request);
-		return ResponseEntity.created(UriGenerator.getUri("api/v1/folders/" + response.folderId()))
-			.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
+		FolderCreateResponse response = folderService.create(memberId, teamId, folderId, request);
+		return ResponseEntity.created(
+				UriGenerator.getUri("api/v1/teams/" + teamId + "/folders/" + response.folderId()))
+				.body(success(SUCCESS_CREATE_FOLDER.getMessage(), response));
+	}
+
+	@DeleteMapping("/teams/{teamId}/folders")
+	public ResponseEntity<?> delete(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam("folderId") final List<Long> folderIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		folderService.delete(memberId, teamId, folderIds);
+		return ResponseEntity.noContent().build();
 	}
 }
