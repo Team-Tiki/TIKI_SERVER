@@ -64,4 +64,8 @@ public class MemberTeamManager extends BaseTime {
 			throw new MemberTeamManagerException(INVALID_AUTHORIZATION);
 		}
 	}
+
+	public void setName(final String name){
+		this.name = name;
+	}
 }
