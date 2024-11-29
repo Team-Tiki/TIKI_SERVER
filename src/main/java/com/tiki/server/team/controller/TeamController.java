@@ -4,7 +4,6 @@ import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.team.message.SuccessMessage.*;
 
 import java.security.Principal;
-import java.util.List;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
@@ -61,10 +60,10 @@ public class TeamController implements TeamControllerDocs {
 	public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
 			Principal principal,
 			@PathVariable long teamId,
-			@RequestParam List<Long> kickOutMemberIds
+			@RequestParam long kickOutMemberId
 	){
 		long memberId = Long.parseLong(principal.getName());
-		teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberIds);
+		teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberId);
 		return ResponseEntity.noContent().build();
 	}
 

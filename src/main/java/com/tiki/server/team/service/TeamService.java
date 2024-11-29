@@ -84,12 +84,10 @@ public class TeamService {
     }
 
     @Transactional
-    public void kickOutMemberFromTeam(final long memberId, final long teamId, final List<Long> kickOutMemberIds) {
+    public void kickOutMemberFromTeam(final long memberId, final long teamId, final long kickOutMemberId) {
         checkIsAdmin(memberId, teamId);
-        kickOutMemberIds.stream()
-                .map(kickOutMemberId -> memberTeamManagerFinder.findByMemberIdAndTeamId(kickOutMemberId, teamId))
-                .flatMap(Optional::stream)
-                .forEach(memberTeamManagerDeleter::delete);
+        Optional<MemberTeamManager> memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(kickOutMemberId, teamId);
+        memberTeamManager.ifPresent(memberTeamManagerDeleter::delete);
     }
 
     public void leaveTeam(final long memberId, final long teamId) {
