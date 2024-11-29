@@ -139,7 +139,7 @@ public class NoteService {
     ) {
         memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
-        List<Note> noteList = getNotes(createdAt, sortOrder, pageable);
+        List<Note> noteList = getNotes(createdAt, sortOrder, pageable, teamId);
         List<NoteGetResponse> noteGetResponses = noteList.stream()
                 .map(note -> NoteGetResponse.of(note, getMemberName(note.getMemberId(), teamId)))
                 .toList();
@@ -191,11 +191,11 @@ public class NoteService {
         noteTimeBlockManagerDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
     }
 
-    private List<Note> getNotes(final LocalDateTime createdAt, final SortOrder sortOrder, final PageRequest pageable) {
+    private List<Note> getNotes(final LocalDateTime createdAt, final SortOrder sortOrder, final PageRequest pageable, final long teamId) {
         if (sortOrder == SortOrder.DESC) {
-            return noteFinder.findByCreatedAtBeforeOrderByModifiedAtDesc(createdAt, pageable);
+            return noteFinder.findByCreatedAtBeforeOrderByModifiedAtDesc(createdAt, pageable, teamId);
         }
-        return noteFinder.findByCreatedAtAfterOrderByModifiedAtAsc(createdAt, pageable);
+        return noteFinder.findByCreatedAtAfterOrderByModifiedAtAsc(createdAt, pageable, teamId);
     }
 
     private List<TimeBlock> getTimeBlocksMappedByNote(final long noteId) {
