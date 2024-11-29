@@ -77,4 +77,26 @@ public class TeamController implements TeamControllerDocs {
         teamService.updateTeamName(memberId, teamId, newTeamName);
         return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), null));
     }
+
+    @PatchMapping("/teams/{teamId}/icon")
+    public ResponseEntity<SuccessResponse<Void>> updateIconImage(
+            Principal principal,
+            @PathVariable long teamId,
+            @RequestBody String iconImageUrl
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.updateIconImage(memberId, teamId, iconImageUrl);
+        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), null));
+    }
+
+    @PatchMapping("/team/{teamId}/member/{targetId}/admin")
+    public ResponseEntity<SuccessResponse<Void>> alterAdmin(
+            Principal principal,
+            @PathVariable long teamId,
+            @PathVariable long targetId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.alterAdmin(memberId, teamId, targetId);
+        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), null));
+    }
 }
