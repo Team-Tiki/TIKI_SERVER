@@ -82,6 +82,13 @@ public class TeamService {
 		teamDeleter.deleteById(teamId);
 	}
 
+	@Transactional
+	public void updateTeamName(final long memberId,final long teamId,final String newTeamName){
+		checkIsAdmin(memberId, teamId);
+		Team team = teamFinder.findById(teamId);
+		team.updateTeamName(newTeamName);
+	}
+
 	private Team createTeam(TeamCreateRequest request, University univ) {
 		return Team.of(request, univ);
 	}
