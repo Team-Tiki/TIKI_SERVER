@@ -18,12 +18,20 @@ public class NoteFinder {
 
     private final NoteRepository noteRepository;
 
-    public List<Note> findByCreatedAtBeforeOrderByModifiedAtDesc(final LocalDateTime createdAt, final PageRequest pageRequest) {
-        return noteRepository.findByCreatedAtBeforeOrderByModifiedAtDesc(createdAt, pageRequest);
+    public List<Note> findByCreatedAtBeforeOrderByModifiedAtDesc(
+            final LocalDateTime createdAt,
+            final PageRequest pageRequest,
+            final long teamId
+    ) {
+        return noteRepository.findByTeamIdAndCreatedAtBeforeOrderByCreatedDesc(createdAt, pageRequest, teamId);
     }
 
-    public List<Note> findByCreatedAtAfterOrderByModifiedAtAsc(final LocalDateTime createdAt, final PageRequest pageRequest) {
-        return noteRepository.findByCreatedAtAfterOrderByModifiedAtAsc(createdAt, pageRequest);
+    public List<Note> findByCreatedAtAfterOrderByModifiedAtAsc(
+            final LocalDateTime createdAt,
+            final PageRequest pageRequest,
+            final long teamId
+    ) {
+        return noteRepository.findByTeamIdAndCreatedAtAfterOrderByCreatedAtAsc(createdAt, pageRequest, teamId);
     }
 
     public List<Note> findAllByMemberIdAndTeamId(final long memberId, final long teamId) {
