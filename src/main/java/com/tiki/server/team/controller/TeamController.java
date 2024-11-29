@@ -26,64 +26,64 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("api/v1/teams")
 public class TeamController implements TeamControllerDocs {
 
-	private final TeamService teamService;
+    private final TeamService teamService;
 
-	@Override
-	@PostMapping
-	public ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
-		Principal principal,
-		@RequestBody TeamCreateRequest request
-	) {
-		long memberId = Long.parseLong(principal.getName());
-		TeamCreateResponse response = teamService.createTeam(memberId, request);
-		return ResponseEntity.created(
-			UriGenerator.getUri("/api/v1/teams/" + response.teamId())
-		).body(success(SUCCESS_CREATE_TEAM.getMessage(), response));
-	}
+    @Override
+    @PostMapping
+    public ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
+            final Principal principal,
+            @RequestBody final TeamCreateRequest request
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        TeamCreateResponse response = teamService.createTeam(memberId, request);
+        return ResponseEntity.created(
+                UriGenerator.getUri("/api/v1/teams/" + response.teamId())
+        ).body(success(SUCCESS_CREATE_TEAM.getMessage(), response));
+    }
 
-	@Override
-	@GetMapping
-	public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(Principal principal) {
-		long memberId = Long.parseLong(principal.getName());
-		TeamsGetResponse response = teamService.getAllTeams(memberId);
-		return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
-	}
+    @Override
+    @GetMapping
+    public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(final Principal principal) {
+        long memberId = Long.parseLong(principal.getName());
+        TeamsGetResponse response = teamService.getAllTeams(memberId);
+        return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
+    }
 
-	@Override
-	@GetMapping("/category")
-	public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
-		CategoriesGetResponse response = teamService.getCategories();
-		return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
-	}
+    @Override
+    @GetMapping("/category")
+    public ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories() {
+        CategoriesGetResponse response = teamService.getCategories();
+        return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
+    }
 
-	@DeleteMapping("/{teamId}/members/{kickOutMemberId}")
-	public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
-			Principal principal,
-			@PathVariable long teamId,
-			@PathVariable long kickOutMemberId
-	){
-		long memberId = Long.parseLong(principal.getName());
-		teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberId);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("/{teamId}/members/{kickOutMemberId}")
+    public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
+            final Principal principal,
+            @PathVariable final long teamId,
+            @PathVariable final long kickOutMemberId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberId);
+        return ResponseEntity.noContent().build();
+    }
 
-	@DeleteMapping("/{teamId}/leave")
-	public ResponseEntity<BaseResponse> leaveTeam(
-			Principal principal,
-			@PathVariable long teamId
-	){
-		long memberId = Long.parseLong(principal.getName());
-		teamService.leaveTeam(memberId, teamId);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("/{teamId}/leave")
+    public ResponseEntity<BaseResponse> leaveTeam(
+            final Principal principal,
+            @PathVariable final long teamId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.leaveTeam(memberId, teamId);
+        return ResponseEntity.noContent().build();
+    }
 
-	@DeleteMapping("/{teamId}")
-	public ResponseEntity<BaseResponse> deleteTeam(
-		Principal principal,
-		@PathVariable long teamId
-	) {
-		long memberId = Long.parseLong(principal.getName());
-		teamService.deleteTeam(memberId, teamId);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<BaseResponse> deleteTeam(
+            final Principal principal,
+            @PathVariable final long teamId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.deleteTeam(memberId, teamId);
+        return ResponseEntity.noContent().build();
+    }
 }
