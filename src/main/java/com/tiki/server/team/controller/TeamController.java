@@ -1,12 +1,13 @@
 package com.tiki.server.team.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
-import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_POSITION;
 import static com.tiki.server.team.message.SuccessMessage.*;
 
 import java.security.Principal;
 
 import com.tiki.server.common.dto.BaseResponse;
+import com.tiki.server.team.controller.dto.request.UpdateTeamIconRequest;
+import com.tiki.server.team.controller.dto.request.UpdateTeamNameRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -67,29 +68,29 @@ public class TeamController implements TeamControllerDocs {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/teams/{teamId}/members/name")
+    @PatchMapping("/{teamId}/name")
     public ResponseEntity<SuccessResponse<Void>> updateTeamName(
             Principal principal,
             @PathVariable long teamId,
-            @RequestBody String newTeamName
+            @RequestBody UpdateTeamNameRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        teamService.updateTeamName(memberId, teamId, newTeamName);
-        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), null));
+        teamService.updateTeamName(memberId, teamId, request.newTeamName());
+        return ResponseEntity.ok().body(success(SUCCESS_UPDATE_TEAM_NAME.getMessage(), null));
     }
 
-    @PatchMapping("/teams/{teamId}/icon")
+    @PatchMapping("/{teamId}/icon")
     public ResponseEntity<SuccessResponse<Void>> updateIconImage(
             Principal principal,
             @PathVariable long teamId,
-            @RequestBody String iconImageUrl
+            @RequestBody UpdateTeamIconRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        teamService.updateIconImage(memberId, teamId, iconImageUrl);
-        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), null));
+        teamService.updateIconImage(memberId, teamId, request.iconImageUrl());
+        return ResponseEntity.ok().body(success(SUCCESS_UPDATE_TEAM_ICON.getMessage(), null));
     }
 
-    @PatchMapping("/team/{teamId}/member/{targetId}/admin")
+    @PatchMapping("/{teamId}/member/{targetId}/admin")
     public ResponseEntity<SuccessResponse<Void>> alterAdmin(
             Principal principal,
             @PathVariable long teamId,
@@ -97,6 +98,6 @@ public class TeamController implements TeamControllerDocs {
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.alterAdmin(memberId, teamId, targetId);
-        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), null));
+        return ResponseEntity.ok().body(success(SUCCESS_ALTER_AUTHORITY.getMessage(), null));
     }
 }
