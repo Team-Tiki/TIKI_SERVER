@@ -2,6 +2,7 @@ package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
 import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
+import static com.tiki.server.team.message.ErrorCode.TOO_HIGH_AUTHORIZATION;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.note.adapter.NoteFinder;
+import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
@@ -45,6 +48,7 @@ public class TeamService {
     private final TeamFinder teamFinder;
     private final TeamDeleter teamDeleter;
     private final MemberFinder memberFinder;
+    private final NoteFinder noteFinder;
     private final DocumentFinder documentFinder;
     private final DocumentDeleter documentDeleter;
     private final TimeBlockDeleter timeBlockDeleter;
@@ -53,14 +57,14 @@ public class TeamService {
     private final MemberTeamManagerSaver memberTeamManagerSaver;
 
     @Transactional
-    public TeamCreateResponse createTeam(long memberId, TeamCreateRequest request) {
+    public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
         Member member = memberFinder.findById(memberId);
         Team team = teamSaver.save(createTeam(request, member.getUniv()));
         memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
         return TeamCreateResponse.from(team);
     }
 
-    public TeamsGetResponse getAllTeams(long memberId) {
+    public TeamsGetResponse getAllTeams(final long memberId) {
         Member member = memberFinder.findById(memberId);
         University univ = member.getUniv();
         List<TeamVO> team = teamFinder.findAllByUniv(univ);
@@ -73,7 +77,7 @@ public class TeamService {
     }
 
     @Transactional
-    public void deleteTeam(long memberId, long teamId) {
+    public void deleteTeam(final long memberId, final long teamId) {
         checkIsAdmin(memberId, teamId);
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
         memberTeamManagerDeleter.deleteAll(memberTeamManagers);
@@ -87,26 +91,42 @@ public class TeamService {
     public void kickOutMemberFromTeam(final long memberId, final long teamId, final long kickOutMemberId) {
         checkIsAdmin(memberId, teamId);
         Optional<MemberTeamManager> memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(kickOutMemberId, teamId);
+        deleteNoteDependency(memberId, teamId);
         memberTeamManager.ifPresent(memberTeamManagerDeleter::delete);
     }
 
+    @Transactional
     public void leaveTeam(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        MemberTeamManager memberTeamManager = checkIsNotAdmin(memberId, teamId);
+        deleteNoteDependency(memberId, teamId);
         memberTeamManagerDeleter.delete(memberTeamManager);
     }
 
-    private Team createTeam(TeamCreateRequest request, University univ) {
+    private void deleteNoteDependency(final long memberId, final long teamId) {
+        List<Note> notes = noteFinder.findAllByMemberIdAndTeamId(memberId, teamId);
+        notes.forEach(Note::deleteMemberDependency);
+    }
+
+    private Team createTeam(final TeamCreateRequest request, final University univ) {
         return Team.of(request, univ);
     }
 
-    private MemberTeamManager createMemberTeamManager(Member member, Team team, Position position) {
+    private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private void checkIsAdmin(long memberId, long teamId) {
+    private void checkIsAdmin(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(INVALID_AUTHORIZATION_DELETE);
         }
+    }
+
+    private MemberTeamManager checkIsNotAdmin(final long memberId, final long teamId) {
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        if (memberTeamManager.getPosition().equals(ADMIN)) {
+            throw new TeamException(TOO_HIGH_AUTHORIZATION);
+        }
+        return memberTeamManager;
     }
 }
