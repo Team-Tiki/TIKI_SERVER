@@ -54,14 +54,14 @@ public class TeamService {
     private final S3Handler s3Handler;
 
     @Transactional
-    public TeamCreateResponse createTeam(long memberId, TeamCreateRequest request) {
+    public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
         Member member = memberFinder.findById(memberId);
         Team team = teamSaver.save(createTeam(request, member.getUniv()));
         memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
         return TeamCreateResponse.from(team);
     }
 
-    public TeamsGetResponse getAllTeams(long memberId) {
+    public TeamsGetResponse getAllTeams(final long memberId) {
         Member member = memberFinder.findById(memberId);
         University univ = member.getUniv();
         List<TeamVO> team = teamFinder.findAllByUniv(univ);
@@ -74,7 +74,7 @@ public class TeamService {
     }
 
     @Transactional
-    public void deleteTeam(long memberId, long teamId) {
+    public void deleteTeam(final long memberId, final long teamId) {
         checkIsAdmin(memberId, teamId);
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
         memberTeamManagerDeleter.deleteAll(memberTeamManagers);
@@ -95,27 +95,33 @@ public class TeamService {
     public void updateIconImage(final long memberId, final long teamId, final String iconImageUrl) {
         checkIsAdmin(memberId, teamId);
         Team team = teamFinder.findById(teamId);
-        s3Handler.deleteFile(team.getIconImageUrl());
+        deleteIconUrl(team);
         team.setIconImageUrl(iconImageUrl);
     }
 
     @Transactional
     public void alterAdmin(final long memberId, final long teamId, final long targetId) {
         MemberTeamManager oldAdmin = checkIsAdmin(memberId, teamId);
-        MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(targetId, teamId);
         oldAdmin.setPositionToExecutive();
         newAdmin.setPositionToAdmin();
     }
 
-    private Team createTeam(TeamCreateRequest request, University univ) {
+    private Team createTeam(final TeamCreateRequest request, final University univ) {
         return Team.of(request, univ);
     }
 
-    private MemberTeamManager createMemberTeamManager(Member member, Team team, Position position) {
+    private void deleteIconUrl(final Team team) {
+        if (!team.getIconImageUrl().isBlank()) {
+            s3Handler.deleteFile(team.getIconImageUrl());
+        }
+    }
+
+    private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private MemberTeamManager checkIsAdmin(long memberId, long teamId) {
+    private MemberTeamManager checkIsAdmin(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(INVALID_AUTHORIZATION_DELETE);
