@@ -33,8 +33,8 @@ public class TeamController implements TeamControllerDocs {
     @Override
     @PostMapping
     public ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
-            Principal principal,
-            @RequestBody TeamCreateRequest request
+            final Principal principal,
+            @RequestBody final TeamCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         TeamCreateResponse response = teamService.createTeam(memberId, request);
@@ -45,7 +45,7 @@ public class TeamController implements TeamControllerDocs {
 
     @Override
     @GetMapping
-    public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(Principal principal) {
+    public ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(final Principal principal) {
         long memberId = Long.parseLong(principal.getName());
         TeamsGetResponse response = teamService.getAllTeams(memberId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_TEAMS.getMessage(), response));
@@ -60,8 +60,8 @@ public class TeamController implements TeamControllerDocs {
 
     @DeleteMapping("/{teamId}")
     public ResponseEntity<BaseResponse> deleteTeam(
-            Principal principal,
-            @PathVariable long teamId
+            final Principal principal,
+            @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.deleteTeam(memberId, teamId);
@@ -70,9 +70,9 @@ public class TeamController implements TeamControllerDocs {
 
     @PatchMapping("/{teamId}/name")
     public ResponseEntity<SuccessResponse<Void>> updateTeamName(
-            Principal principal,
-            @PathVariable long teamId,
-            @RequestBody UpdateTeamNameRequest request
+            final Principal principal,
+            @PathVariable final long teamId,
+            @RequestBody final UpdateTeamNameRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.updateTeamName(memberId, teamId, request.newTeamName());
@@ -81,9 +81,9 @@ public class TeamController implements TeamControllerDocs {
 
     @PatchMapping("/{teamId}/icon")
     public ResponseEntity<SuccessResponse<Void>> updateIconImage(
-            Principal principal,
-            @PathVariable long teamId,
-            @RequestBody UpdateTeamIconRequest request
+            final Principal principal,
+            @PathVariable final long teamId,
+            @RequestBody final UpdateTeamIconRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.updateIconImage(memberId, teamId, request.iconImageUrl());
@@ -92,9 +92,9 @@ public class TeamController implements TeamControllerDocs {
 
     @PatchMapping("/{teamId}/member/{targetId}/admin")
     public ResponseEntity<SuccessResponse<Void>> alterAdmin(
-            Principal principal,
-            @PathVariable long teamId,
-            @PathVariable long targetId
+            final Principal principal,
+            @PathVariable final long teamId,
+            @PathVariable final long targetId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.alterAdmin(memberId, teamId, targetId);
