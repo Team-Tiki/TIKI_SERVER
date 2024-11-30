@@ -46,7 +46,7 @@ public class FolderController {
 
 	@PostMapping("/teams/{teamId}/folders")
 	public ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
-		Principal principal,
+		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam(required = false) final Long folderId,
 		@RequestBody final FolderCreateRequest request
