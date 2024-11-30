@@ -45,6 +45,10 @@ public class Folder extends BaseTime {
 		return path + SEPARATOR + id;
 	}
 
+	public void updateName(final String name) {
+		this.name = name;
+	}
+
 	private String generatePath(final Folder parentFolder) {
 		if (parentFolder == null) {
 			return ROOT_PATH;
