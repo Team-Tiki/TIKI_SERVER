@@ -16,6 +16,7 @@ import com.tiki.server.folder.adapter.FolderDeleter;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.adapter.FolderSaver;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
+import com.tiki.server.folder.dto.request.FolderNameUpdateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
 import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
@@ -55,6 +56,14 @@ public class FolderService {
 		validateFolderName(teamId, path, request);
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
+	}
+
+	@Transactional
+	public void updateFolderName(final long memberId, final long teamId,
+			final long folderId, final FolderNameUpdateRequest request) {
+		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		Folder folder = getFolder(teamId, folderId);
+		folder.updateName(request.name());
 	}
 
 	@Transactional
