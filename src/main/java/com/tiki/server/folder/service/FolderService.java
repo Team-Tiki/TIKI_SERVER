@@ -62,7 +62,8 @@ public class FolderService {
 	public void updateFolderName(final long memberId, final long teamId,
 			final long folderId, final FolderNameUpdateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-		Folder folder = getFolder(teamId, folderId);
+		Folder folder = folderFinder.findById(folderId);
+		folder.validateTeamId(teamId);
 		folder.updateName(request.name());
 	}
 
