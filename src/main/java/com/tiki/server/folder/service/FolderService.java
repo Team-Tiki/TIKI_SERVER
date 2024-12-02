@@ -64,6 +64,7 @@ public class FolderService {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Folder folder = folderFinder.findById(folderId);
 		folder.validateTeamId(teamId);
+		validateFolderName(teamId, folder.getPath(), request.name());
 		folder.updateName(request.name());
 	}
 
