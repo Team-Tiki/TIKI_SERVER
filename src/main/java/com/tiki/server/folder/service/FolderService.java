@@ -16,6 +16,7 @@ import com.tiki.server.folder.adapter.FolderDeleter;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.adapter.FolderSaver;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
+import com.tiki.server.folder.dto.request.FolderNameUpdateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
 import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
@@ -52,9 +53,19 @@ public class FolderService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Folder parentFolder = getFolder(teamId, folderId);
 		String path = getChildFolderPath(parentFolder);
-		validateFolderName(teamId, path, request);
+		validateFolderName(teamId, path, request.name());
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
+	}
+
+	@Transactional
+	public void updateFolderName(final long memberId, final long teamId,
+			final long folderId, final FolderNameUpdateRequest request) {
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		Folder folder = folderFinder.findById(folderId);
+		folder.validateTeamId(teamId);
+		validateFolderName(teamId, folder.getPath(), request.name());
+		folder.updateName(request.name());
 	}
 
 	@Transactional
@@ -80,9 +91,9 @@ public class FolderService {
 		return folder.getChildPath();
 	}
 
-	private void validateFolderName(final long teamId, final String path, final FolderCreateRequest request) {
+	private void validateFolderName(final long teamId, final String path, final String name) {
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
-		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
+		if (folders.stream().anyMatch(folder -> folder.getName().equals(name))) {
 			throw new FolderException(FOLDER_NAME_DUPLICATE);
 		}
 	}
