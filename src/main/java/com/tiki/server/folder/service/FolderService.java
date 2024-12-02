@@ -53,7 +53,7 @@ public class FolderService {
 		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
 		Folder parentFolder = getFolder(teamId, folderId);
 		String path = getChildFolderPath(parentFolder);
-		validateFolderName(teamId, path, request);
+		validateFolderName(teamId, path, request.name());
 		Folder folder = folderSaver.save(new Folder(request.name(), parentFolder, teamId));
 		return FolderCreateResponse.from(folder.getId());
 	}
@@ -90,9 +90,9 @@ public class FolderService {
 		return folder.getChildPath();
 	}
 
-	private void validateFolderName(final long teamId, final String path, final FolderCreateRequest request) {
+	private void validateFolderName(final long teamId, final String path, final String name) {
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
-		if (folders.stream().anyMatch(folder -> folder.getName().equals(request.name()))) {
+		if (folders.stream().anyMatch(folder -> folder.getName().equals(name))) {
 			throw new FolderException(FOLDER_NAME_DUPLICATE);
 		}
 	}
