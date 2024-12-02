@@ -61,7 +61,7 @@ public class FolderService {
 	@Transactional
 	public void updateFolderName(final long memberId, final long teamId,
 			final long folderId, final FolderNameUpdateRequest request) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Folder folder = folderFinder.findById(folderId);
 		folder.validateTeamId(teamId);
 		validateFolderName(teamId, folder.getPath(), request.name());
