@@ -40,7 +40,7 @@ public class FolderService {
 
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Folder folder = getFolder(teamId, folderId);
 		String path = getChildFolderPath(folder);
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
@@ -50,7 +50,7 @@ public class FolderService {
 	@Transactional
 	public FolderCreateResponse create(final long memberId, final long teamId,
 			final Long folderId, final FolderCreateRequest request) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Folder parentFolder = getFolder(teamId, folderId);
 		String path = getChildFolderPath(parentFolder);
 		validateFolderName(teamId, path, request.name());
@@ -70,7 +70,7 @@ public class FolderService {
 
 	@Transactional
 	public void delete(final long memberId, final long teamId, final List<Long> folderIds) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Folder> folders = folderFinder.findAllById(folderIds, teamId);
 		deleteFolders(folders);
 	}

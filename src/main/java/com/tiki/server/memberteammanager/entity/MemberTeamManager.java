@@ -64,4 +64,16 @@ public class MemberTeamManager extends BaseTime {
 			throw new MemberTeamManagerException(INVALID_AUTHORIZATION);
 		}
 	}
+
+	public void updateName(final String name){
+		this.name = name;
+	}
+
+	public void updatePositionToExecutive(){
+		this.position = Position.EXECUTIVE;
+	}
+
+	public void updatePositionToAdmin(){
+		this.position = Position.ADMIN;
+	}
 }
