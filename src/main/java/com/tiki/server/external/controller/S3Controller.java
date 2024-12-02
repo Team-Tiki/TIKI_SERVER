@@ -4,6 +4,7 @@ import static com.tiki.server.common.dto.SuccessResponse.*;
 import static com.tiki.server.external.message.SuccessMessage.PRESIGNED_URL_GET_SUCCESS;
 import static com.tiki.server.external.message.SuccessMessage.S3_FILE_DELETE_SUCCESS;
 
+import com.tiki.server.external.service.S3Service;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,6 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.external.controller.docs.S3ControllerDocs;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
-import com.tiki.server.external.util.S3Service;
 
 import lombok.RequiredArgsConstructor;
 

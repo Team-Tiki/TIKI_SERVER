@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum SuccessMessage {
 
 	SUCCESS_GET_FOLDERS("폴더 목록 조회 성공"),
-	SUCCESS_CREATE_FOLDER("폴더 생성 성공");
+	SUCCESS_CREATE_FOLDER("폴더 생성 성공"),
+	SUCCESS_UPDATE_FOLDER_NAME("폴더 이름 수정 성공");
 
 	private final String message;
 }

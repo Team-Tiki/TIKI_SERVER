@@ -25,14 +25,14 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 
 @Component
 @RequiredArgsConstructor
-public class S3Service {
+public class S3Handler {
 
 	private final AWSConfig awsConfig;
 
 	@Value("${aws-property.bucket}")
 	private String bucket;
 
-	public PreSignedUrlResponse getUploadPreSignedUrl(String fileFormat) {
+	public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
 		try {
 			String fileName = generateFileName(fileFormat);
 			String key = FILE_SAVE_PREFIX + fileName;
@@ -46,12 +46,12 @@ public class S3Service {
 		}
 	}
 
-	public void deleteFile(S3DeleteRequest request) {
+	public void deleteFile(final String request) {
 		try {
 			S3Client s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->
 				builder.bucket(bucket)
-					.key(request.fileName())
+					.key(request)
 					.build()
 			);
 		} catch (RuntimeException e) {

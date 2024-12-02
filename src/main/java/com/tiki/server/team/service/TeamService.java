@@ -1,13 +1,13 @@
 package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
-import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
 
 import java.util.List;
 
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.external.util.S3Handler;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
@@ -50,6 +50,7 @@ public class TeamService {
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
     private final MemberTeamManagerSaver memberTeamManagerSaver;
+    private final S3Handler s3Handler;
 
     @Transactional
     public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
@@ -86,14 +87,42 @@ public class TeamService {
         return Team.of(request, univ);
     }
 
+    @Transactional
+    public void updateTeamName(final long memberId, final long teamId, final String newTeamName) {
+        checkIsAdmin(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        team.updateName(newTeamName);
+    }
+
+    @Transactional
+    public void updateIconImage(final long memberId, final long teamId, final String iconImageUrl) {
+        checkIsAdmin(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        deleteIconUrl(team);
+        team.setIconImageUrl(iconImageUrl);
+    }
+
+    @Transactional
+    public void alterAdmin(final long memberId, final long teamId, final long targetId) {
+        MemberTeamManager oldAdmin = checkIsAdmin(memberId, teamId);
+        MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamId(targetId, teamId);
+        oldAdmin.updatePositionToExecutive();
+        newAdmin.updatePositionToAdmin();
+    }
+
     private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private void checkIsAdmin(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        if (!memberTeamManager.getPosition().equals(ADMIN)) {
-            throw new TeamException(INVALID_AUTHORIZATION_DELETE);
+    private void deleteIconUrl(final Team team) {
+        if (!team.isDefaultImage()) {
+            s3Handler.deleteFile(team.getIconImageUrl());
         }
+    }
+
+    private MemberTeamManager checkIsAdmin(final long memberId, final long teamId) {
+        MemberTeamManager accessMember = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        accessMember.checkMemberAccessible(ADMIN);
+        return accessMember;
     }
 }

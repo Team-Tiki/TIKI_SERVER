@@ -6,6 +6,8 @@ import static com.tiki.server.team.message.SuccessMessage.*;
 import java.security.Principal;
 
 import com.tiki.server.common.dto.BaseResponse;
+import com.tiki.server.team.controller.dto.request.UpdateTeamIconRequest;
+import com.tiki.server.team.controller.dto.request.UpdateTeamNameRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -64,5 +66,38 @@ public class TeamController implements TeamControllerDocs {
         long memberId = Long.parseLong(principal.getName());
         teamService.deleteTeam(memberId, teamId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{teamId}/name")
+    public ResponseEntity<BaseResponse> updateTeamName(
+            final Principal principal,
+            @PathVariable final long teamId,
+            @RequestBody final UpdateTeamNameRequest request
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.updateTeamName(memberId, teamId, request.newTeamName());
+        return ResponseEntity.ok(success(SUCCESS_UPDATE_TEAM_NAME.getMessage()));
+    }
+
+    @PatchMapping("/{teamId}/icon")
+    public ResponseEntity<BaseResponse> updateIconImage(
+            final Principal principal,
+            @PathVariable final long teamId,
+            @RequestBody final UpdateTeamIconRequest request
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.updateIconImage(memberId, teamId, request.iconImageUrl());
+        return ResponseEntity.ok(success(SUCCESS_UPDATE_TEAM_ICON.getMessage()));
+    }
+
+    @PatchMapping("/{teamId}/member/{targetId}/admin")
+    public ResponseEntity<BaseResponse> alterAdmin(
+            final Principal principal,
+            @PathVariable final long teamId,
+            @PathVariable final long targetId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        teamService.alterAdmin(memberId, teamId, targetId);
+        return ResponseEntity.ok(success(SUCCESS_ALTER_AUTHORITY.getMessage()));
     }
 }

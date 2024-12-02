@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SuccessMessage {
 
-	TEMP("컴파일 에러 방지용");
+	UPDATE_NAME("팀 내 이름 변경 성공"),
+	GET_POSITION("직책 불러오기 성공");
 
 	private final String message;
 }

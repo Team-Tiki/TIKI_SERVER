@@ -7,6 +7,7 @@ import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.exception.TeamException;
+import com.tiki.server.memberteammanager.service.dto.response.MemberTeamPositionGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,17 @@ public class MemberTeamManagerService {
         MemberTeamManager memberTeamManager = checkIsNotAdmin(memberId, teamId);
         deleteNoteDependency(memberId, teamId);
         memberTeamManagerDeleter.delete(memberTeamManager);
+    }
+
+    public MemberTeamPositionGetResponse getPosition(final long memberId, final long teamId) {
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        return MemberTeamPositionGetResponse.from(memberTeamManager.getPosition());
+    }
+
+    @Transactional
+    public void updateTeamMemberName(final long memberId, final long teamId, final String name) {
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        memberTeamManager.updateName(name);
     }
 
     private void checkIsAdmin(final long memberId, final long teamId) {
