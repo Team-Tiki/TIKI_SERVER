@@ -8,6 +8,7 @@ import java.util.List;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.external.util.S3Handler;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
@@ -40,61 +41,89 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class TeamService {
 
-	private final TeamSaver teamSaver;
-	private final TeamFinder teamFinder;
-	private final TeamDeleter teamDeleter;
-	private final MemberFinder memberFinder;
-	private final DocumentFinder documentFinder;
-	private final DocumentDeleter documentDeleter;
-	private final TimeBlockDeleter timeBlockDeleter;
-	private final MemberTeamManagerFinder memberTeamManagerFinder;
-	private final MemberTeamManagerDeleter memberTeamManagerDeleter;
-	private final MemberTeamManagerSaver memberTeamManagerSaver;
+    private final TeamSaver teamSaver;
+    private final TeamFinder teamFinder;
+    private final TeamDeleter teamDeleter;
+    private final MemberFinder memberFinder;
+    private final DocumentFinder documentFinder;
+    private final DocumentDeleter documentDeleter;
+    private final TimeBlockDeleter timeBlockDeleter;
+    private final MemberTeamManagerFinder memberTeamManagerFinder;
+    private final MemberTeamManagerDeleter memberTeamManagerDeleter;
+    private final MemberTeamManagerSaver memberTeamManagerSaver;
+    private final S3Handler s3Handler;
 
-	@Transactional
-	public TeamCreateResponse createTeam(long memberId, TeamCreateRequest request) {
-		Member member = memberFinder.findById(memberId);
-		Team team = teamSaver.save(createTeam(request, member.getUniv()));
-		memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
-		return TeamCreateResponse.from(team);
-	}
+    @Transactional
+    public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
+        Member member = memberFinder.findById(memberId);
+        Team team = teamSaver.save(createTeam(request, member.getUniv()));
+        memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
+        return TeamCreateResponse.from(team);
+    }
 
-	public TeamsGetResponse getAllTeams(long memberId) {
-		Member member = memberFinder.findById(memberId);
-		University univ = member.getUniv();
-		List<TeamVO> team = teamFinder.findAllByUniv(univ);
-		return TeamsGetResponse.from(team);
-	}
+    public TeamsGetResponse getAllTeams(final long memberId) {
+        Member member = memberFinder.findById(memberId);
+        University univ = member.getUniv();
+        List<TeamVO> team = teamFinder.findAllByUniv(univ);
+        return TeamsGetResponse.from(team);
+    }
 
-	public CategoriesGetResponse getCategories() {
-		Category[] categories = Category.values();
-		return CategoriesGetResponse.from(categories);
-	}
+    public CategoriesGetResponse getCategories() {
+        Category[] categories = Category.values();
+        return CategoriesGetResponse.from(categories);
+    }
 
-	@Transactional
-	public void deleteTeam(long memberId, long teamId) {
-		checkIsAdmin(memberId, teamId);
-		List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
-		memberTeamManagerDeleter.deleteAll(memberTeamManagers);
-		List<Document> documents = documentFinder.findAllByTeamId(teamId);
-		documentDeleter.deleteAll(documents);
-		timeBlockDeleter.deleteAllByTeamId(teamId);
-		teamDeleter.deleteById(teamId);
-	}
+    @Transactional
+    public void deleteTeam(final long memberId, final long teamId) {
+        checkIsAdmin(memberId, teamId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
+        memberTeamManagerDeleter.deleteAll(memberTeamManagers);
+        List<Document> documents = documentFinder.findAllByTeamId(teamId);
+        documentDeleter.deleteAll(documents);
+        timeBlockDeleter.deleteAllByTeamId(teamId);
+        teamDeleter.deleteById(teamId);
+    }
 
-	private Team createTeam(TeamCreateRequest request, University univ) {
-		return Team.of(request, univ);
-	}
+    @Transactional
+    public void updateTeamName(final long memberId, final long teamId, final String newTeamName) {
+        checkIsAdmin(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        team.updateName(newTeamName);
+    }
 
-	private MemberTeamManager createMemberTeamManager(Member member, Team team, Position position) {
-		return MemberTeamManager.of(member, team, position);
-	}
+    @Transactional
+    public void updateIconImage(final long memberId, final long teamId, final String iconImageUrl) {
+        checkIsAdmin(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        deleteIconUrl(team);
+        team.setIconImageUrl(iconImageUrl);
+    }
 
-	private void checkIsAdmin(long memberId, long teamId) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-		if (!memberTeamManager.getPosition().equals(ADMIN)) {
-			throw new TeamException(INVALID_AUTHORIZATION_DELETE);
-		}
-		memberTeamManagerDeleter.delete(memberTeamManager);
-	}
+    @Transactional
+    public void alterAdmin(final long memberId, final long teamId, final long targetId) {
+        MemberTeamManager oldAdmin = checkIsAdmin(memberId, teamId);
+        MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamId(targetId, teamId);
+        oldAdmin.updatePositionToExecutive();
+        newAdmin.updatePositionToAdmin();
+    }
+
+    private Team createTeam(final TeamCreateRequest request, final University univ) {
+        return Team.of(request, univ);
+    }
+
+    private void deleteIconUrl(final Team team) {
+        if (!team.isDefaultImage()) {
+            s3Handler.deleteFile(team.getIconImageUrl());
+        }
+    }
+
+    private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
+        return MemberTeamManager.of(member, team, position);
+    }
+
+    private MemberTeamManager checkIsAdmin(final long memberId, final long teamId) {
+        MemberTeamManager accessMember = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        accessMember.checkMemberAccessible(ADMIN);
+        return accessMember;
+    }
 }

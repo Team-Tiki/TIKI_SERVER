@@ -25,7 +25,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 
 @Component
 @RequiredArgsConstructor
-public class S3Service {
+public class S3Handler {
 
 	private final AWSConfig awsConfig;
 
@@ -46,12 +46,12 @@ public class S3Service {
 		}
 	}
 
-	public void deleteFile(S3DeleteRequest request) {
+	public void deleteFile(String request) {
 		try {
 			S3Client s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->
 				builder.bucket(bucket)
-					.key(request.fileName())
+					.key(request)
 					.build()
 			);
 		} catch (RuntimeException e) {
