@@ -69,35 +69,35 @@ public class TeamController implements TeamControllerDocs {
     }
 
     @PatchMapping("/{teamId}/name")
-    public ResponseEntity<SuccessResponse<Void>> updateTeamName(
+    public ResponseEntity<BaseResponse> updateTeamName(
             final Principal principal,
             @PathVariable final long teamId,
             @RequestBody final UpdateTeamNameRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.updateTeamName(memberId, teamId, request.newTeamName());
-        return ResponseEntity.ok().body(success(SUCCESS_UPDATE_TEAM_NAME.getMessage(), null));
+        return ResponseEntity.ok(success(SUCCESS_UPDATE_TEAM_NAME.getMessage()));
     }
 
     @PatchMapping("/{teamId}/icon")
-    public ResponseEntity<SuccessResponse<Void>> updateIconImage(
+    public ResponseEntity<BaseResponse> updateIconImage(
             final Principal principal,
             @PathVariable final long teamId,
             @RequestBody final UpdateTeamIconRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.updateIconImage(memberId, teamId, request.iconImageUrl());
-        return ResponseEntity.ok().body(success(SUCCESS_UPDATE_TEAM_ICON.getMessage(), null));
+        return ResponseEntity.ok(success(SUCCESS_UPDATE_TEAM_ICON.getMessage()));
     }
 
     @PatchMapping("/{teamId}/member/{targetId}/admin")
-    public ResponseEntity<SuccessResponse<Void>> alterAdmin(
+    public ResponseEntity<BaseResponse> alterAdmin(
             final Principal principal,
             @PathVariable final long teamId,
             @PathVariable final long targetId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamService.alterAdmin(memberId, teamId, targetId);
-        return ResponseEntity.ok().body(success(SUCCESS_ALTER_AUTHORITY.getMessage(), null));
+        return ResponseEntity.ok(success(SUCCESS_ALTER_AUTHORITY.getMessage()));
     }
 }

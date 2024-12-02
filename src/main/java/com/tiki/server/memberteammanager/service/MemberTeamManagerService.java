@@ -16,13 +16,13 @@ public class MemberTeamManagerService {
     private final MemberTeamManagerFinder memberTeamManagerFinder;
 
     public MemberTeamPositionGetResponse getPosition(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         return MemberTeamPositionGetResponse.from(memberTeamManager.getPosition());
     }
 
     @Transactional
     public void updateTeamMemberName(final long memberId, final long teamId, final String name) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-        memberTeamManager.setName(name);
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        memberTeamManager.updateName(name);
     }
 }

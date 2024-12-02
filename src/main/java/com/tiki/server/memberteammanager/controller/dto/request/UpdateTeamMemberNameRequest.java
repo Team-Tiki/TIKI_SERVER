@@ -1,6 +1,8 @@
 package com.tiki.server.memberteammanager.controller.dto.request;
 
+import jakarta.validation.constraints.NotNull;
+
 public record UpdateTeamMemberNameRequest(
-        String newName
+        @NotNull String newName
 ) {
 }

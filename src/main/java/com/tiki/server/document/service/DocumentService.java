@@ -39,7 +39,7 @@ public class DocumentService {
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		return getAllDocumentsByType(teamId, accessiblePosition);
@@ -47,7 +47,7 @@ public class DocumentService {
 
 	@Transactional
 	public void deleteDocument(final long memberId, final long teamId, final long documentId) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Document document = documentFinder.findByIdWithTimeBlock(documentId);
 		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
 		documentDeleter.delete(document);
@@ -56,21 +56,21 @@ public class DocumentService {
 	@Transactional
 	public void createDocuments(final long memberId, final long teamId,
 			final Long folderId, final DocumentsCreateRequest request) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		validateFolder(folderId, teamId);
 		validateFileName(folderId, teamId, request);
 		saveDocuments(teamId, folderId, request);
 	}
 
 	public DocumentsGetResponse get(final long memberId, final long teamId, final Long folderId) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
 		return DocumentsGetResponse.from(documents);
 	}
 
 	@Transactional
 	public void delete(final long memberId, final long teamId, final List<Long> documentIds) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Document> documents = documentFinder.findAllByIdAndTeamId(documentIds, teamId);
 		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
@@ -78,21 +78,21 @@ public class DocumentService {
 
 	@Transactional
 	public void deleteTrash(final long memberId, final long teamId, final List<Long> documentIds) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
 	@Transactional
 	public void restore(final long memberId, final long teamId, final List<Long> documentIds) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
 		documentSaver.restore(deletedDocuments);
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
 	public DeletedDocumentsGetResponse getTrash(final long memberId, final long teamId) {
-		memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
+		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(teamId);
 		return DeletedDocumentsGetResponse.from(deletedDocuments);
 	}

@@ -88,7 +88,7 @@ public class TeamService {
     public void updateTeamName(final long memberId, final long teamId, final String newTeamName) {
         checkIsAdmin(memberId, teamId);
         Team team = teamFinder.findById(teamId);
-        team.setName(newTeamName);
+        team.updateName(newTeamName);
     }
 
     @Transactional
@@ -102,9 +102,9 @@ public class TeamService {
     @Transactional
     public void alterAdmin(final long memberId, final long teamId, final long targetId) {
         MemberTeamManager oldAdmin = checkIsAdmin(memberId, teamId);
-        MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(targetId, teamId);
-        oldAdmin.setPositionToExecutive();
-        newAdmin.setPositionToAdmin();
+        MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamId(targetId, teamId);
+        oldAdmin.updatePositionToExecutive();
+        newAdmin.updatePositionToAdmin();
     }
 
     private Team createTeam(final TeamCreateRequest request, final University univ) {
@@ -112,7 +112,7 @@ public class TeamService {
     }
 
     private void deleteIconUrl(final Team team) {
-        if (!team.getIconImageUrl().isBlank()) {
+        if (!team.isDefaultImage()) {
             s3Handler.deleteFile(team.getIconImageUrl());
         }
     }
@@ -122,10 +122,8 @@ public class TeamService {
     }
 
     private MemberTeamManager checkIsAdmin(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamIdOrElseThrow(memberId, teamId);
-        if (!memberTeamManager.getPosition().equals(ADMIN)) {
-            throw new TeamException(INVALID_AUTHORIZATION_DELETE);
-        }
-        return memberTeamManager;
+        MemberTeamManager accessMember = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        accessMember.checkMemberAccessible(ADMIN);
+        return accessMember;
     }
 }

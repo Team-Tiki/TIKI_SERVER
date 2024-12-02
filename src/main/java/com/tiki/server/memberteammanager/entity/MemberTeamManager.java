@@ -65,15 +65,15 @@ public class MemberTeamManager extends BaseTime {
 		}
 	}
 
-	public void setName(final String name){
+	public void updateName(final String name){
 		this.name = name;
 	}
 
-	public void setPositionToExecutive(){
+	public void updatePositionToExecutive(){
 		this.position = Position.EXECUTIVE;
 	}
 
-	public void setPositionToAdmin(){
+	public void updatePositionToAdmin(){
 		this.position = Position.ADMIN;
 	}
 }

@@ -26,39 +26,43 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class Team extends BaseTime {
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "team_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "team_id")
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private String overview;
+    private String overview;
 
-	@Enumerated(value = STRING)
-	private Category category;
+    @Enumerated(value = STRING)
+    private Category category;
 
-	@Enumerated(value = STRING)
-	private University univ;
+    @Enumerated(value = STRING)
+    private University univ;
 
-	private String imageUrl;
+    private String imageUrl;
 
-	private String iconImageUrl;
+    private String iconImageUrl;
 
-	public static Team of(TeamCreateRequest request, University univ) {
-		return Team.builder()
-			.name(request.name())
-			.category(request.category())
-			.univ(univ)
-			.iconImageUrl(request.iconImageUrl())
-			.build();
-	}
+    public static Team of(TeamCreateRequest request, University univ) {
+        return Team.builder()
+                .name(request.name())
+                .category(request.category())
+                .univ(univ)
+                .iconImageUrl(request.iconImageUrl())
+                .build();
+    }
 
-	public void setName(final String name){
-		this.name = name;
-	}
+    public void updateName(final String name) {
+        this.name = name;
+    }
 
-	public void setIconImageUrl(final String url){
-		this.iconImageUrl = url;
-	}
+    public void setIconImageUrl(final String url) {
+        this.iconImageUrl = url;
+    }
+
+    public boolean isDefaultImage() {
+        return this.getIconImageUrl().isBlank();
+    }
 }
