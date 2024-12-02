@@ -55,6 +55,12 @@ public class MemberTeamManagerService {
         memberTeamManager.updateName(name);
     }
 
+    public void getMembers(final long teamId, final long memberId) {
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        return;
+        memberTeamManagerFinder.findNameAndEmailByMemberIdAndTeamId(memberId, teamId);
+    }
+
     private void checkIsAdmin(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
@@ -74,4 +80,5 @@ public class MemberTeamManagerService {
         List<Note> notes = noteFinder.findAllByMemberIdAndTeamId(memberId, teamId);
         notes.forEach(Note::deleteMemberDependency);
     }
+
 }
