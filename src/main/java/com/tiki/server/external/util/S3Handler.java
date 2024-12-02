@@ -32,7 +32,7 @@ public class S3Handler {
 	@Value("${aws-property.bucket}")
 	private String bucket;
 
-	public PreSignedUrlResponse getUploadPreSignedUrl(String fileFormat) {
+	public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
 		try {
 			String fileName = generateFileName(fileFormat);
 			String key = FILE_SAVE_PREFIX + fileName;
@@ -46,7 +46,7 @@ public class S3Handler {
 		}
 	}
 
-	public void deleteFile(String request) {
+	public void deleteFile(final String request) {
 		try {
 			S3Client s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->

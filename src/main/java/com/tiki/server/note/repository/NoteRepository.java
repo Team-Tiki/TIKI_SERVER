@@ -16,4 +16,6 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     @Query("SELECT n FROM Note n WHERE n.teamId = :teamId AND n.createdAt > :createdAt ORDER BY n.createdAt ASC")
     List<Note> findByTeamIdAndCreatedAtAfterOrderByCreatedAtAsc(@Param("createdAt") LocalDateTime createdAt, Pageable pageable, long teamId);
+
+    List<Note> findAllByMemberIdAndTeamId(long memberId, long TeamId);
 }

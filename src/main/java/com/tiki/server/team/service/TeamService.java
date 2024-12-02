@@ -1,7 +1,6 @@
 package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
-import static com.tiki.server.team.message.ErrorCode.INVALID_AUTHORIZATION_DELETE;
 
 import java.util.List;
 
@@ -84,6 +83,10 @@ public class TeamService {
         teamDeleter.deleteById(teamId);
     }
 
+    private Team createTeam(final TeamCreateRequest request, final University univ) {
+        return Team.of(request, univ);
+    }
+
     @Transactional
     public void updateTeamName(final long memberId, final long teamId, final String newTeamName) {
         checkIsAdmin(memberId, teamId);
@@ -107,18 +110,14 @@ public class TeamService {
         newAdmin.updatePositionToAdmin();
     }
 
-    private Team createTeam(final TeamCreateRequest request, final University univ) {
-        return Team.of(request, univ);
+    private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
+        return MemberTeamManager.of(member, team, position);
     }
 
     private void deleteIconUrl(final Team team) {
         if (!team.isDefaultImage()) {
             s3Handler.deleteFile(team.getIconImageUrl());
         }
-    }
-
-    private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
-        return MemberTeamManager.of(member, team, position);
     }
 
     private MemberTeamManager checkIsAdmin(final long memberId, final long teamId) {

@@ -34,6 +34,10 @@ public class NoteFinder {
         return noteRepository.findByTeamIdAndCreatedAtAfterOrderByCreatedAtAsc(createdAt, pageRequest, teamId);
     }
 
+    public List<Note> findAllByMemberIdAndTeamId(final long memberId, final long teamId) {
+        return noteRepository.findAllByMemberIdAndTeamId(memberId, teamId);
+    }
+
     public Note findById(final long noteId) {
         return noteRepository.findById(noteId)
                 .orElseThrow(() -> new NoteException(INVALID_NOTE));

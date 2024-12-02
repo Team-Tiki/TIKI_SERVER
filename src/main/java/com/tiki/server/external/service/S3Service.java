@@ -12,11 +12,11 @@ public class S3Service {
 
     private final S3Handler s3Handler;
 
-    public PreSignedUrlResponse getUploadPreSignedUrl(String fileFormat) {
+    public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
         return s3Handler.getUploadPreSignedUrl(fileFormat);
     }
 
-    public void deleteFile(S3DeleteRequest request) {
+    public void deleteFile(final S3DeleteRequest request) {
         s3Handler.deleteFile(request.fileName());
     }
 }
