@@ -3,6 +3,7 @@ package com.tiki.server.team.controller.docs;
 import java.security.Principal;
 
 import com.tiki.server.common.dto.BaseResponse;
+import com.tiki.server.team.controller.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -111,6 +112,32 @@ public interface TeamControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			example = "1"
+		)
+		@PathVariable long teamId
+	);
+
+	@Operation(
+		summary = "팀 용량 정보 조회",
+		description = "팀 용량 정보를 조회한다.",
+		responses = {
+			@ApiResponse(responseCode = "200", description = "성공"),
+			@ApiResponse(
+				responseCode = "4xx",
+				description = "클라이언트(요청) 오류",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+			@ApiResponse(
+				responseCode = "500",
+				description = "서버 내부 오류",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
+	)
+	SuccessResponse<UsageGetResponse> getCapacityInfo(
+		@Parameter(hidden = true) Principal principal,
+		@Parameter(
+			name = "teamId",
+			description = "팀 id",
+			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		)
 		@PathVariable long teamId
