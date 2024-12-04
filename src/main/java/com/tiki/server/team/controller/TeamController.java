@@ -105,7 +105,10 @@ public class TeamController implements TeamControllerDocs {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{teamId}/capacity")
-    public SuccessResponse<UsageGetResponse> getCapacityInfo(final Principal principal, @PathVariable final long teamId) {
+    public SuccessResponse<UsageGetResponse> getCapacityInfo(
+        final Principal principal,
+        @PathVariable final long teamId
+    ) {
         long memberId = Long.parseLong(principal.getName());
         UsageGetResponse response = teamService.getCapacityInfo(memberId, teamId);
         return success(SUCCESS_GET_CAPACITY_INFO.getMessage(), response);
