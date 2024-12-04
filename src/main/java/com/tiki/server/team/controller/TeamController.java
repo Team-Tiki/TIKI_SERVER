@@ -8,9 +8,11 @@ import java.security.Principal;
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.controller.dto.request.UpdateTeamIconRequest;
 import com.tiki.server.team.controller.dto.request.UpdateTeamNameRequest;
+import com.tiki.server.team.controller.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,5 +101,13 @@ public class TeamController implements TeamControllerDocs {
         long memberId = Long.parseLong(principal.getName());
         teamService.alterAdmin(memberId, teamId, targetId);
         return ResponseEntity.ok(success(SUCCESS_ALTER_AUTHORITY.getMessage()));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{teamId}/capacity")
+    public SuccessResponse<UsageGetResponse> getCapacityInfo(final Principal principal, @PathVariable final long teamId) {
+        long memberId = Long.parseLong(principal.getName());
+        UsageGetResponse response = teamService.getCapacityInfo(memberId, teamId);
+        return success(SUCCESS_GET_CAPACITY_INFO.getMessage(), response);
     }
 }
