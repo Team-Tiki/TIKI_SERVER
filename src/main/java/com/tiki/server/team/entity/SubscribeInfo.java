@@ -24,7 +24,7 @@ public class SubscribeInfo {
 
 	private double usage;
 
-	public static SubscribeInfo createBasicSubscribe() {
+	protected static SubscribeInfo createBasicSubscribe() {
 		return SubscribeInfo.builder()
 			.subscribe(BASIC)
 			.usage(INIT_NUM)
