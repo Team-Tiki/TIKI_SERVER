@@ -1,5 +1,8 @@
 package com.tiki.server.team.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum Subscribe {
 	BASIC(6000, 30000, 30, false),
 	ADVANCED(13000, 150000, 120, true),
