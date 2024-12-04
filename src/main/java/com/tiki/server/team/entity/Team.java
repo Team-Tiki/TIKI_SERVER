@@ -41,6 +41,9 @@ public class Team extends BaseTime {
     @Enumerated(value = STRING)
     private University univ;
 
+    @Enumerated(value = STRING)
+    private Subscribe subscribe;
+
     private String imageUrl;
 
     private String iconImageUrl;
