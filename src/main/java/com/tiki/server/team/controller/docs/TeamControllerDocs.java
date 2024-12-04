@@ -112,6 +112,7 @@ public interface TeamControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		)
 		@PathVariable long teamId
