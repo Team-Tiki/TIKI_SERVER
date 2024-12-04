@@ -29,7 +29,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.team.exception.TeamException;
 import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 
@@ -99,7 +98,7 @@ public class TeamService {
         checkIsAdmin(memberId, teamId);
         Team team = teamFinder.findById(teamId);
         deleteIconUrl(team);
-        team.setIconImageUrl(iconImageUrl);
+        team.updateIconImageUrl(iconImageUrl);
     }
 
     @Transactional

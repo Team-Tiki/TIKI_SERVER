@@ -61,7 +61,7 @@ public class Team extends BaseTime {
         this.name = name;
     }
 
-    public void setIconImageUrl(final String url) {
+    public void updateIconImageUrl(final String url) {
         this.iconImageUrl = url;
     }
 
