@@ -10,6 +10,7 @@ import com.tiki.server.common.entity.University;
 import com.tiki.server.team.dto.request.TeamCreateRequest;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -41,8 +42,8 @@ public class Team extends BaseTime {
     @Enumerated(value = STRING)
     private University univ;
 
-    @Enumerated(value = STRING)
-    private Subscribe subscribe;
+    @Embedded
+    private SubscribeInfo subscribeInfo;
 
     private String imageUrl;
 
@@ -53,6 +54,7 @@ public class Team extends BaseTime {
                 .name(request.name())
                 .category(request.category())
                 .univ(univ)
+                .subscribeInfo(SubscribeInfo.createBasicSubscribe())
                 .iconImageUrl(request.iconImageUrl())
                 .build();
     }
