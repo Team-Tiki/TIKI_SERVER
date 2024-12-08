@@ -6,8 +6,8 @@ import static com.tiki.server.team.message.SuccessMessage.*;
 import java.security.Principal;
 
 import com.tiki.server.common.dto.BaseResponse;
-import com.tiki.server.team.controller.dto.request.UpdateTeamIconRequest;
-import com.tiki.server.team.controller.dto.request.UpdateTeamNameRequest;
+import com.tiki.server.team.controller.dto.request.UpdateTeamMemberAndTeamInformRequest;
+import com.tiki.server.team.dto.request.UpdateTeamMemberAndTeamInformServiceRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -72,31 +72,20 @@ public class TeamController implements TeamControllerDocs {
     @GetMapping("/{teamId}/inform")
     public ResponseEntity<SuccessResponse<TeamInformGetResponse>> getTeamName(
             @PathVariable final long teamId
-    ){
+    ) {
         TeamInformGetResponse response = teamService.getTeamInform(teamId);
         return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
     }
 
-    @PatchMapping("/{teamId}/name")
-    public ResponseEntity<BaseResponse> updateTeamName(
+    @PatchMapping("/{teamId}/inform")
+    public ResponseEntity<BaseResponse> updateTeamAndTeamMemberInform(
             final Principal principal,
             @PathVariable final long teamId,
-            @RequestBody final UpdateTeamNameRequest request
+            @RequestBody final UpdateTeamMemberAndTeamInformRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        teamService.updateTeamName(memberId, teamId, request.newTeamName());
+        teamService.updateTeamAndTeamMemberInform(memberId, teamId, UpdateTeamMemberAndTeamInformServiceRequest.from(request));
         return ResponseEntity.ok(success(SUCCESS_UPDATE_TEAM_NAME.getMessage()));
-    }
-
-    @PatchMapping("/{teamId}/icon")
-    public ResponseEntity<BaseResponse> updateIconImage(
-            final Principal principal,
-            @PathVariable final long teamId,
-            @RequestBody final UpdateTeamIconRequest request
-    ) {
-        long memberId = Long.parseLong(principal.getName());
-        teamService.updateIconImage(memberId, teamId, request.iconImageUrl());
-        return ResponseEntity.ok(success(SUCCESS_UPDATE_TEAM_ICON.getMessage()));
     }
 
     @PatchMapping("/{teamId}/member/{targetId}/admin")
