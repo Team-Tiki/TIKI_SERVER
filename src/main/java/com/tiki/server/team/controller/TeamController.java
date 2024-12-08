@@ -11,6 +11,7 @@ import com.tiki.server.team.controller.dto.request.UpdateTeamNameRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
+import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +67,14 @@ public class TeamController implements TeamControllerDocs {
         long memberId = Long.parseLong(principal.getName());
         teamService.deleteTeam(memberId, teamId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{teamId}/inform")
+    public ResponseEntity<SuccessResponse<TeamInformGetResponse>> getTeamName(
+            @PathVariable final long teamId
+    ){
+        TeamInformGetResponse response = teamService.getTeamInform(teamId);
+        return ResponseEntity.ok().body(success(SUCCESS_GET_CATEGORIES.getMessage(), response));
     }
 
     @PatchMapping("/{teamId}/name")
