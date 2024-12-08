@@ -44,9 +44,9 @@ public class MemberTeamManagerService {
         memberTeamManagerDeleter.delete(memberTeamManager);
     }
 
-    public MemberTeamPositionGetResponse getPosition(final long memberId, final long teamId) {
+    public MemberTeamPositionGetResponse getMemberTeamInform(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        return MemberTeamPositionGetResponse.from(memberTeamManager.getPosition());
+        return MemberTeamPositionGetResponse.from(memberTeamManager.getPosition(), memberTeamManager.getName());
     }
 
     @Transactional
