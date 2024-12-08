@@ -13,6 +13,8 @@ import java.security.Principal;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_POSITION;
+import static com.tiki.server.memberteammanager.message.SuccessMessage.KICK_TEAM;
+import static com.tiki.server.memberteammanager.message.SuccessMessage.LEAVE_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.UPDATE_NAME;
 
 @RestController
@@ -41,5 +43,26 @@ public class MemberTeamController {
         long memberId = Long.parseLong(principal.getName());
         memberTeamManagerService.updateTeamMemberName(memberId, teamId, request.newName());
         return ResponseEntity.ok(success(UPDATE_NAME.getMessage()));
+    }
+
+    @DeleteMapping("/teams/{teamId}/members/{kickOutMemberId}")
+    public ResponseEntity<BaseResponse> kickOutMemberFromTeam(
+            final Principal principal,
+            @PathVariable final long teamId,
+            @PathVariable final long kickOutMemberId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        memberTeamManagerService.kickOutMemberFromTeam(memberId, teamId, kickOutMemberId);
+        return ResponseEntity.ok(success(KICK_TEAM.getMessage()));
+    }
+
+    @DeleteMapping("/teams/{teamId}/leave")
+    public ResponseEntity<BaseResponse> leaveTeam(
+            final Principal principal,
+            @PathVariable final long teamId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        memberTeamManagerService.leaveTeam(memberId, teamId);
+        return ResponseEntity.ok(success(LEAVE_TEAM.getMessage()));
     }
 }
