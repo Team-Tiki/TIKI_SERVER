@@ -7,7 +7,7 @@ import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.exception.TeamException;
-import com.tiki.server.memberteammanager.service.dto.response.MemberTeamPositionGetResponse;
+import com.tiki.server.memberteammanager.service.dto.response.MemberTeamInformGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,9 +44,9 @@ public class MemberTeamManagerService {
         memberTeamManagerDeleter.delete(memberTeamManager);
     }
 
-    public MemberTeamPositionGetResponse getMemberTeamInform(final long memberId, final long teamId) {
+    public MemberTeamInformGetResponse getMemberTeamInform(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        return MemberTeamPositionGetResponse.from(memberTeamManager.getPosition(), memberTeamManager.getName());
+        return MemberTeamInformGetResponse.from(memberTeamManager.getPosition(), memberTeamManager.getName());
     }
 
     @Transactional
