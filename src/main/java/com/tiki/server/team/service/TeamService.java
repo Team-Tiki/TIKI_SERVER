@@ -15,6 +15,7 @@ import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
+import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.team.exception.TeamException;
 import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 
@@ -81,6 +81,11 @@ public class TeamService {
         documentDeleter.deleteAll(documents);
         timeBlockDeleter.deleteAllByTeamId(teamId);
         teamDeleter.deleteById(teamId);
+    }
+
+    public TeamInformGetResponse getTeamInform(final long teamId){
+        Team team = teamFinder.findById(teamId);
+        return TeamInformGetResponse.from(team.getName(),team.getUniv(),team.getIconImageUrl());
     }
 
     private Team createTeam(final TeamCreateRequest request, final University univ) {
