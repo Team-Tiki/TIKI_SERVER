@@ -16,8 +16,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,7 +62,12 @@ public class Team extends BaseTime {
                 .build();
     }
 
-    public void updateName(final String name) {
+    public void updateInform(final String name, final String iconImageUrl) {
+        updateTeamName(name);
+        updateIconImageUrl(iconImageUrl);
+    }
+
+    private void updateTeamName(final String name) {
         if (!canChangeName()) {
             throw new TeamException(TOO_SHORT_PERIOD);
         }
@@ -68,7 +75,7 @@ public class Team extends BaseTime {
         this.namingUpdatedAt = LocalDate.now();
     }
 
-    public void setIconImageUrl(final String url) {
+    private void updateIconImageUrl(final String url) {
         this.iconImageUrl = url;
     }
 
