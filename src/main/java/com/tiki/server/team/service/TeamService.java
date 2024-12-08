@@ -12,6 +12,7 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.dto.request.UpdateTeamMemberAndTeamInformServiceRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -83,9 +84,9 @@ public class TeamService {
         teamDeleter.deleteById(teamId);
     }
 
-    public TeamInformGetResponse getTeamInform(final long teamId){
+    public TeamInformGetResponse getTeamInform(final long teamId) {
         Team team = teamFinder.findById(teamId);
-        return TeamInformGetResponse.from(team.getName(),team.getUniv(),team.getIconImageUrl());
+        return TeamInformGetResponse.from(team.getName(), team.getUniv(), team.getIconImageUrl());
     }
 
     private Team createTeam(final TeamCreateRequest request, final University univ) {
@@ -93,18 +94,16 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateTeamName(final long memberId, final long teamId, final String newTeamName) {
-        checkIsAdmin(memberId, teamId);
+    public void updateTeamAndTeamMemberInform(
+            final long memberId,
+            final long teamId,
+            final UpdateTeamMemberAndTeamInformServiceRequest request
+    ) {
+        MemberTeamManager memberTeamManager = checkIsAdmin(memberId, teamId);
+        memberTeamManager.updateName(request.teamMemberName());
         Team team = teamFinder.findById(teamId);
-        team.updateName(newTeamName);
-    }
-
-    @Transactional
-    public void updateIconImage(final long memberId, final long teamId, final String iconImageUrl) {
-        checkIsAdmin(memberId, teamId);
-        Team team = teamFinder.findById(teamId);
-        deleteIconUrl(team);
-        team.setIconImageUrl(iconImageUrl);
+        team.updateInform(request.teamName(), request.teamIconUrl());
+        updateIconUrlS3(team, request.teamIconUrl());
     }
 
     @Transactional
@@ -119,8 +118,8 @@ public class TeamService {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private void deleteIconUrl(final Team team) {
-        if (!team.isDefaultImage()) {
+    private void updateIconUrlS3(final Team team, final String iconUrl) {
+        if (!team.isDefaultImage() && !team.getImageUrl().equals(iconUrl)) {
             s3Handler.deleteFile(team.getIconImageUrl());
         }
     }
