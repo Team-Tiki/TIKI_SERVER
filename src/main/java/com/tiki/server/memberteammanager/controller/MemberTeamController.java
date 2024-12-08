@@ -25,12 +25,12 @@ public class MemberTeamController {
     private final MemberTeamManagerService memberTeamManagerService;
 
     @GetMapping("/teams/{teamId}/members/position")
-    public ResponseEntity<SuccessResponse<MemberTeamPositionGetResponse>> getMemberTeamPosition(
+    public ResponseEntity<SuccessResponse<MemberTeamPositionGetResponse>> getMemberTeamInform(
             final Principal principal,
             @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
-        MemberTeamPositionGetResponse response = memberTeamManagerService.getPosition(memberId, teamId);
+        MemberTeamPositionGetResponse response = memberTeamManagerService.getMemberTeamInform(memberId, teamId);
         return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), response));
     }
 
