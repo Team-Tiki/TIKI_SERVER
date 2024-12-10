@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.support.UriGenerator;
+import com.tiki.server.folder.controller.docs.FolderControllerDocs;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
 import com.tiki.server.folder.dto.request.FolderNameUpdateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
@@ -32,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1")
-public class FolderController {
+public class FolderController implements FolderControllerDocs {
 
 	private final FolderService folderService;
 
