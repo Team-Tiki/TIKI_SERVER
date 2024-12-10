@@ -23,6 +23,8 @@ import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.entity.Team;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +39,7 @@ public class DocumentService {
 	private final FolderFinder folderFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
+	private final TeamFinder teamFinder;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
@@ -122,7 +125,11 @@ public class DocumentService {
 	}
 
 	private void saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
-		request.documents().forEach(document -> saveDocument(teamId, folderId, document));
+		Team team = teamFinder.findById(teamId);
+		request.documents().forEach(document -> {
+			team.addUsage(document.capacity());
+			saveDocument(teamId, folderId, document);
+		});
 	}
 
 	private void saveDocument(final long teamId, final Long folderId, final DocumentCreateRequest request) {
