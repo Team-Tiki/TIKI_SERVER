@@ -34,6 +34,10 @@ public class SubscribeInfo {
 			.build();
 	}
 
+	public double getCapacity() {
+		return this.subscribe.getCapacity();
+	}
+
 	public void addUsage(double capacity) {
 		if (usage + capacity > subscribe.getCapacity()) {
 			throw new TeamException(EXCEED_TEAM_CAPACITY);

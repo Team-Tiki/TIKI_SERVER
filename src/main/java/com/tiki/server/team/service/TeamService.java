@@ -113,8 +113,8 @@ public class TeamService {
     public UsageGetResponse getCapacityInfo(final long memberId, final long teamId) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         Team team = teamFinder.findById(teamId);
-        double capacity = team.getSubscribeInfo().getSubscribe().getCapacity();
-        double usage = team.getSubscribeInfo().getUsage();
+        double capacity = team.getCapacity();
+        double usage = team.getUsage();
         return UsageGetResponse.of(capacity, usage);
     }
 

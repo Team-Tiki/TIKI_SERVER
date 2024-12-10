@@ -89,6 +89,14 @@ public class Team extends BaseTime {
         this.subscribeInfo.restoreUsage(capacity);
     }
 
+    public double getCapacity() {
+        return this.subscribeInfo.getCapacity();
+    }
+
+    public double getUsage() {
+        return this.subscribeInfo.getUsage();
+    }
+
     private boolean canChangeName() {
         if (namingUpdatedAt == null) {
             return true;
