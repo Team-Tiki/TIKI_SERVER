@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.tiki.server.external.config.AWSConfig;
-import com.tiki.server.external.dto.request.S3DeleteRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 
