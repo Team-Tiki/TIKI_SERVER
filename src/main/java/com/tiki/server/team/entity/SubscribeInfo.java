@@ -40,4 +40,8 @@ public class SubscribeInfo {
 		}
 		usage += capacity;
 	}
+
+	public void restoreUsage(double capacity) {
+		usage -= capacity;
+	}
 }
