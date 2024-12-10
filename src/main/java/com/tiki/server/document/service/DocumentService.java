@@ -85,8 +85,7 @@ public class DocumentService {
 	public void deleteTrash(final long memberId, final long teamId, final List<Long> documentIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
-		Team team = teamFinder.findById(teamId);
-		team.restoreUsage(deletedDocuments.stream().mapToDouble(DeletedDocument::getCapacity).sum());
+		restoreTeamUsage(teamId, deletedDocuments);
 		for (DeletedDocument deletedDocument : deletedDocuments) {
 			s3Handler.deleteFile(deletedDocument.getFileName());
 		}
@@ -143,5 +142,10 @@ public class DocumentService {
 		Document document = Document.of(
 			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
 		documentSaver.save(document);
+	}
+
+	private void restoreTeamUsage(final long teamId, final List<DeletedDocument> deletedDocuments) {
+		Team team = teamFinder.findById(teamId);
+		team.restoreUsage(deletedDocuments.stream().mapToDouble(DeletedDocument::getCapacity).sum());
 	}
 }
