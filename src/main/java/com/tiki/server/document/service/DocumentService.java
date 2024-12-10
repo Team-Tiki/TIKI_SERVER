@@ -86,9 +86,7 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
 		restoreTeamUsage(teamId, deletedDocuments);
-		for (DeletedDocument deletedDocument : deletedDocuments) {
-			s3Handler.deleteFile(deletedDocument.getFileName());
-		}
+		deletedDocuments.forEach(deletedDocument -> s3Handler.deleteFile(deletedDocument.getFileName()));
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
