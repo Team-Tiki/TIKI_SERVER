@@ -83,6 +83,8 @@ public class DocumentService {
 	public void deleteTrash(final long memberId, final long teamId, final List<Long> documentIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
+		Team team = teamFinder.findById(teamId);
+		team.restoreUsage(deletedDocuments.stream().mapToDouble(DeletedDocument::getCapacity).sum());
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
