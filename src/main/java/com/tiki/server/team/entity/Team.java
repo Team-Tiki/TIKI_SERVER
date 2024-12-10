@@ -81,6 +81,10 @@ public class Team extends BaseTime {
         return this.getIconImageUrl().isBlank();
     }
 
+    public void addUsage(double capacity) {
+        this.subscribeInfo.addUsage(capacity);
+    }
+
     private boolean canChangeName() {
         if (namingUpdatedAt == null) {
             return true;
