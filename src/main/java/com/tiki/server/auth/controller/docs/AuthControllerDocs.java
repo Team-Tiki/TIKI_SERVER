@@ -49,11 +49,7 @@ public interface AuthControllerDocs {
 			@ApiResponse(responseCode = "201", description = "성공"),
 			@ApiResponse(
 				responseCode = "401",
-				description = "유효하지 않은 키",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
-			@ApiResponse(
-				responseCode = "401",
-				description = "인증되지 않은 사용자",
+				description = "유효하지 않은 키, 인증되지 않은 사용자",
 				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
 			@ApiResponse(
 				responseCode = "404",
