@@ -1,4 +1,4 @@
-package com.tiki.server.team.controller.dto.request;
+package com.tiki.server.team.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 

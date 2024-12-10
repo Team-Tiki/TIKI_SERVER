@@ -6,9 +6,9 @@ import static com.tiki.server.team.message.SuccessMessage.*;
 import java.security.Principal;
 
 import com.tiki.server.common.dto.BaseResponse;
-import com.tiki.server.team.controller.dto.request.UpdateTeamIconRequest;
-import com.tiki.server.team.controller.dto.request.UpdateTeamNameRequest;
-import com.tiki.server.team.controller.dto.response.UsageGetResponse;
+import com.tiki.server.team.dto.request.UpdateTeamIconRequest;
+import com.tiki.server.team.dto.request.UpdateTeamNameRequest;
+import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 

@@ -3,7 +3,7 @@ package com.tiki.server.team.controller.docs;
 import java.security.Principal;
 
 import com.tiki.server.common.dto.BaseResponse;
-import com.tiki.server.team.controller.dto.response.UsageGetResponse;
+import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
