@@ -38,10 +38,10 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	@Override
 	@PostMapping("/time-blocks/team/{teamId}/time-block")
 	public ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam String type,
-		@RequestBody TimeBlockCreateRequest request
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final String type,
+		@RequestBody final TimeBlockCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		TimeBlockCreateResponse response = timeBlockService.createTimeBlock(memberId, teamId, type, request);
@@ -53,10 +53,10 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	@Override
 	@GetMapping("/time-blocks/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam String type,
-		@RequestParam String date
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final String type,
+		@RequestParam final String date
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		TimelineGetResponse response = timeBlockService.getTimeline(memberId, teamId, type, date);
@@ -66,9 +66,9 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	@Override
 	@GetMapping("/time-blocks/team/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
-		Principal principal,
-		@PathVariable long teamId,
-		@PathVariable long timeBlockId
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		TimeBlockDetailGetResponse response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
@@ -78,9 +78,9 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	@Override
 	@DeleteMapping("/time-blocks/team/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<?> deleteTimeBlock(
-		Principal principal,
-		@PathVariable long teamId,
-		@PathVariable long timeBlockId
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		timeBlockService.deleteTimeBlock(memberId, teamId, timeBlockId);
