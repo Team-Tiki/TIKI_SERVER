@@ -100,6 +100,21 @@ public class TimeBlockService {
 		timeBlockDeleter.deleteById(timeBlock.getId());
 	}
 
+	@Transactional
+	public void createDocumentTag(
+		final long memberId,
+		final long teamId,
+		final long timeBlockId,
+		final List<Long> documentIds
+	) {
+		Team team = teamFinder.findById(teamId);
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		TimeBlock timeBlock = timeBlockFinder.findByIdAndTeamId(timeBlockId, teamId);
+		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
+		validateDocuments(team, documentIds);
+		dtbAdapter.saveAll(timeBlock, documentIds);
+	}
+
 	private void validateDocuments(final Team team, final List<Long> documentIds) {
 		documentFinder.findAllByIdAndTeamId(documentIds, team.getId());
 	}
