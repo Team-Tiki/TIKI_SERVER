@@ -23,6 +23,10 @@ public class DTBAdapter {
 		return dtbRepository.findAllByTimeBlockId(timeBlock.getId());
 	}
 
+	public List<DTBManager> getAllByIds(final List<Long> ids) {
+		return dtbRepository.findAllByIdIn(ids);
+	}
+
 	public void deleteAllByTimeBlock(final TimeBlock timeBlock) {
 		dtbRepository.deleteAllByTimeBlockId(timeBlock.getId());
 	}
