@@ -1,7 +1,6 @@
 package com.tiki.server.timeblock.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
-import com.tiki.server.document.adapter.DocumentSaver;
-import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.vo.DocumentVO;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
@@ -42,7 +39,6 @@ public class TimeBlockService {
 	private final TimeBlockSaver timeBlockSaver;
 	private final TimeBlockFinder timeBlockFinder;
 	private final TimeBlockDeleter timeBlockDeleter;
-	private final DocumentSaver documentSaver;
 	private final DocumentFinder documentFinder;
 	private final DocumentDeleter documentDeleter;
 	private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
