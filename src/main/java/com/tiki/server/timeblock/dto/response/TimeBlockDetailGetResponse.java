@@ -4,9 +4,8 @@ import static lombok.AccessLevel.PRIVATE;
 
 import java.util.List;
 
-import com.tiki.server.document.entity.Document;
-
 import com.tiki.server.note.entity.Note;
+import com.tiki.server.timeblock.service.dto.DocumentTagInfo;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -17,7 +16,7 @@ public record TimeBlockDetailGetResponse(
 	List<NoteNameGetResponse> notes
 ) {
 
-	public static TimeBlockDetailGetResponse from(List<Document> documents, List<Note> notes) {
+	public static TimeBlockDetailGetResponse from(List<DocumentTagInfo> documents, List<Note> notes) {
 		return TimeBlockDetailGetResponse.builder()
 			.documents(documents.stream().map(DocumentGetResponse::from).toList())
 			.notes(notes.stream().map(NoteNameGetResponse::from).toList())
@@ -28,14 +27,16 @@ public record TimeBlockDetailGetResponse(
 	private record DocumentGetResponse(
 		long documentId,
 		@NonNull String fileName,
-		@NonNull String fileUrl
+		@NonNull String fileUrl,
+		long tagId
 	) {
 
-		private static DocumentGetResponse from(Document document) {
+		private static DocumentGetResponse from(DocumentTagInfo document) {
 			return DocumentGetResponse.builder()
-				.documentId(document.getId())
-				.fileName(document.getFileName())
-				.fileUrl(document.getFileUrl())
+				.documentId(document.documentId())
+				.fileName(document.fileName())
+				.fileUrl(document.fileUrl())
+				.tagId(document.tagId())
 				.build();
 		}
 	}
