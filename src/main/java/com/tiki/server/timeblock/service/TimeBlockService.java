@@ -115,6 +115,21 @@ public class TimeBlockService {
 		dtbAdapter.saveAll(timeBlock, documentIds);
 	}
 
+	@Transactional
+	public void deleteDocumentTag(
+		final long memberId,
+		final long teamId,
+		final long timeBlockId,
+		final List<Long> tagIds
+	) {
+		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+		TimeBlock timeBlock = timeBlockFinder.findByIdAndTeamId(timeBlockId, teamId);
+		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
+		List<DTBManager> dtbManagers = dtbAdapter.getAllByIds(tagIds);
+		dtbManagers.forEach(dtbManager -> dtbManager.validateTimeBlock(timeBlock));
+		dtbAdapter.deleteAll(dtbManagers);
+	}
+
 	private void validateDocuments(final Team team, final List<Long> documentIds) {
 		documentFinder.findAllByIdAndTeamId(documentIds, team.getId());
 	}
