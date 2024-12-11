@@ -36,7 +36,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	private final TimeBlockService timeBlockService;
 
 	@Override
-	@PostMapping("/time-blocks/team/{teamId}/time-block")
+	@PostMapping("/teams/{teamId}/time-block")
 	public ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
 		final Principal principal,
 		@PathVariable final long teamId,
@@ -51,7 +51,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("/time-blocks/team/{teamId}/timeline")
+	@GetMapping("/teams/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
 		final Principal principal,
 		@PathVariable final long teamId,
@@ -64,7 +64,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("/time-blocks/team/{teamId}/time-block/{timeBlockId}")
+	@GetMapping("/teams/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
 		final Principal principal,
 		@PathVariable final long teamId,
@@ -76,7 +76,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@DeleteMapping("/time-blocks/team/{teamId}/time-block/{timeBlockId}")
+	@DeleteMapping("/teams/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<?> deleteTimeBlock(
 		final Principal principal,
 		@PathVariable final long teamId,
