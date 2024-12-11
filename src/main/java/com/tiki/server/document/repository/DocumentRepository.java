@@ -27,4 +27,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(long teamId, Long folderId);
 
 	Optional<Document> findByIdAndTeamId(long id, long teamId);
+
+	List<Document> findAllByIdIn(List<Long> documentIds);
 }
