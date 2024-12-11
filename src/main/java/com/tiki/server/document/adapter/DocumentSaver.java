@@ -28,6 +28,7 @@ public class DocumentSaver {
 				deletedDocument.getFileName(),
 				deletedDocument.getFileUrl(),
 				deletedDocument.getCapacity(),
+				deletedDocument.getFileKey(),
 				deletedDocument.getTeamId()
 		);
 	}

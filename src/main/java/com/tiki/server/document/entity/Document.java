@@ -36,6 +36,8 @@ public class Document extends BaseTime {
 
 	private String fileUrl;
 
+	private String fileKey;
+
 	private double capacity;
 
 	private long teamId;
@@ -47,17 +49,19 @@ public class Document extends BaseTime {
 			.fileName(request.fileName())
 			.fileUrl(request.fileUrl())
 			.capacity(request.capacity())
+			.fileKey(request.fileKey())
 			.teamId(teamId)
 			.folderId(folderId)
 			.build();
 	}
 
 	public static Document restore(final String fileName, final String fileUrl,
-			final double capacity, final long teamId) {
+			final double capacity, final String fileKey, final long teamId) {
 		return Document.builder()
 				.fileName(fileName)
 				.fileUrl(fileUrl)
 				.capacity(capacity)
+				.fileKey(fileKey)
 				.teamId(teamId)
 				.folderId(null)
 				.build();
