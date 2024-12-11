@@ -128,7 +128,7 @@ public class TimeBlockService {
 	}
 
 	private List<DocumentTagInfo> getDocumentsInfo(final TimeBlock timeBlock) {
-		List<DTBManager> dtbManagers = dtbAdapter.getAll(timeBlock);
+		List<DTBManager> dtbManagers = dtbAdapter.getAllByTimeBlock(timeBlock);
 		return dtbManagers.stream()
 			.map(this::getDocumentTagInfo)
 			.toList();

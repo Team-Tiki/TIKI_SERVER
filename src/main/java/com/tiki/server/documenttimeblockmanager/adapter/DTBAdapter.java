@@ -19,7 +19,7 @@ public class DTBAdapter {
 		documentIds.forEach(documentId -> dtbRepository.save(DTBManager.of(timeBlock, documentId)));
 	}
 
-	public List<DTBManager> getAll(final TimeBlock timeBlock) {
+	public List<DTBManager> getAllByTimeBlock(final TimeBlock timeBlock) {
 		return dtbRepository.findAllByTimeBlockId(timeBlock.getId());
 	}
 
