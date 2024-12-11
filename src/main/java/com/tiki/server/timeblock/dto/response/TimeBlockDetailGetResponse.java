@@ -25,13 +25,13 @@ public record TimeBlockDetailGetResponse(
 	}
 
 	@Builder(access = PRIVATE)
-	public record DocumentGetResponse(
+	private record DocumentGetResponse(
 		long documentId,
 		@NonNull String fileName,
 		@NonNull String fileUrl
 	) {
 
-		public static DocumentGetResponse from(Document document) {
+		private static DocumentGetResponse from(Document document) {
 			return DocumentGetResponse.builder()
 				.documentId(document.getId())
 				.fileName(document.getFileName())
@@ -41,12 +41,12 @@ public record TimeBlockDetailGetResponse(
 	}
 
 	@Builder(access = PRIVATE)
-	public record NoteNameGetResponse(
+	private record NoteNameGetResponse(
 		long noteId,
 		@NonNull String noteName
 	) {
 
-		public static NoteNameGetResponse from(final Note note) {
+		private static NoteNameGetResponse from(final Note note) {
 			return NoteNameGetResponse.builder()
 				.noteId(note.getId())
 				.noteName(note.getTitle())
