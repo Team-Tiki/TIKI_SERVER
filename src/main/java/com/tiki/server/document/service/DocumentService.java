@@ -56,7 +56,7 @@ public class DocumentService {
 	public void deleteDocument(final long memberId, final long teamId, final long documentId) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Document document = documentFinder.findByIdWithTimeBlock(documentId);
-		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
+		// memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
 		documentDeleter.delete(document);
 	}
 
