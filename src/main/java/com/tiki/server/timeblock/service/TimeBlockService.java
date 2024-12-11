@@ -2,6 +2,7 @@ package com.tiki.server.timeblock.service;
 
 import java.util.List;
 
+import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerFinder;
@@ -41,6 +42,7 @@ public class TimeBlockService {
 	private final TimeBlockDeleter timeBlockDeleter;
 	private final DocumentFinder documentFinder;
 	private final DocumentDeleter documentDeleter;
+    private final DTBAdapter dtbAdapter;
 	private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
 	private final NoteFinder noteFinder;
 
@@ -57,6 +59,7 @@ public class TimeBlockService {
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
         validateDocuments(team, request.documentIds());
 		TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
+		dtbAdapter.saveAll(timeBlock, request.documentIds());
 		return TimeBlockCreateResponse.of(timeBlock.getId());
 	}
 
