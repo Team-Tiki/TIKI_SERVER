@@ -16,7 +16,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 		+ "where t.team.id = :teamId and t.accessiblePosition = :position order by d.createdAt asc")
 	List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position position);
 
-	@Query("select d from Document d join d.timeBlock t where t.team.id = :teamId")
 	List<Document> findAllByTeamId(long teamId);
 
 	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(long teamId, Long folderId);
