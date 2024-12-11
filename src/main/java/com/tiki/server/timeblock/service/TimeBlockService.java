@@ -84,7 +84,7 @@ public class TimeBlockService {
 		final long timeBlockId
 	) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
+		TimeBlock timeBlock = timeBlockFinder.findByIdAndTeamId(timeBlockId, teamId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
 		List<DocumentTagInfo> documents = getDocumentsInfo(timeBlock);
 		List<Note> notes = getNotes(timeBlock.getId());
@@ -94,7 +94,7 @@ public class TimeBlockService {
 	@Transactional
 	public void deleteTimeBlock(final long memberId, final long teamId, final long timeBlockId) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
+		TimeBlock timeBlock = timeBlockFinder.findByIdAndTeamId(timeBlockId, teamId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
 		dtbAdapter.deleteAllByTimeBlock(timeBlock);
 		timeBlockDeleter.deleteById(timeBlock.getId());
