@@ -10,7 +10,6 @@ import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.document.repository.DocumentRepository;
-import com.tiki.server.document.vo.DocumentVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,6 +56,10 @@ public class DocumentFinder {
 
     public List<Document> findAllByFolderId(final long folderId) {
         return documentRepository.findAllByFolderId(folderId);
+    }
+
+    public List<Document> findAllByIds(final List<Long> documentIds) {
+        return documentRepository.findAllByIdIn(documentIds);
     }
 
     private Document findByIdAndTeamId(long documentId, long teamId) {
