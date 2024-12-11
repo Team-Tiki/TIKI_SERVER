@@ -30,13 +30,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/time-blocks")
+@RequestMapping("api/v1")
 public class TimeBlockController implements TimeBlockControllerDocs {
 
 	private final TimeBlockService timeBlockService;
 
 	@Override
-	@PostMapping("/team/{teamId}/time-block")
+	@PostMapping("/time-blocks/team/{teamId}/time-block")
 	public ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
 		Principal principal,
 		@PathVariable long teamId,
@@ -51,7 +51,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("/team/{teamId}/timeline")
+	@GetMapping("/time-blocks/team/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
 		Principal principal,
 		@PathVariable long teamId,
@@ -64,7 +64,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("/team/{teamId}/time-block/{timeBlockId}")
+	@GetMapping("/time-blocks/team/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
 		Principal principal,
 		@PathVariable long teamId,
@@ -76,7 +76,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@DeleteMapping("/team/{teamId}/time-block/{timeBlockId}")
+	@DeleteMapping("/time-blocks/team/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<?> deleteTimeBlock(
 		Principal principal,
 		@PathVariable long teamId,
