@@ -9,7 +9,8 @@ public enum SuccessMessage {
 
 	SUCCESS_CREATE_TIME_BLOCK("타임 블록 생성 성공"),
 	SUCCESS_GET_TIMELINE("타임라인 조회 성공"),
-	SUCCESS_GET_TIME_BLOCK_DETAIL("타임 블록 상세 정보 조회 성공");
+	SUCCESS_GET_TIME_BLOCK_DETAIL("타임 블록 상세 정보 조회 성공"),
+	SUCCESS_CREATE_DOCUMENT_TAG("파일 태그 성공");
 
 	private final String message;
 }
