@@ -84,7 +84,6 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
-		List<DocumentVO> documents = documentFinder.findAllByTimeBlockId(timeBlockId);
 		List<Note> notes = getNotes(timeBlock.getId());
 		return TimeBlockDetailGetResponse.from(documents, notes);
 	}
