@@ -210,7 +210,7 @@ public class NoteService {
                 .map(NoteDocumentManager::getDocumentId)
                 .toList();
         return documentIdList.stream()
-                .map(documentFinder::findByIdOrElseThrow)
+                .map(documentFinder::findById)
                 .toList();
     }
 
