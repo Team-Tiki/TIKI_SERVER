@@ -201,7 +201,7 @@ public class NoteService {
                 .map(NoteTimeBlockManager::getTimeBlockId)
                 .toList();
         return timblockIdList.stream()
-                .map(timeBlockFinder::findByIdOrElseThrow)
+                .map(timeBlockFinder::findById)
                 .toList();
     }
 

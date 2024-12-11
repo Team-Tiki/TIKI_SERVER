@@ -15,23 +15,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TimeBlockFinder {
 
-    private final TimeBlockRepository timeBlockRepository;
+	private final TimeBlockRepository timeBlockRepository;
 
-    public TimeBlock findByIdOrElseThrow(long id) {
-        return timeBlockRepository.findById(id)
-                .orElseThrow(() -> new TimeBlockException(INVALID_TIME_BLOCK));
-    }
+	public TimeBlock findById(long id) {
+		return timeBlockRepository.findById(id)
+			.orElseThrow(() -> new TimeBlockException(INVALID_TIME_BLOCK));
+	}
 
-    public List<TimeBlock> findByTeamAndAccessiblePositionAndDate(
-            long teamId,
-            String accessiblePosition,
-            String date
-    ) {
-        return timeBlockRepository.
-                findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream().toList();
-    }
+	public List<TimeBlock> findByTeamAndAccessiblePositionAndDate(
+		long teamId,
+		String accessiblePosition,
+		String date
+	) {
+		return timeBlockRepository.
+			findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream().toList();
+	}
 
-    public boolean existsById(Long timeBlockId) {
-        return timeBlockRepository.existsById(timeBlockId);
-    }
+	public boolean existsById(Long timeBlockId) {
+		return timeBlockRepository.existsById(timeBlockId);
+	}
 }
