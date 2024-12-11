@@ -27,6 +27,10 @@ public class DTBAdapter {
 		return dtbRepository.findAllByIdIn(ids);
 	}
 
+	public void deleteAll(final List<DTBManager> dtbManagers) {
+		dtbRepository.deleteAll(dtbManagers);
+	}
+
 	public void deleteAllByTimeBlock(final TimeBlock timeBlock) {
 		dtbRepository.deleteAllByTimeBlockId(timeBlock.getId());
 	}
