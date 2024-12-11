@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
-import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.vo.DocumentVO;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
@@ -41,7 +40,6 @@ public class TimeBlockService {
 	private final TimeBlockFinder timeBlockFinder;
 	private final TimeBlockDeleter timeBlockDeleter;
 	private final DocumentFinder documentFinder;
-	private final DocumentDeleter documentDeleter;
     private final DTBAdapter dtbAdapter;
 	private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
 	private final NoteFinder noteFinder;
@@ -96,7 +94,6 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
-		documentDeleter.deleteAllByTimeBlockId(timeBlock.getId());
 		timeBlockDeleter.deleteById(timeBlock.getId());
 	}
 
