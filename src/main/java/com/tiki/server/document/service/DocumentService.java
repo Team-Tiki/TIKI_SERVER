@@ -19,6 +19,7 @@ import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
+import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
 import com.tiki.server.external.util.S3Handler;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
@@ -41,6 +42,7 @@ public class DocumentService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
 	private final TeamFinder teamFinder;
+	private final DTBAdapter dtbAdapter;
 	private final S3Handler s3Handler;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
@@ -77,6 +79,7 @@ public class DocumentService {
 	public void delete(final long memberId, final long teamId, final List<Long> documentIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Document> documents = documentFinder.findAllByIdAndTeamId(documentIds, teamId);
+		dtbAdapter.deleteAllByDocuments(documentIds);
 		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
 	}
