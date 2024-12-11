@@ -42,21 +42,6 @@ public class Document extends BaseTime {
 
 	private Long folderId;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "block_id")
-	private TimeBlock timeBlock;
-
-	public static Document of(final String fileName, final String fileUrl, final TimeBlock timeBlock) {
-		return Document.builder()
-			.fileName(fileName)
-			.fileUrl(fileUrl)
-			.capacity(0)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
-			.teamId(1)		// TODO : 타임 블록 생성 api 수정 후 제거 예정
-			.folderId(null) // TODO : 타임 블록 생성 api 수정 후 제거 예정
-			.timeBlock(timeBlock)
-			.build();
-	}
-
 	public static Document of(final DocumentCreateRequest request, final long teamId, final Long folderId) {
 		return Document.builder()
 			.fileName(request.fileName())
@@ -64,7 +49,6 @@ public class Document extends BaseTime {
 			.capacity(request.capacity())
 			.teamId(teamId)
 			.folderId(folderId)
-			.timeBlock(null)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
 			.build();
 	}
 
@@ -76,7 +60,6 @@ public class Document extends BaseTime {
 				.capacity(capacity)
 				.teamId(teamId)
 				.folderId(null)
-				.timeBlock(null)
 				.build();
 	}
 }
