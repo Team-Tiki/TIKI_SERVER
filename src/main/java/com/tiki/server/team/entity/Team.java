@@ -1,5 +1,8 @@
 package com.tiki.server.team.entity;
 
+import static com.tiki.server.common.Constants.INIT_NUM;
+import static com.tiki.server.team.entity.Subscribe.BASIC;
+import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_CAPACITY;
 import static com.tiki.server.team.message.ErrorCode.TOO_SHORT_PERIOD;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -46,12 +49,15 @@ public class Team extends BaseTime {
     @Enumerated(value = STRING)
     private University univ;
 
-    @Embedded
-    private SubscribeInfo subscribeInfo;
+    @Enumerated(value = STRING)
+    private Subscribe subscribe;
+
+    private double usage;
 
     private String imageUrl;
 
     private String iconImageUrl;
+
     private LocalDate namingUpdatedAt;
 
     public static Team of(TeamCreateRequest request, University univ) {
@@ -59,7 +65,8 @@ public class Team extends BaseTime {
                 .name(request.name())
                 .category(request.category())
                 .univ(univ)
-                .subscribeInfo(SubscribeInfo.createBasicSubscribe())
+                .subscribe(BASIC)
+                .usage(INIT_NUM)
                 .namingUpdatedAt(null)
                 .iconImageUrl(request.iconImageUrl())
                 .build();
@@ -82,19 +89,14 @@ public class Team extends BaseTime {
     }
 
     public void addUsage(double capacity) {
-        this.subscribeInfo.addUsage(capacity);
+        if (usage + capacity > subscribe.getCapacity()) {
+            throw new TeamException(EXCEED_TEAM_CAPACITY);
+        }
+        usage += capacity;
     }
 
     public void restoreUsage(double capacity) {
-        this.subscribeInfo.restoreUsage(capacity);
-    }
-
-    public double getCapacity() {
-        return this.subscribeInfo.getCapacity();
-    }
-
-    public double getUsage() {
-        return this.subscribeInfo.getUsage();
+        usage -= capacity;
     }
 
     private boolean canChangeName() {
