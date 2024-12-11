@@ -22,6 +22,11 @@ public class TimeBlockFinder {
 			.orElseThrow(() -> new TimeBlockException(INVALID_TIME_BLOCK));
 	}
 
+	public TimeBlock findByIdAndTeamId(final long id, final long teamId) {
+		return timeBlockRepository.findByIdAndTeamId(id, teamId)
+			.orElseThrow(() -> new TimeBlockException(INVALID_TIME_BLOCK));
+	}
+
 	public List<TimeBlock> findByTeamAndAccessiblePositionAndDate(
 		final long teamId,
 		final String accessiblePosition,
