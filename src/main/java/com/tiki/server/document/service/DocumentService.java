@@ -130,15 +130,12 @@ public class DocumentService {
 
 	private void saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
 		Team team = teamFinder.findById(teamId);
-		request.documents().forEach(document -> {
-			team.addUsage(document.capacity());
-			saveDocument(teamId, folderId, document);
-		});
+		request.documents().forEach(document -> saveDocument(team, folderId, document));
 	}
 
-	private void saveDocument(final long teamId, final Long folderId, final DocumentCreateRequest request) {
-		Document document = Document.of(
-			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
+	private void saveDocument(final Team team, final Long folderId, final DocumentCreateRequest request) {
+		team.addUsage(request.capacity());
+		Document document = Document.of(request, team.getId(), folderId);
 		documentSaver.save(document);
 	}
 

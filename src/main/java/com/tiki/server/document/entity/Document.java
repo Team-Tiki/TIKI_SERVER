@@ -6,6 +6,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.tiki.server.common.entity.BaseTime;
+import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
 import jakarta.persistence.Column;
@@ -56,12 +57,11 @@ public class Document extends BaseTime {
 			.build();
 	}
 
-	public static Document of(final String fileName, final String fileUrl,
-			final double capacity, final long teamId, final Long folderId) {
+	public static Document of(final DocumentCreateRequest request, final long teamId, final Long folderId) {
 		return Document.builder()
-			.fileName(fileName)
-			.fileUrl(fileUrl)
-			.capacity(capacity)
+			.fileName(request.fileName())
+			.fileUrl(request.fileUrl())
+			.capacity(request.capacity())
 			.teamId(teamId)
 			.folderId(folderId)
 			.timeBlock(null)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
