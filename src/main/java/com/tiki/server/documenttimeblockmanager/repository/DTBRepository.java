@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.tiki.server.documenttimeblockmanager.entity.DTBManager;
 
 public interface DTBRepository extends JpaRepository<DTBManager, Long> {
+	List<DTBManager> findAllByTimeBlockId(long timeBlockId);
+
 	void deleteAllByTimeBlockId(long timeBlockId);
 
 	void deleteAllByDocumentIdIn(List<Long> documentIds);
