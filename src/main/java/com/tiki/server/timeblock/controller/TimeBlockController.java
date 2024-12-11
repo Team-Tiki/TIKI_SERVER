@@ -105,7 +105,7 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/teams/{teamId}/time-block/{timeBlockId}")
+	@DeleteMapping("/teams/{teamId}/time-block/{timeBlockId}/tags")
 	public SuccessResponse<?> deleteDocumentTag(
 		final Principal principal,
 		@PathVariable final long teamId,
