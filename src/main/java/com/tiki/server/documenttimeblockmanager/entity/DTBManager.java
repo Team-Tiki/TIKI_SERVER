@@ -1,11 +1,13 @@
 package com.tiki.server.documenttimeblockmanager.entity;
 
+import static com.tiki.server.timeblock.message.ErrorCode.INVALID_DOCUMENT_TAG;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.timeblock.entity.TimeBlock;
+import com.tiki.server.timeblock.exception.TimeBlockException;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,5 +39,11 @@ public class DTBManager extends BaseTime {
 			.documentId(documentId)
 			.timeBlockId(timeBlock.getId())
 			.build();
+	}
+
+	public void validateTimeBlock(final TimeBlock timeBlock) {
+		if (this.timeBlockId != timeBlock.getId()) {
+			throw new TimeBlockException(INVALID_DOCUMENT_TAG);
+		}
 	}
 }
