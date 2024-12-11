@@ -61,7 +61,6 @@ public class TimeBlockService {
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
         validateDocuments(team, request.documentIds());
 		TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
-		saveDocuments(request.files(), timeBlock);
 		return TimeBlockCreateResponse.of(timeBlock.getId());
 	}
 
@@ -112,10 +111,6 @@ public class TimeBlockService {
         final TimeBlockCreateRequest request
     ) {
 		return timeBlockSaver.save(TimeBlock.of(team, accessiblePosition, request));
-	}
-
-	private void saveDocuments(final Map<String, String> files, final TimeBlock timeBlock) {
-		files.forEach((fileName, fileUrl) -> documentSaver.save(Document.of(fileName, fileUrl, timeBlock)));
 	}
 
 	private List<Note> getNotes(final long timeBlockId) {
