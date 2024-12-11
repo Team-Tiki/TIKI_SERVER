@@ -4,7 +4,6 @@ import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
 
 import java.util.List;
 
-import com.tiki.server.common.entity.Position;
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
@@ -29,9 +28,9 @@ public class DocumentFinder {
             .orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }
 
-    public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
-        return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
-    }
+    // public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
+    //     return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
+    // }
 
     public List<Document> findAllByTeamId(long teamId) {
         return documentRepository.findAllByTeamId(teamId);

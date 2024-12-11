@@ -12,9 +12,9 @@ import com.tiki.server.document.entity.Document;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 	List<Document> findAllByFolderId(long folderId);
 
-	@Query("select d from Document d join fetch d.timeBlock t "
-		+ "where t.team.id = :teamId and t.accessiblePosition = :position order by d.createdAt asc")
-	List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position position);
+	// @Query("select d from Document d join fetch d.timeBlock t "
+	// 	+ "where t.team.id = :teamId and t.accessiblePosition = :position order by d.createdAt asc")
+	// List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position position);
 
 	List<Document> findAllByTeamId(long teamId);
 
