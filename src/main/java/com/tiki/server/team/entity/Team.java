@@ -99,6 +99,10 @@ public class Team extends BaseTime {
         usage -= capacity;
     }
 
+    public double getCapacity() {
+        return subscribe.getCapacity();
+    }
+
     private boolean canChangeName() {
         if (namingUpdatedAt == null) {
             return true;
