@@ -22,4 +22,8 @@ public class DTBAdapter {
 	public void deleteAllByTimeBlock(final TimeBlock timeBlock) {
 		dtbRepository.deleteAllByTimeBlockId(timeBlock.getId());
 	}
+
+	public void deleteAllByDocuments(final List<Long> documentIds) {
+		dtbRepository.deleteAllByDocumentIdIn(documentIds);
+	}
 }
