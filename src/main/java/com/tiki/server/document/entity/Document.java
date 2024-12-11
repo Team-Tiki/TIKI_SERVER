@@ -55,14 +55,13 @@ public class Document extends BaseTime {
 			.build();
 	}
 
-	public static Document restore(final String fileName, final String fileUrl,
-			final double capacity, final String fileKey, final long teamId) {
+	public static Document restore(final DeletedDocument deletedDocument) {
 		return Document.builder()
-				.fileName(fileName)
-				.fileUrl(fileUrl)
-				.capacity(capacity)
-				.fileKey(fileKey)
-				.teamId(teamId)
+				.fileName(deletedDocument.getFileName())
+				.fileUrl(deletedDocument.getFileUrl())
+				.capacity(deletedDocument.getCapacity())
+				.fileKey(deletedDocument.getFileKey())
+				.teamId(deletedDocument.getTeamId())
 				.folderId(null)
 				.build();
 	}
