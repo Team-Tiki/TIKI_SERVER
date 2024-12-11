@@ -53,14 +53,6 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public void deleteDocument(final long memberId, final long teamId, final long documentId) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Document document = documentFinder.findByIdWithTimeBlock(documentId);
-		// memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
-		documentDeleter.delete(document);
-	}
-
-	@Transactional
 	public void createDocuments(final long memberId, final long teamId,
 			final Long folderId, final DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);

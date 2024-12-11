@@ -46,18 +46,6 @@ public class DocumentController implements DocumentControllerDocs {
 		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
 	}
 
-	@Override
-	@DeleteMapping("/documents/team/{teamId}/document/{documentId}")
-	public ResponseEntity<?> deleteDocument(
-		final Principal principal,
-		@PathVariable final long teamId,
-		@PathVariable final long documentId
-	) {
-		long memberId = Long.parseLong(principal.getName());
-		documentService.deleteDocument(memberId, teamId, documentId);
-		return ResponseEntity.noContent().build();
-	}
-
 	@PostMapping("/teams/{teamId}/documents")
 	public ResponseEntity<SuccessResponse<?>> createDocuments(
 		final Principal principal,

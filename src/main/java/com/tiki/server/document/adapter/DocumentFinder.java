@@ -3,7 +3,6 @@ package com.tiki.server.document.adapter;
 import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.common.support.RepositoryAdapter;
@@ -30,14 +29,6 @@ public class DocumentFinder {
             .orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }
 
-    public Document findByIdWithTimeBlock(long documentId) {
-        Document document = documentRepository.findByIdWithTimeBlock(documentId);
-        if (Objects.isNull(document)) {
-            throw new DocumentException(INVALID_DOCUMENT);
-        }
-        return document;
-    }
-
     public List<Document> findAllByTeamIdAndAccessiblePosition(long teamId, Position accessiblePosition) {
         return documentRepository.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
     }
@@ -56,10 +47,6 @@ public class DocumentFinder {
 
     public List<Document> findAllByFolderId(final long folderId) {
         return documentRepository.findAllByFolderId(folderId);
-    }
-
-    public List<Document> findAllByIds(final List<Long> documentIds) {
-        return documentRepository.findAllByIdIn(documentIds);
     }
 
     private Document findByIdAndTeamId(long documentId, long teamId) {

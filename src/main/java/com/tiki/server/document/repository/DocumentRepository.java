@@ -19,14 +19,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	@Query("select d from Document d join d.timeBlock t where t.team.id = :teamId")
 	List<Document> findAllByTeamId(long teamId);
 
-	@Query("select d from Document d join fetch d.timeBlock where d.id = :documentId")
-	Document findByIdWithTimeBlock(long documentId);
-
-	void deleteAllByTimeBlockId(long timeBlockId);
-
 	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(long teamId, Long folderId);
 
 	Optional<Document> findByIdAndTeamId(long id, long teamId);
-
-	List<Document> findAllByIdIn(List<Long> documentIds);
 }
