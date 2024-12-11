@@ -1,8 +1,6 @@
 package com.tiki.server.timeblock.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.document.adapter.DocumentFinder;
-import com.tiki.server.document.vo.DocumentVO;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.team.adapter.TeamFinder;
