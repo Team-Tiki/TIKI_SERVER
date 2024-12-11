@@ -94,7 +94,7 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
-		dtbAdapter.deleteAll(timeBlock);
+		dtbAdapter.deleteAllByTimeBlock(timeBlock);
 		timeBlockDeleter.deleteById(timeBlock.getId());
 	}
 
