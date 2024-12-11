@@ -49,7 +49,8 @@ public class DocumentService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
-		return getAllDocumentsByType(teamId, accessiblePosition);
+		List<Document> documents = documentFinder.findAllByTeamId(teamId);
+		return DocumentsGetResponse.from(documents);
 	}
 
 	@Transactional
