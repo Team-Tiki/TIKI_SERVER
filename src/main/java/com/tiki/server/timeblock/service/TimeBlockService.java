@@ -59,6 +59,7 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
+        validateDocuments(team, request.documentIds());
 		TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
 		saveDocuments(request.files(), timeBlock);
 		return TimeBlockCreateResponse.of(timeBlock.getId());
@@ -100,6 +101,10 @@ public class TimeBlockService {
 		documentDeleter.deleteAllByTimeBlockId(timeBlock.getId());
 		timeBlockDeleter.deleteById(timeBlock.getId());
 	}
+
+    private void validateDocuments(final Team team, final List<Long> documentIds) {
+        documentFinder.findAllByIdAndTeamId(documentIds, team.getId());
+    }
 
 	private TimeBlock saveTimeBlock(
         final Team team,
