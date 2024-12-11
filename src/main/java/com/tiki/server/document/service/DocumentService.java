@@ -19,10 +19,13 @@ import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
+import com.tiki.server.external.util.S3Handler;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.entity.Team;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +40,8 @@ public class DocumentService {
 	private final FolderFinder folderFinder;
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
+	private final TeamFinder teamFinder;
+	private final S3Handler s3Handler;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
@@ -80,6 +85,8 @@ public class DocumentService {
 	public void deleteTrash(final long memberId, final long teamId, final List<Long> documentIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
+		restoreTeamUsage(teamId, deletedDocuments);
+		deletedDocuments.forEach(deletedDocument -> s3Handler.deleteFile(deletedDocument.getFileName()));
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
@@ -122,12 +129,18 @@ public class DocumentService {
 	}
 
 	private void saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
-		request.documents().forEach(document -> saveDocument(teamId, folderId, document));
+		Team team = teamFinder.findById(teamId);
+		request.documents().forEach(document -> saveDocument(team, folderId, document));
 	}
 
-	private void saveDocument(final long teamId, final Long folderId, final DocumentCreateRequest request) {
-		Document document = Document.of(
-			request.fileName(), request.fileUrl(), request.capacity(), teamId, folderId);
+	private void saveDocument(final Team team, final Long folderId, final DocumentCreateRequest request) {
+		team.addUsage(request.capacity());
+		Document document = Document.of(request, team.getId(), folderId);
 		documentSaver.save(document);
+	}
+
+	private void restoreTeamUsage(final long teamId, final List<DeletedDocument> deletedDocuments) {
+		Team team = teamFinder.findById(teamId);
+		team.restoreUsage(deletedDocuments.stream().mapToDouble(DeletedDocument::getCapacity).sum());
 	}
 }

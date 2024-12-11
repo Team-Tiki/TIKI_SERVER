@@ -64,6 +64,7 @@ public interface TimeBlockControllerDocs {
 			name = "type",
 			description = "타임라인 타입",
 			in = ParameterIn.QUERY,
+			required = true,
 			example = "executive, member"
 		) @RequestParam String type,
 		@RequestBody TimeBlockCreateRequest request
@@ -108,12 +109,14 @@ public interface TimeBlockControllerDocs {
 			name = "type",
 			description = "타임라인 타입",
 			in = ParameterIn.QUERY,
+			required = true,
 			example = "executive, member"
 		) @RequestParam String type,
 		@Parameter(
 			name = "date",
 			description = "조회할 타임라인의 년도와 월 정보",
 			in = ParameterIn.QUERY,
+			required = true,
 			example = "2024-07"
 		) @RequestParam String date
 	);

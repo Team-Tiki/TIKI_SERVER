@@ -1,5 +1,8 @@
 package com.tiki.server.team.entity;
 
+import static com.tiki.server.common.Constants.INIT_NUM;
+import static com.tiki.server.team.entity.Subscribe.BASIC;
+import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_CAPACITY;
 import static com.tiki.server.team.message.ErrorCode.TOO_SHORT_PERIOD;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -12,6 +15,7 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 
 import com.tiki.server.team.exception.TeamException;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -45,9 +49,15 @@ public class Team extends BaseTime {
     @Enumerated(value = STRING)
     private University univ;
 
+    @Enumerated(value = STRING)
+    private Subscribe subscribe;
+
+    private double usage;
+
     private String imageUrl;
 
     private String iconImageUrl;
+
     private LocalDate namingUpdatedAt;
 
     public static Team of(TeamCreateRequest request, University univ) {
@@ -55,6 +65,8 @@ public class Team extends BaseTime {
                 .name(request.name())
                 .category(request.category())
                 .univ(univ)
+                .subscribe(BASIC)
+                .usage(INIT_NUM)
                 .namingUpdatedAt(null)
                 .iconImageUrl(request.iconImageUrl())
                 .build();
@@ -68,12 +80,27 @@ public class Team extends BaseTime {
         this.namingUpdatedAt = LocalDate.now();
     }
 
-    public void setIconImageUrl(final String url) {
+    public void updateIconImageUrl(final String url) {
         this.iconImageUrl = url;
     }
 
     public boolean isDefaultImage() {
         return this.getIconImageUrl().isBlank();
+    }
+
+    public void addUsage(double capacity) {
+        if (usage + capacity > subscribe.getCapacity()) {
+            throw new TeamException(EXCEED_TEAM_CAPACITY);
+        }
+        usage += capacity;
+    }
+
+    public void restoreUsage(double capacity) {
+        usage -= capacity;
+    }
+
+    public double getCapacity() {
+        return subscribe.getCapacity();
     }
 
     private boolean canChangeName() {

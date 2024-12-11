@@ -12,6 +12,7 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -29,7 +30,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.team.exception.TeamException;
 import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 
@@ -99,7 +99,7 @@ public class TeamService {
         checkIsAdmin(memberId, teamId);
         Team team = teamFinder.findById(teamId);
         deleteIconUrl(team);
-        team.setIconImageUrl(iconImageUrl);
+        team.updateIconImageUrl(iconImageUrl);
     }
 
     @Transactional
@@ -108,6 +108,14 @@ public class TeamService {
         MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamId(targetId, teamId);
         oldAdmin.updatePositionToExecutive();
         newAdmin.updatePositionToAdmin();
+    }
+
+    public UsageGetResponse getCapacityInfo(final long memberId, final long teamId) {
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        double capacity = team.getCapacity();
+        double usage = team.getUsage();
+        return UsageGetResponse.of(capacity, usage);
     }
 
     private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
