@@ -17,18 +17,18 @@ public class TimeBlockFinder {
 
 	private final TimeBlockRepository timeBlockRepository;
 
-	public TimeBlock findById(long id) {
+	public TimeBlock findById(final long id) {
 		return timeBlockRepository.findById(id)
 			.orElseThrow(() -> new TimeBlockException(INVALID_TIME_BLOCK));
 	}
 
 	public List<TimeBlock> findByTeamAndAccessiblePositionAndDate(
-		long teamId,
-		String accessiblePosition,
-		String date
+		final long teamId,
+		final String accessiblePosition,
+		final String date
 	) {
-		return timeBlockRepository.
-			findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream().toList();
+		return timeBlockRepository.findByTeamAndAccessiblePositionAndDate(teamId, accessiblePosition, date).stream()
+			.toList();
 	}
 
 	public boolean existsById(Long timeBlockId) {
