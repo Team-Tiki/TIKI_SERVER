@@ -2,7 +2,9 @@ package com.tiki.server.timeblock.service;
 
 import java.util.List;
 
+import com.tiki.server.document.entity.Document;
 import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
+import com.tiki.server.documenttimeblockmanager.entity.DTBManager;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerFinder;
@@ -84,6 +86,7 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
+		List<Document> documents = getDocuments(timeBlock);
 		List<Note> notes = getNotes(timeBlock.getId());
 		return TimeBlockDetailGetResponse.from(documents, notes);
 	}
@@ -107,6 +110,12 @@ public class TimeBlockService {
         final TimeBlockCreateRequest request
     ) {
 		return timeBlockSaver.save(TimeBlock.of(team, accessiblePosition, request));
+	}
+
+	private List<Document> getDocuments(final TimeBlock timeBlock) {
+		List<DTBManager> dtbManagers = dtbAdapter.getAll(timeBlock);
+		List<Long> documentIds = dtbManagers.stream().map(DTBManager::getDocumentId).toList();
+		return documentFinder.findAllByIds(documentIds);
 	}
 
 	private List<Note> getNotes(final long timeBlockId) {
