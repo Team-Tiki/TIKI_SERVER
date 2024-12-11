@@ -103,4 +103,17 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		timeBlockService.createDocumentTag(memberId, teamId, timeBlockId, documentIds);
 		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENT_TAG.getMessage());
 	}
+
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/teams/{teamId}/time-block/{timeBlockId}")
+	public SuccessResponse<?> deleteDocumentTag(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId,
+		@RequestParam("tagId") final List<Long> tagIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		timeBlockService.deleteDocumentTag(memberId, teamId, timeBlockId, tagIds);
+		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENT_TAG.getMessage());
+	}
 }
