@@ -1,6 +1,8 @@
 package com.tiki.server.timeblock.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
@@ -28,6 +30,7 @@ import com.tiki.server.timeblock.dto.response.TimeBlockCreateResponse;
 import com.tiki.server.timeblock.dto.response.TimeBlockDetailGetResponse;
 import com.tiki.server.timeblock.dto.response.TimelineGetResponse;
 import com.tiki.server.timeblock.entity.TimeBlock;
+import com.tiki.server.timeblock.service.dto.DocumentTagInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +45,7 @@ public class TimeBlockService {
 	private final TimeBlockFinder timeBlockFinder;
 	private final TimeBlockDeleter timeBlockDeleter;
 	private final DocumentFinder documentFinder;
-    private final DTBAdapter dtbAdapter;
+	private final DTBAdapter dtbAdapter;
 	private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
 	private final NoteFinder noteFinder;
 
@@ -57,18 +60,18 @@ public class TimeBlockService {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
-        validateDocuments(team, request.documentIds());
+		validateDocuments(team, request.documentIds());
 		TimeBlock timeBlock = saveTimeBlock(team, accessiblePosition, request);
 		dtbAdapter.saveAll(timeBlock, request.documentIds());
 		return TimeBlockCreateResponse.of(timeBlock.getId());
 	}
 
 	public TimelineGetResponse getTimeline(
-        final long memberId,
-        final long teamId,
-        final String type,
-        final String date
-    ) {
+		final long memberId,
+		final long teamId,
+		final String type,
+		final String date
+	) {
 		Team team = teamFinder.findById(teamId);
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
@@ -79,14 +82,14 @@ public class TimeBlockService {
 	}
 
 	public TimeBlockDetailGetResponse getTimeBlockDetail(
-        final long memberId,
-        final long teamId,
-        final long timeBlockId
-    ) {
+		final long memberId,
+		final long teamId,
+		final long timeBlockId
+	) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		TimeBlock timeBlock = timeBlockFinder.findById(timeBlockId);
 		memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
-		List<Document> documents = getDocuments(timeBlock);
+		List<DocumentTagInfo> documents = getDocumentsInfo(timeBlock);
 		List<Note> notes = getNotes(timeBlock.getId());
 		return TimeBlockDetailGetResponse.from(documents, notes);
 	}
@@ -100,22 +103,28 @@ public class TimeBlockService {
 		timeBlockDeleter.deleteById(timeBlock.getId());
 	}
 
-    private void validateDocuments(final Team team, final List<Long> documentIds) {
-        documentFinder.findAllByIdAndTeamId(documentIds, team.getId());
-    }
+	private void validateDocuments(final Team team, final List<Long> documentIds) {
+		documentFinder.findAllByIdAndTeamId(documentIds, team.getId());
+	}
 
 	private TimeBlock saveTimeBlock(
-        final Team team,
-        final Position accessiblePosition,
-        final TimeBlockCreateRequest request
-    ) {
+		final Team team,
+		final Position accessiblePosition,
+		final TimeBlockCreateRequest request
+	) {
 		return timeBlockSaver.save(TimeBlock.of(team, accessiblePosition, request));
 	}
 
-	private List<Document> getDocuments(final TimeBlock timeBlock) {
+	private List<DocumentTagInfo> getDocumentsInfo(final TimeBlock timeBlock) {
 		List<DTBManager> dtbManagers = dtbAdapter.getAll(timeBlock);
-		List<Long> documentIds = dtbManagers.stream().map(DTBManager::getDocumentId).toList();
-		return documentFinder.findAllByIds(documentIds);
+		return dtbManagers.stream()
+			.map(this::getDocumentTagInfo)
+			.toList();
+	}
+
+	private DocumentTagInfo getDocumentTagInfo(final DTBManager dtbManager) {
+		Document document = documentFinder.findById(dtbManager.getDocumentId());
+		return DocumentTagInfo.of(document, dtbManager);
 	}
 
 	private List<Note> getNotes(final long timeBlockId) {
