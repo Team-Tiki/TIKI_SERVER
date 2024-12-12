@@ -42,13 +42,13 @@ public interface FolderControllerDocs {
 	ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "조회할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
@@ -72,13 +72,13 @@ public interface FolderControllerDocs {
 	ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "생성할 폴더가 속할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
@@ -103,13 +103,13 @@ public interface FolderControllerDocs {
 	ResponseEntity<SuccessResponse<?>> updateFolderName(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "수정할 폴더 id",
 			in = ParameterIn.PATH,
 			example = "1"
@@ -134,13 +134,13 @@ public interface FolderControllerDocs {
 	ResponseEntity<?> delete(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "삭제할 폴더 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
