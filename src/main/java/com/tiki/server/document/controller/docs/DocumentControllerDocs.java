@@ -81,13 +81,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<SuccessResponse<?>> createDocuments(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "생성할 파일이 속할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
@@ -112,13 +112,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "조회할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
@@ -142,13 +142,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<?> delete(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "파일 id",
+			name = "documentId",
 			description = "삭제할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
@@ -173,13 +173,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<?> deleteTrash(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "파일 id",
+			name = "documentId",
 			description = "삭제할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
@@ -204,13 +204,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<?> restore(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "파일 id",
+			name = "documentId",
 			description = "복구할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
@@ -235,7 +235,7 @@ public interface DocumentControllerDocs {
 	ResponseEntity<SuccessResponse<DeletedDocumentsGetResponse>> getTrash(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
