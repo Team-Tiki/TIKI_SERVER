@@ -19,6 +19,7 @@ import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
+import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
 import com.tiki.server.external.util.S3Handler;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
@@ -41,21 +42,15 @@ public class DocumentService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
 	private final TeamFinder teamFinder;
+	private final DTBAdapter dtbAdapter;
 	private final S3Handler s3Handler;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
-		return getAllDocumentsByType(teamId, accessiblePosition);
-	}
-
-	@Transactional
-	public void deleteDocument(final long memberId, final long teamId, final long documentId) {
-		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		Document document = documentFinder.findByIdWithTimeBlock(documentId);
-		memberTeamManager.checkMemberAccessible(document.getTimeBlock().getAccessiblePosition());
-		documentDeleter.delete(document);
+		List<Document> documents = documentFinder.findAllByTeamId(teamId);
+		return DocumentsGetResponse.from(documents);
 	}
 
 	@Transactional
@@ -77,6 +72,7 @@ public class DocumentService {
 	public void delete(final long memberId, final long teamId, final List<Long> documentIds) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Document> documents = documentFinder.findAllByIdAndTeamId(documentIds, teamId);
+		dtbAdapter.deleteAllByDocuments(documentIds);
 		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
 	}
@@ -86,7 +82,7 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
 		restoreTeamUsage(teamId, deletedDocuments);
-		deletedDocuments.forEach(deletedDocument -> s3Handler.deleteFile(deletedDocument.getFileName()));
+		deletedDocuments.forEach(deletedDocument -> s3Handler.deleteFile(deletedDocument.getFileKey()));
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 
@@ -102,11 +98,6 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(teamId);
 		return DeletedDocumentsGetResponse.from(deletedDocuments);
-	}
-
-	private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
-		List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
-		return DocumentsGetResponse.from(documents);
 	}
 
 	private void validateFolder(final Long folderId, final long teamId) {

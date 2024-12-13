@@ -36,47 +36,33 @@ public class Document extends BaseTime {
 
 	private String fileUrl;
 
+	private String fileKey;
+
 	private double capacity;
 
 	private long teamId;
 
 	private Long folderId;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "block_id")
-	private TimeBlock timeBlock;
-
-	public static Document of(final String fileName, final String fileUrl, final TimeBlock timeBlock) {
-		return Document.builder()
-			.fileName(fileName)
-			.fileUrl(fileUrl)
-			.capacity(0)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
-			.teamId(1)		// TODO : 타임 블록 생성 api 수정 후 제거 예정
-			.folderId(null) // TODO : 타임 블록 생성 api 수정 후 제거 예정
-			.timeBlock(timeBlock)
-			.build();
-	}
-
 	public static Document of(final DocumentCreateRequest request, final long teamId, final Long folderId) {
 		return Document.builder()
 			.fileName(request.fileName())
 			.fileUrl(request.fileUrl())
 			.capacity(request.capacity())
+			.fileKey(request.fileKey())
 			.teamId(teamId)
 			.folderId(folderId)
-			.timeBlock(null)    // TODO : 타임 블록 생성 api 수정 후 제거 예정
 			.build();
 	}
 
-	public static Document restore(final String fileName, final String fileUrl,
-			final double capacity, final long teamId) {
+	public static Document restore(final DeletedDocument deletedDocument) {
 		return Document.builder()
-				.fileName(fileName)
-				.fileUrl(fileUrl)
-				.capacity(capacity)
-				.teamId(teamId)
+				.fileName(deletedDocument.getFileName())
+				.fileUrl(deletedDocument.getFileUrl())
+				.capacity(deletedDocument.getCapacity())
+				.fileKey(deletedDocument.getFileKey())
+				.teamId(deletedDocument.getTeamId())
 				.folderId(null)
-				.timeBlock(null)
 				.build();
 	}
 }

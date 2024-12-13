@@ -201,7 +201,7 @@ public class NoteService {
                 .map(NoteTimeBlockManager::getTimeBlockId)
                 .toList();
         return timblockIdList.stream()
-                .map(timeBlockFinder::findByIdOrElseThrow)
+                .map(timeBlockFinder::findById)
                 .toList();
     }
 
@@ -210,7 +210,7 @@ public class NoteService {
                 .map(NoteDocumentManager::getDocumentId)
                 .toList();
         return documentIdList.stream()
-                .map(documentFinder::findByIdOrElseThrow)
+                .map(documentFinder::findById)
                 .toList();
     }
 

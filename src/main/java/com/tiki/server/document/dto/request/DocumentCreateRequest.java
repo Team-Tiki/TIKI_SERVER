@@ -8,6 +8,8 @@ public record DocumentCreateRequest(
 	@NonNull String fileName,
 	@Schema(description = "파일 url", example = "https://.../tiki.jpg")
 	@NonNull String fileUrl,
+	@Schema(description = "파일 key", example = "....jpg")
+	@NonNull String fileKey,
 	@Schema(description = "파일 용량", example = "1.23")
 	double capacity
 ) {

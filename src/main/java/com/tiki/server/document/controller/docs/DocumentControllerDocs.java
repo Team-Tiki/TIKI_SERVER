@@ -65,44 +65,6 @@ public interface DocumentControllerDocs {
 	);
 
 	@Operation(
-		summary = "문서 삭제",
-		description = "문서를 삭제한다.",
-		responses = {
-			@ApiResponse(responseCode = "204", description = "성공"),
-			@ApiResponse(
-				responseCode = "403",
-				description = "접근 권한 없음",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "팀에 존재하지 않는 회원, 유효하지 않은 문서",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-			@ApiResponse(
-				responseCode = "4xx",
-				description = "클라이언트(요청) 오류",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-			@ApiResponse(
-				responseCode = "500",
-				description = "서버 내부 오류",
-				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
-	)
-	ResponseEntity<?> deleteDocument(
-		@Parameter(hidden = true) Principal principal,
-		@Parameter(
-			name = "teamId",
-			description = "팀 id",
-			in = ParameterIn.PATH,
-			example = "1"
-		) @PathVariable long teamId,
-		@Parameter(
-			name = "documentId",
-			description = "문서 id",
-			in = ParameterIn.PATH,
-			example = "1"
-		) @PathVariable long documentId
-	);
-
-	@Operation(
 		summary = "문서 생성",
 		description = "문서를 여러 개 생성한다.",
 		responses = {
@@ -119,13 +81,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<SuccessResponse<?>> createDocuments(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "생성할 파일이 속할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
@@ -150,13 +112,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "폴더 id",
+			name = "folderId",
 			description = "조회할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
@@ -180,13 +142,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<?> delete(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "파일 id",
+			name = "documentId",
 			description = "삭제할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
@@ -211,13 +173,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<?> deleteTrash(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "파일 id",
+			name = "documentId",
 			description = "삭제할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
@@ -242,13 +204,13 @@ public interface DocumentControllerDocs {
 	ResponseEntity<?> restore(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
-			name = "파일 id",
+			name = "documentId",
 			description = "복구할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
@@ -273,7 +235,7 @@ public interface DocumentControllerDocs {
 	ResponseEntity<SuccessResponse<DeletedDocumentsGetResponse>> getTrash(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
-			name = "팀 id",
+			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"

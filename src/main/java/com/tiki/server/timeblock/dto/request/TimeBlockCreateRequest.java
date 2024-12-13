@@ -1,7 +1,7 @@
 package com.tiki.server.timeblock.dto.request;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.List;
 
 import com.tiki.server.timeblock.entity.BlockType;
 
@@ -13,6 +13,6 @@ public record TimeBlockCreateRequest(
 	@NonNull LocalDate startDate,
 	@NonNull LocalDate endDate,
 	@NonNull BlockType blockType,
-	Map<String, String> files
+	List<Long> documentIds
 ) {
 }
