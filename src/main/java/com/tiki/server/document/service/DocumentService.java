@@ -100,11 +100,6 @@ public class DocumentService {
 		return DeletedDocumentsGetResponse.from(deletedDocuments);
 	}
 
-	// private DocumentsGetResponse getAllDocumentsByType(final long teamId, final Position accessiblePosition) {
-	// 	List<Document> documents = documentFinder.findAllByTeamIdAndAccessiblePosition(teamId, accessiblePosition);
-	// 	return DocumentsGetResponse.from(documents);
-	// }
-
 	private void validateFolder(final Long folderId, final long teamId) {
 		if (folderId == null) {
 			return;
