@@ -31,17 +31,19 @@ public class MemberTeamManagerService {
 
     @Transactional
     public void kickOutMemberFromTeam(final long memberId, final long teamId, final long kickOutMemberId) {
-        checkIsAdmin(memberId, teamId);
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(kickOutMemberId, teamId);
+        MemberTeamManager accessMember = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        checkIsAdmin(accessMember);
+        MemberTeamManager kickOutMember = memberTeamManagerFinder.findByMemberIdAndTeamId(kickOutMemberId, teamId);
         deleteNoteDependency(kickOutMemberId, teamId);
-        memberTeamManagerDeleter.delete(memberTeamManager);
+        memberTeamManagerDeleter.delete(kickOutMember);
     }
 
     @Transactional
     public void leaveTeam(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = checkIsNotAdmin(memberId, teamId);
+        MemberTeamManager accessMember = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        checkIsNotAdmin(accessMember);
         deleteNoteDependency(memberId, teamId);
-        memberTeamManagerDeleter.delete(memberTeamManager);
+        memberTeamManagerDeleter.delete(accessMember);
     }
 
     public MemberTeamInformGetResponse getMemberTeamInform(final long memberId, final long teamId) {
@@ -55,19 +57,16 @@ public class MemberTeamManagerService {
         memberTeamManager.updateName(name);
     }
 
-    private void checkIsAdmin(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+    private void checkIsAdmin(MemberTeamManager memberTeamManager) {
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(INVALID_AUTHORIZATION_DELETE);
         }
     }
 
-    private MemberTeamManager checkIsNotAdmin(final long memberId, final long teamId) {
-        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+    private void checkIsNotAdmin(MemberTeamManager memberTeamManager) {
         if (memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(TOO_HIGH_AUTHORIZATION);
         }
-        return memberTeamManager;
     }
 
     private void deleteNoteDependency(final long memberId, final long teamId) {
