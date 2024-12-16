@@ -1,6 +1,5 @@
 package com.tiki.server.team.dto.request;
 
-import com.tiki.server.team.controller.dto.request.UpdateTeamMemberAndTeamInformRequest;
 import jakarta.validation.constraints.NotNull;
 
 public record UpdateTeamMemberAndTeamInformServiceRequest(

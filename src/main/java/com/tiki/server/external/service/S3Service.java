@@ -17,6 +17,6 @@ public class S3Service {
     }
 
     public void deleteFile(final S3DeleteRequest request) {
-        s3Handler.deleteFile(request.fileName());
+        s3Handler.deleteFile(request.fileKey());
     }
 }

@@ -16,6 +16,7 @@ import com.tiki.server.team.dto.request.UpdateTeamMemberAndTeamInformServiceRequ
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
+import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,6 +113,14 @@ public class TeamService {
         MemberTeamManager newAdmin = memberTeamManagerFinder.findByMemberIdAndTeamId(targetId, teamId);
         oldAdmin.updatePositionToExecutive();
         newAdmin.updatePositionToAdmin();
+    }
+
+    public UsageGetResponse getCapacityInfo(final long memberId, final long teamId) {
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        double capacity = team.getCapacity();
+        double usage = team.getUsage();
+        return UsageGetResponse.of(capacity, usage);
     }
 
     private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {

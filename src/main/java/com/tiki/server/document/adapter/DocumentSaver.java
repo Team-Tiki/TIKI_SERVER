@@ -24,11 +24,6 @@ public class DocumentSaver {
 	}
 
 	private Document create(final DeletedDocument deletedDocument) {
-		return Document.restore(
-				deletedDocument.getFileName(),
-				deletedDocument.getFileUrl(),
-				deletedDocument.getCapacity(),
-				deletedDocument.getTeamId()
-		);
+		return Document.restore(deletedDocument);
 	}
 }
