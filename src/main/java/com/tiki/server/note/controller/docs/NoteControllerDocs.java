@@ -16,6 +16,7 @@ import com.tiki.server.note.service.dto.response.NoteListGetServiceResponse;
 import com.tiki.server.note.service.dto.response.NoteTemplateDetailGetServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -136,7 +137,12 @@ public interface NoteControllerDocs {
     )
     ResponseEntity<BaseResponse> updateNoteFree(
             @Parameter(hidden = true) Principal principal,
-            @PathVariable long noteId,
+            @Parameter(
+                    name = "noteId",
+                    description = "노트 id",
+                    in = ParameterIn.PATH,
+                    example = "1"
+            ) @PathVariable long noteId,
             @RequestBody NoteFreeUpdateRequest request
     );
 
@@ -175,7 +181,12 @@ public interface NoteControllerDocs {
     )
     ResponseEntity<BaseResponse> updateNoteTemplate(
             @Parameter(hidden = true) Principal principal,
-            @PathVariable long noteId,
+            @Parameter(
+                    name = "noteId",
+                    description = "노트 id",
+                    in = ParameterIn.PATH,
+                    example = "1"
+            ) @PathVariable long noteId,
             @RequestBody NoteTemplateUpdateRequest request
     );
 
@@ -205,9 +216,26 @@ public interface NoteControllerDocs {
     )
     ResponseEntity<SuccessResponse<NoteListGetServiceResponse>> getNote(
             @Parameter(hidden = true) Principal principal,
-            @PathVariable long teamId,
-            @RequestParam(required = false) LocalDateTime createdAt,
-            @RequestParam(defaultValue = "DESC") SortOrder sortOrder
+            @Parameter(
+                    name = "teamId",
+                    description = "팀 id",
+                    in = ParameterIn.PATH,
+                    example = "1"
+            )@PathVariable long teamId,
+            @Parameter(
+                    name = "createdAt",
+                    description = "생성시간",
+                    in = ParameterIn.QUERY,
+                    required = true,
+                    example = "yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn"
+            )@RequestParam(required = false) LocalDateTime createdAt,
+            @Parameter(
+                    name = "sortOrder",
+                    description = "정렬 순서",
+                    in = ParameterIn.QUERY,
+                    required = true,
+                    example = "ASC, DESC"
+            )@RequestParam(defaultValue = "DESC") SortOrder sortOrder
     );
 
     @Operation(
@@ -248,8 +276,18 @@ public interface NoteControllerDocs {
     )
     ResponseEntity<SuccessResponse<NoteDetailGetServiceResponse>> getNoteDetail(
             @Parameter(hidden = true) Principal principal,
-            @PathVariable long teamId,
-            @PathVariable long noteId
+            @Parameter(
+                    name = "teamId",
+                    description = "팀 id",
+                    in = ParameterIn.PATH,
+                    example = "1"
+            )@PathVariable long teamId,
+            @Parameter(
+                    name = "noteId",
+                    description = "노트 id",
+                    in = ParameterIn.PATH,
+                    example = "1"
+            )@PathVariable long noteId
     );
 
     @Operation(
@@ -283,7 +321,17 @@ public interface NoteControllerDocs {
     )
     ResponseEntity<SuccessResponse<Void>> deleteNotes(
             @Parameter(hidden = true) Principal principal,
-            @PathVariable long teamId,
-            @RequestParam List<Long> noteIds
+            @Parameter(
+                    name = "teamId",
+                    description = "팀 id",
+                    in = ParameterIn.PATH,
+                    example = "1"
+            )@PathVariable long teamId,
+            @Parameter(
+                    name = "noteIds",
+                    description = "노트 id 리스트",
+                    in = ParameterIn.PATH,
+                    example = "[1,2,3,4,5]"
+            )@RequestParam List<Long> noteIds
     );
 }
