@@ -91,7 +91,11 @@ public class Team extends BaseTime {
     }
 
     public boolean isDefaultImage() {
-        return this.getIconImageUrl().isBlank();
+        return this.iconImageUrl.isBlank();
+    }
+
+    public boolean isSameIconUrl(final String iconImageUrl) {
+        return this.iconImageUrl.equals(iconImageUrl);
     }
 
     public void addUsage(double capacity) {
