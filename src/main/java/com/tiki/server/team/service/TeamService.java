@@ -7,7 +7,7 @@ import java.util.List;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.external.util.S3Handler;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
@@ -52,7 +52,7 @@ public class TeamService {
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
     private final MemberTeamManagerSaver memberTeamManagerSaver;
-    private final S3Handler s3Handler;
+    private final AwsHandler awsHandler;
 
     @Transactional
     public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
@@ -86,8 +86,7 @@ public class TeamService {
     }
 
     public TeamInformGetResponse getTeamInform(final long teamId) {
-        Team team = teamFinder.findById(teamId);
-        return TeamInformGetResponse.from(team.getName(), team.getUniv(), team.getIconImageUrl());
+        return TeamInformGetResponse.from(teamFinder.findById(teamId));
     }
 
     private Team createTeam(final TeamCreateRequest request, final University univ) {
@@ -128,8 +127,8 @@ public class TeamService {
     }
 
     private void updateIconUrlS3(final Team team, final String iconUrl) {
-        if (!team.isDefaultImage() && !team.getImageUrl().equals(iconUrl)) {
-            s3Handler.deleteFile(team.getIconImageUrl());
+        if (!team.isDefaultImage() && !team.isSameIconUrl(iconUrl)) {
+            awsHandler.deleteFile(team.getIconImageUrl());
         }
     }
 

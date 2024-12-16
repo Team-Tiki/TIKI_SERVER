@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "S3", description = "AWS S3 API")
-public interface S3ControllerDocs {
+public interface FileeHandlerControllerDocs {
 
 	@Operation(
 		summary = "Presigned Url 생성",
