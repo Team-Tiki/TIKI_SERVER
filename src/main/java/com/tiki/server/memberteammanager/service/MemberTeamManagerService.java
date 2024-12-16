@@ -46,7 +46,7 @@ public class MemberTeamManagerService {
 
     public MemberTeamInformGetResponse getMemberTeamInform(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        return MemberTeamInformGetResponse.from(memberTeamManager.getPosition(), memberTeamManager.getName());
+        return MemberTeamInformGetResponse.of(memberTeamManager.getPosition(), memberTeamManager.getName());
     }
 
     @Transactional
