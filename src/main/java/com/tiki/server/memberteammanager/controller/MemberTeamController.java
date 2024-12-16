@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
-import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_POSITION;
+import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_TEAM_INFORM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.KICK_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.LEAVE_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.UPDATE_NAME;
@@ -31,7 +31,7 @@ public class MemberTeamController {
     ) {
         long memberId = Long.parseLong(principal.getName());
         MemberTeamInformGetResponse response = memberTeamManagerService.getMemberTeamInform(memberId, teamId);
-        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), response));
+        return ResponseEntity.ok().body(success(GET_TEAM_INFORM.getMessage(), response));
     }
 
     @PatchMapping("/teams/{teamId}/members/name")
