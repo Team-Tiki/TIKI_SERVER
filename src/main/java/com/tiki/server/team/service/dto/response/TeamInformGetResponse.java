@@ -1,14 +1,16 @@
 package com.tiki.server.team.service.dto.response;
 
 import com.tiki.server.common.entity.University;
+import com.tiki.server.team.entity.Team;
+import jakarta.validation.constraints.NotNull;
 
 public record TeamInformGetResponse(
-        String teamName,
-        University university,
-        String teamIconUrl
+        @NotNull String teamName,
+        @NotNull University university,
+        @NotNull String teamIconUrl
 ) {
 
-    public static TeamInformGetResponse from(final String teamName, final University university, final String teamIconUrl) {
-        return new TeamInformGetResponse(teamName, university, teamIconUrl);
+    public static TeamInformGetResponse from(final Team team) {
+        return new TeamInformGetResponse(team.getName(),team.getUniv(), team.getIconImageUrl());
     }
 }
