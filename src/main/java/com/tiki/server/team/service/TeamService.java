@@ -12,7 +12,7 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
-import com.tiki.server.team.dto.request.UpdateTeamMemberAndTeamInformServiceRequest;
+import com.tiki.server.team.dto.request.TeamMemberAndTeamInformUpdateServiceRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -97,7 +97,7 @@ public class TeamService {
     public void updateTeamAndTeamMemberInform(
             final long memberId,
             final long teamId,
-            final UpdateTeamMemberAndTeamInformServiceRequest request
+            final TeamMemberAndTeamInformUpdateServiceRequest request
     ) {
         MemberTeamManager memberTeamManager = checkIsAdmin(memberId, teamId);
         memberTeamManager.updateName(request.teamMemberName());
