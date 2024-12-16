@@ -20,7 +20,7 @@ import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.exception.DocumentException;
 import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
-import com.tiki.server.external.util.S3Handler;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
@@ -43,7 +43,7 @@ public class DocumentService {
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
 	private final TeamFinder teamFinder;
 	private final DTBAdapter dtbAdapter;
-	private final S3Handler s3Handler;
+	private final AwsHandler awsHandler;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
 		MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
@@ -82,7 +82,7 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(documentIds, teamId);
 		restoreTeamUsage(teamId, deletedDocuments);
-		deletedDocuments.forEach(deletedDocument -> s3Handler.deleteFile(deletedDocument.getFileKey()));
+		deletedDocuments.forEach(deletedDocument -> awsHandler.deleteFile(deletedDocument.getFileKey()));
 		deletedDocumentAdapter.deleteAll(deletedDocuments);
 	}
 

@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 
 @Component
 @RequiredArgsConstructor
-public class S3Handler {
+public class AwsHandler {
 
 	private final AWSConfig awsConfig;
 

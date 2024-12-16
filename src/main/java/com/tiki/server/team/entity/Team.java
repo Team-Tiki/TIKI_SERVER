@@ -15,13 +15,14 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 
 import com.tiki.server.team.exception.TeamException;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -72,7 +73,12 @@ public class Team extends BaseTime {
                 .build();
     }
 
-    public void updateName(final String name) {
+    public void updateInform(final String name, final String iconImageUrl) {
+        updateTeamName(name);
+        updateIconImageUrl(iconImageUrl);
+    }
+
+    private void updateTeamName(final String name) {
         if (!canChangeName()) {
             throw new TeamException(TOO_SHORT_PERIOD);
         }
@@ -85,7 +91,11 @@ public class Team extends BaseTime {
     }
 
     public boolean isDefaultImage() {
-        return this.getIconImageUrl().isBlank();
+        return this.iconImageUrl.isBlank();
+    }
+
+    public boolean isSameIconUrl(final String iconImageUrl) {
+        return this.iconImageUrl.equals(iconImageUrl);
     }
 
     public void addUsage(double capacity) {

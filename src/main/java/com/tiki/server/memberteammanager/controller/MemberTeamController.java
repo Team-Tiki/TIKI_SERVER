@@ -4,7 +4,7 @@ import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.memberteammanager.controller.dto.request.UpdateTeamMemberNameRequest;
 import com.tiki.server.memberteammanager.service.MemberTeamManagerService;
-import com.tiki.server.memberteammanager.service.dto.response.MemberTeamPositionGetResponse;
+import com.tiki.server.memberteammanager.service.dto.response.MemberTeamInformGetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
-import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_POSITION;
+import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_TEAM_INFORM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.KICK_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.LEAVE_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.UPDATE_NAME;
@@ -25,13 +25,13 @@ public class MemberTeamController {
     private final MemberTeamManagerService memberTeamManagerService;
 
     @GetMapping("/teams/{teamId}/members/position")
-    public ResponseEntity<SuccessResponse<MemberTeamPositionGetResponse>> getMemberTeamPosition(
+    public ResponseEntity<SuccessResponse<MemberTeamInformGetResponse>> getMemberTeamInform(
             final Principal principal,
             @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
-        MemberTeamPositionGetResponse response = memberTeamManagerService.getPosition(memberId, teamId);
-        return ResponseEntity.ok().body(success(GET_POSITION.getMessage(), response));
+        MemberTeamInformGetResponse response = memberTeamManagerService.getMemberTeamInform(memberId, teamId);
+        return ResponseEntity.ok().body(success(GET_TEAM_INFORM.getMessage(), response));
     }
 
     @PatchMapping("/teams/{teamId}/members/name")
