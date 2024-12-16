@@ -4,6 +4,7 @@ import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.support.UriGenerator;
+import com.tiki.server.note.controller.docs.NoteControllerDocs;
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
 import com.tiki.server.note.controller.dto.request.NoteFreeUpdateRequest;
 import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
@@ -30,7 +31,7 @@ import static com.tiki.server.note.message.SuccessMessage.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notes")
-public class NoteController {
+public class NoteController implements NoteControllerDocs {
 
     private final NoteService noteService;
 
