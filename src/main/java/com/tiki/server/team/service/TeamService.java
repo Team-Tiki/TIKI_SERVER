@@ -7,14 +7,17 @@ import java.util.List;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.external.util.S3Handler;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.dto.request.TeamMemberAndTeamInformUpdateServiceRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
+import com.tiki.server.team.dto.response.UsageGetResponse;
+import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +32,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.team.exception.TeamException;
 import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 
@@ -50,7 +52,7 @@ public class TeamService {
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
     private final MemberTeamManagerSaver memberTeamManagerSaver;
-    private final S3Handler s3Handler;
+    private final AwsHandler awsHandler;
 
     @Transactional
     public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
@@ -83,23 +85,25 @@ public class TeamService {
         teamDeleter.deleteById(teamId);
     }
 
+    public TeamInformGetResponse getTeamInform(final long teamId) {
+        return TeamInformGetResponse.from(teamFinder.findById(teamId));
+    }
+
     private Team createTeam(final TeamCreateRequest request, final University univ) {
         return Team.of(request, univ);
     }
 
     @Transactional
-    public void updateTeamName(final long memberId, final long teamId, final String newTeamName) {
-        checkIsAdmin(memberId, teamId);
+    public void updateTeamAndTeamMemberInform(
+            final long memberId,
+            final long teamId,
+            final TeamMemberAndTeamInformUpdateServiceRequest request
+    ) {
+        MemberTeamManager memberTeamManager = checkIsAdmin(memberId, teamId);
+        memberTeamManager.updateName(request.teamMemberName());
         Team team = teamFinder.findById(teamId);
-        team.updateName(newTeamName);
-    }
-
-    @Transactional
-    public void updateIconImage(final long memberId, final long teamId, final String iconImageUrl) {
-        checkIsAdmin(memberId, teamId);
-        Team team = teamFinder.findById(teamId);
-        deleteIconUrl(team);
-        team.setIconImageUrl(iconImageUrl);
+        team.updateInform(request.teamName(), request.teamIconUrl());
+        updateIconUrlS3(team, request.teamIconUrl());
     }
 
     @Transactional
@@ -110,13 +114,21 @@ public class TeamService {
         newAdmin.updatePositionToAdmin();
     }
 
+    public UsageGetResponse getCapacityInfo(final long memberId, final long teamId) {
+        memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        Team team = teamFinder.findById(teamId);
+        double capacity = team.getCapacity();
+        double usage = team.getUsage();
+        return UsageGetResponse.of(capacity, usage);
+    }
+
     private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private void deleteIconUrl(final Team team) {
-        if (!team.isDefaultImage()) {
-            s3Handler.deleteFile(team.getIconImageUrl());
+    private void updateIconUrlS3(final Team team, final String iconUrl) {
+        if (!team.isDefaultImage() && !team.isSameIconUrl(iconUrl)) {
+            awsHandler.deleteFile(team.getIconImageUrl());
         }
     }
 

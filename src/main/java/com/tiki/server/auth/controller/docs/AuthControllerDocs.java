@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,11 +48,7 @@ public interface AuthControllerDocs {
 			@ApiResponse(responseCode = "201", description = "성공"),
 			@ApiResponse(
 				responseCode = "401",
-				description = "유효하지 않은 키",
-				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
-			@ApiResponse(
-				responseCode = "401",
-				description = "인증되지 않은 사용자",
+				description = "유효하지 않은 키, 인증되지 않은 사용자",
 				content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
 			@ApiResponse(
 				responseCode = "404",

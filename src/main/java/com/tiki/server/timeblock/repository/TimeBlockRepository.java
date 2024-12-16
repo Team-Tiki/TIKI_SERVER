@@ -1,14 +1,15 @@
 package com.tiki.server.timeblock.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
 public interface TimeBlockRepository extends JpaRepository<TimeBlock, Long> {
+	Optional<TimeBlock> findByIdAndTeamId(long id, long teamId);
 
 	void deleteAllByTeamId(long teamId);
 

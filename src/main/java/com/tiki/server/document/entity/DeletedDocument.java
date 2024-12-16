@@ -31,6 +31,8 @@ public class DeletedDocument extends BaseTime {
 
 	private String fileUrl;
 
+	private String fileKey;
+
 	private long teamId;
 
 	private double capacity;

@@ -22,7 +22,6 @@ import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
-import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
 
@@ -45,18 +44,6 @@ public class DocumentController implements DocumentControllerDocs {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.getAllDocuments(memberId, teamId, type);
 		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
-	}
-
-	@Override
-	@DeleteMapping("/documents/team/{teamId}/document/{documentId}")
-	public ResponseEntity<?> deleteDocument(
-		final Principal principal,
-		@PathVariable final long teamId,
-		@PathVariable final long documentId
-	) {
-		long memberId = Long.parseLong(principal.getName());
-		documentService.deleteDocument(memberId, teamId, documentId);
-		return ResponseEntity.noContent().build();
 	}
 
 	@PostMapping("/teams/{teamId}/documents")

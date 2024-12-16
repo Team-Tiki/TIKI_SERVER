@@ -1,12 +1,15 @@
 package com.tiki.server.timeblock.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.*;
+import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_CREATE_DOCUMENT_TAG;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_CREATE_TIME_BLOCK;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIMELINE;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIME_BLOCK_DETAIL;
 
 import java.security.Principal;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
@@ -30,18 +34,18 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/time-blocks")
+@RequestMapping("api/v1")
 public class TimeBlockController implements TimeBlockControllerDocs {
 
 	private final TimeBlockService timeBlockService;
 
 	@Override
-	@PostMapping("/team/{teamId}/time-block")
+	@PostMapping("/teams/{teamId}/time-block")
 	public ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam String type,
-		@RequestBody TimeBlockCreateRequest request
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final String type,
+		@RequestBody final TimeBlockCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		TimeBlockCreateResponse response = timeBlockService.createTimeBlock(memberId, teamId, type, request);
@@ -51,12 +55,12 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("/team/{teamId}/timeline")
+	@GetMapping("/teams/{teamId}/timeline")
 	public ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
-		Principal principal,
-		@PathVariable long teamId,
-		@RequestParam String type,
-		@RequestParam String date
+		final Principal principal,
+		@PathVariable final long teamId,
+		@RequestParam final String type,
+		@RequestParam final String date
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		TimelineGetResponse response = timeBlockService.getTimeline(memberId, teamId, type, date);
@@ -64,11 +68,11 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@GetMapping("/team/{teamId}/time-block/{timeBlockId}")
+	@GetMapping("/teams/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
-		Principal principal,
-		@PathVariable long teamId,
-		@PathVariable long timeBlockId
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		TimeBlockDetailGetResponse response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
@@ -76,14 +80,40 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 	}
 
 	@Override
-	@DeleteMapping("/team/{teamId}/time-block/{timeBlockId}")
+	@DeleteMapping("/teams/{teamId}/time-block/{timeBlockId}")
 	public ResponseEntity<?> deleteTimeBlock(
-		Principal principal,
-		@PathVariable long teamId,
-		@PathVariable long timeBlockId
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		timeBlockService.deleteTimeBlock(memberId, teamId, timeBlockId);
 		return ResponseEntity.noContent().build();
+	}
+
+	@ResponseStatus(HttpStatus.CREATED)
+	@PostMapping("/teams/{teamId}/time-block/{timeBlockId}")
+	public SuccessResponse<?> createDocumentTag(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId,
+		@RequestParam("documentId") final List<Long> documentIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		timeBlockService.createDocumentTag(memberId, teamId, timeBlockId, documentIds);
+		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENT_TAG.getMessage());
+	}
+
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/teams/{teamId}/time-block/{timeBlockId}/tags")
+	public SuccessResponse<?> deleteDocumentTag(
+		final Principal principal,
+		@PathVariable final long teamId,
+		@PathVariable final long timeBlockId,
+		@RequestParam("tagId") final List<Long> tagIds
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		timeBlockService.deleteDocumentTag(memberId, teamId, timeBlockId, tagIds);
+		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENT_TAG.getMessage());
 	}
 }

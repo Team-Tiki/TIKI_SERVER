@@ -5,7 +5,6 @@ import java.util.List;
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.repository.DocumentRepository;
-import com.tiki.server.document.vo.DocumentVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,15 +14,7 @@ public class DocumentDeleter {
 
 	private final DocumentRepository documentRepository;
 
-	public void delete(Document document) {
-		documentRepository.delete(document);
-	}
-
 	public void deleteAll(List<Document> documents) {
 		documentRepository.deleteAll(documents);
-	}
-
-	public void deleteAllByTimeBlockId(long timeBlockId) {
-		documentRepository.deleteAllByTimeBlockId(timeBlockId);
 	}
 }
