@@ -55,5 +55,5 @@ aws-property:
   aws-region: ap-northeast-2
   s3-url: ${AWS_PROPERTY.S3_URL}
 
-
-
+springdoc:
+  use-fqn: true
