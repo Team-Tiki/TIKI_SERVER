@@ -1,14 +1,14 @@
 package com.tiki.server.memberteammanager.service.dto.response;
 
-import com.tiki.server.common.entity.Email;
-import com.tiki.server.memberteammanager.repository.projection.NameAndEmailProjection;
-import org.yaml.snakeyaml.emitter.Emitable;
+import com.tiki.server.common.entity.Position;
+import com.tiki.server.memberteammanager.repository.projection.TeamMemberInformGetProjection;
 
 public record TeamMemberGetResponse (
         String name,
+        Position position,
         String email
 ){
-    public static TeamMemberGetResponse from(NameAndEmailProjection projection){
-        return new TeamMemberGetResponse(projection.getName(), projection.getEmail());
+    public static TeamMemberGetResponse from(TeamMemberInformGetProjection projection){
+        return new TeamMemberGetResponse(projection.getMemberName(),projection.getMemberPosition(), projection.getMemberEmail());
     }
 }
