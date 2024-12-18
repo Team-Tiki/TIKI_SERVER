@@ -1,12 +1,11 @@
 package com.tiki.server.drive.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
-import static com.tiki.server.folder.message.SuccessMessage.SUCCESS_GET_FOLDERS;
+import static com.tiki.server.drive.message.SuccessMessage.SUCCESS_GET_DRIVE;
 
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +36,6 @@ public class DriveController implements DriveControllerDocs {
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DriveGetResponse response = driveService.getDrive(memberId, teamId, folderId);
-		return success(SUCCESS_GET_FOLDERS.getMessage(), response);
+		return success(SUCCESS_GET_DRIVE.getMessage(), response);
 	}
 }
