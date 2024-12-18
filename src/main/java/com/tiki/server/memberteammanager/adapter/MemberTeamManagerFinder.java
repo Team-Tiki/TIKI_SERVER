@@ -7,7 +7,7 @@ import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.memberteammanager.exception.MemberTeamManagerException;
 import com.tiki.server.memberteammanager.repository.MemberTeamManagerRepository;
 
-import com.tiki.server.memberteammanager.repository.projection.NameAndEmailProjection;
+import com.tiki.server.memberteammanager.repository.projection.TeamMemberInformGetProjection;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class MemberTeamManagerFinder {
         return memberTeamManagerRepository.findAllByTeamId(teamId);
     }
 
-    public List<NameAndEmailProjection> findNameAndEmailByMemberIdAndTeamId(long memberId, long teamId) {
-        return memberTeamManagerRepository.findNameAndEmailByMemberIdAndTeamId(memberId, teamId);
+    public List<TeamMemberInformGetProjection> findNameAndEmailByMemberIdAndTeamId(long teamId) {
+        return memberTeamManagerRepository.findTeamMembersByTeamId(teamId);
     }
 }
