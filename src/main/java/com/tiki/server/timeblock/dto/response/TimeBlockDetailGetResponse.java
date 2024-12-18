@@ -12,27 +12,27 @@ import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record TimeBlockDetailGetResponse(
-	List<DocumentGetResponse> documents,
+	List<DocumentDetailGetResponse> documents,
 	List<NoteNameGetResponse> notes
 ) {
 
 	public static TimeBlockDetailGetResponse from(List<DocumentTagInfo> documents, List<Note> notes) {
 		return TimeBlockDetailGetResponse.builder()
-			.documents(documents.stream().map(DocumentGetResponse::from).toList())
+			.documents(documents.stream().map(DocumentDetailGetResponse::from).toList())
 			.notes(notes.stream().map(NoteNameGetResponse::from).toList())
 			.build();
 	}
 
 	@Builder(access = PRIVATE)
-	private record DocumentGetResponse(
+	private record DocumentDetailGetResponse(
 		long documentId,
 		@NonNull String fileName,
 		@NonNull String fileUrl,
 		long tagId
 	) {
 
-		private static DocumentGetResponse from(DocumentTagInfo document) {
-			return DocumentGetResponse.builder()
+		private static DocumentDetailGetResponse from(DocumentTagInfo document) {
+			return DocumentDetailGetResponse.builder()
 				.documentId(document.documentId())
 				.fileName(document.fileName())
 				.fileUrl(document.fileUrl())
