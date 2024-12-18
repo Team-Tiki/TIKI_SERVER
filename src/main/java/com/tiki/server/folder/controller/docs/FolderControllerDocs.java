@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
 import com.tiki.server.folder.dto.request.FolderNameUpdateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
@@ -22,7 +21,9 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "folders", description = "폴더 API")
 public interface FolderControllerDocs {
 
 	@Operation(

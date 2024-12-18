@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "documents", description = "문서 API")
+@Tag(name = "documents", description = "파일 API")
 public interface DocumentControllerDocs {
 
 	@Operation(
