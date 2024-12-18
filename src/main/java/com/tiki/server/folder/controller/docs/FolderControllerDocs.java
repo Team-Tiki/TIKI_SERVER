@@ -45,11 +45,12 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
 			name = "folderId",
-			description = "조회할 폴더 id",
+			description = "조회할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
 		) @RequestParam Long folderId
@@ -75,11 +76,12 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
 			name = "folderId",
-			description = "생성할 폴더가 속할 폴더 id",
+			description = "생성할 폴더가 속할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
 		) @RequestParam Long folderId,
@@ -106,6 +108,7 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
@@ -137,6 +140,7 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
