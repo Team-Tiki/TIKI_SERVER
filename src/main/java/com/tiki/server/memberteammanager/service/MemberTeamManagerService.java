@@ -4,6 +4,8 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerSaver;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.memberteammanager.repository.projection.TeamMemberInformGetProjection;
+import com.tiki.server.memberteammanager.service.dto.response.TeamMembersGetResponse;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.exception.TeamException;
@@ -57,10 +59,10 @@ public class MemberTeamManagerService {
         memberTeamManager.updateName(name);
     }
 
-    public void getMembers(final long teamId, final long memberId) {
+    public TeamMembersGetResponse getMembers(final long teamId, final long memberId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-        return;
-        memberTeamManagerFinder.findNameAndEmailByMemberIdAndTeamId(memberId, teamId);
+        List<TeamMemberInformGetProjection> teamMembers = memberTeamManagerFinder.findNameAndEmailByMemberIdAndTeamId(teamId);
+        return TeamMembersGetResponse.from(teamMembers);
     }
 
     private void checkIsAdmin(MemberTeamManager memberTeamManager) {
