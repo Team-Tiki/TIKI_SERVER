@@ -1,6 +1,6 @@
 package com.tiki.server.memberteammanager.repository;
 
-import com.tiki.server.memberteammanager.repository.projection.NameAndEmailProjection;
+import com.tiki.server.memberteammanager.repository.projection.TeamMemberInformGetProjection;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +18,9 @@ public interface MemberTeamManagerRepository extends JpaRepository<MemberTeamMan
     @Query("select m from MemberTeamManager m join fetch m.team t where m.member.id = :memberId")
     List<MemberTeamManager> findAllBelongTeamByMemberId(long memberId);
 
-    @Query("SELECT m.name AS name, m.email AS email " +
-            "FROM MemberTeamManager mtm JOIN mtm.member m " +
-            "WHERE mtm.member.id = :memberId AND mtm.team.id = :teamId")
-    List<NameAndEmailProjection> findNameAndEmailByMemberIdAndTeamId(final long memberId, final long teamId);
-
+    @Query("SELECT m.name AS memberName, m.email AS memberEmail, mtm.position AS memberPosition " +
+            "FROM MemberTeamManager mtm " +
+            "JOIN mtm.member m " +
+            "WHERE mtm.team.id = :teamId")
+    List<TeamMemberInformGetProjection> findTeamMembersByTeamId(final long teamId);
 }
