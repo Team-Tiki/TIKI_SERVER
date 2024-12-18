@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
 import com.tiki.server.folder.dto.request.FolderCreateRequest;
 import com.tiki.server.folder.dto.request.FolderNameUpdateRequest;
 import com.tiki.server.folder.dto.response.FolderCreateResponse;
@@ -22,7 +21,9 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "folders", description = "폴더 API")
 public interface FolderControllerDocs {
 
 	@Operation(
@@ -45,11 +46,12 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
 			name = "folderId",
-			description = "조회할 폴더 id",
+			description = "조회할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
 		) @RequestParam Long folderId
@@ -75,11 +77,12 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
 			name = "folderId",
-			description = "생성할 폴더가 속할 폴더 id",
+			description = "생성할 폴더가 속할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
 		) @RequestParam Long folderId,
@@ -106,6 +109,7 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(
@@ -137,6 +141,7 @@ public interface FolderControllerDocs {
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
+			required = true,
 			example = "1"
 		) @PathVariable long teamId,
 		@Parameter(

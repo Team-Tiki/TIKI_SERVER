@@ -12,25 +12,25 @@ import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record FoldersGetResponse(
-	List<FolderGetResponse> folders
+	List<FolderInfoGetResponse> folders
 ) {
 
 	public static FoldersGetResponse from(List<Folder> folders) {
 		return FoldersGetResponse.builder()
-				.folders(folders.stream().map(FolderGetResponse::from).toList())
+				.folders(folders.stream().map(FolderInfoGetResponse::from).toList())
 				.build();
 	}
 
 	@Builder(access = PRIVATE)
-	private record FolderGetResponse(
+	private record FolderInfoGetResponse(
 		long id,
 		@NonNull String name,
 		@NonNull LocalDateTime createdTime,
 		@NonNull String path
 	) {
 
-		private static FolderGetResponse from(Folder folder) {
-			return FolderGetResponse.builder()
+		private static FolderInfoGetResponse from(Folder folder) {
+			return FolderInfoGetResponse.builder()
 					.id(folder.getId())
 					.name(folder.getName())
 					.createdTime(folder.getCreatedAt())
