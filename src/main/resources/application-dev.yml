@@ -54,6 +54,3 @@ aws-property:
   bucket: ${AWS_PROPERTY.BUCKET}
   aws-region: ap-northeast-2
   s3-url: ${AWS_PROPERTY.S3_URL}
-
-
-
