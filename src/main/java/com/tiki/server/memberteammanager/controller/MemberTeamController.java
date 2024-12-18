@@ -6,6 +6,7 @@ import com.tiki.server.memberteammanager.controller.dto.request.UpdateTeamMember
 import com.tiki.server.memberteammanager.service.MemberTeamManagerService;
 import com.tiki.server.memberteammanager.service.dto.response.MemberTeamInformGetResponse;
 import com.tiki.server.memberteammanager.service.dto.response.TeamMemberGetResponse;
+import com.tiki.server.memberteammanager.service.dto.response.TeamMembersGetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.security.Principal;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_TEAM_INFORM;
+import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_TEAM_MEMBERS;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.KICK_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.LEAVE_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.UPDATE_NAME;
@@ -26,14 +28,14 @@ public class MemberTeamController {
     private final MemberTeamManagerService memberTeamManagerService;
 
     @GetMapping("/teams/{teamId}/members")
-    public ResponseEntity<SuccessResponse<TeamMemberGetResponse>> getMembers(
+    public ResponseEntity<SuccessResponse<TeamMembersGetResponse>> getMembers(
             final Principal principal,
             @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
-        memberTeamManagerService.getMembers(teamId, memberId);
+        TeamMembersGetResponse response = memberTeamManagerService.getMembers(teamId, memberId);
+        return ResponseEntity.ok().body(success(GET_TEAM_MEMBERS.getMessage(), response));
     }
-
 
     @GetMapping("/teams/{teamId}/members/position")
     public ResponseEntity<SuccessResponse<MemberTeamInformGetResponse>> getMemberTeamInform(
