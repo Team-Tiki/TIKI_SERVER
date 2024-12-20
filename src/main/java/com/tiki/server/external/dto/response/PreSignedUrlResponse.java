@@ -2,13 +2,13 @@ package com.tiki.server.external.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record PreSignedUrlResponse(
-	@NonNull String fileName,
-	@NonNull String url
+	@NotNull String fileName,
+	@NotNull String url
 ) {
 
 	public static PreSignedUrlResponse of(String fileName, String url) {

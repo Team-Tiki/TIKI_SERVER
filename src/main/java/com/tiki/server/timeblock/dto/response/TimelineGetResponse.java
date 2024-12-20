@@ -8,12 +8,13 @@ import java.util.List;
 import com.tiki.server.timeblock.entity.BlockType;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record TimelineGetResponse(
-	List<TimeBlockGetResponse> timeBlocks
+	@NotNull List<TimeBlockGetResponse> timeBlocks
 ) {
 
 	public static TimelineGetResponse from(List<TimeBlock> timeBlocks) {
@@ -24,12 +25,12 @@ public record TimelineGetResponse(
 
 	@Builder(access = PRIVATE)
 	public record TimeBlockGetResponse(
-		long timeBlockId,
-		@NonNull String name,
-		@NonNull String color,
-		@NonNull LocalDate startDate,
-		@NonNull LocalDate endDate,
-		@NonNull BlockType blockType
+		@NotNull long timeBlockId,
+		@NotNull String name,
+		@NotNull String color,
+		@NotNull LocalDate startDate,
+		@NotNull LocalDate endDate,
+		@NotNull BlockType blockType
 		) {
 
 		public static TimeBlockGetResponse from(TimeBlock timeBlock) {

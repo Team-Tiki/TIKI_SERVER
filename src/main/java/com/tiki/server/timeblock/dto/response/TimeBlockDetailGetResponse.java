@@ -7,13 +7,13 @@ import java.util.List;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.timeblock.service.dto.DocumentTagInfo;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record TimeBlockDetailGetResponse(
-	List<DocumentDetailGetResponse> documents,
-	List<NoteNameGetResponse> notes
+	@NotNull List<DocumentDetailGetResponse> documents,
+	@NotNull List<NoteNameGetResponse> notes
 ) {
 
 	public static TimeBlockDetailGetResponse from(List<DocumentTagInfo> documents, List<Note> notes) {
@@ -25,10 +25,10 @@ public record TimeBlockDetailGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record DocumentDetailGetResponse(
-		long documentId,
-		@NonNull String fileName,
-		@NonNull String fileUrl,
-		long tagId
+		@NotNull long documentId,
+		@NotNull String fileName,
+		@NotNull String fileUrl,
+		@NotNull long tagId
 	) {
 
 		private static DocumentDetailGetResponse from(DocumentTagInfo document) {
@@ -43,8 +43,8 @@ public record TimeBlockDetailGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record NoteNameGetResponse(
-		long noteId,
-		@NonNull String noteName
+		@NotNull long noteId,
+		@NotNull String noteName
 	) {
 
 		private static NoteNameGetResponse from(final Note note) {

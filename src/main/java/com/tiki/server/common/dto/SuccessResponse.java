@@ -5,13 +5,13 @@ import static lombok.AccessLevel.PRIVATE;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record SuccessResponse<T>(
 	boolean success,
-	@NonNull String message,
+	@NotNull String message,
 	@JsonInclude(value = NON_NULL) T data
 ) implements BaseResponse {
 

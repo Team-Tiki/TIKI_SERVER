@@ -1,8 +1,8 @@
 package com.tiki.server.common.dto;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public interface BaseResponse {
 	boolean success();
-	@NonNull String message();
+	@NotNull String message();
 }

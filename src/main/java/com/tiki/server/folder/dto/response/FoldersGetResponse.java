@@ -7,12 +7,12 @@ import java.util.List;
 
 import com.tiki.server.folder.entity.Folder;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record FoldersGetResponse(
-	List<FolderInfoGetResponse> folders
+	@NotNull List<FolderInfoGetResponse> folders
 ) {
 
 	public static FoldersGetResponse from(List<Folder> folders) {
@@ -23,10 +23,10 @@ public record FoldersGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record FolderInfoGetResponse(
-		long id,
-		@NonNull String name,
-		@NonNull LocalDateTime createdTime,
-		@NonNull String path
+		@NotNull long id,
+		@NotNull String name,
+		@NotNull LocalDateTime createdTime,
+		@NotNull String path
 	) {
 
 		private static FolderInfoGetResponse from(Folder folder) {
