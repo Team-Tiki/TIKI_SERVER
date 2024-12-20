@@ -2,8 +2,10 @@ package com.tiki.server.note.service.dto.response;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
+
 public record NoteListGetServiceResponse(
-        List<NoteGetResponse> noteGetResponseList
+        @NotNull List<NoteGetResponse> noteGetResponseList
 ) {
 
     public static NoteListGetServiceResponse of(List<NoteGetResponse> noteGetResponseList) {

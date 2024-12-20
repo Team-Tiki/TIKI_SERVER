@@ -5,15 +5,15 @@ import static lombok.AccessLevel.PRIVATE;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.documenttimeblockmanager.entity.DTBManager;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record DocumentTagInfo(
-	long documentId,
-	@NonNull String fileName,
-	@NonNull String fileUrl,
-	long tagId
+	@NotNull long documentId,
+	@NotNull String fileName,
+	@NotNull String fileUrl,
+	@NotNull long tagId
 ) {
 
 	public static DocumentTagInfo of(final Document document, final DTBManager dtbManager) {

@@ -5,14 +5,16 @@ import com.tiki.server.note.entity.Note;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotNull;
+
 public record NoteGetResponse(
-        long noteId,
-        String title,
-        LocalDate startDate,
-        LocalDate endDate,
-        String author,
-        boolean complete,
-        LocalDateTime lastUpdatedAt
+    @NotNull long noteId,
+    @NotNull String title,
+    @NotNull LocalDate startDate,
+    @NotNull LocalDate endDate,
+    @NotNull String author,
+    @NotNull boolean complete,
+    @NotNull LocalDateTime lastUpdatedAt
 ) {
 
     public static NoteGetResponse of(final Note note, final String author) {

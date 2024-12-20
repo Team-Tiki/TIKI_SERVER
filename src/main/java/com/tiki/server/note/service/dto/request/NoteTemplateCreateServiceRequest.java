@@ -1,24 +1,25 @@
 package com.tiki.server.note.service.dto.request;
 
 import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
-import lombok.NonNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public record NoteTemplateCreateServiceRequest(
-        @NonNull String title,
-        boolean complete,
-        @NonNull LocalDate startDate,
-        @NonNull LocalDate endDate,
-        @NonNull String answerWhatActivity,
-        @NonNull String answerHowToPrepare,
-        @NonNull String answerWhatIsDisappointedThing,
-        @NonNull String answerHowToFix,
-        long teamId,
-        List<Long> timeBlockIds,
-        List<Long> documentIds,
-        long memberId
+    @NotNull String title,
+    @NotNull boolean complete,
+    @NotNull LocalDate startDate,
+    @NotNull LocalDate endDate,
+    @NotNull String answerWhatActivity,
+    @NotNull String answerHowToPrepare,
+    @NotNull String answerWhatIsDisappointedThing,
+    @NotNull String answerHowToFix,
+    @NotNull long teamId,
+    @NotNull List<Long> timeBlockIds,
+    @NotNull List<Long> documentIds,
+    @NotNull long memberId
 ) {
     public static NoteTemplateCreateServiceRequest of(
             final NoteTemplateCreateRequest request,
