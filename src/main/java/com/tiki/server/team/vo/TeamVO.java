@@ -3,19 +3,20 @@ package com.tiki.server.team.vo;
 import com.tiki.server.common.entity.University;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
 public record TeamVO(
-        long teamId,
-        @NonNull String name,
-        @NonNull Category category,
-        @NonNull University univ,
-        String overview,
-        String imageUrl
+    @NotNull long teamId,
+    @NotNull  String name,
+    @NotNull  Category category,
+    @NotNull  University univ,
+    @NotNull String overview,
+    @NotNull String imageUrl
 ) {
     public static TeamVO from(Team team) {
         return TeamVO.builder()
