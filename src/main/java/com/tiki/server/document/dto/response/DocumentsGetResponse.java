@@ -7,12 +7,12 @@ import java.util.List;
 
 import com.tiki.server.document.entity.Document;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record DocumentsGetResponse(
-	List<DocumentInfoGetResponse> documents
+	@NotNull List<DocumentInfoGetResponse> documents
 ) {
 
 	public static DocumentsGetResponse from(final List<Document> documents) {
@@ -23,11 +23,11 @@ public record DocumentsGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record DocumentInfoGetResponse(
-		long documentId,
-		@NonNull String name,
-		@NonNull String url,
-		double capacity,
-		@NonNull LocalDateTime createdTime
+		@NotNull long documentId,
+		@NotNull String name,
+		@NotNull String url,
+		@NotNull double capacity,
+		@NotNull LocalDateTime createdTime
 	) {
 
 		public static DocumentInfoGetResponse from(final Document document) {

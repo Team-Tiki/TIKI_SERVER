@@ -1,14 +1,14 @@
 package com.tiki.server.auth.dto.response;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
 public record SignInGetResponse(
-        @NonNull String accessToken,
-        @NonNull String refreshToken
+        @NotNull String accessToken,
+        @NotNull String refreshToken
 ) {
 
     public static SignInGetResponse from(String accessToken, String refreshToken) {

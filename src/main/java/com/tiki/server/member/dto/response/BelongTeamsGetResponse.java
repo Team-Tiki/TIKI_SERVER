@@ -1,8 +1,9 @@
 package com.tiki.server.member.dto.response;
 
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
 public record BelongTeamsGetResponse(
-        @NonNull List<BelongTeamGetResponse> belongTeamGetResponses
+        @NotNull List<BelongTeamGetResponse> belongTeamGetResponses
 ) {
 
     public static BelongTeamsGetResponse from(List<MemberTeamManager> belongTeamGetResponses) {
@@ -21,9 +22,9 @@ public record BelongTeamsGetResponse(
 
     @Builder(access = PRIVATE)
     public record BelongTeamGetResponse(
-            long id,
-            @NonNull String name,
-            String iconImageUrl
+            @NotNull long id,
+            @NotNull String name,
+            @NotNull String iconImageUrl
     ) {
         public static BelongTeamGetResponse from(MemberTeamManager memberTeamManager) {
             return BelongTeamGetResponse.builder()

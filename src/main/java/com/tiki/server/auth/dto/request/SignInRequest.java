@@ -1,9 +1,9 @@
 package com.tiki.server.auth.dto.request;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record SignInRequest(
-        @NonNull String email,
-        @NonNull String password
+        @NotNull String email,
+        @NotNull String password
 ) {
 }

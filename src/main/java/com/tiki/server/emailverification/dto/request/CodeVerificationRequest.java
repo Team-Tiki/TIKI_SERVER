@@ -1,11 +1,9 @@
 package com.tiki.server.emailverification.dto.request;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record CodeVerificationRequest(
-        @NonNull
-        String email,
-        @NonNull
-        String code
+        @NotNull String email,
+        @NotNull String code
 ) {
 }

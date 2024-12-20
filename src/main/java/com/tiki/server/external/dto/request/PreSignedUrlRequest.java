@@ -1,8 +1,8 @@
 package com.tiki.server.external.dto.request;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record PreSignedUrlRequest(
-	@NonNull String fileFormat
+	@NotNull String fileFormat
 ) {
 }

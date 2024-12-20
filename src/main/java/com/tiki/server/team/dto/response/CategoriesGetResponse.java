@@ -7,11 +7,12 @@ import java.util.List;
 
 import com.tiki.server.team.entity.Category;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder(access = PRIVATE)
 public record CategoriesGetResponse(
-	List<Category> categories
+	@NotNull List<Category> categories
 ) {
 
 	public static CategoriesGetResponse from(Category[] categories) {

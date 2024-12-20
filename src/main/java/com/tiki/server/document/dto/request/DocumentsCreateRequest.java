@@ -2,7 +2,9 @@ package com.tiki.server.document.dto.request;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
+
 public record DocumentsCreateRequest(
-	List<DocumentCreateRequest> documents
+	@NotNull List<DocumentCreateRequest> documents
 ) {
 }

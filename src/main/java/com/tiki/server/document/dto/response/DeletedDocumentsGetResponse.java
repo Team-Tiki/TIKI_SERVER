@@ -6,12 +6,12 @@ import java.util.List;
 
 import com.tiki.server.document.entity.DeletedDocument;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record DeletedDocumentsGetResponse(
-	List<DeletedDocumentGetResponse> deletedDocuments
+	@NotNull List<DeletedDocumentGetResponse> deletedDocuments
 ) {
 
 	public static DeletedDocumentsGetResponse from(final List<DeletedDocument> deletedDocuments) {
@@ -22,10 +22,10 @@ public record DeletedDocumentsGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record DeletedDocumentGetResponse(
-		long documentId,
-		@NonNull String name,
-		@NonNull String url,
-		double capacity
+		@NotNull long documentId,
+		@NotNull String name,
+		@NotNull String url,
+		@NotNull double capacity
 	) {
 
 		private static DeletedDocumentGetResponse from(final DeletedDocument deletedDocument) {

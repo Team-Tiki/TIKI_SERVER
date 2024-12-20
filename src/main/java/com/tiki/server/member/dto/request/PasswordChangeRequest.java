@@ -1,10 +1,10 @@
 package com.tiki.server.member.dto.request;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record PasswordChangeRequest(
-        @NonNull String email,
-        @NonNull String password,
-        @NonNull String passwordChecker
+        @NotNull String email,
+        @NotNull String password,
+        @NotNull String passwordChecker
 ) {
 }

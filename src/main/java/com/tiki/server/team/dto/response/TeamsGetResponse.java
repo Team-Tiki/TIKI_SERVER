@@ -2,6 +2,7 @@ package com.tiki.server.team.dto.response;
 
 import com.tiki.server.team.vo.TeamVO;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Builder(access = PRIVATE)
 public record TeamsGetResponse(
-	List<TeamGetResponse> teams
+	@NotNull List<TeamGetResponse> teams
 ) {
 	public static TeamsGetResponse from(List<TeamVO> teams) {
 		return TeamsGetResponse.builder()

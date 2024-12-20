@@ -3,14 +3,15 @@ package com.tiki.server.member.dto.request;
 import java.time.LocalDate;
 
 import com.tiki.server.common.entity.University;
-import lombok.NonNull;
+
+import jakarta.validation.constraints.NotNull;
 
 public record MemberProfileCreateRequest(
-        @NonNull String name,
-        @NonNull LocalDate birth,
-        @NonNull University univ,
-        @NonNull String email,
-        @NonNull String password,
-        @NonNull String passwordChecker
+        @NotNull String name,
+        @NotNull LocalDate birth,
+        @NotNull University univ,
+        @NotNull String email,
+        @NotNull String password,
+        @NotNull String passwordChecker
 ) {
 }
