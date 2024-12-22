@@ -1,21 +1,22 @@
 package com.tiki.server.note.service.dto.request;
 
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
-import lombok.NonNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public record NoteFreeCreateServiceRequest(
-        @NonNull String title,
-        boolean complete,
-        @NonNull LocalDate startDate,
-        @NonNull LocalDate endDate,
-        @NonNull String contents,
-        long teamId,
-        List<Long> timeBlockIds,
-        List<Long> documentIds,
-        long memberId
+    @NotNull String title,
+    @NotNull boolean complete,
+    @NotNull  LocalDate startDate,
+    @NotNull  LocalDate endDate,
+    @NotNull  String contents,
+    @NotNull long teamId,
+    @NotNull List<Long> timeBlockIds,
+    @NotNull List<Long> documentIds,
+    @NotNull long memberId
 ) {
     public static NoteFreeCreateServiceRequest of(
             final NoteFreeCreateRequest request,

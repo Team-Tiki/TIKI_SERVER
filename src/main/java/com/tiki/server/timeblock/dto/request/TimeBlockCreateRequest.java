@@ -5,14 +5,14 @@ import java.util.List;
 
 import com.tiki.server.timeblock.entity.BlockType;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record TimeBlockCreateRequest(
-	@NonNull String name,
-	@NonNull String color,
-	@NonNull LocalDate startDate,
-	@NonNull LocalDate endDate,
-	@NonNull BlockType blockType,
-	List<Long> documentIds
+	@NotNull String name,
+	@NotNull String color,
+	@NotNull LocalDate startDate,
+	@NotNull LocalDate endDate,
+	@NotNull BlockType blockType,
+	@NotNull List<Long> documentIds
 ) {
 }

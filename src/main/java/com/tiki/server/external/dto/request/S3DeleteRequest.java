@@ -1,8 +1,8 @@
 package com.tiki.server.external.dto.request;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record S3DeleteRequest(
-	@NonNull String fileKey
+	@NotNull String fileKey
 ) {
 }

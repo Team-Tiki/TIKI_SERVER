@@ -8,13 +8,13 @@ import java.util.List;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.folder.entity.Folder;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.NonNull;
 
 @Builder(access = PRIVATE)
 public record DriveGetResponse(
-	List<DocumentGetResponse> documents,
-	List<FolderGetResponse> folders
+	@NotNull List<DocumentGetResponse> documents,
+	@NotNull List<FolderGetResponse> folders
 ) {
 
 	public static DriveGetResponse of(final List<Document> documents, final List<Folder> folders) {
@@ -26,12 +26,12 @@ public record DriveGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record DocumentGetResponse(
-		long documentId,
-		@NonNull String name,
-		@NonNull String url,
-		double capacity,
-		@NonNull LocalDateTime createdTime,
-		@NonNull String type
+		@NotNull long documentId,
+		@NotNull String name,
+		@NotNull String url,
+		@NotNull double capacity,
+		@NotNull LocalDateTime createdTime,
+		@NotNull String type
 	) {
 
 		public static DocumentGetResponse from(final Document document) {
@@ -48,11 +48,11 @@ public record DriveGetResponse(
 
 	@Builder(access = PRIVATE)
 	private record FolderGetResponse(
-		long folderId,
-		@NonNull String name,
-		@NonNull LocalDateTime createdTime,
-		@NonNull String path,
-		@NonNull String type
+		@NotNull long folderId,
+		@NotNull String name,
+		@NotNull LocalDateTime createdTime,
+		@NotNull String path,
+		@NotNull String type
 	) {
 
 		private static FolderGetResponse from(Folder folder) {

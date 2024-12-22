@@ -1,8 +1,8 @@
 package com.tiki.server.email.emailsender.dto.request;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record EmailRequest(
-       @NonNull String email
+       @NotNull String email
 ) {
 }
