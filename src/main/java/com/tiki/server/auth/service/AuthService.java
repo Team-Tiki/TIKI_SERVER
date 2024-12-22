@@ -8,7 +8,7 @@ import com.tiki.server.auth.jwt.JwtProvider;
 import com.tiki.server.auth.token.adapter.TokenFinder;
 import com.tiki.server.auth.token.adapter.TokenSaver;
 import com.tiki.server.auth.token.entity.Token;
-import com.tiki.server.common.entity.Email;
+import com.tiki.server.email.Email;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;

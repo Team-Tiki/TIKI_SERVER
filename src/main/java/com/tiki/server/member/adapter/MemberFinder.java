@@ -4,7 +4,7 @@ import static com.tiki.server.member.message.ErrorCode.CONFLICT_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.INVALID_MEMBER;
 
 import com.tiki.server.common.support.RepositoryAdapter;
-import com.tiki.server.common.entity.Email;
+import com.tiki.server.email.Email;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.member.repository.MemberRepository;

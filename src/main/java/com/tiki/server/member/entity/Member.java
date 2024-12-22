@@ -6,7 +6,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import java.time.LocalDate;
 
 import com.tiki.server.common.entity.BaseTime;
-import com.tiki.server.common.entity.Email;
+import com.tiki.server.email.Email;
 import com.tiki.server.common.entity.University;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

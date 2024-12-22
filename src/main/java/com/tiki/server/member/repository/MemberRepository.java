@@ -1,6 +1,6 @@
 package com.tiki.server.member.repository;
 
-import com.tiki.server.common.entity.Email;
+import com.tiki.server.email.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.tiki.server.member.entity.Member;
 

@@ -1,6 +1,6 @@
 package com.tiki.server.team.entity;
 
-import static com.tiki.server.common.Constants.INIT_NUM;
+import static com.tiki.server.common.constants.Constants.INIT_NUM;
 import static com.tiki.server.team.entity.Subscribe.BASIC;
 import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_CAPACITY;
 import static com.tiki.server.team.message.ErrorCode.TOO_SHORT_PERIOD;
