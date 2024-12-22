@@ -2,7 +2,8 @@ package com.tiki.server.common.handler;
 
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
-import com.tiki.server.emailverification.exception.EmailVerificationException;
+import com.tiki.server.email.emailsender.exception.EmailSenderException;
+import com.tiki.server.email.emailverification.exception.EmailVerificationException;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import static com.tiki.server.auth.message.ErrorCode.UNCAUGHT_SERVER_EXCEPTION;
-import static com.tiki.server.common.Constants.WRONG_INPUT;
+import static com.tiki.server.common.constants.Constants.WRONG_INPUT;
 
 @Slf4j
 @RestControllerAdvice
@@ -81,6 +82,13 @@ public class ErrorHandler {
 
     @ExceptionHandler(EmailVerificationException.class)
     public ResponseEntity<BaseResponse> mailException(EmailVerificationException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(EmailSenderException.class)
+    public ResponseEntity<BaseResponse> mailException(EmailSenderException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
