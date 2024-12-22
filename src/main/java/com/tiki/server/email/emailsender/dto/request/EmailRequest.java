@@ -1,4 +1,4 @@
-package com.tiki.server.emailverification.dto.request;
+package com.tiki.server.email.emailsender.dto.request;
 
 import lombok.NonNull;
 
