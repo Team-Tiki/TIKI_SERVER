@@ -9,7 +9,7 @@ public record NoteBase(
     @NotNull String title,
     @NotNull boolean complete,
     @NotNull LocalDate startDate,
-    @NotNull  LocalDate endDate,
+    @NotNull LocalDate endDate,
     @NotNull long memberId,
     @NotNull long teamId,
     @NotNull List<Long> timeBlockIds,

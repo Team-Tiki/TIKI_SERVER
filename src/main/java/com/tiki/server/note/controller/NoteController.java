@@ -110,8 +110,8 @@ public class NoteController implements NoteControllerDocs {
     @DeleteMapping("/{teamId}")
     public ResponseEntity<SuccessResponse<Void>> deleteNotes(
             final Principal principal,
-            @PathVariable long teamId,
-            @RequestParam List<Long> noteIds
+            @PathVariable final long teamId,
+            @RequestParam final List<Long> noteIds
     ) {
         long memberId = Long.parseLong(principal.getName());
         noteService.deleteNotes(noteIds, teamId, memberId);

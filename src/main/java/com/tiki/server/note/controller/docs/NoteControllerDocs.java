@@ -64,8 +64,8 @@ public interface NoteControllerDocs {
             }
     )
     ResponseEntity<SuccessResponse<NoteCreateServiceResponse>> createNoteFree(
-            @Parameter(hidden = true) Principal principal,
-            @RequestBody NoteFreeCreateRequest request
+            @Parameter(hidden = true) final Principal principal,
+            @RequestBody final NoteFreeCreateRequest request
     );
 
     @Operation(
@@ -98,8 +98,8 @@ public interface NoteControllerDocs {
             }
     )
     ResponseEntity<SuccessResponse<NoteCreateServiceResponse>> createNoteTemplate(
-            @Parameter(hidden = true) Principal principal,
-            @RequestBody NoteTemplateCreateRequest request
+            @Parameter(hidden = true) final Principal principal,
+            @RequestBody final NoteTemplateCreateRequest request
     );
 
     @Operation(
@@ -136,14 +136,14 @@ public interface NoteControllerDocs {
             }
     )
     ResponseEntity<BaseResponse> updateNoteFree(
-            @Parameter(hidden = true) Principal principal,
+            @Parameter(hidden = true) final Principal principal,
             @Parameter(
                     name = "noteId",
                     description = "노트 id",
                     in = ParameterIn.PATH,
                     example = "1"
-            ) @PathVariable long noteId,
-            @RequestBody NoteFreeUpdateRequest request
+            ) @PathVariable final long noteId,
+            @RequestBody final NoteFreeUpdateRequest request
     );
 
     @Operation(
@@ -180,14 +180,14 @@ public interface NoteControllerDocs {
             }
     )
     ResponseEntity<BaseResponse> updateNoteTemplate(
-            @Parameter(hidden = true) Principal principal,
+            @Parameter(hidden = true) final Principal principal,
             @Parameter(
                     name = "noteId",
                     description = "노트 id",
                     in = ParameterIn.PATH,
                     example = "1"
-            ) @PathVariable long noteId,
-            @RequestBody NoteTemplateUpdateRequest request
+            ) @PathVariable final long noteId,
+            @RequestBody final NoteTemplateUpdateRequest request
     );
 
     @Operation(
@@ -215,27 +215,27 @@ public interface NoteControllerDocs {
             }
     )
     ResponseEntity<SuccessResponse<NoteListGetServiceResponse>> getNote(
-            @Parameter(hidden = true) Principal principal,
+            @Parameter(hidden = true) final Principal principal,
             @Parameter(
                     name = "teamId",
                     description = "팀 id",
                     in = ParameterIn.PATH,
                     example = "1"
-            )@PathVariable long teamId,
+            )@PathVariable final long teamId,
             @Parameter(
                     name = "createdAt",
                     description = "생성시간",
                     in = ParameterIn.QUERY,
                     required = true,
                     example = "yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn"
-            )@RequestParam(required = false) LocalDateTime createdAt,
+            )@RequestParam(required = false) final LocalDateTime createdAt,
             @Parameter(
                     name = "sortOrder",
                     description = "정렬 순서",
                     in = ParameterIn.QUERY,
                     required = true,
                     example = "ASC, DESC"
-            )@RequestParam(defaultValue = "DESC") SortOrder sortOrder
+            )@RequestParam(defaultValue = "DESC") final SortOrder sortOrder
     );
 
     @Operation(
@@ -275,19 +275,19 @@ public interface NoteControllerDocs {
             }
     )
     ResponseEntity<SuccessResponse<NoteDetailGetServiceResponse>> getNoteDetail(
-            @Parameter(hidden = true) Principal principal,
+            @Parameter(hidden = true) final Principal principal,
             @Parameter(
                     name = "teamId",
                     description = "팀 id",
                     in = ParameterIn.PATH,
                     example = "1"
-            )@PathVariable long teamId,
+            )@PathVariable final long teamId,
             @Parameter(
                     name = "noteId",
                     description = "노트 id",
                     in = ParameterIn.PATH,
                     example = "1"
-            )@PathVariable long noteId
+            )@PathVariable final long noteId
     );
 
     @Operation(
@@ -326,12 +326,12 @@ public interface NoteControllerDocs {
                     description = "팀 id",
                     in = ParameterIn.PATH,
                     example = "1"
-            )@PathVariable long teamId,
+            )@PathVariable final long teamId,
             @Parameter(
                     name = "noteIds",
                     description = "노트 id 리스트",
                     in = ParameterIn.PATH,
                     example = "[1,2,3,4,5]"
-            )@RequestParam List<Long> noteIds
+            )@RequestParam final List<Long> noteIds
     );
 }
