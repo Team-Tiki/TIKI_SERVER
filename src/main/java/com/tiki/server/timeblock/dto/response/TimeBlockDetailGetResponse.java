@@ -16,7 +16,7 @@ public record TimeBlockDetailGetResponse(
 	@NotNull List<NoteNameGetResponse> notes
 ) {
 
-	public static TimeBlockDetailGetResponse from(List<DocumentTagInfo> documents, List<Note> notes) {
+	public static TimeBlockDetailGetResponse from(final List<DocumentTagInfo> documents, final List<Note> notes) {
 		return TimeBlockDetailGetResponse.builder()
 			.documents(documents.stream().map(DocumentDetailGetResponse::from).toList())
 			.notes(notes.stream().map(NoteNameGetResponse::from).toList())
@@ -31,7 +31,7 @@ public record TimeBlockDetailGetResponse(
 		@NotNull long tagId
 	) {
 
-		private static DocumentDetailGetResponse from(DocumentTagInfo document) {
+		private static DocumentDetailGetResponse from(final DocumentTagInfo document) {
 			return DocumentDetailGetResponse.builder()
 				.documentId(document.documentId())
 				.fileName(document.fileName())

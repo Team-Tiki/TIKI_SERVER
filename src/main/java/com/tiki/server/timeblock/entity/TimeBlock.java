@@ -60,7 +60,8 @@ public class TimeBlock extends BaseTime {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
-	public static TimeBlock of(Team team, Position accessiblePosition, TimeBlockCreateRequest request) {
+	public static TimeBlock of(final Team team, final Position accessiblePosition,
+		final TimeBlockCreateRequest request) {
 		return TimeBlock.builder()
 			.name(request.name())
 			.color(request.color())

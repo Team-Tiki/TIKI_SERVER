@@ -17,7 +17,7 @@ public record TimelineGetResponse(
 	@NotNull List<TimeBlockGetResponse> timeBlocks
 ) {
 
-	public static TimelineGetResponse from(List<TimeBlock> timeBlocks) {
+	public static TimelineGetResponse from(final List<TimeBlock> timeBlocks) {
 		return TimelineGetResponse.builder()
 			.timeBlocks(timeBlocks.stream().map(TimeBlockGetResponse::from).toList())
 			.build();
@@ -33,7 +33,7 @@ public record TimelineGetResponse(
 		@NotNull BlockType blockType
 		) {
 
-		public static TimeBlockGetResponse from(TimeBlock timeBlock) {
+		public static TimeBlockGetResponse from(final TimeBlock timeBlock) {
 			return TimeBlockGetResponse.builder()
 				.timeBlockId(timeBlock.getId())
 				.name(timeBlock.getName())
