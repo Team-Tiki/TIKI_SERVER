@@ -32,7 +32,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 
 import lombok.RequiredArgsConstructor;
@@ -65,7 +64,7 @@ public class TeamService {
     public TeamsGetResponse getAllTeams(final long memberId) {
         Member member = memberFinder.findById(memberId);
         University univ = member.getUniv();
-        List<TeamVO> team = teamFinder.findAllByUniv(univ);
+        List<Team> team = teamFinder.findAllByUniv(univ);
         return TeamsGetResponse.from(team);
     }
 

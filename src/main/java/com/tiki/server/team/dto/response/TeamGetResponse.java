@@ -2,7 +2,7 @@ package com.tiki.server.team.dto.response;
 
 import com.tiki.server.common.entity.University;
 import com.tiki.server.team.entity.Category;
-import com.tiki.server.team.vo.TeamVO;
+import com.tiki.server.team.entity.Team;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -18,14 +18,14 @@ public record TeamGetResponse(
 	@NotNull String overview,
 	@NotNull String imageUrl
 ) {
-	public static TeamGetResponse from(final TeamVO team) {
+	public static TeamGetResponse from(final Team team) {
 		return TeamGetResponse.builder()
-			.teamId(team.teamId())
-			.name(team.name())
-			.overview(team.overview())
-			.category(team.category())
-			.univ(team.univ())
-			.imageUrl(team.imageUrl())
+			.teamId(team.getId())
+			.name(team.getName())
+			.overview(team.getOverview())
+			.category(team.getCategory())
+			.univ(team.getUniv())
+			.imageUrl(team.getImageUrl())
 			.build();
 	}
 
