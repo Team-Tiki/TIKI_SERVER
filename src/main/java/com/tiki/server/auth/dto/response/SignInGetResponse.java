@@ -11,7 +11,7 @@ public record SignInGetResponse(
         @NotNull String refreshToken
 ) {
 
-    public static SignInGetResponse from(String accessToken, String refreshToken) {
+    public static SignInGetResponse from(final String accessToken, final String refreshToken) {
         return SignInGetResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
     }
 }

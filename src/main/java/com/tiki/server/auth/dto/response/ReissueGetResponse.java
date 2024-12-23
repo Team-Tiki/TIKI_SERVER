@@ -10,7 +10,7 @@ public record ReissueGetResponse(
         @NotNull String accessToken
 ) {
     
-    public static ReissueGetResponse from(String accessToken) {
+    public static ReissueGetResponse from(final String accessToken) {
         return ReissueGetResponse.builder().accessToken(accessToken).build();
     }
 }

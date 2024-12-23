@@ -16,7 +16,7 @@ public class JwtValidator {
 
     private final JwtProvider jwtProvider;
 
-    public void validateToken(String token) {
+    public void validateToken(final String token) {
         try {
             jwtProvider.getBodyFromJwt(token);
         } catch (ExpiredJwtException exception) {

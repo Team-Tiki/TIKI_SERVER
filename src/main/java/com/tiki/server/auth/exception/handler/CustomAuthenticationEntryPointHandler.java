@@ -26,15 +26,15 @@ public class CustomAuthenticationEntryPointHandler implements AuthenticationEntr
 
     @Override
     public void commence(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException authException
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final AuthenticationException authException
     ) throws IOException {
         log.info("[AuthenticationEntryPoint] " + authException.getMessage());
         setResponse(response);
     }
 
-    private void setResponse(HttpServletResponse response) throws IOException {
+    private void setResponse(final HttpServletResponse response) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

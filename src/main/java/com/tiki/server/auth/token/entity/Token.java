@@ -13,7 +13,10 @@ public record Token(
 	@NotNull long id,
 	@NotNull String refreshToken
 ) {
-	public static Token of(long id, String refreshToken) {
-		return Token.builder().id(id).refreshToken(refreshToken).build();
+	public static Token of(final long id, final String refreshToken) {
+		return Token.builder()
+			.id(id)
+			.refreshToken(refreshToken)
+			.build();
 	}
 }

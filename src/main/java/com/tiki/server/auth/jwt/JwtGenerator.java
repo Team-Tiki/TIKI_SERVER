@@ -29,7 +29,7 @@ public class JwtGenerator {
     @Value("${jwt.refresh-token-expire-time}")
     public long REFRESH_TOKEN_EXPIRE_TIME;
 
-    public String generateToken(Authentication authentication, long expiration) {
+    public String generateToken(final Authentication authentication, final long expiration) {
         return Jwts.builder()
                 .setHeaderParam(TYPE, JWT_TYPE)
                 .setClaims(generateClaims(authentication))
@@ -39,15 +39,15 @@ public class JwtGenerator {
                 .compact();
     }
 
-    public String generateAccessToken(Authentication authentication) {
+    public String generateAccessToken(final Authentication authentication) {
         return generateToken(authentication, ACCESS_TOKEN_EXPIRE_TIME);
     }
 
-    public String generateRefreshToken(Authentication authentication) {
+    public String generateRefreshToken(final Authentication authentication) {
         return generateToken(authentication, REFRESH_TOKEN_EXPIRE_TIME);
     }
 
-    private Claims generateClaims(Authentication authentication) {
+    private Claims generateClaims(final Authentication authentication) {
         Claims claims = Jwts.claims();
         claims.put("memberId", authentication.getPrincipal());
         return claims;

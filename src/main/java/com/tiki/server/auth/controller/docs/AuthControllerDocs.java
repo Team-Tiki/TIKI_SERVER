@@ -41,7 +41,7 @@ public interface AuthControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody SignInRequest request);
+	ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody final SignInRequest request);
 
 	@Operation(
 		summary = "엑세스 토큰 재발급",
@@ -65,6 +65,5 @@ public interface AuthControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(HttpServletRequest request);
-
+	ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(final HttpServletRequest request);
 }
