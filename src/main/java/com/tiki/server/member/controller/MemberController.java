@@ -30,7 +30,7 @@ public class MemberController implements MemberControllerDocs {
 
     @Override
     @PostMapping
-    public ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request) {
+    public ResponseEntity<BaseResponse> signUp(@RequestBody final MemberProfileCreateRequest request) {
         memberService.signUp(request);
         return ResponseEntity.created(getUri("/")).body(success(SUCCESS_CREATE_MEMBER.getMessage()));
     }
@@ -38,7 +38,7 @@ public class MemberController implements MemberControllerDocs {
     @Override
     @GetMapping("/teams")
     public ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
-            Principal principal
+        final Principal principal
     ) {
         long memberId = Long.parseLong(principal.getName());
         BelongTeamsGetResponse response = memberService.findBelongTeams(memberId);
@@ -47,7 +47,7 @@ public class MemberController implements MemberControllerDocs {
 
     @PatchMapping("/password")
     public ResponseEntity<BaseResponse> changePassword(
-            @RequestBody PasswordChangeRequest passwordChangeRequest
+            @RequestBody final PasswordChangeRequest passwordChangeRequest
     ) {
         memberService.changePassword(passwordChangeRequest);
         return ResponseEntity.ok().body(success(SUCCESS_CHANGING_PASSWORD.getMessage()));

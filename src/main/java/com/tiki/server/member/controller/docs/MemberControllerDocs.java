@@ -48,7 +48,7 @@ public interface MemberControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request);
+	ResponseEntity<BaseResponse> signUp(@RequestBody final MemberProfileCreateRequest request);
 
 	@Operation(
 		summary = "소속 팀 가져오기",
@@ -69,7 +69,7 @@ public interface MemberControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
-		@Parameter(hidden = true) Principal principal
+		@Parameter(hidden = true) final Principal principal
 	);
 
 	@Operation(
@@ -95,6 +95,6 @@ public interface MemberControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<BaseResponse> changePassword(
-		@RequestBody PasswordChangeRequest passwordChangeRequest
+		@RequestBody final PasswordChangeRequest passwordChangeRequest
 	);
 }

@@ -14,7 +14,7 @@ public record BelongTeamsGetResponse(
         @NotNull List<BelongTeamGetResponse> belongTeamGetResponses
 ) {
 
-    public static BelongTeamsGetResponse from(List<MemberTeamManager> belongTeamGetResponses) {
+    public static BelongTeamsGetResponse from(final List<MemberTeamManager> belongTeamGetResponses) {
         return BelongTeamsGetResponse.builder()
                 .belongTeamGetResponses(belongTeamGetResponses.stream().map(BelongTeamGetResponse::from).toList())
                 .build();
@@ -26,7 +26,7 @@ public record BelongTeamsGetResponse(
             @NotNull String name,
             @NotNull String iconImageUrl
     ) {
-        public static BelongTeamGetResponse from(MemberTeamManager memberTeamManager) {
+        public static BelongTeamGetResponse from(final MemberTeamManager memberTeamManager) {
             return BelongTeamGetResponse.builder()
                     .id(memberTeamManager.getTeam().getId())
                     .name(memberTeamManager.getTeam().getName())
