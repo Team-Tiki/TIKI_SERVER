@@ -17,16 +17,16 @@ public class MemberTeamManagerFinder {
 
     private final MemberTeamManagerRepository memberTeamManagerRepository;
 
-    public MemberTeamManager findByMemberIdAndTeamId(long memberId, long teamId) {
+    public MemberTeamManager findByMemberIdAndTeamId(final long memberId, final long teamId) {
         return memberTeamManagerRepository.findByMemberIdAndTeamId(memberId, teamId)
                 .orElseThrow(() -> new MemberTeamManagerException(INVALID_MEMBER_TEAM_MANAGER));
     }
 
-    public List<MemberTeamManager> findBelongTeamByMemberId(long memberId) {
+    public List<MemberTeamManager> findBelongTeamByMemberId(final long memberId) {
         return memberTeamManagerRepository.findAllBelongTeamByMemberId(memberId).stream().toList();
     }
 
-    public List<MemberTeamManager> findAllByTeamId(long teamId) {
+    public List<MemberTeamManager> findAllByTeamId(final long teamId) {
         return memberTeamManagerRepository.findAllByTeamId(teamId);
     }
 }

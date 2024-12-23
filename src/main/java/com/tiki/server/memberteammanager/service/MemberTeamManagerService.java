@@ -27,7 +27,6 @@ public class MemberTeamManagerService {
     private final NoteFinder noteFinder;
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
-    private final MemberTeamManagerSaver memberTeamManagerSaver;
 
     @Transactional
     public void kickOutMemberFromTeam(final long memberId, final long teamId, final long kickOutMemberId) {
@@ -57,13 +56,13 @@ public class MemberTeamManagerService {
         memberTeamManager.updateName(name);
     }
 
-    private void checkIsAdmin(MemberTeamManager memberTeamManager) {
+    private void checkIsAdmin(final MemberTeamManager memberTeamManager) {
         if (!memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(INVALID_AUTHORIZATION_DELETE);
         }
     }
 
-    private void checkIsNotAdmin(MemberTeamManager memberTeamManager) {
+    private void checkIsNotAdmin(final MemberTeamManager memberTeamManager) {
         if (memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(TOO_HIGH_AUTHORIZATION);
         }

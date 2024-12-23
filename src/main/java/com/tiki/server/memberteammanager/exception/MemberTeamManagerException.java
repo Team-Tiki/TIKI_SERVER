@@ -9,7 +9,7 @@ public class MemberTeamManagerException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public MemberTeamManagerException(ErrorCode errorCode) {
+	public MemberTeamManagerException(final ErrorCode errorCode) {
 		super("[MemberTeamManagerException] : " + errorCode.getMessage());
 		this.errorCode = errorCode;
 	}

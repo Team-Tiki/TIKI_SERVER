@@ -52,7 +52,7 @@ public class MemberTeamManager extends BaseTime {
 	@Enumerated(value = STRING)
 	private Position position;
 
-	public static MemberTeamManager of(Member member, Team team, Position position) {
+	public static MemberTeamManager of(final Member member, final Team team, final Position position) {
 		return MemberTeamManager.builder()
 			.member(member)
 			.team(team)
@@ -61,7 +61,7 @@ public class MemberTeamManager extends BaseTime {
 			.build();
 	}
 
-	public void checkMemberAccessible(Position accesiblePosition) {
+	public void checkMemberAccessible(final Position accesiblePosition) {
 		if (this.position.getAuthorization() > accesiblePosition.getAuthorization()) {
 			throw new MemberTeamManagerException(INVALID_AUTHORIZATION);
 		}
