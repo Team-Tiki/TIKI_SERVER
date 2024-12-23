@@ -7,11 +7,11 @@ import lombok.Builder;
 
 @Builder(access = PRIVATE)
 public record ErrorResponse(
-	boolean success,
+	@NotNull boolean success,
 	@NotNull String message
 ) implements BaseResponse {
 
-	public static ErrorResponse of(String message) {
+	public static ErrorResponse of(final String message) {
 		return ErrorResponse.builder()
 			.success(false)
 			.message(message)

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Component
 public class UriGenerator {
 
-	public static URI getUri(String path, long id) {
+	public static URI getUri(final String path, final long id) {
 		return ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path(path + id)
@@ -16,7 +16,7 @@ public class UriGenerator {
 			.toUri();
 	}
 
-	public static URI getUri(String path) {
+	public static URI getUri(final String path) {
 		return ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path(path)
