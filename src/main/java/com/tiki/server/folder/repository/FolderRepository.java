@@ -9,11 +9,11 @@ import com.tiki.server.folder.entity.Folder;
 
 public interface FolderRepository extends JpaRepository<Folder, Long> {
 
-	List<Folder> findAllByTeamIdAndPathOrderByCreatedAtDesc(long teamId, String path);
+	List<Folder> findAllByTeamIdAndPathOrderByCreatedAtDesc(final long teamId, final String path);
 
-	List<Folder> findAllByPathOrderByCreatedAtDesc(String path);
+	List<Folder> findAllByPathOrderByCreatedAtDesc(final String path);
 
-	Optional<Folder> findByIdAndTeamId(long id, long teamId);
+	Optional<Folder> findByIdAndTeamId(final long id, final long teamId);
 
-	List<Folder> findAllByPathStartsWith(String path);
+	List<Folder> findAllByPathStartsWith(final String path);
 }

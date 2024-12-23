@@ -41,20 +41,20 @@ public interface FolderControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			required = true,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "조회할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
-		) @RequestParam Long folderId
+		) @RequestParam final Long folderId
 	);
 
 	@Operation(
@@ -72,21 +72,21 @@ public interface FolderControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			required = true,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "생성할 폴더가 속할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
-		) @RequestParam Long folderId,
-		@RequestBody FolderCreateRequest request
+		) @RequestParam final Long folderId,
+		@RequestBody final FolderCreateRequest request
 	);
 
 	@Operation(
@@ -104,21 +104,21 @@ public interface FolderControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<?>> updateFolderName(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			required = true,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "수정할 폴더 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long folderId,
-		@RequestBody FolderNameUpdateRequest request
+		) @PathVariable final long folderId,
+		@RequestBody final FolderNameUpdateRequest request
 	);
 
 	@Operation(
@@ -136,20 +136,20 @@ public interface FolderControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<?> delete(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			required = true,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "삭제할 폴더 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "[1, 2]"
-		) @RequestParam("folderId") List<Long> folderIds
+		) @RequestParam("folderId") final List<Long> folderIds
 	);
 }
