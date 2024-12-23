@@ -35,19 +35,19 @@ public interface DriveControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	SuccessResponse<DriveGetResponse> getDrive(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			required = true,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "조회할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
-		) @RequestParam Long folderId
+		) @RequestParam final Long folderId
 	);
 }
