@@ -41,7 +41,7 @@ public interface FileeHandlerControllerDocs {
 			description = "파일 형식",
 			in = ParameterIn.QUERY,
 			example = "hwp, pdf, ..."
-		) @RequestParam String fileFormat
+		) @RequestParam final String fileFormat
 	);
 
 	@Operation(
@@ -59,6 +59,6 @@ public interface FileeHandlerControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<BaseResponse> deleteFile(
-		@RequestBody S3DeleteRequest request
+		@RequestBody final S3DeleteRequest request
 	);
 }

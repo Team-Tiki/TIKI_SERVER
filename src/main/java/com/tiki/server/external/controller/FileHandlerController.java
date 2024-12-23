@@ -5,6 +5,7 @@ import static com.tiki.server.external.message.SuccessMessage.PRESIGNED_URL_GET_
 import static com.tiki.server.external.message.SuccessMessage.S3_FILE_DELETE_SUCCESS;
 
 import com.tiki.server.external.service.FileHandlerService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,14 +31,15 @@ public class FileHandlerController implements FileeHandlerControllerDocs {
 
 	@Override
 	@GetMapping("/upload")
-	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(@RequestParam String fileFormat) {
+	public ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(
+		@RequestParam final String fileFormat) {
 		PreSignedUrlResponse response = fileHandlerService.getUploadPreSignedUrl(fileFormat);
 		return ResponseEntity.ok(success(PRESIGNED_URL_GET_SUCCESS.getMessage(), response));
 	}
 
 	@Override
 	@PostMapping
-	public ResponseEntity<BaseResponse> deleteFile(@RequestBody S3DeleteRequest request) {
+	public ResponseEntity<BaseResponse> deleteFile(@RequestBody final S3DeleteRequest request) {
 		fileHandlerService.deleteFile(request);
 		return ResponseEntity.ok(success(S3_FILE_DELETE_SUCCESS.getMessage()));
 	}

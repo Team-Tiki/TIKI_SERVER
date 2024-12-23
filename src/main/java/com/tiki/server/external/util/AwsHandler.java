@@ -58,21 +58,21 @@ public class AwsHandler {
 		}
 	}
 
-	private PutObjectRequest createPutObjectRequest(String key) {
+	private PutObjectRequest createPutObjectRequest(final String key) {
 		return PutObjectRequest.builder()
 			.bucket(bucket)
 			.key(key)
 			.build();
 	}
 
-	private PutObjectPresignRequest createPutObjectPresignRequest(PutObjectRequest putObjectRequest) {
+	private PutObjectPresignRequest createPutObjectPresignRequest(final PutObjectRequest putObjectRequest) {
 		return PutObjectPresignRequest.builder()
 			.signatureDuration(Duration.ofMinutes(PRE_SIGNED_URL_EXPIRE_MINUTE))
 			.putObjectRequest(putObjectRequest)
 			.build();
 	}
 
-	private String generateFileName(String fileFormat) {
+	private String generateFileName(final String fileFormat) {
 		return UUID.randomUUID() + FILE_DELIMITER + fileFormat;
 	}
 }
