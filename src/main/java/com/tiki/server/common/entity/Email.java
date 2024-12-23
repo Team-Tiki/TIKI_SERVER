@@ -1,6 +1,8 @@
 package com.tiki.server.common.entity;
 
 import com.tiki.server.member.exception.MemberException;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -15,7 +17,9 @@ import static com.tiki.server.member.message.ErrorCode.INVALID_EMAIL;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Email {
 
+    @Column(nullable = false)
     private String email;
+
     public static Email from(String email){
         checkMailFormat(email);
         return new Email(email);

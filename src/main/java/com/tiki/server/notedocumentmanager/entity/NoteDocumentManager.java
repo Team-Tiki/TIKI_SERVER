@@ -23,8 +23,10 @@ public class NoteDocumentManager extends BaseTime {
     @Column(name = "manager_id")
     private Long id;
 
+    @Column(nullable = false)
     private long noteId;
 
+    @Column(nullable = false)
     private long documentId;
 
     public static NoteDocumentManager of(final long noteId, final long documentId) {

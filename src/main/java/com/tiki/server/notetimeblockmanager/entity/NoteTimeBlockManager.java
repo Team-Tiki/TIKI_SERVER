@@ -23,8 +23,10 @@ public class NoteTimeBlockManager extends BaseTime {
     @Column(name = "manager_id")
     private Long id;
 
+    @Column(nullable = false)
     private long noteId;
 
+    @Column(nullable = false)
     private long timeBlockId;
 
     public static NoteTimeBlockManager of(final long noteId, final long timeBlockId) {

@@ -37,15 +37,20 @@ public class TimeBlock extends BaseTime {
 	@Column(name = "block_id")
 	private Long id;
 
+	@Column(nullable = false)
 	private String name;
 
+	@Column(nullable = false)
 	private String color;
 
+	@Column(nullable = false)
 	@Enumerated(value = STRING)
 	private Position accessiblePosition;
 
+	@Column(nullable = false)
 	private LocalDate startDate;
 
+	@Column(nullable = false)
 	private LocalDate endDate;
 
 	@Enumerated(value = STRING)

@@ -45,8 +45,10 @@ public class MemberTeamManager extends BaseTime {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
+	@Column(nullable = false)
 	private String name;
 
+	@Column(nullable = false)
 	@Enumerated(value = STRING)
 	private Position position;
 

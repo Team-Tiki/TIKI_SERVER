@@ -40,19 +40,25 @@ public class Team extends BaseTime {
     @Column(name = "team_id")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String overview;
 
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private Category category;
 
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private University univ;
 
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private Subscribe subscribe;
 
+    @Column(nullable = false)
     private double usage;
 
     private String imageUrl;

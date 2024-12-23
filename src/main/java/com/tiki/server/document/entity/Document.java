@@ -28,14 +28,19 @@ public class Document extends BaseTime {
 	@Column(name = "document_id")
 	private Long id;
 
+	@Column(nullable = false)
 	private String fileName;
 
+	@Column(nullable = false)
 	private String fileUrl;
 
+	@Column(nullable = false)
 	private String fileKey;
 
+	@Column(nullable = false)
 	private double capacity;
 
+	@Column(nullable = false)
 	private long teamId;
 
 	private Long folderId;

@@ -9,6 +9,7 @@ import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.timeblock.entity.TimeBlock;
 import com.tiki.server.timeblock.exception.TimeBlockException;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -30,8 +31,10 @@ public class DTBManager extends BaseTime {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private long documentId;
 
+	@Column(nullable = false)
 	private long timeBlockId;
 
 	public static DTBManager of(final TimeBlock timeBlock, final long documentId) {
