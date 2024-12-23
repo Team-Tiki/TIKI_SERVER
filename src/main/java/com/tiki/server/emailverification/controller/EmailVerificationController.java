@@ -27,19 +27,19 @@ public class EmailVerificationController implements EmailVerificationControllerD
     private final EmailVerificationService emailVerificationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody EmailRequest mailRequest) {
+    public ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody final EmailRequest mailRequest) {
         emailVerificationService.sendSignUp(mailRequest);
         return ResponseEntity.created(getUri("/")).body(success(SUCCESS_SEND_EMAIL.getMessage()));
     }
 
     @PostMapping("/password")
-    public ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest) {
+    public ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody final EmailRequest mailRequest) {
         emailVerificationService.sendChangingPassword(mailRequest);
         return ResponseEntity.created(getUri("/")).body(success(SUCCESS_SEND_EMAIL.getMessage()));
     }
 
     @PostMapping("/checking")
-    public ResponseEntity<BaseResponse> checkCode(@RequestBody CodeVerificationRequest codeVerificationRequest) {
+    public ResponseEntity<BaseResponse> checkCode(@RequestBody final CodeVerificationRequest codeVerificationRequest) {
         emailVerificationService.checkCode(codeVerificationRequest);
         return ResponseEntity.created(getUri("/")).body(success(SUCCESS_VALIDATION.getMessage()));
     }

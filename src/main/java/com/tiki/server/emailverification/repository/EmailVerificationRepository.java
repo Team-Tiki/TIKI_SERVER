@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface EmailVerificationRepository extends CrudRepository<EmailVerification, Long> {
 
-    Optional<EmailVerification> findById(String email);
+    Optional<EmailVerification> findById(final String email);
 }

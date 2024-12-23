@@ -39,7 +39,7 @@ public interface EmailVerificationControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody EmailRequest mailRequest);
+	ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody final EmailRequest mailRequest);
 
 	@Operation(
 		summary = "비밀번호 재설정 메일 전송",
@@ -63,7 +63,7 @@ public interface EmailVerificationControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest);
+	ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody final EmailRequest mailRequest);
 
 	@Operation(
 		summary = "메일 인증",
@@ -91,5 +91,5 @@ public interface EmailVerificationControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> checkCode(@RequestBody CodeVerificationRequest verificationCodeRequest);
+	ResponseEntity<BaseResponse> checkCode(@RequestBody final CodeVerificationRequest verificationCodeRequest);
 }

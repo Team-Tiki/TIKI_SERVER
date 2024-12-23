@@ -25,11 +25,11 @@ public class EmailVerification {
 
     private String code;
 
-    public static EmailVerification of(Email email, String code) {
+    public static EmailVerification of(final Email email, final String code) {
         return EmailVerification.builder().id(email.getEmail()).code(code).build();
     }
 
-    public void verify(String code){
+    public void verify(final String code){
         if(!this.code.equals(code)){
             throw new EmailVerificationException(INVALID_MATCHED);
         }
