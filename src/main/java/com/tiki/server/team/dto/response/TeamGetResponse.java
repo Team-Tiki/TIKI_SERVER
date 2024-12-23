@@ -18,7 +18,7 @@ public record TeamGetResponse(
 	@NotNull String overview,
 	@NotNull String imageUrl
 ) {
-	public static TeamGetResponse from(TeamVO team) {
+	public static TeamGetResponse from(final TeamVO team) {
 		return TeamGetResponse.builder()
 			.teamId(team.teamId())
 			.name(team.name())

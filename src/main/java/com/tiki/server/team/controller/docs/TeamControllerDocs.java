@@ -46,8 +46,8 @@ public interface TeamControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
-		@Parameter(hidden = true) Principal principal,
-		@RequestBody TeamCreateRequest request
+		@Parameter(hidden = true) final Principal principal,
+		@RequestBody final TeamCreateRequest request
 	);
 
 	@Operation(
@@ -69,7 +69,7 @@ public interface TeamControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(
-		@Parameter(hidden = true) Principal principal
+		@Parameter(hidden = true) final Principal principal
 	);
 
 	@Operation(
@@ -107,7 +107,7 @@ public interface TeamControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	ResponseEntity<BaseResponse> deleteTeam(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
@@ -115,7 +115,7 @@ public interface TeamControllerDocs {
 			required = true,
 			example = "1"
 		)
-		@PathVariable long teamId
+		@PathVariable final long teamId
 	);
 
 	@Operation(
@@ -133,7 +133,7 @@ public interface TeamControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	SuccessResponse<UsageGetResponse> getCapacityInfo(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
@@ -141,6 +141,6 @@ public interface TeamControllerDocs {
 			required = true,
 			example = "1"
 		)
-		@PathVariable long teamId
+		@PathVariable final long teamId
 	);
 }

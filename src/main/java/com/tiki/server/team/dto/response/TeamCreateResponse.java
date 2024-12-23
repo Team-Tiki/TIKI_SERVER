@@ -12,7 +12,7 @@ public record TeamCreateResponse(
 	@NotNull long teamId
 ) {
 
-	public static TeamCreateResponse from(Team team) {
+	public static TeamCreateResponse from(final Team team) {
 		return TeamCreateResponse.builder()
 			.teamId(team.getId())
 			.build();

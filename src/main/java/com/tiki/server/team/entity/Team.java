@@ -67,7 +67,7 @@ public class Team extends BaseTime {
 
     private LocalDate namingUpdatedAt;
 
-    public static Team of(TeamCreateRequest request, University univ) {
+    public static Team of(final TeamCreateRequest request, final University univ) {
         return Team.builder()
                 .name(request.name())
                 .category(request.category())
@@ -104,14 +104,14 @@ public class Team extends BaseTime {
         return this.iconImageUrl.equals(iconImageUrl);
     }
 
-    public void addUsage(double capacity) {
+    public void addUsage(final double capacity) {
         if (usage + capacity > subscribe.getCapacity()) {
             throw new TeamException(EXCEED_TEAM_CAPACITY);
         }
         usage += capacity;
     }
 
-    public void restoreUsage(double capacity) {
+    public void restoreUsage(final double capacity) {
         usage -= capacity;
     }
 

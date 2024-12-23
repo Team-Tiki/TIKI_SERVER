@@ -19,12 +19,12 @@ public class TeamFinder {
 
     private final TeamRepository teamRepository;
 
-    public Team findById(long teamId) {
+    public Team findById(final long teamId) {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new TeamException(INVALID_TEAM));
     }
 
-    public List<TeamVO> findAllByUniv(University univ) {
+    public List<TeamVO> findAllByUniv(final University univ) {
         return teamRepository.findAllByUniv(univ).stream().map(TeamVO::from).toList();
     }
 }

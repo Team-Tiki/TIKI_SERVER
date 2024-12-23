@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 public record TeamsGetResponse(
 	@NotNull List<TeamGetResponse> teams
 ) {
-	public static TeamsGetResponse from(List<TeamVO> teams) {
+	public static TeamsGetResponse from(final List<TeamVO> teams) {
 		return TeamsGetResponse.builder()
 			.teams(teams.stream().map(TeamGetResponse::from).toList())
 			.build();
