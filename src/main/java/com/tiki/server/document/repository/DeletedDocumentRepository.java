@@ -9,7 +9,7 @@ import com.tiki.server.document.entity.DeletedDocument;
 
 public interface DeletedDocumentRepository extends JpaRepository<DeletedDocument, Long> {
 
-	Optional<DeletedDocument> findByIdAndTeamId(long id, long teamId);
+	Optional<DeletedDocument> findByIdAndTeamId(final long id, final long teamId);
 
-	List<DeletedDocument> findAllByTeamId(long teamId);
+	List<DeletedDocument> findAllByTeamId(final long teamId);
 }
