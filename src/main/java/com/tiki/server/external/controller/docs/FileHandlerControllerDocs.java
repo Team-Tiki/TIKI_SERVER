@@ -1,10 +1,8 @@
 package com.tiki.server.external.controller.docs;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
@@ -35,7 +33,7 @@ public interface FileHandlerControllerDocs {
 				description = "S3 PRESIGNED URL 불러오기 실패",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(
+	SuccessResponse<PreSignedUrlResponse> getPreSignedUrl(
 		@Parameter(
 			name = "fileFormat",
 			description = "파일 형식",
@@ -58,7 +56,7 @@ public interface FileHandlerControllerDocs {
 				description = "S3 버킷의 파일 삭제 실패",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> deleteFile(
+	SuccessResponse<?> deleteFile(
 		@RequestBody final S3DeleteRequest request
 	);
 }
