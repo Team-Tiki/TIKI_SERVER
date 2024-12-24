@@ -3,7 +3,6 @@ package com.tiki.server.timeblock.controller.docs;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +51,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
+	SuccessResponse<TimeBlockCreateResponse> createTimeBlock(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -97,7 +96,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
+	SuccessResponse<TimelineGetResponse> getTimeline(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -144,7 +143,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
+	SuccessResponse<TimeBlockDetailGetResponse> getTimeBlockDetail(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -184,7 +183,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> deleteTimeBlock(
+	void deleteTimeBlock(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -253,7 +252,7 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	SuccessResponse<?> deleteDocumentTag(
+	void deleteDocumentTag(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
