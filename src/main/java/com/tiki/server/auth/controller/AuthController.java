@@ -5,10 +5,15 @@ import com.tiki.server.auth.dto.request.SignInRequest;
 import com.tiki.server.auth.dto.response.ReissueGetResponse;
 import com.tiki.server.auth.dto.response.SignInGetResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.common.support.UriGenerator;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.auth.service.AuthService;
 
@@ -24,18 +29,18 @@ public class AuthController implements AuthControllerDocs {
     private final AuthService authService;
 
     @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/sign-in")
-    public ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody final SignInRequest request) {
+    public SuccessResponse<SignInGetResponse> signIn(@RequestBody final SignInRequest request) {
         SignInGetResponse response = authService.signIn(request);
-        return ResponseEntity.created(UriGenerator.getUri("/"))
-                .body(SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response));
+        return SuccessResponse.success(SUCCESS_SIGN_IN.getMessage(), response);
     }
 
     @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @GetMapping("/reissue")
-    public ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(final HttpServletRequest httpServletRequest) {
+    public SuccessResponse<ReissueGetResponse> reissue(final HttpServletRequest httpServletRequest) {
         ReissueGetResponse response = authService.reissueToken(httpServletRequest);
-        return ResponseEntity.created(UriGenerator.getUri("/"))
-                .body(SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response));
+        return SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response);
     }
 }

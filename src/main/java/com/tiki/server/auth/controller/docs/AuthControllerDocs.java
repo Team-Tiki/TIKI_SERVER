@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "auth", description = "인증 API")
@@ -41,7 +40,7 @@ public interface AuthControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<SignInGetResponse>> signIn(@RequestBody final SignInRequest request);
+	SuccessResponse<SignInGetResponse> signIn(@RequestBody final SignInRequest request);
 
 	@Operation(
 		summary = "엑세스 토큰 재발급",
@@ -65,5 +64,5 @@ public interface AuthControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<ReissueGetResponse>> reissue(final HttpServletRequest request);
+	SuccessResponse<ReissueGetResponse> reissue(final HttpServletRequest request);
 }
