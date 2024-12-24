@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.external.controller.docs.FileeHandlerControllerDocs;
+import com.tiki.server.external.controller.docs.FileHandlerControllerDocs;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
 import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/file")
-public class FileHandlerController implements FileeHandlerControllerDocs {
+public class FileHandlerController implements FileHandlerControllerDocs {
 
 	private final FileHandlerService fileHandlerService;
 
