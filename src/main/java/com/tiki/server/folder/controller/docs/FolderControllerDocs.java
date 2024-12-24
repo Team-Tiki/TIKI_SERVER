@@ -3,7 +3,6 @@ package com.tiki.server.folder.controller.docs;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +39,7 @@ public interface FolderControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<FoldersGetResponse>> getFolders(
+	SuccessResponse<FoldersGetResponse> getFolders(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -71,7 +70,7 @@ public interface FolderControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<FolderCreateResponse>> createFolder(
+	SuccessResponse<FolderCreateResponse> createFolder(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -103,7 +102,7 @@ public interface FolderControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<?>> updateFolderName(
+	SuccessResponse<?> updateFolderName(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -135,7 +134,7 @@ public interface FolderControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> delete(
+	void delete(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
