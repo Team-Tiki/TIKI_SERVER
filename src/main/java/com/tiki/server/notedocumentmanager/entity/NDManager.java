@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class NoteDocumentManager extends BaseTime {
+public class NDManager extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -29,8 +29,8 @@ public class NoteDocumentManager extends BaseTime {
     @Column(nullable = false)
     private long documentId;
 
-    public static NoteDocumentManager of(final long noteId, final long documentId) {
-        return NoteDocumentManager.builder()
+    public static NDManager of(final long noteId, final long documentId) {
+        return NDManager.builder()
                 .noteId(noteId)
                 .documentId(documentId)
                 .build();
