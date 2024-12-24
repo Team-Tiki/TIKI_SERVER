@@ -4,7 +4,6 @@ import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.util.ContentEncoder;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
-import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.note.adapter.NoteDeleter;
 import com.tiki.server.note.adapter.NoteFinder;
@@ -17,10 +16,10 @@ import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerDeleter;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerFinder;
 import com.tiki.server.notedocumentmanager.adapter.NoteDocumentManagerSaver;
 import com.tiki.server.notedocumentmanager.entity.NoteDocumentManager;
-import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerDeleter;
-import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerFinder;
-import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerSaver;
-import com.tiki.server.notetimeblockmanager.entity.NoteTimeBlockManager;
+import com.tiki.server.notetimeblockmanager.adapter.NTBManagerDeleter;
+import com.tiki.server.notetimeblockmanager.adapter.NTBManagerFinder;
+import com.tiki.server.notetimeblockmanager.adapter.NTBManagerSaver;
+import com.tiki.server.notetimeblockmanager.entity.NTBManager;
 import com.tiki.server.timeblock.adapter.TimeBlockFinder;
 import com.tiki.server.timeblock.entity.TimeBlock;
 
@@ -45,9 +44,9 @@ public class NoteService {
 	private final NoteSaver noteSaver;
 	private final NoteFinder noteFinder;
 	private final NoteDeleter noteDeleter;
-	private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
-	private final NoteTimeBlockManagerSaver noteTimeBlockManagerSaver;
-	private final NoteTimeBlockManagerDeleter noteTimeBlockManagerDeleter;
+	private final NTBManagerFinder ntbManagerFinder;
+	private final NTBManagerSaver ntbManagerSaver;
+	private final NTBManagerDeleter ntbManagerDeleter;
 	private final NoteDocumentManagerFinder noteDocumentManagerFinder;
 	private final NoteDocumentManagerSaver noteDocumentManagerSaver;
 	private final NoteDocumentManagerDeleter noteDocumentManagerDeleter;
@@ -126,7 +125,7 @@ public class NoteService {
 	public void deleteNotes(final List<Long> noteIds, final long teamId, final long memberId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		noteDocumentManagerDeleter.deleteByNoteIds(noteIds);
-		noteTimeBlockManagerDeleter.noteTimeBlockManagerDeleteByIds(noteIds);
+		ntbManagerDeleter.noteTimeBlockManagerDeleteByIds(noteIds);
 		noteDeleter.deleteNoteByIds(noteIds);
 	}
 
@@ -177,8 +176,8 @@ public class NoteService {
 	}
 
 	private void updateNoteTimeBlockManager(final List<Long> timeBlockIds, final long noteId) {
-		List<Long> existingNoteTimeBlockIds = noteTimeBlockManagerFinder.findAllByNoteId(noteId).stream()
-			.map(NoteTimeBlockManager::getTimeBlockId)
+		List<Long> existingNoteTimeBlockIds = ntbManagerFinder.findAllByNoteId(noteId).stream()
+			.map(NTBManager::getTimeBlockId)
 			.toList();
 		List<Long> idsToAdd = timeBlockIds.stream()
 			.filter(id -> !existingNoteTimeBlockIds.contains(id))
@@ -187,7 +186,7 @@ public class NoteService {
 			.filter(id -> !timeBlockIds.contains(id))
 			.toList();
 		createNoteTimeBlockManagers(idsToAdd, noteId);
-		noteTimeBlockManagerDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
+		ntbManagerDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
 	}
 
 	private List<Note> getNotes(final LocalDateTime createdAt, final SortOrder sortOrder, final PageRequest pageable,
@@ -199,8 +198,8 @@ public class NoteService {
 	}
 
 	private List<TimeBlock> getTimeBlocksMappedByNote(final long noteId) {
-		List<Long> timblockIdList = noteTimeBlockManagerFinder.findAllByNoteId(noteId).stream()
-			.map(NoteTimeBlockManager::getTimeBlockId)
+		List<Long> timblockIdList = ntbManagerFinder.findAllByNoteId(noteId).stream()
+			.map(NTBManager::getTimeBlockId)
 			.toList();
 		return timblockIdList.stream()
 			.map(timeBlockFinder::findById)
@@ -233,8 +232,8 @@ public class NoteService {
 	private void createNoteTimeBlockManagers(final List<Long> timeBlockIds, final long noteId) {
 		timeBlockIds.stream()
 			.filter(timeBlockFinder::existsById)
-			.map(timeBlockId -> NoteTimeBlockManager.of(noteId, timeBlockId))
-			.forEach(noteTimeBlockManagerSaver::save);
+			.map(timeBlockId -> NTBManager.of(noteId, timeBlockId))
+			.forEach(ntbManagerSaver::save);
 	}
 
 	private void createNoteDocumentManagers(final List<Long> documentIds, final long noteId) {

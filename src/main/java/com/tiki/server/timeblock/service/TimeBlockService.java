@@ -7,8 +7,8 @@ import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
 import com.tiki.server.documenttimeblockmanager.entity.DTBManager;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
-import com.tiki.server.notetimeblockmanager.adapter.NoteTimeBlockManagerFinder;
-import com.tiki.server.notetimeblockmanager.entity.NoteTimeBlockManager;
+import com.tiki.server.notetimeblockmanager.adapter.NTBManagerFinder;
+import com.tiki.server.notetimeblockmanager.entity.NTBManager;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +43,7 @@ public class TimeBlockService {
 	private final TimeBlockDeleter timeBlockDeleter;
 	private final DocumentFinder documentFinder;
 	private final DTBAdapter dtbAdapter;
-	private final NoteTimeBlockManagerFinder noteTimeBlockManagerFinder;
+	private final NTBManagerFinder ntbManagerFinder;
 	private final NoteFinder noteFinder;
 
 	@Transactional
@@ -155,7 +155,7 @@ public class TimeBlockService {
 	}
 
 	private List<Note> getNotes(final long timeBlockId) {
-		List<NoteTimeBlockManager> noteTimeBlockManagers = noteTimeBlockManagerFinder.findAllByTimeBlockId(timeBlockId);
+		List<NTBManager> noteTimeBlockManagers = ntbManagerFinder.findAllByTimeBlockId(timeBlockId);
 		return noteTimeBlockManagers.stream()
 			.map(noteTimeBlockManager -> noteFinder.findById(noteTimeBlockManager.getNoteId()))
 			.toList();

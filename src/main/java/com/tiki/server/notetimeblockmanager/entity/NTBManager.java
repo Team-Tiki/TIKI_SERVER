@@ -16,7 +16,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
-public class NoteTimeBlockManager extends BaseTime {
+@Table(name = "note_time_block_manager")
+public class NTBManager extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -29,8 +30,8 @@ public class NoteTimeBlockManager extends BaseTime {
     @Column(nullable = false)
     private long timeBlockId;
 
-    public static NoteTimeBlockManager of(final long noteId, final long timeBlockId) {
-        return NoteTimeBlockManager.builder()
+    public static NTBManager of(final long noteId, final long timeBlockId) {
+        return NTBManager.builder()
                 .noteId(noteId)
                 .timeBlockId(timeBlockId)
                 .build();
