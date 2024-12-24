@@ -1,7 +1,6 @@
 package com.tiki.server.timeblock.entity;
 
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -18,8 +17,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,9 +53,8 @@ public class TimeBlock extends BaseTime {
 	@Enumerated(value = STRING)
 	private BlockType type;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "team_id")
-	private Team team;
+	@Column(nullable = false)
+	private long teamId;
 
 	public static TimeBlock of(final Team team, final Position accessiblePosition,
 		final TimeBlockCreateRequest request) {
@@ -68,7 +64,7 @@ public class TimeBlock extends BaseTime {
 			.accessiblePosition(accessiblePosition)
 			.startDate(request.startDate())
 			.endDate(request.endDate())
-			.team(team)
+			.teamId(team.getId())
 			.type(request.blockType())
 			.build();
 	}
