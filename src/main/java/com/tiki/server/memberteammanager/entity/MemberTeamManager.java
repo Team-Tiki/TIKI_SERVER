@@ -37,13 +37,11 @@ public class MemberTeamManager extends BaseTime {
 	@Column(name = "manager_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+	@Column(nullable = false)
+	private long memberId;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "team_id")
-	private Team team;
+	@Column(nullable = false)
+	private long teamId;
 
 	@Column(nullable = false)
 	private String name;
@@ -54,8 +52,8 @@ public class MemberTeamManager extends BaseTime {
 
 	public static MemberTeamManager of(final Member member, final Team team, final Position position) {
 		return MemberTeamManager.builder()
-			.member(member)
-			.team(team)
+			.memberId(member.getId())
+			.teamId(team.getId())
 			.name(member.getName())
 			.position(position)
 			.build();
