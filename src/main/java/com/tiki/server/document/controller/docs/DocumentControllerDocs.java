@@ -3,7 +3,6 @@ package com.tiki.server.document.controller.docs;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,7 +46,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
+	SuccessResponse<DocumentsGetResponse> getAllDocuments(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -78,7 +77,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<?>> createDocuments(
+	SuccessResponse<?> createDocuments(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -109,7 +108,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
+	SuccessResponse<DocumentsGetResponse> getDocuments(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -139,7 +138,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> delete(
+	void delete(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -170,7 +169,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> deleteTrash(
+	void deleteTrash(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -201,7 +200,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> restore(
+	void restore(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
@@ -232,7 +231,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<DeletedDocumentsGetResponse>> getTrash(
+	SuccessResponse<DeletedDocumentsGetResponse> getTrash(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
