@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface NTBManagerRepository extends JpaRepository<NTBManager, Long> {
+public interface NTBRepository extends JpaRepository<NTBManager, Long> {
 
     void deleteAllByNoteId(final long noteId);
 

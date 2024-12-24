@@ -1,24 +1,24 @@
 package com.tiki.server.notedocumentmanager.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
-import com.tiki.server.notedocumentmanager.repository.NDManagerRepository;
+import com.tiki.server.notedocumentmanager.repository.NDRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
-public class NDManagerDeleter {
+public class NDDeleter {
 
-    private final NDManagerRepository ndManagerRepository;
+    private final NDRepository ndRepository;
 
     public void deleteByNoteIds(final List<Long> noteIds) {
-        noteIds.forEach(ndManagerRepository::deleteAllByNoteId);
+        noteIds.forEach(ndRepository::deleteAllByNoteId);
     }
 
     public void deleteByNoteIdAndDocumentId(final long noteId, final List<Long> documentIds) {
         documentIds.forEach(documentId ->
-                ndManagerRepository.deleteByNoteIdAndDocumentId(noteId, documentId)
+                ndRepository.deleteByNoteIdAndDocumentId(noteId, documentId)
         );
     }
 }

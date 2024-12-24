@@ -2,16 +2,16 @@ package com.tiki.server.notetimeblockmanager.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.notetimeblockmanager.entity.NTBManager;
-import com.tiki.server.notetimeblockmanager.repository.NTBManagerRepository;
+import com.tiki.server.notetimeblockmanager.repository.NTBRepository;
 import lombok.RequiredArgsConstructor;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
-public class NTBManagerSaver {
+public class NTBSaver {
 
-    private final NTBManagerRepository ntbManagerRepository;
+    private final NTBRepository ntbRepository;
 
     public NTBManager save(final NTBManager ntbManager) {
-        return ntbManagerRepository.save(ntbManager);
+        return ntbRepository.save(ntbManager);
     }
 }

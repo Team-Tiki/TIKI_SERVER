@@ -12,13 +12,13 @@ import com.tiki.server.note.entity.Note;
 import com.tiki.server.note.entity.NoteType;
 import com.tiki.server.note.service.dto.request.*;
 import com.tiki.server.note.service.dto.response.*;
-import com.tiki.server.notedocumentmanager.adapter.NDManagerDeleter;
-import com.tiki.server.notedocumentmanager.adapter.NDManagerFinder;
-import com.tiki.server.notedocumentmanager.adapter.NDManagerSaver;
+import com.tiki.server.notedocumentmanager.adapter.NDDeleter;
+import com.tiki.server.notedocumentmanager.adapter.NDFinder;
+import com.tiki.server.notedocumentmanager.adapter.NDSaver;
 import com.tiki.server.notedocumentmanager.entity.NDManager;
-import com.tiki.server.notetimeblockmanager.adapter.NTBManagerDeleter;
-import com.tiki.server.notetimeblockmanager.adapter.NTBManagerFinder;
-import com.tiki.server.notetimeblockmanager.adapter.NTBManagerSaver;
+import com.tiki.server.notetimeblockmanager.adapter.NTBDeleter;
+import com.tiki.server.notetimeblockmanager.adapter.NTBFinder;
+import com.tiki.server.notetimeblockmanager.adapter.NTBSaver;
 import com.tiki.server.notetimeblockmanager.entity.NTBManager;
 import com.tiki.server.timeblock.adapter.TimeBlockFinder;
 import com.tiki.server.timeblock.entity.TimeBlock;
@@ -44,12 +44,12 @@ public class NoteService {
 	private final NoteSaver noteSaver;
 	private final NoteFinder noteFinder;
 	private final NoteDeleter noteDeleter;
-	private final NTBManagerFinder ntbManagerFinder;
-	private final NTBManagerSaver ntbManagerSaver;
-	private final NTBManagerDeleter ntbManagerDeleter;
-	private final NDManagerFinder ndManagerFinder;
-	private final NDManagerSaver ndManagerSaver;
-	private final NDManagerDeleter ndManagerDeleter;
+	private final NTBFinder ntbFinder;
+	private final NTBSaver ntbSaver;
+	private final NTBDeleter ntbDeleter;
+	private final NDFinder ndFinder;
+	private final NDSaver ndSaver;
+	private final NDDeleter ndDeleter;
 	private final TimeBlockFinder timeBlockFinder;
 	private final DocumentFinder documentFinder;
 
@@ -124,8 +124,8 @@ public class NoteService {
 	@Transactional
 	public void deleteNotes(final List<Long> noteIds, final long teamId, final long memberId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
-		ndManagerDeleter.deleteByNoteIds(noteIds);
-		ntbManagerDeleter.noteTimeBlockManagerDeleteByIds(noteIds);
+		ndDeleter.deleteByNoteIds(noteIds);
+		ntbDeleter.noteTimeBlockManagerDeleteByIds(noteIds);
 		noteDeleter.deleteNoteByIds(noteIds);
 	}
 
@@ -162,7 +162,7 @@ public class NoteService {
 	}
 
 	private void updateNoteDocumentManager(final List<Long> documentIds, final long noteId) {
-		List<Long> existingNoteDocumentIds = ndManagerFinder.findAllByNoteId(noteId).stream()
+		List<Long> existingNoteDocumentIds = ndFinder.findAllByNoteId(noteId).stream()
 			.map(NDManager::getDocumentId)
 			.toList();
 		List<Long> idsToAdd = documentIds.stream()
@@ -172,11 +172,11 @@ public class NoteService {
 			.filter(id -> !documentIds.contains(id))
 			.toList();
 		createNoteDocumentManagers(idsToAdd, noteId);
-		ndManagerDeleter.deleteByNoteIdAndDocumentId(noteId, idsToRemove);
+		ndDeleter.deleteByNoteIdAndDocumentId(noteId, idsToRemove);
 	}
 
 	private void updateNoteTimeBlockManager(final List<Long> timeBlockIds, final long noteId) {
-		List<Long> existingNoteTimeBlockIds = ntbManagerFinder.findAllByNoteId(noteId).stream()
+		List<Long> existingNoteTimeBlockIds = ntbFinder.findAllByNoteId(noteId).stream()
 			.map(NTBManager::getTimeBlockId)
 			.toList();
 		List<Long> idsToAdd = timeBlockIds.stream()
@@ -186,7 +186,7 @@ public class NoteService {
 			.filter(id -> !timeBlockIds.contains(id))
 			.toList();
 		createNoteTimeBlockManagers(idsToAdd, noteId);
-		ntbManagerDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
+		ntbDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
 	}
 
 	private List<Note> getNotes(final LocalDateTime createdAt, final SortOrder sortOrder, final PageRequest pageable,
@@ -198,7 +198,7 @@ public class NoteService {
 	}
 
 	private List<TimeBlock> getTimeBlocksMappedByNote(final long noteId) {
-		List<Long> timblockIdList = ntbManagerFinder.findAllByNoteId(noteId).stream()
+		List<Long> timblockIdList = ntbFinder.findAllByNoteId(noteId).stream()
 			.map(NTBManager::getTimeBlockId)
 			.toList();
 		return timblockIdList.stream()
@@ -207,7 +207,7 @@ public class NoteService {
 	}
 
 	private List<Document> getDocumentListMappedByNote(final long noteId) {
-		List<Long> documentIdList = ndManagerFinder.findAllByNoteId(noteId).stream()
+		List<Long> documentIdList = ndFinder.findAllByNoteId(noteId).stream()
 			.map(NDManager::getDocumentId)
 			.toList();
 		return documentIdList.stream()
@@ -233,13 +233,13 @@ public class NoteService {
 		timeBlockIds.stream()
 			.filter(timeBlockFinder::existsById)
 			.map(timeBlockId -> NTBManager.of(noteId, timeBlockId))
-			.forEach(ntbManagerSaver::save);
+			.forEach(ntbSaver::save);
 	}
 
 	private void createNoteDocumentManagers(final List<Long> documentIds, final long noteId) {
 		documentIds.stream()
 			.filter(documentFinder::existsById)
 			.map(documentId -> NDManager.of(noteId, documentId))
-			.forEach(ndManagerSaver::save);
+			.forEach(ndSaver::save);
 	}
 }
