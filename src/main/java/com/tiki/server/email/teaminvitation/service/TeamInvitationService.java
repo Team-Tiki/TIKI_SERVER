@@ -22,9 +22,7 @@ public class TeamInvitationService {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(request.memberId(),
                 request.teamId());
         memberTeamManager.checkMemberAccessible(Position.EXECUTIVE);
-        //초대 메일 보내기
-
+        mailSender.sendTeamInvitationMail(request.email().getEmail(), request.teamId());
         teamInvitationSaver.createTeamInvitation(TeamInvitation.of(request.teamId(), request.email()));
-
     }
 }
