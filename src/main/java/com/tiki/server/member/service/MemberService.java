@@ -45,6 +45,12 @@ public class MemberService {
         saveMember(member);
     }
 
+    public BelongTeamsGetResponse findBelongTeams(final long memberId) {
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberId(memberId);
+        List<Team> teams = getTeams(memberTeamManagers);
+        return BelongTeamsGetResponse.from(teams);
+    }
+
     @Transactional
     public void changePassword(final PasswordChangeRequest request) {
         Member member = memberFinder.checkEmpty(Email.from(request.email()));
@@ -62,6 +68,16 @@ public class MemberService {
                 request.univ());
     }
 
+    private void saveMember(final Member member) {
+        memberSaver.save(member);
+    }
+
+    private List<Team> getTeams(final List<MemberTeamManager> memberTeamManagers) {
+        return memberTeamManagers.stream()
+            .map(memberTeamManager -> teamFinder.findById(memberTeamManager.getTeamId()))
+            .toList();
+    }
+
     private void checkPasswordFormat(final String password) {
         if (!(password != null && !password.contains(" ") && Pattern.matches(PASSWORD_PATTERN, password))) {
             throw new MemberException(INVALID_PASSWORD);
@@ -72,21 +88,5 @@ public class MemberService {
         if (!password.equals(passwordChecker)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
-    }
-
-    private void saveMember(final Member member) {
-        memberSaver.save(member);
-    }
-
-    public BelongTeamsGetResponse findBelongTeams(final long memberId) {
-        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberId(memberId);
-        List<Team> teams = getTeams(memberTeamManagers);
-        return BelongTeamsGetResponse.from(teams);
-    }
-
-    private List<Team> getTeams(final List<MemberTeamManager> memberTeamManagers) {
-        return memberTeamManagers.stream()
-            .map(memberTeamManager -> teamFinder.findById(memberTeamManager.getTeamId()))
-            .toList();
     }
 }
