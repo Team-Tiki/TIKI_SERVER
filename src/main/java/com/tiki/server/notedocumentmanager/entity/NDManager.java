@@ -16,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder(access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PROTECTED)
+@Table(name = "note_document_manager")
 public class NDManager extends BaseTime {
 
     @Id
