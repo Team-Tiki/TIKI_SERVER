@@ -1,8 +1,6 @@
 package com.tiki.server.email.emailverification.domain;
 
-import com.tiki.server.email.emailverification.message.ErrorCode;
 import com.tiki.server.email.Email;
-import com.tiki.server.email.emailverification.exception.EmailVerificationException;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -23,15 +21,16 @@ public class EmailVerification {
     @GeneratedValue(strategy = IDENTITY)
     private String id;
 
-    private String code;
+    private VerificationCode verificationCode;
 
-    public static EmailVerification of(Email email, String code) {
-        return EmailVerification.builder().id(email.getEmail()).code(code).build();
+    public static EmailVerification of(Email email) {
+        return EmailVerification.builder()
+                .id(email.getEmail())
+                .verificationCode(VerificationCode.from())
+                .build();
     }
 
-    public void verify(String code){
-        if(!this.code.equals(code)){
-            throw new EmailVerificationException(ErrorCode.INVALID_MATCHED);
-        }
+    public void verify(String code) {
+        this.verificationCode.verify(code);
     }
 }

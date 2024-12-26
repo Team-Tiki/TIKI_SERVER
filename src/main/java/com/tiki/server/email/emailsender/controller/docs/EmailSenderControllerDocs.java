@@ -2,7 +2,7 @@ package com.tiki.server.email.emailsender.controller.docs;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
-import com.tiki.server.email.emailsender.dto.request.EmailRequest;
+import com.tiki.server.email.emailsender.controller.dto.request.EmailRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -6,6 +6,7 @@ import static com.tiki.server.email.teaminvitation.messages.SuccessMessage.CREAT
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.email.teaminvitation.controller.dto.TeamInvitationCreateRequest;
 import com.tiki.server.email.teaminvitation.service.TeamInvitationService;
+import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationCreateServiceRequest;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,11 @@ public class TeamInvitationController {
     public ResponseEntity<BaseResponse> createTeamInvitation(
             final Principal principal,
             @PathVariable long teamId,
-            @RequestBody TeamInvitationCreateRequest Email
+            @RequestBody TeamInvitationCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        teamInvitationService.createTeamInvitation(memberId, teamId);
+        teamInvitationService.createTeamInvitation(
+                TeamInvitationCreateServiceRequest.of(teamId, memberId, request.email()));
         return ResponseEntity.ok().body(success(CREATE_INVITATION.getMessage()));
     }
 }

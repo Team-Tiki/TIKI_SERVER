@@ -7,13 +7,13 @@ public class Constants {
     public static final String IMG_PATH = "images/mail_logo.png";
 
     /* 이메일 인증 관련 상수 */
-    public static final String MAIL_SUBJECT_SIGN_UP = "[Ti.Ki] 회원가입: 이메일 인증번호 안내";
-    public static final String MAIL_SUBJECT_CHANGING_PASSWORD = "[Ti.Ki] 회원가입: 이메일 인증번호 안내";
-    public static final String TEMPLATE_NAME = "certification";
-    public static final int CODE_LENGTH = 6;
-    public static final int CODE_NUM_MAX_VALUE_PER_WORD = 10;
-    public static final String CERTIFICATION_PAGE_LOGO_IMAGE_VAR = "image";
+    public static final String MAIL_VERIFICATION_CODE = "[Ti.Ki] 회원가입: 이메일 인증번호 안내";
+    public static final String MAIL_PASSWORD_CHANGING_CODE = "[Ti.Ki] 비밀번호 재설정: 이메일 인증번호 안내";
+    public static final String VERIFICATION_TEMPLATE_NAME = "verification";
+    public static final String CHANGE_PASSWORD_TEMPLATE_NAME = "changePassword";
+    public static final String PAGE_LOGO_IMAGE_VAR = "image";
     public static final String CERTIFICATION_PAGE_CODEE_VAR = "code";
+    public static final String CERTIFICATION_PAGE_NAME = "name";
 
     /* 이메일 초대 관련 상수 */
 }
