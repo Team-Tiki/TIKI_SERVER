@@ -1,6 +1,6 @@
 package com.tiki.server.member.dto.response;
 
-import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.team.entity.Team;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -14,9 +14,9 @@ public record BelongTeamsGetResponse(
         @NotNull List<BelongTeamGetResponse> belongTeamGetResponses
 ) {
 
-    public static BelongTeamsGetResponse from(final List<MemberTeamManager> belongTeamGetResponses) {
+    public static BelongTeamsGetResponse from(final List<Team> teams) {
         return BelongTeamsGetResponse.builder()
-                .belongTeamGetResponses(belongTeamGetResponses.stream().map(BelongTeamGetResponse::from).toList())
+                .belongTeamGetResponses(teams.stream().map(BelongTeamGetResponse::from).toList())
                 .build();
     }
 
@@ -26,11 +26,11 @@ public record BelongTeamsGetResponse(
             @NotNull String name,
             @NotNull String iconImageUrl
     ) {
-        public static BelongTeamGetResponse from(final MemberTeamManager memberTeamManager) {
+        public static BelongTeamGetResponse from(final Team team) {
             return BelongTeamGetResponse.builder()
-                    .id(memberTeamManager.getTeam().getId())
-                    .name(memberTeamManager.getTeam().getName())
-                    .iconImageUrl(memberTeamManager.getTeam().getIconImageUrl())
+                    .id(team.getId())
+                    .name(team.getName())
+                    .iconImageUrl(team.getIconImageUrl())
                     .build();
         }
     }

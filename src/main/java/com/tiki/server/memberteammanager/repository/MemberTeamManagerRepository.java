@@ -14,6 +14,5 @@ public interface MemberTeamManagerRepository extends JpaRepository<MemberTeamMan
 
     List<MemberTeamManager> findAllByTeamId(final long teamId);
 
-    @Query("select m from MemberTeamManager m join fetch m.team t where m.member.id = :memberId")
-    List<MemberTeamManager> findAllBelongTeamByMemberId(final long memberId);
+    List<MemberTeamManager> findAllByMemberId(final long memberId);
 }

@@ -9,12 +9,17 @@ import com.tiki.server.common.entity.Email;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.entity.Team;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.tiki.server.member.Constants.PASSWORD_PATTERN;
@@ -28,6 +33,7 @@ public class MemberService {
     private final MemberSaver memberSaver;
     private final MemberFinder memberFinder;
     private final PasswordEncoder passwordEncoder;
+    private final TeamFinder teamFinder;
     private final MemberTeamManagerFinder memberTeamManagerFinder;
 
     @Transactional
@@ -73,6 +79,14 @@ public class MemberService {
     }
 
     public BelongTeamsGetResponse findBelongTeams(final long memberId) {
-        return BelongTeamsGetResponse.from(memberTeamManagerFinder.findBelongTeamByMemberId(memberId));
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberId(memberId);
+        List<Team> teams = getTeams(memberTeamManagers);
+        return BelongTeamsGetResponse.from(teams);
+    }
+
+    private List<Team> getTeams(final List<MemberTeamManager> memberTeamManagers) {
+        return memberTeamManagers.stream()
+            .map(memberTeamManager -> teamFinder.findById(memberTeamManager.getTeamId()))
+            .toList();
     }
 }
