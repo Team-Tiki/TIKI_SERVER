@@ -1,12 +1,12 @@
-package com.tiki.server.email.emailverification.controller;
+package com.tiki.server.email.verification.controller;
 
 import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.common.support.UriGenerator.getUri;
-import static com.tiki.server.email.emailverification.message.SuccessMessage.SUCCESS_VALIDATION;
+import static com.tiki.server.email.verification.message.SuccessMessage.SUCCESS_VALIDATION;
 
 import com.tiki.server.common.dto.BaseResponse;
-import com.tiki.server.email.emailverification.dto.request.CodeVerificationRequest;
-import com.tiki.server.email.emailverification.service.EmailVerificationService;
+import com.tiki.server.email.verification.dto.request.CodeVerificationRequest;
+import com.tiki.server.email.verification.service.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,4 +1,4 @@
-package com.tiki.server.email.emailverification.dto.request;
+package com.tiki.server.email.verification.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 

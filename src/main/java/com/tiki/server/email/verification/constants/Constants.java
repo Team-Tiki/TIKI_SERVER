@@ -1,4 +1,4 @@
-package com.tiki.server.email.emailverification.constants;
+package com.tiki.server.email.verification.constants;
 
 public class Constants {
 

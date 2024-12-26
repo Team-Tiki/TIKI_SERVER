@@ -1,6 +1,6 @@
-package com.tiki.server.email.emailverification.repository;
+package com.tiki.server.email.verification.repository;
 
-import com.tiki.server.email.emailverification.domain.EmailVerification;
+import com.tiki.server.email.verification.domain.EmailVerification;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

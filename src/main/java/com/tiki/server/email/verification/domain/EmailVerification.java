@@ -1,4 +1,4 @@
-package com.tiki.server.email.emailverification.domain;
+package com.tiki.server.email.verification.domain;
 
 import com.tiki.server.email.Email;
 import jakarta.persistence.GeneratedValue;

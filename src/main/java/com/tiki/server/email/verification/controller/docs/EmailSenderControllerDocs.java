@@ -1,8 +1,8 @@
-package com.tiki.server.email.emailverification.controller.docs;
+package com.tiki.server.email.verification.controller.docs;
 
 import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
-import com.tiki.server.email.emailverification.dto.request.CodeVerificationRequest;
+import com.tiki.server.email.verification.dto.request.CodeVerificationRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

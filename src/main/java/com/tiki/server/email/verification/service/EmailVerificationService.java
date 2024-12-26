@@ -1,8 +1,8 @@
-package com.tiki.server.email.emailverification.service;
+package com.tiki.server.email.verification.service;
 
-import com.tiki.server.email.emailverification.adapter.EmailVerificationFinder;
-import com.tiki.server.email.emailverification.domain.EmailVerification;
-import com.tiki.server.email.emailverification.dto.request.CodeVerificationRequest;
+import com.tiki.server.email.verification.adapter.EmailVerificationFinder;
+import com.tiki.server.email.verification.domain.EmailVerification;
+import com.tiki.server.email.verification.dto.request.CodeVerificationRequest;
 import com.tiki.server.email.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
