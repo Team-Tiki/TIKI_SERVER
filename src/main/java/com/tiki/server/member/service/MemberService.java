@@ -40,7 +40,7 @@ public class MemberService {
     public void signUp(final MemberProfileCreateRequest request) {
         memberFinder.checkPresent(Email.from(request.email()));
         checkPasswordFormat(request.password());
-        checkPassword(request.password(), request.passwordChecker());
+        checkPasswordMatch(request.password(), request.passwordChecker());
         Member member = createMember(request);
         saveMember(member);
     }
@@ -55,7 +55,7 @@ public class MemberService {
     public void changePassword(final PasswordChangeRequest request) {
         Member member = memberFinder.checkEmpty(Email.from(request.email()));
         checkPasswordFormat(request.password());
-        checkPassword(request.password(), request.passwordChecker());
+        checkPasswordMatch(request.password(), request.passwordChecker());
         member.resetPassword(passwordEncoder.encode(request.password()));
     }
 
@@ -84,7 +84,7 @@ public class MemberService {
         }
     }
 
-    private void checkPassword(final String password, final String passwordChecker) {
+    private void checkPasswordMatch(final String password, final String passwordChecker) {
         if (!password.equals(passwordChecker)) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
