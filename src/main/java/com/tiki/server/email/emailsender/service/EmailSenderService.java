@@ -1,10 +1,9 @@
 package com.tiki.server.email.emailsender.service;
 
-import com.tiki.server.email.Email;
 import com.tiki.server.email.emailsender.entity.MailSender;
 import com.tiki.server.email.emailsender.service.dto.EmailServiceRequest;
-import com.tiki.server.email.emailverification.adapter.EmailVerificationSaver;
-import com.tiki.server.email.emailverification.domain.EmailVerification;
+import com.tiki.server.email.verification.adapter.EmailVerificationSaver;
+import com.tiki.server.email.verification.domain.EmailVerification;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import lombok.RequiredArgsConstructor;

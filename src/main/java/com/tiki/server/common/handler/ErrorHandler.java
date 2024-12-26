@@ -3,7 +3,7 @@ package com.tiki.server.common.handler;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
 import com.tiki.server.email.emailsender.exception.EmailSenderException;
-import com.tiki.server.email.emailverification.exception.EmailVerificationException;
+import com.tiki.server.email.verification.exception.EmailVerificationException;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;
 import org.springframework.http.HttpStatus;
