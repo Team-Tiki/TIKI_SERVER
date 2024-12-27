@@ -50,6 +50,7 @@ public class TimeBlock extends BaseTime {
 	@Column(nullable = false)
 	private LocalDate endDate;
 
+	@Column(nullable = false)
 	@Enumerated(value = STRING)
 	private BlockType type;
 
