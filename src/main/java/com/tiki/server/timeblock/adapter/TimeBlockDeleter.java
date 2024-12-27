@@ -16,12 +16,8 @@ public class TimeBlockDeleter {
 
 	private final TimeBlockRepository timeBlockRepository;
 
-	public void deleteById(long id) {
+	public void deleteById(final long id) {
 		timeBlockRepository.deleteById(id);
-	}
-
-	public void deleteAll(HashSet<TimeBlock> timeBlocks) {
-		timeBlockRepository.deleteAll(timeBlocks);
 	}
 
 	public void deleteAllByTeamId(long teamId) {

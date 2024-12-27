@@ -1,6 +1,8 @@
 package com.tiki.server.common.entity;
 
 import com.tiki.server.member.exception.MemberException;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -15,14 +17,17 @@ import static com.tiki.server.member.message.ErrorCode.INVALID_EMAIL;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Email {
 
+    @Column(nullable = false)
     private String email;
-    public static Email from(String email){
+
+    public static Email from(final String email){
         checkMailFormat(email);
         return new Email(email);
     }
 
-    private static void checkMailFormat(String email) {
-        if (!EmailValidator.getInstance().isValid(email) || !(email.endsWith(MAIL_FORMAT_EDU) || email.endsWith(MAIL_FORMAT_AC_KR))) {
+    private static void checkMailFormat(final String email) {
+        if (!EmailValidator.getInstance().isValid(email) || !(email.endsWith(MAIL_FORMAT_EDU) ||
+			email.endsWith(MAIL_FORMAT_AC_KR))) {
             throw new MemberException(INVALID_EMAIL);
         }
     }

@@ -19,19 +19,19 @@ public class MemberFinder {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findByEmail(Email email) {
+    public Optional<Member> findByEmail(final Email email) {
         return memberRepository.findByEmail(email);
     }
 
-    public Member findById(long memberId) {
+    public Member findById(final long memberId) {
         return memberRepository.findById(memberId).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    public Member checkEmpty(Email email) {
+    public Member checkEmpty(final Email email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    public void checkPresent(Email email) {
+    public void checkPresent(final Email email) {
         findByEmail(email).ifPresent((member) -> {
             throw new MemberException(CONFLICT_MEMBER);
         });

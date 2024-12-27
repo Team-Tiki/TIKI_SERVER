@@ -12,7 +12,7 @@ public class TimeBlockSaver {
 
 	private final TimeBlockRepository timeBlockRepository;
 
-	public TimeBlock save(TimeBlock timeBlock) {
+	public TimeBlock save(final TimeBlock timeBlock) {
 		return timeBlockRepository.save(timeBlock);
 	}
 }

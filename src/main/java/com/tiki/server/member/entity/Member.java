@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Email;
 import com.tiki.server.common.entity.University;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -22,38 +23,42 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Member extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "member_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "member_id")
+	private Long id;
 
-    private Email email;
+	private Email email;
 
-    private String password;
+	@Column(nullable = false)
+	private String password;
 
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    private LocalDate birth;
+	@Column(nullable = false)
+	private LocalDate birth;
 
-    @Enumerated(value = STRING)
-    private University univ;
+	@Column(nullable = false)
+	@Enumerated(value = STRING)
+	private University univ;
 
-    public static Member of(
-            String email,
-            String password,
-            String name,
-            LocalDate birth,
-            University univ) {
-        return Member.builder()
-                .email(Email.from(email))
-                .password(password)
-                .name(name)
-                .birth(birth)
-                .univ(univ)
-                .build();
-    }
+	public static Member of(
+		final String email,
+		final String password,
+		final String name,
+		final LocalDate birth,
+		final University univ) {
+		return Member.builder()
+			.email(Email.from(email))
+			.password(password)
+			.name(name)
+			.birth(birth)
+			.univ(univ)
+			.build();
+	}
 
-    public void resetPassword(String password) {
-        this.password = password;
-    }
+	public void resetPassword(final String password) {
+		this.password = password;
+	}
 }

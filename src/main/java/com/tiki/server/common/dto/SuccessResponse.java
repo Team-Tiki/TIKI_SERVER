@@ -10,16 +10,16 @@ import lombok.Builder;
 
 @Builder(access = PRIVATE)
 public record SuccessResponse<T>(
-	boolean success,
+	@NotNull boolean success,
 	@NotNull String message,
 	@JsonInclude(value = NON_NULL) T data
 ) implements BaseResponse {
 
-	public static <T> SuccessResponse<T> success(String message, T data) {
+	public static <T> SuccessResponse<T> success(final String message, final T data) {
 		return SuccessResponse.<T>builder().success(true).message(message).data(data).build();
 	}
 
-	public static SuccessResponse<?> success(String message) {
+	public static SuccessResponse<?> success(final String message) {
 		return SuccessResponse.builder().success(true).message(message).build();
 	}
 }

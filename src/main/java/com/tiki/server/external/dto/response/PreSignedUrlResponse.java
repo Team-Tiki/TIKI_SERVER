@@ -11,7 +11,7 @@ public record PreSignedUrlResponse(
 	@NotNull String url
 ) {
 
-	public static PreSignedUrlResponse of(String fileName, String url) {
+	public static PreSignedUrlResponse of(final String fileName, final String url) {
 		return PreSignedUrlResponse.builder()
 			.fileName(fileName)
 			.url(url)

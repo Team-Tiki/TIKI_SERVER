@@ -8,7 +8,6 @@ import com.tiki.server.team.entity.Team;
 import com.tiki.server.team.exception.TeamException;
 import com.tiki.server.team.repository.TeamRepository;
 
-import com.tiki.server.team.vo.TeamVO;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -19,12 +18,12 @@ public class TeamFinder {
 
     private final TeamRepository teamRepository;
 
-    public Team findById(long teamId) {
+    public Team findById(final long teamId) {
         return teamRepository.findById(teamId)
                 .orElseThrow(() -> new TeamException(INVALID_TEAM));
     }
 
-    public List<TeamVO> findAllByUniv(University univ) {
-        return teamRepository.findAllByUniv(univ).stream().map(TeamVO::from).toList();
+    public List<Team> findAllByUniv(final University univ) {
+        return teamRepository.findAllByUniv(univ);
     }
 }

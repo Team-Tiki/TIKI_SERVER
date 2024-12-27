@@ -14,7 +14,7 @@ public class DocumentDeleter {
 
 	private final DocumentRepository documentRepository;
 
-	public void deleteAll(List<Document> documents) {
+	public void deleteAll(final List<Document> documents) {
 		documentRepository.deleteAll(documents);
 	}
 }

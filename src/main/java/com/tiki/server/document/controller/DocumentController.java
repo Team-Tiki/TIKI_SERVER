@@ -7,7 +7,7 @@ import static com.tiki.server.document.message.SuccessMessage.SUCCESS_GET_TRASH;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tiki.server.common.dto.SuccessResponse;
-import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
@@ -35,19 +35,22 @@ public class DocumentController implements DocumentControllerDocs {
 	private final DocumentService documentService;
 
 	@Override
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/documents/team/{teamId}/timeline")
-	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
+	public SuccessResponse<DocumentsGetResponse> getAllDocuments(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam final String type
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.getAllDocuments(memberId, teamId, type);
-		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
+		return SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response);
 	}
 
+	@Override
+	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/teams/{teamId}/documents")
-	public ResponseEntity<SuccessResponse<?>> createDocuments(
+	public SuccessResponse<?> createDocuments(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam(required = false) final Long folderId,
@@ -55,61 +58,67 @@ public class DocumentController implements DocumentControllerDocs {
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.createDocuments(memberId, teamId, folderId, request);
-		return ResponseEntity.created(UriGenerator.getUri("teams/" + teamId + "/documents"))
-			.body(SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage()));
+		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage());
 	}
 
+	@Override
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/teams/{teamId}/documents")
-	public ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
+	public SuccessResponse<DocumentsGetResponse> getDocuments(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam(required = false) final Long folderId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DocumentsGetResponse response = documentService.get(memberId, teamId, folderId);
-		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response));
+		return SuccessResponse.success(SUCCESS_GET_DOCUMENTS.getMessage(), response);
 	}
 
+	@Override
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/teams/{teamId}/documents")
-	public ResponseEntity<?> delete(
+	public void delete(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam("documentId") final List<Long> documentIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.delete(memberId, teamId, documentIds);
-		return ResponseEntity.noContent().build();
 	}
 
+	@Override
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/teams/{teamId}/trash")
-	public ResponseEntity<?> deleteTrash(
+	public void deleteTrash(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam("documentId") final List<Long> deletedDocumentIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.deleteTrash(memberId, teamId, deletedDocumentIds);
-		return ResponseEntity.noContent().build();
 	}
 
+	@Override
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PostMapping("/teams/{teamId}/trash")
-	public ResponseEntity<?> restore(
+	public void restore(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam("documentId") final List<Long> deletedDocumentIds
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		documentService.restore(memberId, teamId, deletedDocumentIds);
-		return ResponseEntity.noContent().build();
 	}
 
+	@Override
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/teams/{teamId}/trash")
-	public ResponseEntity<SuccessResponse<DeletedDocumentsGetResponse>> getTrash(
+	public SuccessResponse<DeletedDocumentsGetResponse> getTrash(
 		final Principal principal,
 		@PathVariable final long teamId
 	) {
 		long memberId = Long.parseLong(principal.getName());
 		DeletedDocumentsGetResponse response = documentService.getTrash(memberId, teamId);
-		return ResponseEntity.ok(SuccessResponse.success(SUCCESS_GET_TRASH.getMessage(), response));
+		return SuccessResponse.success(SUCCESS_GET_TRASH.getMessage(), response);
 	}
 }

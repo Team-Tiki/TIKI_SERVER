@@ -1,20 +1,19 @@
 package com.tiki.server.emailverification.controller;
 
-import com.tiki.server.common.dto.BaseResponse;
-
+import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.emailverification.controller.docs.EmailVerificationControllerDocs;
 import com.tiki.server.emailverification.dto.request.EmailRequest;
 import com.tiki.server.emailverification.dto.request.CodeVerificationRequest;
 import com.tiki.server.emailverification.service.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.tiki.server.common.dto.SuccessResponse.success;
-import static com.tiki.server.common.support.UriGenerator.getUri;
 import static com.tiki.server.emailverification.message.SuccessMessage.SUCCESS_SEND_EMAIL;
 import static com.tiki.server.emailverification.message.SuccessMessage.SUCCESS_VALIDATION;
 
@@ -26,21 +25,27 @@ public class EmailVerificationController implements EmailVerificationControllerD
 
     private final EmailVerificationService emailVerificationService;
 
+    @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody EmailRequest mailRequest) {
+    public SuccessResponse<?> sendSignUpMail(@RequestBody final EmailRequest mailRequest) {
         emailVerificationService.sendSignUp(mailRequest);
-        return ResponseEntity.created(getUri("/")).body(success(SUCCESS_SEND_EMAIL.getMessage()));
+        return SuccessResponse.success(SUCCESS_SEND_EMAIL.getMessage());
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/password")
-    public ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest) {
+    public SuccessResponse<?> sendChangingPasswordMail(@RequestBody final EmailRequest mailRequest) {
         emailVerificationService.sendChangingPassword(mailRequest);
-        return ResponseEntity.created(getUri("/")).body(success(SUCCESS_SEND_EMAIL.getMessage()));
+        return SuccessResponse.success(SUCCESS_SEND_EMAIL.getMessage());
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/checking")
-    public ResponseEntity<BaseResponse> checkCode(@RequestBody CodeVerificationRequest codeVerificationRequest) {
+    public SuccessResponse<?> checkCode(@RequestBody final CodeVerificationRequest codeVerificationRequest) {
         emailVerificationService.checkCode(codeVerificationRequest);
-        return ResponseEntity.created(getUri("/")).body(success(SUCCESS_VALIDATION.getMessage()));
+        return SuccessResponse.success(SUCCESS_VALIDATION.getMessage());
     }
 }

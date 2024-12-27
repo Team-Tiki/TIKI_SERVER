@@ -8,6 +8,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.document.exception.DocumentException;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,10 +24,13 @@ public class Folder extends BaseTime {
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String name;
 
+	@Column(nullable = false)
 	private String path;
 
+	@Column(nullable = false)
 	private long teamId;
 
 	public Folder(final String name, final Folder parentFolder, final long teamId) {

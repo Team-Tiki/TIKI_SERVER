@@ -3,7 +3,6 @@ package com.tiki.server.timeblock.controller.docs;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,23 +51,23 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimeBlockCreateResponse>> createTimeBlock(
-		@Parameter(hidden = true) Principal principal,
+	SuccessResponse<TimeBlockCreateResponse> createTimeBlock(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long teamId,
+		@PathVariable final long teamId,
 		@Parameter(
 			name = "type",
 			description = "타임라인 타입",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "executive, member"
-		) @RequestParam String type,
-		@RequestBody TimeBlockCreateRequest request
+		) @RequestParam final String type,
+		@RequestBody final TimeBlockCreateRequest request
 	);
 
 	@Operation(
@@ -97,29 +96,29 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimelineGetResponse>> getTimeline(
-		@Parameter(hidden = true) Principal principal,
+	SuccessResponse<TimelineGetResponse> getTimeline(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long teamId,
+		@PathVariable final long teamId,
 		@Parameter(
 			name = "type",
 			description = "타임라인 타입",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "executive, member"
-		) @RequestParam String type,
+		) @RequestParam final String type,
 		@Parameter(
 			name = "date",
 			description = "조회할 타임라인의 년도와 월 정보",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "2024-07"
-		) @RequestParam String date
+		) @RequestParam final String date
 	);
 
 	@Operation(
@@ -144,22 +143,22 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TimeBlockDetailGetResponse>> getTimeBlockDetail(
-		@Parameter(hidden = true) Principal principal,
+	SuccessResponse<TimeBlockDetailGetResponse> getTimeBlockDetail(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long teamId,
+		@PathVariable final long teamId,
 		@Parameter(
 			name = "timeBlockId",
 			description = "타임 블록 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long timeBlockId
+		@PathVariable final long timeBlockId
 	);
 
 	@Operation(
@@ -184,22 +183,22 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> deleteTimeBlock(
-		@Parameter(hidden = true) Principal principal,
+	void deleteTimeBlock(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long teamId,
+		@PathVariable final long teamId,
 		@Parameter(
 			name = "timeBlockId",
 			description = "타임 블록 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long timeBlockId
+		@PathVariable final long timeBlockId
 	);
 
 	@Operation(
@@ -217,26 +216,26 @@ public interface TimeBlockControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	SuccessResponse<?> createDocumentTag(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "timeBlockId",
 			description = "타임 블록 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long timeBlockId,
+		) @PathVariable final long timeBlockId,
 		@Parameter(
 			name = "documentId",
 			description = "추가할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "[1, 2]"
-		) @RequestParam("documentId") List<Long> documentIds
+		) @RequestParam("documentId") final List<Long> documentIds
 	);
 
 	@Operation(
@@ -253,28 +252,28 @@ public interface TimeBlockControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	SuccessResponse<?> deleteDocumentTag(
-		@Parameter(hidden = true) Principal principal,
+	void deleteDocumentTag(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long teamId,
+		@PathVariable final long teamId,
 		@Parameter(
 			name = "timeBlockId",
 			description = "타임 블록 id",
 			in = ParameterIn.PATH,
 			example = "1"
 		)
-		@PathVariable long timeBlockId,
+		@PathVariable final long timeBlockId,
 		@Parameter(
 			name = "tagId",
 			description = "삭제할 파일 태그 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "[1, 2]"
-		) @RequestParam("tagId") List<Long> tagIds
+		) @RequestParam("tagId") final List<Long> tagIds
 	);
 }

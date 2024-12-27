@@ -12,7 +12,7 @@ public class MemberTeamManagerSaver {
 
     private final MemberTeamManagerRepository memberTeamManagerRepository;
 
-    public void save(MemberTeamManager memberTeamManager) {
+    public void save(final MemberTeamManager memberTeamManager) {
         memberTeamManagerRepository.save(memberTeamManager);
     }
 }

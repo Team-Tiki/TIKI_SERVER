@@ -9,7 +9,7 @@ public class TimeBlockException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public TimeBlockException(ErrorCode errorCode) {
+	public TimeBlockException(final ErrorCode errorCode) {
 		super("[TimeBlockException] : " + errorCode.getMessage());
 		this.errorCode = errorCode;
 	}

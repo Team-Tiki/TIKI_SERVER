@@ -36,7 +36,7 @@ public class TimeBlockFinder {
 			.toList();
 	}
 
-	public boolean existsById(Long timeBlockId) {
+	public boolean existsById(final Long timeBlockId) {
 		return timeBlockRepository.existsById(timeBlockId);
 	}
 }

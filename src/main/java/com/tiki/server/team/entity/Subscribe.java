@@ -13,7 +13,7 @@ public enum Subscribe {
 	private final int memberLimit;
 	private final boolean bannerDiscount;
 
-	Subscribe(int price, double capacity, int memberLimit, boolean bannerDiscount) {
+	Subscribe(final int price, final double capacity, final int memberLimit, final boolean bannerDiscount) {
 		this.price = price;
 		this.capacity = capacity;
 		this.memberLimit = memberLimit;

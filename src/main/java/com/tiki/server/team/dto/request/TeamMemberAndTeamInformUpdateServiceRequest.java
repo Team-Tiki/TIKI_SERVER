@@ -7,7 +7,7 @@ public record TeamMemberAndTeamInformUpdateServiceRequest(
         @NotNull String teamName,
         @NotNull String teamIconUrl
 ) {
-    public static TeamMemberAndTeamInformUpdateServiceRequest from(TeamMemberAndTeamInformUpdateRequest request) {
+    public static TeamMemberAndTeamInformUpdateServiceRequest from(final TeamMemberAndTeamInformUpdateRequest request) {
         return new TeamMemberAndTeamInformUpdateServiceRequest(
                 request.teamMemberName(),
                 request.teamName(),

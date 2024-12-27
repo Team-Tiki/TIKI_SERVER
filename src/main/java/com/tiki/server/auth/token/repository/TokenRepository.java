@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TokenRepository extends CrudRepository<Token, Long> {
 
-    Optional<Token> findById(long id);
+    Optional<Token> findById(final long id);
 }

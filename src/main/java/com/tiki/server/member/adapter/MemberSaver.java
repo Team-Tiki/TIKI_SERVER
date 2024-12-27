@@ -11,7 +11,7 @@ public class MemberSaver {
 
     private final MemberRepository memberRepository;
 
-    public void save(Member member) {
+    public void save(final Member member) {
         memberRepository.save(member);
     }
 }

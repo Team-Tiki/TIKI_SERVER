@@ -10,7 +10,7 @@ public record TimeBlockCreateResponse(
 	@NotNull long timeBlockId
 ) {
 
-	public static TimeBlockCreateResponse of(long timeBlockId) {
+	public static TimeBlockCreateResponse of(final long timeBlockId) {
 		return TimeBlockCreateResponse.builder()
 			.timeBlockId(timeBlockId)
 			.build();

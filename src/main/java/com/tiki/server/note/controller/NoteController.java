@@ -1,9 +1,7 @@
 package com.tiki.server.note.controller;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.common.entity.SortOrder;
-import com.tiki.server.common.support.UriGenerator;
 import com.tiki.server.note.controller.docs.NoteControllerDocs;
 import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
 import com.tiki.server.note.controller.dto.request.NoteFreeUpdateRequest;
@@ -18,14 +16,23 @@ import com.tiki.server.note.service.dto.response.NoteCreateServiceResponse;
 import com.tiki.server.note.service.dto.response.NoteDetailGetServiceResponse;
 import com.tiki.server.note.service.dto.response.NoteListGetServiceResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.note.message.SuccessMessage.*;
 
 @RestController
@@ -35,54 +42,60 @@ public class NoteController implements NoteControllerDocs {
 
     private final NoteService noteService;
 
+    @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/free")
-    public ResponseEntity<SuccessResponse<NoteCreateServiceResponse>> createNoteFree(
+    public SuccessResponse<NoteCreateServiceResponse> createNoteFree(
             final Principal principal,
             @RequestBody final NoteFreeCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         NoteCreateServiceResponse response = noteService.createNoteFree(NoteFreeCreateServiceRequest.of(request, memberId));
-        return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/notes" + response.noteId())
-        ).body(success(CREATE_NOTE.getMessage(), response));
+        return SuccessResponse.success(CREATE_NOTE.getMessage(), response);
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/template")
-    public ResponseEntity<SuccessResponse<NoteCreateServiceResponse>> createNoteTemplate(
+    public SuccessResponse<NoteCreateServiceResponse> createNoteTemplate(
             final Principal principal,
             @RequestBody final NoteTemplateCreateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         NoteCreateServiceResponse response = noteService.createNoteTemplate(NoteTemplateCreateServiceRequest.of(request, memberId));
-        return ResponseEntity.created(
-                UriGenerator.getUri("/api/v1/notes" + response.noteId())
-        ).body(success(CREATE_NOTE.getMessage(), response));
+        return SuccessResponse.success(CREATE_NOTE.getMessage(), response);
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/free/{noteId}")
-    public ResponseEntity<BaseResponse> updateNoteFree(
+    public SuccessResponse<?> updateNoteFree(
             final Principal principal,
             @PathVariable final long noteId,
             @RequestBody final NoteFreeUpdateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         noteService.updateNoteFree(NoteFreeUpdateServiceRequest.of(request, noteId, memberId));
-        return ResponseEntity.ok().body(success(UPDATE_NOTE.getMessage()));
+        return SuccessResponse.success(UPDATE_NOTE.getMessage());
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/template/{noteId}")
-    public ResponseEntity<BaseResponse> updateNoteTemplate(
+    public SuccessResponse<?> updateNoteTemplate(
             final Principal principal,
             @PathVariable final long noteId,
             @RequestBody final NoteTemplateUpdateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
         noteService.updateNoteTemplate(NoteTemplateUpdateServiceRequest.of(request, noteId, memberId));
-        return ResponseEntity.ok().body(success(UPDATE_NOTE.getMessage()));
+        return SuccessResponse.success(UPDATE_NOTE.getMessage());
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{teamId}")
-    public ResponseEntity<SuccessResponse<NoteListGetServiceResponse>> getNote(
+    public SuccessResponse<NoteListGetServiceResponse> getNote(
             final Principal principal,
             @PathVariable long teamId,
             @RequestParam(required = false) LocalDateTime createdAt,
@@ -93,28 +106,31 @@ public class NoteController implements NoteControllerDocs {
             createdAt = (sortOrder == SortOrder.DESC) ? LocalDateTime.now() : LocalDateTime.of(1970, 1, 1, 0, 0);
         }
         NoteListGetServiceResponse response = noteService.getNote(teamId, memberId, createdAt, sortOrder);
-        return ResponseEntity.ok().body(success(GET_NOTE.getMessage(), response));
+        return SuccessResponse.success(GET_NOTE.getMessage(), response);
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{teamId}/{noteId}")
-    public ResponseEntity<SuccessResponse<NoteDetailGetServiceResponse>> getNoteDetail(
+    public SuccessResponse<NoteDetailGetServiceResponse> getNoteDetail(
             final Principal principal,
             @PathVariable final long teamId,
             @PathVariable final long noteId
     ) {
         long memberId = Long.parseLong(principal.getName());
         NoteDetailGetServiceResponse response = noteService.getNoteDetail(teamId, memberId, noteId);
-        return ResponseEntity.ok().body(success(GET_NOTE_DETAIL.getMessage(), response));
+        return SuccessResponse.success(GET_NOTE_DETAIL.getMessage(), response);
     }
 
+    @Override
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{teamId}")
-    public ResponseEntity<SuccessResponse<Void>> deleteNotes(
+    public void deleteNotes(
             final Principal principal,
-            @PathVariable long teamId,
-            @RequestParam List<Long> noteIds
+            @PathVariable final long teamId,
+            @RequestParam final List<Long> noteIds
     ) {
         long memberId = Long.parseLong(principal.getName());
         noteService.deleteNotes(noteIds, teamId, memberId);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -1,10 +1,8 @@
 package com.tiki.server.external.controller.docs;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
@@ -19,7 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "S3", description = "AWS S3 API")
-public interface FileeHandlerControllerDocs {
+public interface FileHandlerControllerDocs {
 
 	@Operation(
 		summary = "Presigned Url 생성",
@@ -35,13 +33,13 @@ public interface FileeHandlerControllerDocs {
 				description = "S3 PRESIGNED URL 불러오기 실패",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<PreSignedUrlResponse>> getPreSignedUrl(
+	SuccessResponse<PreSignedUrlResponse> getPreSignedUrl(
 		@Parameter(
 			name = "fileFormat",
 			description = "파일 형식",
 			in = ParameterIn.QUERY,
 			example = "hwp, pdf, ..."
-		) @RequestParam String fileFormat
+		) @RequestParam final String fileFormat
 	);
 
 	@Operation(
@@ -58,7 +56,7 @@ public interface FileeHandlerControllerDocs {
 				description = "S3 버킷의 파일 삭제 실패",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> deleteFile(
-		@RequestBody S3DeleteRequest request
+	SuccessResponse<?> deleteFile(
+		@RequestBody final S3DeleteRequest request
 	);
 }

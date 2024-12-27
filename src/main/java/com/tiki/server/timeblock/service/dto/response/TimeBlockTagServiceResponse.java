@@ -2,10 +2,12 @@ package com.tiki.server.timeblock.service.dto.response;
 
 import com.tiki.server.timeblock.entity.TimeBlock;
 
+import jakarta.validation.constraints.NotNull;
+
 public record TimeBlockTagServiceResponse(
-        long id,
-        String name,
-        String color
+        @NotNull long id,
+        @NotNull String name,
+        @NotNull String color
 ) {
 
     public static TimeBlockTagServiceResponse from(final TimeBlock timeBlock){

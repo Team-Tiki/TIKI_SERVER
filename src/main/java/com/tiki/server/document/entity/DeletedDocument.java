@@ -27,18 +27,23 @@ public class DeletedDocument extends BaseTime {
 	@Column(name = "deleted_document_id")
 	private Long id;
 
+	@Column(nullable = false)
 	private String fileName;
 
+	@Column(nullable = false)
 	private String fileUrl;
 
+	@Column(nullable = false)
 	private String fileKey;
 
+	@Column(nullable = false)
 	private long teamId;
 
+	@Column(nullable = false)
 	private double capacity;
 
-	public static DeletedDocument of(final String fileName, final String fileUrl, final long teamId,
-			final double capacity) {
+	public static DeletedDocument of(
+		final String fileName, final String fileUrl, final long teamId, final double capacity) {
 		return DeletedDocument.builder()
 			.fileName(fileName)
 			.fileUrl(fileUrl)

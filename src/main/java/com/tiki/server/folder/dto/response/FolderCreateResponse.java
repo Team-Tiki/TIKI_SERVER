@@ -10,7 +10,7 @@ public record FolderCreateResponse(
 	@NotNull long folderId
 ) {
 
-	public static FolderCreateResponse from(long folderId) {
+	public static FolderCreateResponse from(final long folderId) {
 		return FolderCreateResponse.builder()
 			.folderId(folderId)
 			.build();

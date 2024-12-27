@@ -28,9 +28,9 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
+            @NonNull final HttpServletRequest request,
+            @NonNull final HttpServletResponse response,
+            @NonNull final FilterChain filterChain
     ) throws IOException {
         try {
             filterChain.doFilter(request, response);
@@ -43,7 +43,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         }
     }
 
-    private void setResponse(HttpServletResponse response, ErrorCode errorCode)
+    private void setResponse(final HttpServletResponse response, final ErrorCode errorCode)
             throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
