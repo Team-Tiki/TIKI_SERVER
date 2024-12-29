@@ -70,12 +70,13 @@ public class Team extends BaseTime {
     public static Team of(final TeamCreateRequest request, final University univ) {
         return Team.builder()
                 .name(request.name())
+                .overview("")
                 .category(request.category())
                 .univ(univ)
                 .subscribe(BASIC)
                 .usage(INIT_NUM)
-                .namingUpdatedAt(null)
                 .iconImageUrl(request.iconImageUrl())
+                .namingUpdatedAt(null)
                 .build();
     }
 
