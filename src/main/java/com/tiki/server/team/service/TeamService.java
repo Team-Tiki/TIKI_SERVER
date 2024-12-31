@@ -12,7 +12,7 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
-import com.tiki.server.team.dto.request.TeamMemberAndTeamInformUpdateServiceRequest;
+import com.tiki.server.team.dto.request.TeamInformUpdateServiceRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -93,14 +93,9 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateTeamAndTeamMemberInform(
-            final long memberId,
-            final long teamId,
-            final TeamMemberAndTeamInformUpdateServiceRequest request
-    ) {
-        MemberTeamManager memberTeamManager = checkIsAdmin(memberId, teamId);
-        memberTeamManager.updateName(request.teamMemberName());
-        Team team = teamFinder.findById(teamId);
+    public void updateTeamInform(final TeamInformUpdateServiceRequest request) {
+        checkIsAdmin(request.memberId(), request.teamId());
+        Team team = teamFinder.findById(request.teamId());
         team.updateInform(request.teamName(), request.teamIconUrl());
         updateIconUrlS3(team, request.teamIconUrl());
     }

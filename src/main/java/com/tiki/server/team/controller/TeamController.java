@@ -10,8 +10,8 @@ import static com.tiki.server.team.message.SuccessMessage.SUCCESS_UPDATE_TEAM_NA
 
 import java.security.Principal;
 
-import com.tiki.server.team.dto.request.TeamMemberAndTeamInformUpdateRequest;
-import com.tiki.server.team.dto.request.TeamMemberAndTeamInformUpdateServiceRequest;
+import com.tiki.server.team.dto.request.TeamInformUpdateRequest;
+import com.tiki.server.team.dto.request.TeamInformUpdateServiceRequest;
 import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
@@ -86,13 +86,13 @@ public class TeamController implements TeamControllerDocs {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{teamId}/inform")
-    public SuccessResponse<?> updateTeamAndTeamMemberInform(
+    public SuccessResponse<?> updateTeamInform(
             final Principal principal,
             @PathVariable final long teamId,
-            @RequestBody final TeamMemberAndTeamInformUpdateRequest request
+            @RequestBody final TeamInformUpdateRequest request
     ) {
         long memberId = Long.parseLong(principal.getName());
-        teamService.updateTeamAndTeamMemberInform(memberId, teamId, TeamMemberAndTeamInformUpdateServiceRequest.from(request));
+        teamService.updateTeamInform(TeamInformUpdateServiceRequest.from(request,memberId,teamId));
         return SuccessResponse.success(SUCCESS_UPDATE_TEAM_NAME.getMessage());
     }
 
