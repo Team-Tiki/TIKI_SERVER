@@ -37,9 +37,11 @@ public class MailSender {
         javaMailSender.send(message);
     }
 
-    public void sendTeamInvitationMail(final String email, final long teamId) {
+    public void sendTeamInvitationMail(final String email,final String senderName, final String teamName, final long teamId) {
         Map<String, String> map = new HashMap<>();
         map.put("teamId", String.format("%d",teamId));
+        map.put("teamName", teamName);
+        map.put("senderName", senderName);
         MimeMessage message = makeMessage(email, MAIL_INVITE_TEAM_MEMBER, INVITE_TEAM_MEMBER_TEMPLATE_NAME, map);
         javaMailSender.send(message);
     }
