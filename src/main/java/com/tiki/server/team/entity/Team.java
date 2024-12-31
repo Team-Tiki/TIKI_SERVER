@@ -76,13 +76,17 @@ public class Team extends BaseTime {
                 .subscribe(BASIC)
                 .usage(INIT_NUM)
                 .iconImageUrl(request.iconImageUrl())
-                .namingUpdatedAt(null)
+                .namingUpdatedAt(LocalDate.now())
                 .build();
     }
 
     public void updateInform(final String name, final String iconImageUrl) {
-        updateTeamName(name);
-        updateIconImageUrl(iconImageUrl);
+        if (!name.equals(this.name)) {
+            updateTeamName(name);
+        }
+        if(!iconImageUrl.equals(this.iconImageUrl)){
+            updateIconImageUrl(iconImageUrl);
+        }
     }
 
     private void updateTeamName(final String name) {
@@ -121,9 +125,6 @@ public class Team extends BaseTime {
     }
 
     private boolean canChangeName() {
-        if (namingUpdatedAt == null) {
-            return true;
-        }
         long daysBetween = ChronoUnit.DAYS.between(namingUpdatedAt, LocalDate.now());
         return daysBetween >= 30;
     }
