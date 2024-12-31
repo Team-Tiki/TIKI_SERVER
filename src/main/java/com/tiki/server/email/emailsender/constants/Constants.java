@@ -10,12 +10,10 @@ public class Constants {
     public static final String MAIL_VERIFICATION_CODE = "[Ti.Ki] 회원가입: 이메일 인증번호 안내";
     public static final String MAIL_PASSWORD_CHANGING_CODE = "[Ti.Ki] 비밀번호 재설정: 이메일 인증번호 안내";
     public static final String MAIL_INVITE_TEAM_MEMBER = "[Ti.Ki] 워크스페이스 초대 안내";
-    public static final String VERIFICATION_TEMPLATE_NAME = "verification";
+    public static final String VERIFICATION_TEMPLATE_NAME = "signup";
     public static final String CHANGE_PASSWORD_TEMPLATE_NAME = "changePassword";
-    public static final String INVITE_TEAM_MEMBER_TEMPLATE_NAME = "inviteTeamMember";
+    public static final String INVITE_TEAM_MEMBER_TEMPLATE_NAME = "invitation";
     public static final String PAGE_LOGO_IMAGE_VAR = "image";
-    public static final String CERTIFICATION_PAGE_CODEE_VAR = "code";
-    public static final String CERTIFICATION_PAGE_NAME = "name";
 
     /* 이메일 초대 관련 상수 */
 }
