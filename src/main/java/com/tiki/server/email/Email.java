@@ -31,4 +31,12 @@ public class Email {
             throw new MemberException(INVALID_EMAIL);
         }
     }
+
+    @Override
+    public boolean equals(Object target) {
+        if (this == target) return true;
+        if (target == null || getClass() != target.getClass()) return false;
+        Email targetEmail = (Email) target;
+        return email.equals(targetEmail.email);
+    }
 }
