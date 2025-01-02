@@ -1,5 +1,7 @@
 package com.tiki.server.email.emailsender.service;
 
+import static com.tiki.server.memberteammanager.message.ErrorCode.CONFLICT_TEAM_MEMBER;
+
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.email.emailsender.entity.MailSender;
 import com.tiki.server.email.emailsender.service.dto.EmailServiceRequest;
@@ -13,17 +15,16 @@ import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.memberteammanager.exception.MemberTeamManagerException;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class EmailSenderService {
 
     private final MemberFinder memberFinder;
@@ -60,12 +61,20 @@ public class EmailSenderService {
                 request.teamId());
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
         Team team = teamFinder.findById(request.teamId());
+        checkIsPresentTeamMember(request);
         mailSender.sendTeamInvitationMail(
                 request.email().getEmail(),
                 memberTeamManager.getName(),
                 team.getName(),
                 request.teamId()
         );
-        teamInvitationSaver.createTeamInvitation(TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.email()));
+        teamInvitationSaver.createTeamInvitation(
+                TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.email()));
+    }
+
+    private void checkIsPresentTeamMember(final TeamInvitationCreateServiceRequest request) {
+        if (memberTeamManagerFinder.existsByTeamIdAndMemberEmail(request.teamId(), request.email())) {
+            throw new MemberTeamManagerException(CONFLICT_TEAM_MEMBER);
+        }
     }
 }
