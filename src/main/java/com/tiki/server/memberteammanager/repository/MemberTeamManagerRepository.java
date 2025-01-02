@@ -16,7 +16,7 @@ public interface MemberTeamManagerRepository extends JpaRepository<MemberTeamMan
 
     List<MemberTeamManager> findAllByTeamId(final long teamId);
 
-    List<MemberTeamManager>  findAllByMemberId(final long memberId);
+    List<MemberTeamManager> findAllByMemberId(final long memberId);
 
     @Query("SELECT m.name AS memberName, m.email AS memberEmail, mtm.position AS memberPosition " +
             "FROM MemberTeamManager mtm " +
@@ -29,5 +29,4 @@ public interface MemberTeamManagerRepository extends JpaRepository<MemberTeamMan
             "JOIN Member m ON mtm.memberId = m.id " +
             "WHERE mtm.teamId = :teamId AND m.email = :email")
     boolean existsByTeamIdAndMemberEmail(final long teamId, final Email email);
-
 }
