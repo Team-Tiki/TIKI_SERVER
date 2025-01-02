@@ -3,6 +3,7 @@ package com.tiki.server.memberteammanager.adapter;
 import static com.tiki.server.memberteammanager.message.ErrorCode.INVALID_MEMBER_TEAM_MANAGER;
 
 import com.tiki.server.common.support.RepositoryAdapter;
+import com.tiki.server.email.Email;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.memberteammanager.exception.MemberTeamManagerException;
 import com.tiki.server.memberteammanager.repository.MemberTeamManagerRepository;
@@ -37,5 +38,9 @@ public class MemberTeamManagerFinder {
 
     public boolean checkIsPresent(final long memberId, final long teamId) {
         return memberTeamManagerRepository.findByMemberIdAndTeamId(memberId, teamId).isPresent();
+    }
+
+    public boolean existsByTeamIdAndMemberEmail(final long teamId, final Email email){
+        return memberTeamManagerRepository.existsByTeamIdAndMemberEmail(teamId,email);
     }
 }

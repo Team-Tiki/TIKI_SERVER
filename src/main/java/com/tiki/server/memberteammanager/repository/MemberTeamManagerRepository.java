@@ -1,5 +1,6 @@
 package com.tiki.server.memberteammanager.repository;
 
+import com.tiki.server.email.Email;
 import com.tiki.server.memberteammanager.repository.projection.TeamMemberInformGetProjection;
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +16,18 @@ public interface MemberTeamManagerRepository extends JpaRepository<MemberTeamMan
 
     List<MemberTeamManager> findAllByTeamId(final long teamId);
 
-    @Query("select m from MemberTeamManager m join fetch m.team t where m.member.id = :memberId")
-    List<MemberTeamManager> findAllBelongTeamByMemberId(long memberId);
+    List<MemberTeamManager>  findAllByMemberId(final long memberId);
 
     @Query("SELECT m.name AS memberName, m.email AS memberEmail, mtm.position AS memberPosition " +
             "FROM MemberTeamManager mtm " +
-            "JOIN mtm.member m " +
-            "WHERE mtm.team.id = :teamId")
+            "JOIN Member m ON mtm.memberId = m.id " +
+            "WHERE mtm.teamId = :teamId")
     List<TeamMemberInformGetProjection> findTeamMembersByTeamId(final long teamId);
+
+    @Query("SELECT CASE WHEN COUNT(mtm) > 0 THEN true ELSE false END " +
+            "FROM MemberTeamManager mtm " +
+            "JOIN Member m ON mtm.memberId = m.id " +
+            "WHERE mtm.teamId = :teamId AND m.email = :email")
+    boolean existsByTeamIdAndMemberEmail(final long teamId, final Email email);
+
 }
