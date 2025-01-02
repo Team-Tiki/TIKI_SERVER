@@ -15,6 +15,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @Entity
 @Builder
@@ -27,11 +29,15 @@ public class TeamInvitation extends BaseTime {
     @Column(name = "invitation_id")
     private Long id;
 
+    private String sender;
+
     private long teamId;
 
     private Email email;
 
-    public static TeamInvitation of(final long teamId, final Email email) {
-        return TeamInvitation.builder().teamId(teamId).email(email).build();
+    private LocalDate expiredDate;
+
+    public static TeamInvitation of(final String sender, final long teamId, final Email email) {
+        return TeamInvitation.builder().sender(sender).teamId(teamId).email(email).expiredDate(LocalDate.now()).build();
     }
 }
