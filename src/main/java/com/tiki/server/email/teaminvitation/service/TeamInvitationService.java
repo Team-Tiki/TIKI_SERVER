@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.tiki.server.email.teaminvitation.messages.ErrorCode.ALREADY_INVITED_MEMBER;
 import static com.tiki.server.email.teaminvitation.messages.ErrorCode.NOT_MATCHED_MEMBER_INFORM;
@@ -39,6 +40,7 @@ public class TeamInvitationService {
         return TeamInvitationInformGetResponse.of(invitation, team);
     }
 
+    @Transactional
     public void createTeamMemberFromInvitation(final long memberId, final long teamId, final long invitationId) {
         checkIsPresentTeamMember(memberId, teamId);
         Member member = memberFinder.findById(memberId);
@@ -46,6 +48,7 @@ public class TeamInvitationService {
         TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         checkMemberMatched(invitation, member);
         memberTeamManagerSaver.save(MemberTeamManager.of(member, team, Position.EXECUTIVE));
+        teamInvitationDeleter.deleteTeamInvitation(invitation);
     }
 
     public void deleteTeamInvitationFromAdmin(final long memberId, final long teamId, final long invitationId) {
