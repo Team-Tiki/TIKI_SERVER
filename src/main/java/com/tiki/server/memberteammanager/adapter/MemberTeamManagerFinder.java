@@ -34,4 +34,8 @@ public class MemberTeamManagerFinder {
     public List<TeamMemberInformGetProjection> findNameAndEmailByMemberIdAndTeamId(long teamId) {
         return memberTeamManagerRepository.findTeamMembersByTeamId(teamId);
     }
+
+    public boolean checkIsPresent(final long memberId, final long teamId) {
+        return memberTeamManagerRepository.findByMemberIdAndTeamId(memberId, teamId).isPresent();
+    }
 }

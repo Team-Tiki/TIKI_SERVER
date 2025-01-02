@@ -20,6 +20,10 @@ spring:
     redis:
       host: ${REDIS.host}
       port: 6379
+  task:
+    scheduling:
+      pool:
+        size: 1
   mail:
     host: smtp.gmail.com
     port: 587
