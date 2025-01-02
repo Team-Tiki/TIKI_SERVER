@@ -52,7 +52,7 @@ public class TeamInvitationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping("/team-member")
     public SuccessResponse<?> createTeamMemberFromInvitation(
             Principal principal,
             @RequestParam final long teamId,
