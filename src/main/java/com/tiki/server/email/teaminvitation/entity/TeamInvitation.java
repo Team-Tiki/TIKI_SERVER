@@ -40,4 +40,8 @@ public class TeamInvitation extends BaseTime {
     public static TeamInvitation of(final String sender, final long teamId, final Email email) {
         return TeamInvitation.builder().sender(sender).teamId(teamId).email(email).expiredDate(LocalDate.now()).build();
     }
+
+    public String getEmailToString(){
+        return email.getEmail();
+    }
 }
