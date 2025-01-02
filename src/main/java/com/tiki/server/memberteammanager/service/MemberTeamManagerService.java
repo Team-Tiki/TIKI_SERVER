@@ -29,7 +29,6 @@ public class MemberTeamManagerService {
     private final NoteFinder noteFinder;
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
-    private final MemberTeamManagerSaver memberTeamManagerSaver;
 
     @Transactional
     public void kickOutMemberFromTeam(final long memberId, final long teamId, final long kickOutMemberId) {
