@@ -38,11 +38,11 @@ public class EmailSenderController implements EmailSenderControllerDocs {
     public SuccessResponse<?> sendInvitationMail(
             Principal principal,
             @PathVariable long teamId,
-            @RequestBody EmailRequest emailRequest
+            @RequestBody EmailRequest targetEmailRequest
     ) {
         long memberId = Long.parseLong(principal.getName());
         emailSenderService.createTeamInvitation(
-                TeamInvitationCreateServiceRequest.of(emailRequest.email(), teamId, memberId));
+                TeamInvitationCreateServiceRequest.of(targetEmailRequest.email(), teamId, memberId));
         return SuccessResponse.success(SuccessMessage.SUCCESS_SEND_EMAIL.getMessage());
     }
 }
