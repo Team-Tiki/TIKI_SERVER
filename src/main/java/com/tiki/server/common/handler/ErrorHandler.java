@@ -3,6 +3,7 @@ package com.tiki.server.common.handler;
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
 import com.tiki.server.email.emailsender.exception.EmailSenderException;
+import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.verification.exception.EmailVerificationException;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;
@@ -89,6 +90,13 @@ public class ErrorHandler {
 
     @ExceptionHandler(EmailSenderException.class)
     public ResponseEntity<BaseResponse> mailException(EmailSenderException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(TeamInvitationException.class)
+    public ResponseEntity<BaseResponse> teamInvitationException(TeamInvitationException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
