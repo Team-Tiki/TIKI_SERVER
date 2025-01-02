@@ -9,7 +9,7 @@ public class TeamInvitationException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public TeamInvitationException(ErrorCode errorCode) {
-        super("[TeamException] : " + errorCode.getMessage());
+        super("[TeamInvitationException] : " + errorCode.getMessage());
         this.errorCode = errorCode;
     }
 }
