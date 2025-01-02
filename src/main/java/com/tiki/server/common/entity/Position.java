@@ -12,11 +12,11 @@ public enum Position {
 
 	private final int authorization;
 
-	Position(int authorization) {
+	Position(final int authorization) {
 		this.authorization = authorization;
 	}
 
-	public static Position getAccessiblePosition(String type) {
+	public static Position getAccessiblePosition(final String type) {
 		return switch (type) {
 			case "executive" -> EXECUTIVE;
 			case "member" -> MEMBER;

@@ -43,7 +43,7 @@ public class AuthService {
     private final TokenFinder tokenFinder;
     private final PasswordEncoder passwordEncoder;
 
-    public SignInGetResponse signIn(SignInRequest request) {
+    public SignInGetResponse signIn(final SignInRequest request) {
         Member member = checkMemberEmpty(request);
         checkPasswordMatching(member, request.password());
         Authentication authentication = createAuthentication(member.getId());
@@ -53,7 +53,7 @@ public class AuthService {
         return SignInGetResponse.from(accessToken, refreshToken);
     }
 
-    public ReissueGetResponse reissueToken(HttpServletRequest request) {
+    public ReissueGetResponse reissueToken(final HttpServletRequest request) {
         String refreshToken = jwtProvider.getTokenFromRequest(request);
         checkTokenEmpty(refreshToken);
         long memberId = jwtProvider.getUserFromJwt(refreshToken);
@@ -64,17 +64,17 @@ public class AuthService {
         return ReissueGetResponse.from(accessToken);
     }
 
-    private Member checkMemberEmpty(SignInRequest request) {
+    private Member checkMemberEmpty(final SignInRequest request) {
         return memberFinder.findByEmail(Email.from(request.email())).orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
-    private void checkTokenEmpty(String token) {
+    private void checkTokenEmpty(final String token) {
         if (StringUtils.isEmpty(token)) {
             throw new AuthException(EMPTY_JWT);
         }
     }
 
-    private void checkRefreshToken(String getRefreshToken, Token token) {
+    private void checkRefreshToken(final String getRefreshToken, final Token token) {
         log.info("받은 토큰 : " + getRefreshToken);
         log.info("저장 토큰 : " + token.refreshToken());
         if (!token.refreshToken().equals(getRefreshToken)) {
@@ -82,13 +82,13 @@ public class AuthService {
         }
     }
 
-    private void checkPasswordMatching(Member member, String password) {
+    private void checkPasswordMatching(final Member member, final String password) {
         if (!passwordEncoder.matches(password, member.getPassword())) {
             throw new MemberException(UNMATCHED_PASSWORD);
         }
     }
 
-    private Authentication createAuthentication(long memberId) {
+    private Authentication createAuthentication(final long memberId) {
         return new UserAuthentication(memberId, null, null);
     }
 }

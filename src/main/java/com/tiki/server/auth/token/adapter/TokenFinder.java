@@ -16,7 +16,7 @@ public class TokenFinder {
 
     private final TokenRepository tokenRepository;
 
-    public Token findById(long id) {
+    public Token findById(final long id) {
         return tokenRepository.findById(id).orElseThrow(() -> new AuthException(UNAUTHORIZED_USER));
     }
 }

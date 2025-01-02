@@ -9,7 +9,7 @@ public class DocumentException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public DocumentException(ErrorCode errorCode) {
+	public DocumentException(final ErrorCode errorCode) {
 		super("[DocumentException] : " + errorCode.getMessage());
 		this.errorCode = errorCode;
 	}

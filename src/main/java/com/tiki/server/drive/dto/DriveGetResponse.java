@@ -55,7 +55,7 @@ public record DriveGetResponse(
 		@NotNull String type
 	) {
 
-		private static FolderGetResponse from(Folder folder) {
+		private static FolderGetResponse from(final Folder folder) {
 			return FolderGetResponse.builder()
 				.folderId(folder.getId())
 				.name(folder.getName())

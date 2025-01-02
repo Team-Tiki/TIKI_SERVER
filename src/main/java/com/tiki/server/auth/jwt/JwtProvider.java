@@ -21,7 +21,7 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String getTokenFromRequest(HttpServletRequest request) {
+    public String getTokenFromRequest(final HttpServletRequest request) {
         String accessToken = request.getHeader(Constants.AUTHORIZATION);
         if (!StringUtils.hasText(accessToken) || !accessToken.startsWith(Constants.BEARER)) {
             return null;
@@ -29,7 +29,7 @@ public class JwtProvider {
         return accessToken.substring(Constants.BEARER.length());
     }
 
-    public long getUserFromJwt(String token) {
+    public long getUserFromJwt(final String token) {
         Claims claims = getBodyFromJwt(token);
         return Long.parseLong(claims.get("memberId").toString());
     }

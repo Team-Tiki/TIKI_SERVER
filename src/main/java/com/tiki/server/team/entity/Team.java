@@ -40,19 +40,25 @@ public class Team extends BaseTime {
     @Column(name = "team_id")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String overview;
 
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private Category category;
 
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private University univ;
 
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private Subscribe subscribe;
 
+    @Column(nullable = false)
     private double usage;
 
     private String imageUrl;
@@ -61,21 +67,26 @@ public class Team extends BaseTime {
 
     private LocalDate namingUpdatedAt;
 
-    public static Team of(TeamCreateRequest request, University univ) {
+    public static Team of(final TeamCreateRequest request, final University univ) {
         return Team.builder()
                 .name(request.name())
+                .overview("")
                 .category(request.category())
                 .univ(univ)
                 .subscribe(BASIC)
                 .usage(INIT_NUM)
-                .namingUpdatedAt(null)
                 .iconImageUrl(request.iconImageUrl())
+                .namingUpdatedAt(LocalDate.now())
                 .build();
     }
 
     public void updateInform(final String name, final String iconImageUrl) {
-        updateTeamName(name);
-        updateIconImageUrl(iconImageUrl);
+        if (!name.equals(this.name)) {
+            updateTeamName(name);
+        }
+        if(!iconImageUrl.equals(this.iconImageUrl)){
+            updateIconImageUrl(iconImageUrl);
+        }
     }
 
     private void updateTeamName(final String name) {
@@ -98,14 +109,14 @@ public class Team extends BaseTime {
         return this.iconImageUrl.equals(iconImageUrl);
     }
 
-    public void addUsage(double capacity) {
+    public void addUsage(final double capacity) {
         if (usage + capacity > subscribe.getCapacity()) {
             throw new TeamException(EXCEED_TEAM_CAPACITY);
         }
         usage += capacity;
     }
 
-    public void restoreUsage(double capacity) {
+    public void restoreUsage(final double capacity) {
         usage -= capacity;
     }
 
@@ -114,9 +125,6 @@ public class Team extends BaseTime {
     }
 
     private boolean canChangeName() {
-        if (namingUpdatedAt == null) {
-            return true;
-        }
         long daysBetween = ChronoUnit.DAYS.between(namingUpdatedAt, LocalDate.now());
         return daysBetween >= 30;
     }

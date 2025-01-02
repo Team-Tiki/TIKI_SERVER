@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    List<Team> findAllByUniv(University university);
+    List<Team> findAllByUniv(final University university);
 }

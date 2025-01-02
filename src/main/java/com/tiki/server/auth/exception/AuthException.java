@@ -9,7 +9,7 @@ public class AuthException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public AuthException(ErrorCode errorCode) {
+	public AuthException(final ErrorCode errorCode) {
 		super("[AuthException] : " + errorCode.getMessage());
 		this.errorCode = errorCode;
 	}

@@ -28,20 +28,27 @@ public class Note extends BaseTime {
     @Column(name = "note_id")
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private boolean complete;
 
+    @Column(nullable = false)
     private LocalDate startDate;
 
+    @Column(nullable = false)
     private LocalDate endDate;
 
     private Long memberId;
 
+    @Column(nullable = false)
     private long teamId;
 
+    @Column(nullable = false)
     private String contents;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private NoteType noteType;
 

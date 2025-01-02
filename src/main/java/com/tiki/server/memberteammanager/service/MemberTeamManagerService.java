@@ -71,7 +71,7 @@ public class MemberTeamManagerService {
         }
     }
 
-    private void checkIsNotAdmin(MemberTeamManager memberTeamManager) {
+    private void checkIsNotAdmin(final MemberTeamManager memberTeamManager) {
         if (memberTeamManager.getPosition().equals(ADMIN)) {
             throw new TeamException(TOO_HIGH_AUTHORIZATION);
         }

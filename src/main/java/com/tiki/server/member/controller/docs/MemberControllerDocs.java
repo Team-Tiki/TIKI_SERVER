@@ -1,6 +1,5 @@
 package com.tiki.server.member.controller.docs;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.member.dto.request.PasswordChangeRequest;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
@@ -48,7 +46,7 @@ public interface MemberControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> signUp(@RequestBody MemberProfileCreateRequest request);
+	SuccessResponse<?> signUp(@RequestBody final MemberProfileCreateRequest request);
 
 	@Operation(
 		summary = "소속 팀 가져오기",
@@ -68,8 +66,8 @@ public interface MemberControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<BelongTeamsGetResponse>> getBelongTeam(
-		@Parameter(hidden = true) Principal principal
+	SuccessResponse<BelongTeamsGetResponse> getBelongTeam(
+		@Parameter(hidden = true) final Principal principal
 	);
 
 	@Operation(
@@ -94,7 +92,7 @@ public interface MemberControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> changePassword(
-		@RequestBody PasswordChangeRequest passwordChangeRequest
+	SuccessResponse<?> changePassword(
+		@RequestBody final PasswordChangeRequest passwordChangeRequest
 	);
 }

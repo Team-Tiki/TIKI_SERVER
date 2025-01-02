@@ -9,7 +9,7 @@ public class MemberException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-    public MemberException(ErrorCode errorCode) {
+    public MemberException(final ErrorCode errorCode) {
         super("[MemberException] : " + errorCode.getMessage());
         this.errorCode = errorCode;
     }

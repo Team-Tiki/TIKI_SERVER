@@ -66,6 +66,6 @@ public class EmailSenderService {
                 team.getName(),
                 request.teamId()
         );
-        teamInvitationSaver.createTeamInvitation(TeamInvitation.of(request.teamId(), request.email()));
+        teamInvitationSaver.createTeamInvitation(TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.email()));
     }
 }

@@ -1,7 +1,7 @@
 package com.tiki.server.email.teaminvitation.service;
 
 import com.tiki.server.common.entity.Position;
-import com.tiki.server.email.exception.TeamInvitationException;
+import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.teaminvitation.adapter.TeamInvitationDeleter;
 import com.tiki.server.email.teaminvitation.adapter.TeamInvitationFinder;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;

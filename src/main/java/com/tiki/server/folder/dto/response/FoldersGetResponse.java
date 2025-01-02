@@ -15,7 +15,7 @@ public record FoldersGetResponse(
 	@NotNull List<FolderInfoGetResponse> folders
 ) {
 
-	public static FoldersGetResponse from(List<Folder> folders) {
+	public static FoldersGetResponse from(final List<Folder> folders) {
 		return FoldersGetResponse.builder()
 				.folders(folders.stream().map(FolderInfoGetResponse::from).toList())
 				.build();
@@ -29,7 +29,7 @@ public record FoldersGetResponse(
 		@NotNull String path
 	) {
 
-		private static FolderInfoGetResponse from(Folder folder) {
+		private static FolderInfoGetResponse from(final Folder folder) {
 			return FolderInfoGetResponse.builder()
 					.id(folder.getId())
 					.name(folder.getName())

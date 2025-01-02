@@ -2,7 +2,6 @@ package com.tiki.server.memberteammanager.entity;
 
 import static com.tiki.server.memberteammanager.message.ErrorCode.*;
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
@@ -18,8 +17,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,29 +34,29 @@ public class MemberTeamManager extends BaseTime {
 	@Column(name = "manager_id")
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "member_id")
-	private Member member;
+	@Column(nullable = false)
+	private long memberId;
 
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "team_id")
-	private Team team;
+	@Column(nullable = false)
+	private long teamId;
 
+	@Column(nullable = false)
 	private String name;
 
+	@Column(nullable = false)
 	@Enumerated(value = STRING)
 	private Position position;
 
-	public static MemberTeamManager of(Member member, Team team, Position position) {
+	public static MemberTeamManager of(final Member member, final Team team, final Position position) {
 		return MemberTeamManager.builder()
-			.member(member)
-			.team(team)
+			.memberId(member.getId())
+			.teamId(team.getId())
 			.name(member.getName())
 			.position(position)
 			.build();
 	}
 
-	public void checkMemberAccessible(Position accesiblePosition) {
+	public void checkMemberAccessible(final Position accesiblePosition) {
 		if (this.position.getAuthorization() > accesiblePosition.getAuthorization()) {
 			throw new MemberTeamManagerException(INVALID_AUTHORIZATION);
 		}

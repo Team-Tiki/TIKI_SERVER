@@ -3,7 +3,6 @@ package com.tiki.server.document.controller.docs;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,21 +46,21 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<DocumentsGetResponse>> getAllDocuments(
-		@Parameter(hidden = true) Principal principal,
+	SuccessResponse<DocumentsGetResponse> getAllDocuments(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "type",
 			description = "타임라인 타입",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "executive, member"
-		) @RequestParam String type
+		) @RequestParam final String type
 	);
 
 	@Operation(
@@ -78,20 +77,20 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<?>> createDocuments(
-		@Parameter(hidden = true) Principal principal,
+	SuccessResponse<?> createDocuments(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "생성할 파일이 속할 폴더 id",
 			in = ParameterIn.QUERY,
 			example = "1"
-		) @RequestParam Long folderId,
+		) @RequestParam final Long folderId,
 		@RequestBody final DocumentsCreateRequest request
 	);
 
@@ -109,20 +108,20 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<DocumentsGetResponse>> getDocuments(
+	SuccessResponse<DocumentsGetResponse> getDocuments(
 		@Parameter(hidden = true) Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "folderId",
 			description = "조회할 폴더 id (최상단은 비워두기)",
 			in = ParameterIn.QUERY,
 			example = "1"
-		) @RequestParam Long folderId
+		) @RequestParam final Long folderId
 	);
 
 	@Operation(
@@ -139,21 +138,21 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> delete(
-		@Parameter(hidden = true) Principal principal,
+	void delete(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "documentId",
 			description = "삭제할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "[1, 2]"
-		) @RequestParam("documentId") List<Long> documentIds
+		) @RequestParam("documentId") final List<Long> documentIds
 	);
 
 	@Operation(
@@ -170,21 +169,21 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> deleteTrash(
-		@Parameter(hidden = true) Principal principal,
+	void deleteTrash(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "documentId",
 			description = "삭제할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "[1, 2]"
-		) @RequestParam("documentId") List<Long> deletedDocumentIds
+		) @RequestParam("documentId") final List<Long> deletedDocumentIds
 	);
 
 	@Operation(
@@ -201,21 +200,21 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<?> restore(
-		@Parameter(hidden = true) Principal principal,
+	void restore(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId,
+		) @PathVariable final long teamId,
 		@Parameter(
 			name = "documentId",
 			description = "복구할 파일 id 리스트",
 			in = ParameterIn.QUERY,
 			required = true,
 			example = "[1, 2]"
-		) @RequestParam("documentId") List<Long> deletedDocumentIds
+		) @RequestParam("documentId") final List<Long> deletedDocumentIds
 	);
 
 	@Operation(
@@ -232,13 +231,13 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<DeletedDocumentsGetResponse>> getTrash(
-		@Parameter(hidden = true) Principal principal,
+	SuccessResponse<DeletedDocumentsGetResponse> getTrash(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
 			in = ParameterIn.PATH,
 			example = "1"
-		) @PathVariable long teamId
+		) @PathVariable final long teamId
 	);
 }

@@ -12,7 +12,7 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
-import com.tiki.server.team.dto.request.TeamMemberAndTeamInformUpdateServiceRequest;
+import com.tiki.server.team.dto.request.TeamInformUpdateServiceRequest;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
@@ -32,7 +32,6 @@ import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
-import com.tiki.server.team.vo.TeamVO;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
 
 import lombok.RequiredArgsConstructor;
@@ -65,7 +64,7 @@ public class TeamService {
     public TeamsGetResponse getAllTeams(final long memberId) {
         Member member = memberFinder.findById(memberId);
         University univ = member.getUniv();
-        List<TeamVO> team = teamFinder.findAllByUniv(univ);
+        List<Team> team = teamFinder.findAllByUniv(univ);
         return TeamsGetResponse.from(team);
     }
 
@@ -94,14 +93,9 @@ public class TeamService {
     }
 
     @Transactional
-    public void updateTeamAndTeamMemberInform(
-            final long memberId,
-            final long teamId,
-            final TeamMemberAndTeamInformUpdateServiceRequest request
-    ) {
-        MemberTeamManager memberTeamManager = checkIsAdmin(memberId, teamId);
-        memberTeamManager.updateName(request.teamMemberName());
-        Team team = teamFinder.findById(teamId);
+    public void updateTeamInform(final TeamInformUpdateServiceRequest request) {
+        checkIsAdmin(request.memberId(), request.teamId());
+        Team team = teamFinder.findById(request.teamId());
         team.updateInform(request.teamName(), request.teamIconUrl());
         updateIconUrlS3(team, request.teamIconUrl());
     }

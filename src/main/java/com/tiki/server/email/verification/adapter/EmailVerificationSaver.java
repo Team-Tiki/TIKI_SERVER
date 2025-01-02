@@ -11,7 +11,7 @@ public class EmailVerificationSaver {
 
     private final EmailVerificationRepository mailRepository;
 
-    public void save(EmailVerification mail) {
+    public void save(final EmailVerification mail) {
         mailRepository.save(mail);
     }
 }

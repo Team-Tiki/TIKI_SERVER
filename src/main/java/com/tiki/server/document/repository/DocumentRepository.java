@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.tiki.server.document.entity.Document;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-	List<Document> findAllByFolderId(long folderId);
+	List<Document> findAllByFolderId(final long folderId);
 
-	List<Document> findAllByTeamId(long teamId);
+	List<Document> findAllByTeamId(final long teamId);
 
-	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(long teamId, Long folderId);
+	List<Document> findAllByTeamIdAndFolderIdOrderByCreatedAtDesc(final long teamId, final Long folderId);
 
-	Optional<Document> findByIdAndTeamId(long id, long teamId);
+	Optional<Document> findByIdAndTeamId(final long id, final long teamId);
 }

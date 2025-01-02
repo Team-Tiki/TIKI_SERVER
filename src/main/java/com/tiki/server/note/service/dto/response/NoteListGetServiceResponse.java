@@ -8,7 +8,7 @@ public record NoteListGetServiceResponse(
         @NotNull List<NoteGetResponse> noteGetResponseList
 ) {
 
-    public static NoteListGetServiceResponse of(List<NoteGetResponse> noteGetResponseList) {
+    public static NoteListGetServiceResponse of(final List<NoteGetResponse> noteGetResponseList) {
         return new NoteListGetServiceResponse(noteGetResponseList);
     }
 }

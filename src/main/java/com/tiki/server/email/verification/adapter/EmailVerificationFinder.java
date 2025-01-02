@@ -14,7 +14,7 @@ public class EmailVerificationFinder {
 
     private final EmailVerificationRepository mailRepository;
 
-    public EmailVerification findById(String email) {
+    public EmailVerification findById(final String email) {
         return mailRepository.findById(email).orElseThrow(() -> new EmailVerificationException(INVALID_REQUEST));
     }
 }

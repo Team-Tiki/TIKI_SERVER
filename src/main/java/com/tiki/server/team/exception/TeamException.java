@@ -9,7 +9,7 @@ public class TeamException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public TeamException(ErrorCode errorCode) {
+	public TeamException(final ErrorCode errorCode) {
 		super("[TeamException] : " + errorCode.getMessage());
 		this.errorCode = errorCode;
 	}

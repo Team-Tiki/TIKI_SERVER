@@ -14,11 +14,11 @@ public class MemberTeamManagerDeleter {
 
 	private final MemberTeamManagerRepository memberTeamManagerRepository;
 
-	public void delete(MemberTeamManager memberTeamManager) {
+	public void delete(final MemberTeamManager memberTeamManager) {
 		memberTeamManagerRepository.delete(memberTeamManager);
 	}
 
-	public void deleteAll(List<MemberTeamManager> memberTeamManagers) {
+	public void deleteAll(final List<MemberTeamManager> memberTeamManagers) {
 		memberTeamManagerRepository.deleteAll(memberTeamManagers);
 	}
 }

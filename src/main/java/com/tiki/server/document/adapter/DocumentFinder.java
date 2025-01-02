@@ -32,7 +32,7 @@ public class DocumentFinder {
         return documentRepository.findAllByTeamId(teamId);
     }
 
-    public boolean existsById(Long timeBlockId) {
+    public boolean existsById(final Long timeBlockId) {
         return documentRepository.existsById(timeBlockId);
     }
 
@@ -44,7 +44,7 @@ public class DocumentFinder {
         return documentRepository.findAllByFolderId(folderId);
     }
 
-    private Document findByIdAndTeamId(long documentId, long teamId) {
+    private Document findByIdAndTeamId(final long documentId, final long teamId) {
         return documentRepository.findByIdAndTeamId(documentId, teamId)
                 .orElseThrow(() -> new DocumentException(INVALID_DOCUMENT));
     }

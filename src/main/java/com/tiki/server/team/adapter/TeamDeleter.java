@@ -12,7 +12,7 @@ public class TeamDeleter {
 
 	private final TeamRepository teamRepository;
 
-	public void deleteById(long teamId) {
+	public void deleteById(final long teamId) {
 		teamRepository.deleteById(teamId);
 	}
 }

@@ -2,12 +2,10 @@ package com.tiki.server.team.controller.docs;
 
 import java.security.Principal;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -45,9 +43,9 @@ public interface TeamControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TeamCreateResponse>> createTeam(
-		@Parameter(hidden = true) Principal principal,
-		@RequestBody TeamCreateRequest request
+	SuccessResponse<TeamCreateResponse> createTeam(
+		@Parameter(hidden = true) final Principal principal,
+		@RequestBody final TeamCreateRequest request
 	);
 
 	@Operation(
@@ -68,8 +66,8 @@ public interface TeamControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<TeamsGetResponse>> getAllTeams(
-		@Parameter(hidden = true) Principal principal
+	SuccessResponse<TeamsGetResponse> getAllTeams(
+		@Parameter(hidden = true) final Principal principal
 	);
 
 	@Operation(
@@ -86,7 +84,7 @@ public interface TeamControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<SuccessResponse<CategoriesGetResponse>> getCategories();
+	SuccessResponse<CategoriesGetResponse> getCategories();
 
 	@Operation(
 		summary = "팀 삭제",
@@ -106,8 +104,8 @@ public interface TeamControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	ResponseEntity<BaseResponse> deleteTeam(
-		@Parameter(hidden = true) Principal principal,
+	void deleteTeam(
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
@@ -115,7 +113,7 @@ public interface TeamControllerDocs {
 			required = true,
 			example = "1"
 		)
-		@PathVariable long teamId
+		@PathVariable final long teamId
 	);
 
 	@Operation(
@@ -133,7 +131,7 @@ public interface TeamControllerDocs {
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
 	SuccessResponse<UsageGetResponse> getCapacityInfo(
-		@Parameter(hidden = true) Principal principal,
+		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
 			description = "팀 id",
@@ -141,6 +139,6 @@ public interface TeamControllerDocs {
 			required = true,
 			example = "1"
 		)
-		@PathVariable long teamId
+		@PathVariable final long teamId
 	);
 }
