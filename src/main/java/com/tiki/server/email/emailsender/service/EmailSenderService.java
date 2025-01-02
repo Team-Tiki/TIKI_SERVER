@@ -63,17 +63,17 @@ public class EmailSenderService {
         Team team = teamFinder.findById(request.teamId());
         checkIsPresentTeamMember(request);
         mailSender.sendTeamInvitationMail(
-                request.email().getEmail(),
+                request.targetEmail().getEmail(),
                 memberTeamManager.getName(),
                 team.getName(),
                 request.teamId()
         );
         teamInvitationSaver.createTeamInvitation(
-                TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.email()));
+                TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.targetEmail()));
     }
 
     private void checkIsPresentTeamMember(final TeamInvitationCreateServiceRequest request) {
-        if (memberTeamManagerFinder.existsByTeamIdAndMemberEmail(request.teamId(), request.email())) {
+        if (memberTeamManagerFinder.existsByTeamIdAndMemberEmail(request.teamId(), request.targetEmail())) {
             throw new MemberTeamManagerException(CONFLICT_TEAM_MEMBER);
         }
     }
