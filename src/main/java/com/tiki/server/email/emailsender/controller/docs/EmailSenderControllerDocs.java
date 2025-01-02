@@ -1,7 +1,7 @@
 package com.tiki.server.email.emailsender.controller.docs;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.ErrorResponse;
+import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.email.emailsender.controller.dto.request.EmailRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "EmailVerification", description = "메일 인증 API")
@@ -38,7 +37,7 @@ public interface EmailSenderControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    ResponseEntity<BaseResponse> sendSignUpMail(@RequestBody EmailRequest mailRequest);
+    SuccessResponse<?> sendSignUpMail(@RequestBody EmailRequest mailRequest);
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송",
@@ -62,5 +61,5 @@ public interface EmailSenderControllerDocs {
                             description = "서버 내부 오류",
                             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
     )
-    ResponseEntity<BaseResponse> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest);
+    SuccessResponse<?> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest);
 }

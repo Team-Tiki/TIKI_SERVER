@@ -1,15 +1,13 @@
 package com.tiki.server.email.teaminvitation.controller;
 
-import static com.tiki.server.common.dto.SuccessResponse.success;
 import static com.tiki.server.email.teaminvitation.messages.SuccessMessage.*;
 
-import com.tiki.server.common.dto.BaseResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.email.teaminvitation.service.TeamInvitationService;
 import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationEmailsGetResponse;
 import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationInformGetResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -21,53 +19,58 @@ public class TeamInvitationController {
 
     private final TeamInvitationService teamInvitationService;
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/team/{teamId}")
-    public ResponseEntity<SuccessResponse<TeamInvitationEmailsGetResponse>> getTeamInvitation(
+    public SuccessResponse<TeamInvitationEmailsGetResponse> getTeamInvitation(
             Principal principal,
             @PathVariable long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
         TeamInvitationEmailsGetResponse response = teamInvitationService.getInvitations(memberId, teamId);
-        return ResponseEntity.ok(success(GET_TEAM_INVITATIONS.getMessage(), response));
+        return SuccessResponse.success(GET_TEAM_INVITATIONS.getMessage(), response);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/team/{teamId}")
-    public ResponseEntity<BaseResponse> deleteTeamInvitationFromAdmin(
+    public SuccessResponse<?> deleteTeamInvitationFromAdmin(
             Principal principal,
             @RequestParam long invitationId,
             @PathVariable long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamInvitationService.deleteTeamInvitationFromAdmin(memberId, teamId, invitationId);
-        return ResponseEntity.ok().body(success(DELETE_TEAM_INVITATION_FROM_ADMIN.getMessage()));
+        return SuccessResponse.success(DELETE_TEAM_INVITATION_FROM_ADMIN.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public ResponseEntity<SuccessResponse<TeamInvitationInformGetResponse>> getInvitationInform(
+    public SuccessResponse<TeamInvitationInformGetResponse> getInvitationInform(
             @RequestParam final long invitationId
     ) {
         TeamInvitationInformGetResponse response = teamInvitationService.getInvitationInform(invitationId);
-        return ResponseEntity.ok(success(GET_TEAM_INVITATION_INFORM.getMessage(), response));
+        return SuccessResponse.success(GET_TEAM_INVITATION_INFORM.getMessage(), response);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<BaseResponse> createTeamMemberFromInvitation(
+    public SuccessResponse<?> createTeamMemberFromInvitation(
             Principal principal,
             @RequestParam final long teamId,
             @RequestParam final long teamInvitationId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamInvitationService.createTeamMemberFromInvitation(memberId, teamId, teamInvitationId);
-        return ResponseEntity.ok(success(CREATE_TEAM_MEMBER_FROM_INVITATION.getMessage()));
+        return SuccessResponse.success(CREATE_TEAM_MEMBER_FROM_INVITATION.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
-    public ResponseEntity<BaseResponse> deleteTeamInvitationFromUser(
+    public SuccessResponse<?> deleteTeamInvitationFromUser(
             Principal principal,
             @RequestParam final long invitationId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamInvitationService.deleteTeamInvitation(memberId, invitationId);
-        return ResponseEntity.ok(success(DELETE_TEAM_INVITATION_FROM_USER.getMessage()));
+        return SuccessResponse.success(DELETE_TEAM_INVITATION_FROM_USER.getMessage());
     }
 }
