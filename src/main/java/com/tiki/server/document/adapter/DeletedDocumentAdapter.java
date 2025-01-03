@@ -23,7 +23,7 @@ public class DeletedDocumentAdapter {
 	}
 
 	public void save(final List<Document> documents) {
-		documents.forEach(document -> deletedDocumentRepository.save(create(document, document.getTeamId())));
+		documents.forEach(document -> deletedDocumentRepository.save(create(document)));
 	}
 
 	public List<DeletedDocument> get(final List<Long> deletedDocumentIds, final long teamId) {
@@ -36,8 +36,8 @@ public class DeletedDocumentAdapter {
 		deletedDocumentRepository.deleteAll(deletedDocuments);
 	}
 
-	private DeletedDocument create(final Document document, final long teamId) {
-		return DeletedDocument.of(document.getFileName(), document.getFileUrl(), teamId, document.getCapacity());
+	private DeletedDocument create(final Document document) {
+		return DeletedDocument.of(document);
 	}
 
 	private DeletedDocument find(final long id, final long teamId) {
