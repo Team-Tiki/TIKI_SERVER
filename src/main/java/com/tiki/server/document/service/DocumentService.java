@@ -15,6 +15,7 @@ import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
+import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
@@ -54,12 +55,13 @@ public class DocumentService {
 	}
 
 	@Transactional
-	public void createDocuments(final long memberId, final long teamId,
+	public DocumentsCreateResponse createDocuments(final long memberId, final long teamId,
 			final Long folderId, final DocumentsCreateRequest request) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		validateFolder(folderId, teamId);
 		validateFileName(folderId, teamId, request);
-		saveDocuments(teamId, folderId, request);
+		List<Long> documentIds = saveDocuments(teamId, folderId, request);
+		return DocumentsCreateResponse.from(documentIds);
 	}
 
 	public DocumentsGetResponse get(final long memberId, final long teamId, final Long folderId) {
@@ -119,15 +121,17 @@ public class DocumentService {
 		}
 	}
 
-	private void saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
+	private List<Long> saveDocuments(final long teamId, final Long folderId, final DocumentsCreateRequest request) {
 		Team team = teamFinder.findById(teamId);
-		request.documents().forEach(document -> saveDocument(team, folderId, document));
+		return request.documents().stream()
+			.map(document -> saveDocument(team, folderId, document).getId())
+			.toList();
 	}
 
-	private void saveDocument(final Team team, final Long folderId, final DocumentCreateRequest request) {
+	private Document saveDocument(final Team team, final Long folderId, final DocumentCreateRequest request) {
 		team.addUsage(request.capacity());
 		Document document = Document.of(request, team.getId(), folderId);
-		documentSaver.save(document);
+		return documentSaver.save(document);
 	}
 
 	private void restoreTeamUsage(final long teamId, final List<DeletedDocument> deletedDocuments) {

@@ -11,6 +11,7 @@ import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
+import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,7 +78,7 @@ public interface DocumentControllerDocs {
 				description = "서버 내부 오류",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	SuccessResponse<?> createDocuments(
+	SuccessResponse<DocumentsCreateResponse> createDocuments(
 		@Parameter(hidden = true) final Principal principal,
 		@Parameter(
 			name = "teamId",
