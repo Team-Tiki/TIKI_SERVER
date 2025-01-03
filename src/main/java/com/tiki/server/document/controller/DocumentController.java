@@ -22,6 +22,7 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.document.controller.docs.DocumentControllerDocs;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
 import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
+import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.service.DocumentService;
 
@@ -50,15 +51,15 @@ public class DocumentController implements DocumentControllerDocs {
 	@Override
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/teams/{teamId}/documents")
-	public SuccessResponse<?> createDocuments(
+	public SuccessResponse<DocumentsCreateResponse> createDocuments(
 		final Principal principal,
 		@PathVariable final long teamId,
 		@RequestParam(required = false) final Long folderId,
 		@RequestBody final DocumentsCreateRequest request
 	) {
 		long memberId = Long.parseLong(principal.getName());
-		documentService.createDocuments(memberId, teamId, folderId, request);
-		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage());
+		DocumentsCreateResponse response = documentService.createDocuments(memberId, teamId, folderId, request);
+		return SuccessResponse.success(SUCCESS_CREATE_DOCUMENTS.getMessage(), response);
 	}
 
 	@Override
