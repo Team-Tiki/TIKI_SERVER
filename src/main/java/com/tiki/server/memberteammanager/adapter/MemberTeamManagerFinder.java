@@ -32,7 +32,7 @@ public class MemberTeamManagerFinder {
         return memberTeamManagerRepository.findAllByTeamId(teamId);
     }
 
-    public List<TeamMemberInformGetProjection> findNameAndEmailByMemberIdAndTeamId(long teamId) {
+    public List<TeamMemberInformGetProjection> findNameAndEmailByMemberIdAndTeamId(final long teamId) {
         return memberTeamManagerRepository.findTeamMembersByTeamId(teamId);
     }
 

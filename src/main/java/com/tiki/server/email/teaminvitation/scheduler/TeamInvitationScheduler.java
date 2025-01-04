@@ -18,9 +18,7 @@ public class TeamInvitationScheduler {
     @Scheduled(cron = "0 0 0 * * ?")
     public void cleanUpExpiredInvites() {
         LocalDate now = LocalDate.now();
-
         List<TeamInvitation> expiredInvites = teamInvitationFinder.findByExpiredDate(now);
-
         if (!expiredInvites.isEmpty()) {
             teamInvitationDeleter.deleteAll(expiredInvites);
         }

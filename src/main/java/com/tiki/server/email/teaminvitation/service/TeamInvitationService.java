@@ -65,7 +65,7 @@ public class TeamInvitationService {
         teamInvitationDeleter.deleteTeamInvitation(invitation);
     }
 
-
+    @Transactional(readOnly = true)
     public TeamInvitationEmailsGetResponse getInvitations(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
@@ -73,7 +73,7 @@ public class TeamInvitationService {
         return TeamInvitationEmailsGetResponse.from(teamInvitations);
     }
 
-    private static void checkMemberMatched(TeamInvitation teamInvitation, Member member) {
+    private void checkMemberMatched(TeamInvitation teamInvitation, Member member) {
         if (!teamInvitation.getEmail().equals(member.getEmail())) {
             throw new TeamInvitationException(NOT_MATCHED_MEMBER_INFORM);
         }

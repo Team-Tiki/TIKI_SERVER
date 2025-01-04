@@ -22,23 +22,24 @@ public class EmailSenderController implements EmailSenderControllerDocs {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/verification/signup")
-    public SuccessResponse<?> sendSignUpMail(@RequestBody EmailRequest mailRequest) {
+    public SuccessResponse<?> sendSignUpMail(@RequestBody final EmailRequest mailRequest) {
         emailSenderService.sendSignUp(EmailServiceRequest.from(mailRequest.email()));
         return SuccessResponse.success(SuccessMessage.SUCCESS_SEND_EMAIL.getMessage());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/verification/password")
-    public SuccessResponse<?> sendChangingPasswordMail(@RequestBody EmailRequest mailRequest) {
+    public SuccessResponse<?> sendChangingPasswordMail(@RequestBody final EmailRequest mailRequest) {
         emailSenderService.sendPasswordChanging(EmailServiceRequest.from(mailRequest.email()));
         return SuccessResponse.success(SuccessMessage.SUCCESS_SEND_EMAIL.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/invitation/team/{teamId}")
     public SuccessResponse<?> sendInvitationMail(
-            Principal principal,
-            @PathVariable long teamId,
-            @RequestBody EmailRequest targetEmailRequest
+            final Principal principal,
+            @PathVariable final long teamId,
+            @RequestBody final EmailRequest targetEmailRequest
     ) {
         long memberId = Long.parseLong(principal.getName());
         emailSenderService.createTeamInvitation(

@@ -17,7 +17,7 @@ public class TeamInvitationDeleter {
         teamInvitationRepository.delete(teamInvitation);
     }
 
-    public void deleteAll(List<TeamInvitation> expiredInvitation) {
+    public void deleteAll(final List<TeamInvitation> expiredInvitation) {
         teamInvitationRepository.deleteAll(expiredInvitation);
     }
 }

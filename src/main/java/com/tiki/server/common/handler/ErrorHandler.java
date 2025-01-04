@@ -82,14 +82,14 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(EmailVerificationException.class)
-    public ResponseEntity<BaseResponse> mailException(EmailVerificationException exception) {
+    public ResponseEntity<BaseResponse> mailVerificationException(EmailVerificationException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
     @ExceptionHandler(EmailSenderException.class)
-    public ResponseEntity<BaseResponse> mailException(EmailSenderException exception) {
+    public ResponseEntity<BaseResponse> mailSenderException(EmailSenderException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));

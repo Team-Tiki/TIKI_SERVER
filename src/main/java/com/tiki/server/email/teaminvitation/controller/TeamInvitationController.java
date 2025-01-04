@@ -22,8 +22,8 @@ public class TeamInvitationController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/team/{teamId}")
     public SuccessResponse<TeamInvitationEmailsGetResponse> getTeamInvitation(
-            Principal principal,
-            @PathVariable long teamId
+            final Principal principal,
+            @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
         TeamInvitationEmailsGetResponse response = teamInvitationService.getInvitations(memberId, teamId);
@@ -33,9 +33,9 @@ public class TeamInvitationController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/team/{teamId}")
     public SuccessResponse<?> deleteTeamInvitationFromAdmin(
-            Principal principal,
-            @RequestParam long invitationId,
-            @PathVariable long teamId
+            final Principal principal,
+            @RequestParam final long invitationId,
+            @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamInvitationService.deleteTeamInvitationFromAdmin(memberId, teamId, invitationId);

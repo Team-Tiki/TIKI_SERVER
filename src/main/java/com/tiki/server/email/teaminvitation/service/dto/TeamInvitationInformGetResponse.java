@@ -2,12 +2,13 @@ package com.tiki.server.email.teaminvitation.service.dto;
 
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.team.entity.Team;
+import jakarta.validation.constraints.NotNull;
 
 public record TeamInvitationInformGetResponse(
-        String sender,
-        String teamName,
-        String teamIconUrl,
-        long teamId
+        @NotNull String sender,
+        @NotNull String teamName,
+        @NotNull String teamIconUrl,
+        @NotNull long teamId
 ) {
 
     public static TeamInvitationInformGetResponse of(

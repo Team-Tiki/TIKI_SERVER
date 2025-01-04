@@ -6,6 +6,7 @@ import static com.tiki.server.email.verification.constants.Constants.CODE_NUM_MA
 
 import com.tiki.server.email.verification.exception.EmailVerificationException;
 import com.tiki.server.email.verification.message.ErrorCode;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -21,7 +22,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class VerificationCode {
 
-    String code;
+    @Column(nullable = false)
+    private String code;
 
     public static VerificationCode from() {
         return new VerificationCode(generateRandomValue());

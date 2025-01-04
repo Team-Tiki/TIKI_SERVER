@@ -5,7 +5,7 @@ import com.tiki.server.email.emailsender.message.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class EmailSenderException extends  RuntimeException{
+public class EmailSenderException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
