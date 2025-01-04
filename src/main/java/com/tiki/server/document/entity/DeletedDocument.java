@@ -42,13 +42,13 @@ public class DeletedDocument extends BaseTime {
 	@Column(nullable = false)
 	private double capacity;
 
-	public static DeletedDocument of(
-		final String fileName, final String fileUrl, final long teamId, final double capacity) {
+	public static DeletedDocument of(final Document document) {
 		return DeletedDocument.builder()
-			.fileName(fileName)
-			.fileUrl(fileUrl)
-			.teamId(teamId)
-			.capacity(capacity)
+			.fileName(document.getFileName())
+			.fileUrl(document.getFileUrl())
+			.fileKey(document.getFileKey())
+			.teamId(document.getTeamId())
+			.capacity(document.getCapacity())
 			.build();
 	}
 }
