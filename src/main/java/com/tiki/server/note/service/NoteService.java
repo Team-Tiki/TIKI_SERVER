@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.tiki.server.common.Constants.INIT_NUM;
+import static com.tiki.server.common.constants.Constants.INIT_NUM;
 import static com.tiki.server.note.constants.NoteConstants.PAGE_SIZE;
 
 @Service

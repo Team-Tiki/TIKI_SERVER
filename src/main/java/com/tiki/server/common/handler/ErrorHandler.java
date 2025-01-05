@@ -2,10 +2,11 @@ package com.tiki.server.common.handler;
 
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
-import com.tiki.server.emailverification.exception.EmailVerificationException;
+import com.tiki.server.email.emailsender.exception.EmailSenderException;
+import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
+import com.tiki.server.email.verification.exception.EmailVerificationException;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -25,95 +26,108 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import static com.tiki.server.auth.message.ErrorCode.UNCAUGHT_SERVER_EXCEPTION;
-import static com.tiki.server.common.Constants.WRONG_INPUT;
+import static com.tiki.server.common.constants.Constants.WRONG_INPUT;
 
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
 
-	@ExceptionHandler(MemberException.class)
-	public ResponseEntity<BaseResponse> memberException(final MemberException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(MemberException.class)
+    public ResponseEntity<BaseResponse> memberException(MemberException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(TeamException.class)
-	public ResponseEntity<BaseResponse> teamException(final TeamException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(TeamException.class)
+    public ResponseEntity<BaseResponse> teamException(TeamException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(MemberTeamManagerException.class)
-	public ResponseEntity<BaseResponse> memberTeamManagerException(final MemberTeamManagerException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(MemberTeamManagerException.class)
+    public ResponseEntity<BaseResponse> memberTeamManagerException(MemberTeamManagerException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(TimeBlockException.class)
-	public ResponseEntity<BaseResponse> timeBlockException(final TimeBlockException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(TimeBlockException.class)
+    public ResponseEntity<BaseResponse> timeBlockException(TimeBlockException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(DocumentException.class)
-	public ResponseEntity<BaseResponse> documentException(final DocumentException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(DocumentException.class)
+    public ResponseEntity<BaseResponse> documentException(DocumentException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(NoteException.class)
-	public ResponseEntity<BaseResponse> noteException(final NoteException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(NoteException.class)
+    public ResponseEntity<BaseResponse> noteException(NoteException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(ExternalException.class)
-	public ResponseEntity<BaseResponse> externalException(final ExternalException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(ExternalException.class)
+    public ResponseEntity<BaseResponse> externalException(ExternalException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(EmailVerificationException.class)
-	public ResponseEntity<BaseResponse> mailException(final EmailVerificationException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(EmailVerificationException.class)
+    public ResponseEntity<BaseResponse> mailVerificationException(EmailVerificationException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(FolderException.class)
-	public ResponseEntity<BaseResponse> folderException(final FolderException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(EmailSenderException.class)
+    public ResponseEntity<BaseResponse> mailSenderException(EmailSenderException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(AuthException.class)
-	public ResponseEntity<BaseResponse> authException(final AuthException exception) {
-		log.error(exception.getMessage());
-		val errorCode = exception.getErrorCode();
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(
-			ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage()));
-	}
+    @ExceptionHandler(TeamInvitationException.class)
+    public ResponseEntity<BaseResponse> teamInvitationException(TeamInvitationException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<BaseResponse> httpMessageNotReadableException(
-		final HttpMessageNotReadableException exception) {
-		log.error(exception.getMessage());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-			ErrorResponse.of(WRONG_INPUT));
-	}
+    @ExceptionHandler(FolderException.class)
+    public ResponseEntity<BaseResponse> folderException(FolderException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<BaseResponse> exception(final Exception exception) {
-		log.error(exception.getMessage());
-		val errorCode = UNCAUGHT_SERVER_EXCEPTION;
-		return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
-	}
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<BaseResponse> authException(AuthException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(
+                ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponse> httpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponse.of(WRONG_INPUT));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<BaseResponse> exception(Exception exception) {
+        log.error(exception.getMessage());
+        val errorCode = UNCAUGHT_SERVER_EXCEPTION;
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 }

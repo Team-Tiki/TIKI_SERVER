@@ -1,6 +1,6 @@
 package com.tiki.server.auth.jwt;
 
-import com.tiki.server.common.Constants;
+import com.tiki.server.common.constants.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;

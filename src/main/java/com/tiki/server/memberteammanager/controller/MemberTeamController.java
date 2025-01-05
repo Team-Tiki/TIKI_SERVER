@@ -4,6 +4,7 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.memberteammanager.controller.dto.request.UpdateTeamMemberNameRequest;
 import com.tiki.server.memberteammanager.service.MemberTeamManagerService;
 import com.tiki.server.memberteammanager.service.dto.response.MemberTeamInformGetResponse;
+import com.tiki.server.memberteammanager.service.dto.response.TeamMembersGetResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_TEAM_INFORM;
+import static com.tiki.server.memberteammanager.message.SuccessMessage.GET_TEAM_MEMBERS;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.KICK_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.LEAVE_TEAM;
 import static com.tiki.server.memberteammanager.message.SuccessMessage.UPDATE_NAME;
@@ -22,6 +24,17 @@ import static com.tiki.server.memberteammanager.message.SuccessMessage.UPDATE_NA
 public class MemberTeamController {
 
     private final MemberTeamManagerService memberTeamManagerService;
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/teams/{teamId}/members")
+    public SuccessResponse<TeamMembersGetResponse> getMembers(
+            final Principal principal,
+            @PathVariable final long teamId
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        TeamMembersGetResponse response = memberTeamManagerService.getMembers(teamId, memberId);
+        return SuccessResponse.success(GET_TEAM_MEMBERS.getMessage(), response);
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/teams/{teamId}/members/position")
