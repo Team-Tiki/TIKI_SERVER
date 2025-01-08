@@ -24,8 +24,8 @@ public class MemberTeamManagerFinder {
                 .orElseThrow(() -> new MemberTeamManagerException(INVALID_MEMBER_TEAM_MANAGER));
     }
 
-    public List<MemberTeamManager> findAllByMemberId(final long memberId) {
-        return memberTeamManagerRepository.findAllByMemberId(memberId);
+    public List<MemberTeamManager> findAllByMemberIdOrderByCreatedAt(final long memberId) {
+        return memberTeamManagerRepository.findAllByMemberIdOrderByCreatedAt(memberId);
     }
 
     public List<MemberTeamManager> findAllByTeamId(final long teamId) {
