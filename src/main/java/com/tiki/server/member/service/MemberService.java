@@ -46,7 +46,7 @@ public class MemberService {
     }
 
     public BelongTeamsGetResponse findBelongTeams(final long memberId) {
-        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberId(memberId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(memberId);
         List<Team> teams = getTeams(memberTeamManagers);
         return BelongTeamsGetResponse.from(teams);
     }

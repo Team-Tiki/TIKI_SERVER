@@ -16,7 +16,7 @@ public interface MemberTeamManagerRepository extends JpaRepository<MemberTeamMan
 
     List<MemberTeamManager> findAllByTeamId(final long teamId);
 
-    List<MemberTeamManager> findAllByMemberId(final long memberId);
+    List<MemberTeamManager> findAllByMemberIdOrderByCreatedAt(final long memberId);
 
     @Query("SELECT m.name AS memberName, m.email AS memberEmail, mtm.position AS memberPosition " +
             "FROM MemberTeamManager mtm " +
