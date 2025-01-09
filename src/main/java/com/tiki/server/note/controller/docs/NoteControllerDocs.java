@@ -331,7 +331,7 @@ public interface NoteControllerDocs {
 		@Parameter(
 			name = "noteIds",
 			description = "노트 id 리스트",
-			in = ParameterIn.PATH,
+			in = ParameterIn.QUERY,
 			example = "[1,2,3,4,5]"
 		) @RequestParam final List<Long> noteIds
 	);
