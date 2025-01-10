@@ -227,14 +227,14 @@ public interface NoteControllerDocs {
 			name = "createdAt",
 			description = "생성시간",
 			in = ParameterIn.QUERY,
-			required = true,
+			required = false,
 			example = "yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn"
 		) @RequestParam(required = false) final LocalDateTime createdAt,
 		@Parameter(
 			name = "sortOrder",
 			description = "정렬 순서",
 			in = ParameterIn.QUERY,
-			required = true,
+			required = false,
 			example = "ASC, DESC"
 		) @RequestParam(defaultValue = "DESC") final SortOrder sortOrder
 	);
