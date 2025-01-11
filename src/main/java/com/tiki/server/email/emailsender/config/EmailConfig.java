@@ -13,7 +13,7 @@ import static com.tiki.server.email.emailsender.constants.Constants.TIKI_EMAIL;
 @Configuration
 public class EmailConfig {
 
-    @Value("${MAIL.password}")
+    @Value("${spring.mail.password}")
     private String emailPassword;
 
     @Bean
