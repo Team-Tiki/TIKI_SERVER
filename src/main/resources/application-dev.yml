@@ -27,8 +27,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL.username}
-    password: ${MAIL.password}
+    username: ${MAIL.username.dev}
+    password: ${MAIL.password.dev}
 
     properties:
       mail:
@@ -53,8 +53,8 @@ jwt:
     ${JWT.EXPIRE_REFRESH}
 
 aws-property:
-  access-key: ${AWS_PROPERTY.ACCESS_KEY}
-  secret-key: ${AWS_PROPERTY.SECRET_KEY}
-  bucket: ${AWS_PROPERTY.BUCKET}
+  access-key: ${AWS_PROPERTY.ACCESS_KEY.dev}
+  secret-key: ${AWS_PROPERTY.SECRET_KEY.dev}
+  bucket: ${AWS_PROPERTY.BUCKET.dev}
   aws-region: ap-northeast-2
-  s3-url: ${AWS_PROPERTY.S3_URL}
+  s3-url: ${AWS_PROPERTY.S3_URL.dev}
