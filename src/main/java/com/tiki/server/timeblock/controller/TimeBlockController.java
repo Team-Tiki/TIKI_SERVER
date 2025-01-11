@@ -2,9 +2,11 @@ package com.tiki.server.timeblock.controller;
 
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_CREATE_DOCUMENT_TAG;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_CREATE_TIME_BLOCK;
+import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_ALL_TIME_BLOCK;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIMELINE;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIME_BLOCK_DETAIL;
 
+import com.tiki.server.timeblock.service.dto.response.AllTimeBlockServiceResponse;
 import java.security.Principal;
 import java.util.List;
 
@@ -62,6 +64,18 @@ public class TimeBlockController implements TimeBlockControllerDocs {
 		long memberId = Long.parseLong(principal.getName());
 		TimelineGetResponse response = timeBlockService.getTimeline(memberId, teamId, type, date);
 		return SuccessResponse.success(SUCCESS_GET_TIMELINE.getMessage(), response);
+	}
+
+	@Override
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/teams/{teamId}/time-block/all")
+	public SuccessResponse<AllTimeBlockServiceResponse> getAllTimeBlock(
+			final Principal principal,
+			@PathVariable final long teamId
+	) {
+		long memberId = Long.parseLong(principal.getName());
+		AllTimeBlockServiceResponse response = timeBlockService.getAllTimeBlock(memberId, teamId);
+		return SuccessResponse.success(SUCCESS_GET_ALL_TIME_BLOCK.getMessage(), response);
 	}
 
 	@Override
