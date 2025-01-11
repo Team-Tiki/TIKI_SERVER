@@ -2,14 +2,15 @@ package com.tiki.server.timeblock.service.dto.response;
 
 import com.tiki.server.timeblock.entity.BlockType;
 import com.tiki.server.timeblock.entity.TimeBlock;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record TImeBlockTaggingResponse(
-        long timeBlockId,
-        String name,
-        BlockType type,
-        String color,
-        LocalDate startDate
+        @NotNull long timeBlockId,
+        @NotNull String name,
+        @NotNull BlockType type,
+        @NotNull String color,
+        @NotNull LocalDate startDate
 ) {
     public static TImeBlockTaggingResponse from(final TimeBlock timeBlock) {
         return new TImeBlockTaggingResponse(
