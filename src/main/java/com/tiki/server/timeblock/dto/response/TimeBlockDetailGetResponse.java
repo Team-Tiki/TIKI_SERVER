@@ -28,6 +28,7 @@ public record TimeBlockDetailGetResponse(
 		@NotNull long documentId,
 		@NotNull String fileName,
 		@NotNull String fileUrl,
+		@NotNull double capacity,
 		@NotNull long tagId
 	) {
 
@@ -36,6 +37,7 @@ public record TimeBlockDetailGetResponse(
 				.documentId(document.documentId())
 				.fileName(document.fileName())
 				.fileUrl(document.fileUrl())
+				.capacity(document.capacity())
 				.tagId(document.tagId())
 				.build();
 		}
