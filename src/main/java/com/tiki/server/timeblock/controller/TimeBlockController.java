@@ -5,7 +5,9 @@ import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_CREATE_TI
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_ALL_TIME_BLOCK;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIMELINE;
 import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_GET_TIME_BLOCK_DETAIL;
+import static com.tiki.server.timeblock.message.SuccessMessage.SUCCESS_UPDATE_TIME_BLOCK;
 
+import com.tiki.server.timeblock.dto.request.TimeBlockUpdateRequest;
 import com.tiki.server.timeblock.service.dto.response.AllTimeBlockServiceResponse;
 import java.security.Principal;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,6 +92,20 @@ public class TimeBlockController implements TimeBlockControllerDocs {
         long memberId = Long.parseLong(principal.getName());
         TimeBlockDetailGetResponse response = timeBlockService.getTimeBlockDetail(memberId, teamId, timeBlockId);
         return SuccessResponse.success(SUCCESS_GET_TIME_BLOCK_DETAIL.getMessage(), response);
+    }
+
+    @Override
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/teams/{teamId}/time-block/{timeBlockId}")
+    public SuccessResponse<?> updateTimeBlock(
+        final Principal principal,
+        @PathVariable final long teamId,
+        @PathVariable final long timeBlockId,
+        @RequestBody final TimeBlockUpdateRequest request
+    ) {
+        long memberId = Long.parseLong(principal.getName());
+        timeBlockService.updateTimeBlock(memberId, teamId, timeBlockId, request);
+        return SuccessResponse.success(SUCCESS_UPDATE_TIME_BLOCK.getMessage());
     }
 
     @Override
