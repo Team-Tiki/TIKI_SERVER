@@ -13,6 +13,7 @@ public record DocumentTagInfo(
 	@NotNull long documentId,
 	@NotNull String fileName,
 	@NotNull String fileUrl,
+	@NotNull double capacity,
 	@NotNull long tagId
 ) {
 
@@ -21,6 +22,7 @@ public record DocumentTagInfo(
 			.documentId(document.getId())
 			.fileName(document.getFileName())
 			.fileUrl(document.getFileUrl())
+			.capacity(document.getCapacity())
 			.tagId(dtbManager.getId())
 			.build();
 	}
