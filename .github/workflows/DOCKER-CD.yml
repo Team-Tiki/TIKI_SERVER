@@ -5,10 +5,9 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       working-directory: .
-
 
     steps:
       - name: 체크아웃
@@ -40,19 +39,19 @@ jobs:
       - name: docker build 환경 설정
         uses: docker/setup-buildx-action@v2.9.1
 
-      - name: login docker hub
+      - name: docker hub 로그인
         uses: docker/login-action@v2.2.0
         with:
           username: ${{ secrets.DOCKER_LOGIN_USERNAME }}
           password: ${{ secrets.DOCKER_LOGIN_ACCESSTOKEN }}
 
       - name: docker image 빌드 및 푸시
-        run: |
-          docker build --platform linux/amd64 -t hellotiki/dev .
-          docker push hellotiki/dev
-        working-directory: ${{ env.working-directory }}
-
-
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile-Dev
+          push: true
+          tags: ${{ secrets.DOCKER_LOGIN_USERNAME }}/prod
 
   cd:
     needs: ci
