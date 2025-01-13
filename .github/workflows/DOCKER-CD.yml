@@ -51,7 +51,7 @@ jobs:
           context: .
           file: ./Dockerfile-Dev
           push: true
-          tags: ${{ secrets.DOCKER_LOGIN_USERNAME }}/prod
+          tags: ${{ secrets.DOCKER_LOGIN_USERNAME }}/dev
 
   cd:
     needs: ci
