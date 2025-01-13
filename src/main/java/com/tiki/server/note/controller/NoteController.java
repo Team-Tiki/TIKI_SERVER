@@ -7,6 +7,7 @@ import com.tiki.server.note.controller.dto.request.NoteFreeCreateRequest;
 import com.tiki.server.note.controller.dto.request.NoteFreeUpdateRequest;
 import com.tiki.server.note.controller.dto.request.NoteTemplateCreateRequest;
 import com.tiki.server.note.controller.dto.request.NoteTemplateUpdateRequest;
+import com.tiki.server.note.controller.dto.response.SuccessNoteDetailResponse;
 import com.tiki.server.note.service.NoteService;
 import com.tiki.server.note.service.dto.request.NoteFreeCreateServiceRequest;
 import com.tiki.server.note.service.dto.request.NoteFreeUpdateServiceRequest;
@@ -112,14 +113,14 @@ public class NoteController implements NoteControllerDocs {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{teamId}/{noteId}")
-    public SuccessResponse<NoteDetailGetServiceResponse> getNoteDetail(
+    public SuccessNoteDetailResponse<NoteDetailGetServiceResponse> getNoteDetail(
             final Principal principal,
             @PathVariable final long teamId,
             @PathVariable final long noteId
     ) {
         long memberId = Long.parseLong(principal.getName());
         NoteDetailGetServiceResponse response = noteService.getNoteDetail(teamId, memberId, noteId);
-        return SuccessResponse.success(GET_NOTE_DETAIL.getMessage(), response);
+        return SuccessNoteDetailResponse.success(GET_NOTE_DETAIL.getMessage(), response);
     }
 
     @Override
