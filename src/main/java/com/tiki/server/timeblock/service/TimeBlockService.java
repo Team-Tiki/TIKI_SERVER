@@ -1,5 +1,6 @@
 package com.tiki.server.timeblock.service;
 
+import com.tiki.server.timeblock.dto.request.TimeBlockUpdateRequest;
 import com.tiki.server.timeblock.service.dto.response.AllTimeBlockServiceResponse;
 import java.util.List;
 
@@ -99,6 +100,19 @@ public class TimeBlockService {
         List<DocumentTagInfo> documents = getDocumentsInfo(timeBlock);
         List<Note> notes = getNotes(timeBlock.getId());
         return TimeBlockDetailGetResponse.from(documents, notes);
+    }
+
+    @Transactional
+    public void updateTimeBlock(
+        final long memberId,
+        final long teamId,
+        final long timeBlockId,
+        final TimeBlockUpdateRequest request
+    ) {
+        MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
+        TimeBlock timeBlock = timeBlockFinder.findByIdAndTeamId(timeBlockId, teamId);
+        memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
+        timeBlock.updateNameAndDate(request);
     }
 
     @Transactional

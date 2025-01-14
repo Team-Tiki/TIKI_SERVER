@@ -1,5 +1,6 @@
 package com.tiki.server.timeblock.controller.docs;
 
+import com.tiki.server.timeblock.dto.request.TimeBlockUpdateRequest;
 import com.tiki.server.timeblock.service.dto.response.AllTimeBlockServiceResponse;
 import java.security.Principal;
 import java.util.List;
@@ -193,6 +194,48 @@ public interface TimeBlockControllerDocs {
                     example = "1"
             )
             @PathVariable final long timeBlockId
+    );
+
+    @Operation(
+        summary = "타임 블록 정보 수정",
+        description = "타임 블록 정보를 수정한다.",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(
+                responseCode = "403",
+                description = "접근 권한 없음",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                responseCode = "404",
+                description = "팀에 존재하지 않는 회원, 유효하지 않은 타임 블록",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                responseCode = "4xx",
+                description = "클라이언트(요청) 오류",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                responseCode = "500",
+                description = "서버 내부 오류",
+                content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
+    )
+    SuccessResponse<?> updateTimeBlock(
+        @Parameter(hidden = true) final Principal principal,
+        @Parameter(
+            name = "teamId",
+            description = "팀 id",
+            in = ParameterIn.PATH,
+            example = "1"
+        )
+        @PathVariable final long teamId,
+        @Parameter(
+            name = "timeBlockId",
+            description = "타임 블록 id",
+            in = ParameterIn.PATH,
+            example = "1"
+        )
+        @PathVariable final long timeBlockId,
+        @RequestBody final TimeBlockUpdateRequest request
+
     );
 
     @Operation(

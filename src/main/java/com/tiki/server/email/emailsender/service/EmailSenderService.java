@@ -21,6 +21,7 @@ import com.tiki.server.team.entity.Team;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -56,20 +57,22 @@ public class EmailSenderService {
         emailVerificationSaver.save(emailVerification);
     }
 
+    @Transactional
     public void createTeamInvitation(final TeamInvitationCreateServiceRequest request) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(request.senderId(),
                 request.teamId());
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
         Team team = teamFinder.findById(request.teamId());
         checkIsPresentTeamMember(request);
+        TeamInvitation teamInvitation = teamInvitationSaver.createTeamInvitation(
+                TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.targetEmail()));
         mailSender.sendTeamInvitationMail(
                 request.targetEmail().getEmail(),
                 memberTeamManager.getName(),
                 team.getName(),
-                request.teamId()
+                request.teamId(),
+                teamInvitation.getId()
         );
-        teamInvitationSaver.createTeamInvitation(
-                TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.targetEmail()));
     }
 
     private void checkIsPresentTeamMember(final TeamInvitationCreateServiceRequest request) {

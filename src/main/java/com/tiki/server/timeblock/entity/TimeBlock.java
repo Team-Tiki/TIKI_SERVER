@@ -11,6 +11,7 @@ import com.tiki.server.common.entity.BaseTime;
 import com.tiki.server.common.entity.Position;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.dto.request.TimeBlockCreateRequest;
+import com.tiki.server.timeblock.dto.request.TimeBlockUpdateRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -68,5 +69,11 @@ public class TimeBlock extends BaseTime {
 			.teamId(team.getId())
 			.type(request.blockType())
 			.build();
+	}
+
+	public void updateNameAndDate(final TimeBlockUpdateRequest request) {
+		this.name = request.name();
+		this.startDate = request.startDate();
+		this.endDate = request.endDate();
 	}
 }
