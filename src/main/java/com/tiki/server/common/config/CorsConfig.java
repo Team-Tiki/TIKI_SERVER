@@ -30,6 +30,7 @@ public class CorsConfig {
         config.addAllowedOrigin(("https://ti-kii.com"));
         config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("https://www.tiki-sopt.p-e.kr");
+        config.addAllowedOrigin("https://tiki-client.vercel.app");
         config.addAllowedHeader("*");
         config.setAllowedMethods(List.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         return config;

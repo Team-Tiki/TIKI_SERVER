@@ -1,7 +1,7 @@
-name: DOCKER-CD
+name: PROD-CD
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "main" ]
 
 jobs:
   ci:
@@ -35,23 +35,22 @@ jobs:
         working-directory: ${{ env.working-directory }}
         shell: bash
 
-
       - name: docker build 환경 설정
         uses: docker/setup-buildx-action@v2.9.1
 
       - name: docker hub 로그인
         uses: docker/login-action@v2.2.0
         with:
-          username: ${{ secrets.DOCKER_LOGIN_USERNAME }}
-          password: ${{ secrets.DOCKER_LOGIN_ACCESSTOKEN }}
+          username: ${{ secrets.DOCKER_LOGIN_USERNAME_PROD }}
+          password: ${{ secrets.DOCKER_LOGIN_ACCESSTOKEN_PROD }}
 
       - name: docker image 빌드 및 푸시
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile-Dev
+          file: ./Dockerfile-Prod
           push: true
-          tags: ${{ secrets.DOCKER_LOGIN_USERNAME }}/dev
+          tags: ${{ secrets.DOCKER_LOGIN_USERNAME_PROD }}/prod
 
   cd:
     needs: ci
@@ -61,9 +60,9 @@ jobs:
       - name: docker 컨테이너 실행
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_KEY }}
+          host: ${{ secrets.SERVER_IP_PROD }}
+          username: ${{ secrets.SERVER_USER_PROD }}
+          key: ${{ secrets.SERVER_KEY_PROD }}
           script: |
             cd ~
             ./deploy.sh

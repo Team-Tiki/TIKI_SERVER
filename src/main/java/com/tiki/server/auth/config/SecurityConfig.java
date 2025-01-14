@@ -6,6 +6,7 @@ import com.tiki.server.auth.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,30 +34,50 @@ public class SecurityConfig {
     private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+    @Profile("local")
+    public SecurityFilterChain filterChainLocal(HttpSecurity http) throws Exception {
         permitSwaggerUri(http);
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionManagementConfigurer ->
-                        sessionManagementConfigurer
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(exceptionHandlingConfigurer ->
-                        exceptionHandlingConfigurer
-                                .authenticationEntryPoint(customAuthenticationEntryPointHandler))
-                .authorizeHttpRequests(request ->
-                        request
-                                .requestMatchers(AUTH_WHITE_LIST).permitAll()
-                                .anyRequest()
-                                .authenticated())
-                .addFilterBefore(
-                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
-                )
-                .addFilterBefore(
-                        exceptionHandlerFilter, JwtAuthenticationFilter.class
-                )
-                .build();
+        setHttp(http);
+        return http.build();
+    }
+
+    @Bean
+    @Profile("dev")
+    public SecurityFilterChain filterChainDev(HttpSecurity http) throws Exception {
+        permitSwaggerUri(http);
+        setHttp(http);
+        return http.build();
+    }
+
+    @Bean
+    @Profile("prod")
+    public SecurityFilterChain filterChainProd(HttpSecurity http) throws Exception {
+        setHttp(http);
+        return http.build();
+    }
+
+    private void setHttp(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .sessionManagement(sessionManagementConfigurer ->
+                sessionManagementConfigurer
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(exceptionHandlingConfigurer ->
+                exceptionHandlingConfigurer
+                    .authenticationEntryPoint(customAuthenticationEntryPointHandler))
+            .authorizeHttpRequests(request ->
+                request
+                    .requestMatchers(AUTH_WHITE_LIST).permitAll()
+                    .anyRequest()
+                    .authenticated())
+            .addFilterBefore(
+                jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+            )
+            .addFilterBefore(
+                exceptionHandlerFilter, JwtAuthenticationFilter.class
+            );
     }
 
     private void permitSwaggerUri(HttpSecurity http) throws Exception {
