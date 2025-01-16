@@ -10,7 +10,7 @@ public record DocumentCreateRequest(
 	@NotNull String fileUrl,
 	@Schema(description = "파일 key", example = "....jpg")
 	@NotNull String fileKey,
-	@Schema(description = "파일 용량", example = "1.23")
-	@NotNull double capacity
+	@Schema(description = "파일 용량 (단위 : byte)", example = "123")
+	@NotNull long capacity
 ) {
 }

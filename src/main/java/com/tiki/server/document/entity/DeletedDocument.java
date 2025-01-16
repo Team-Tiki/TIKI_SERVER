@@ -40,7 +40,7 @@ public class DeletedDocument extends BaseTime {
 	private long teamId;
 
 	@Column(nullable = false)
-	private double capacity;
+	private long capacity;
 
 	public static DeletedDocument of(final Document document) {
 		return DeletedDocument.builder()

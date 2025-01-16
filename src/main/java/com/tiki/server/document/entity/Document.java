@@ -38,7 +38,7 @@ public class Document extends BaseTime {
 	private String fileKey;
 
 	@Column(nullable = false)
-	private double capacity;
+	private long capacity;
 
 	@Column(nullable = false)
 	private long teamId;

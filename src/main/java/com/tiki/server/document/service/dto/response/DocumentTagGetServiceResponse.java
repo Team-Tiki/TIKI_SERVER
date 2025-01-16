@@ -8,7 +8,7 @@ public record DocumentTagGetServiceResponse(
 	@NotNull long id,
 	@NotNull String fileName,
 	@NotNull String fileUrl,
-	@NotNull double capacity
+	@NotNull long capacity
 ) {
 
 	public static DocumentTagGetServiceResponse from(final Document document) {
