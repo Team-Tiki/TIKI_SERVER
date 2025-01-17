@@ -136,6 +136,6 @@ public class DocumentService {
 
 	private void restoreTeamUsage(final long teamId, final List<DeletedDocument> deletedDocuments) {
 		Team team = teamFinder.findById(teamId);
-		team.restoreUsage(deletedDocuments.stream().mapToDouble(DeletedDocument::getCapacity).sum());
+		team.restoreUsage(deletedDocuments.stream().mapToLong(DeletedDocument::getCapacity).sum());
 	}
 }

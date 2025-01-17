@@ -25,7 +25,7 @@ public record DeletedDocumentsGetResponse(
 		@NotNull long documentId,
 		@NotNull String name,
 		@NotNull String url,
-		@NotNull double capacity
+		@NotNull long capacity
 	) {
 
 		private static DeletedDocumentGetResponse from(final DeletedDocument deletedDocument) {

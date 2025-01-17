@@ -59,7 +59,7 @@ public class Team extends BaseTime {
     private Subscribe subscribe;
 
     @Column(nullable = false)
-    private double usage;
+    private long usage;
 
     private String imageUrl;
 
@@ -109,18 +109,18 @@ public class Team extends BaseTime {
         return this.iconImageUrl.equals(iconImageUrl);
     }
 
-    public void addUsage(final double capacity) {
+    public void addUsage(final long capacity) {
         if (usage + capacity > subscribe.getCapacity()) {
             throw new TeamException(EXCEED_TEAM_CAPACITY);
         }
         usage += capacity;
     }
 
-    public void restoreUsage(final double capacity) {
+    public void restoreUsage(final long capacity) {
         usage -= capacity;
     }
 
-    public double getCapacity() {
+    public long getCapacity() {
         return subscribe.getCapacity();
     }
 

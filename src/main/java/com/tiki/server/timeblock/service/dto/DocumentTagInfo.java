@@ -13,7 +13,7 @@ public record DocumentTagInfo(
 	@NotNull long documentId,
 	@NotNull String fileName,
 	@NotNull String fileUrl,
-	@NotNull double capacity,
+	@NotNull long capacity,
 	@NotNull long tagId
 ) {
 

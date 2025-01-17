@@ -29,7 +29,7 @@ public record DriveGetResponse(
 		@NotNull long documentId,
 		@NotNull String name,
 		@NotNull String url,
-		@NotNull double capacity,
+		@NotNull long capacity,
 		@NotNull LocalDateTime createdTime,
 		@NotNull String type
 	) {

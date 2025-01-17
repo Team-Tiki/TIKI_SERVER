@@ -111,8 +111,8 @@ public class TeamService {
     public UsageGetResponse getCapacityInfo(final long memberId, final long teamId) {
         memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         Team team = teamFinder.findById(teamId);
-        double capacity = team.getCapacity();
-        double usage = team.getUsage();
+        long capacity = team.getCapacity();
+        long usage = team.getUsage();
         return UsageGetResponse.of(capacity, usage);
     }
 

@@ -26,7 +26,7 @@ public record DocumentsGetResponse(
 		@NotNull long documentId,
 		@NotNull String name,
 		@NotNull String url,
-		@NotNull double capacity,
+		@NotNull long capacity,
 		@NotNull LocalDateTime createdTime
 	) {
 
