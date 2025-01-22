@@ -15,4 +15,8 @@ public class NoteDeleter {
     public void deleteNoteByIds(final List<Long> noteIds){
         noteIds.forEach(noteRepository::deleteById);
     }
+
+    public void deleteAllByTeamId(final long teamId) {
+        noteRepository.deleteAllByTeamId(teamId);
+    }
 }

@@ -4,12 +4,18 @@ import static com.tiki.server.common.entity.Position.ADMIN;
 
 import java.util.List;
 
+import com.tiki.server.document.adapter.DeletedDocumentAdapter;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
 import com.tiki.server.external.util.AwsHandler;
+import com.tiki.server.folder.adapter.FolderDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.note.adapter.NoteDeleter;
+import com.tiki.server.notedocumentmanager.adapter.NDDeleter;
+import com.tiki.server.notetimeblockmanager.adapter.NTBDeleter;
 import com.tiki.server.team.adapter.TeamDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.request.TeamInformUpdateServiceRequest;
@@ -33,6 +39,8 @@ import com.tiki.server.team.dto.response.TeamCreateResponse;
 import com.tiki.server.team.entity.Category;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.timeblock.adapter.TimeBlockDeleter;
+import com.tiki.server.timeblock.adapter.TimeBlockFinder;
+import com.tiki.server.timeblock.entity.TimeBlock;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,10 +55,17 @@ public class TeamService {
     private final MemberFinder memberFinder;
     private final DocumentFinder documentFinder;
     private final DocumentDeleter documentDeleter;
+    private final TimeBlockFinder timeBlockFinder;
     private final TimeBlockDeleter timeBlockDeleter;
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
     private final MemberTeamManagerSaver memberTeamManagerSaver;
+    private final DTBAdapter dtbAdapter;
+    private final NTBDeleter ntbDeleter;
+    private final NDDeleter ndDeleter;
+    private final DeletedDocumentAdapter deletedDocumentAdapter;
+    private final FolderDeleter folderDeleter;
+    private final NoteDeleter noteDeleter;
     private final AwsHandler awsHandler;
 
     @Transactional
@@ -79,7 +94,15 @@ public class TeamService {
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
         memberTeamManagerDeleter.deleteAll(memberTeamManagers);
         List<Document> documents = documentFinder.findAllByTeamId(teamId);
+        ndDeleter.deleteAllByDocuments(documents.stream().map(Document::getId).toList());
+        documents.forEach(Document -> awsHandler.deleteFile(Document.getFileKey()));
         documentDeleter.deleteAll(documents);
+        List<TimeBlock> timeBlocks = timeBlockFinder.findAllByTeamId(teamId);
+        timeBlocks.forEach(ntbDeleter::deleteAllByTimeBlock);
+        timeBlocks.forEach(dtbAdapter::deleteAllByTimeBlock);
+        noteDeleter.deleteAllByTeamId(teamId);
+        deletedDocumentAdapter.deleteAllByTeamId(teamId);
+        folderDeleter.deleteAllByTeamId(teamId);
         timeBlockDeleter.deleteAllByTeamId(teamId);
         teamDeleter.deleteById(teamId);
     }

@@ -12,4 +12,6 @@ public interface DeletedDocumentRepository extends JpaRepository<DeletedDocument
 	Optional<DeletedDocument> findByIdAndTeamId(final long id, final long teamId);
 
 	List<DeletedDocument> findAllByTeamId(final long teamId);
+
+	void deleteAllByTeamId(final long teamId);
 }

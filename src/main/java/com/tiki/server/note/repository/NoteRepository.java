@@ -22,4 +22,6 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 		final Pageable pageable, final long teamId);
 
 	List<Note> findAllByMemberIdAndTeamId(final long memberId, final long teamId);
+
+	void deleteAllByTeamId(final long teamId);
 }
