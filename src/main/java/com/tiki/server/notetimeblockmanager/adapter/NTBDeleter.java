@@ -2,6 +2,8 @@ package com.tiki.server.notetimeblockmanager.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.notetimeblockmanager.repository.NTBRepository;
+import com.tiki.server.timeblock.entity.TimeBlock;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -20,5 +22,9 @@ public class NTBDeleter {
         timeBlockIds.forEach(timeBlockId ->
                 ntbRepository.deleteByNoteIdAndTimeBlockId(noteId, timeBlockId)
         );
+    }
+
+    public void deleteAllByTimeBlock(final TimeBlock timeBlock) {
+        ntbRepository.deleteAllByTimeBlockId(timeBlock.getId());
     }
 }

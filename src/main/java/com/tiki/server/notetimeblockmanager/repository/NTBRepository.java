@@ -14,4 +14,6 @@ public interface NTBRepository extends JpaRepository<NTBManager, Long> {
     List<NTBManager> findAllByNoteId(final long noteId);
 
     List<NTBManager> findAllByTimeBlockId(final long timeBlockId);
+
+    void deleteAllByTimeBlockId(final long timeBlockId);
 }

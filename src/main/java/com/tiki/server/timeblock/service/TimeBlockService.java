@@ -1,5 +1,6 @@
 package com.tiki.server.timeblock.service;
 
+import com.tiki.server.notetimeblockmanager.adapter.NTBDeleter;
 import com.tiki.server.timeblock.dto.request.TimeBlockUpdateRequest;
 import com.tiki.server.timeblock.service.dto.response.AllTimeBlockServiceResponse;
 import java.util.List;
@@ -47,6 +48,7 @@ public class TimeBlockService {
     private final DTBAdapter dtbAdapter;
     private final NTBFinder ntbFinder;
     private final NoteFinder noteFinder;
+    private final NTBDeleter ntbDeleter;
 
     @Transactional
     public TimeBlockCreateResponse createTimeBlock(
@@ -121,6 +123,7 @@ public class TimeBlockService {
         TimeBlock timeBlock = timeBlockFinder.findByIdAndTeamId(timeBlockId, teamId);
         memberTeamManager.checkMemberAccessible(timeBlock.getAccessiblePosition());
         dtbAdapter.deleteAllByTimeBlock(timeBlock);
+        ntbDeleter.deleteAllByTimeBlock(timeBlock);
         timeBlockDeleter.deleteById(timeBlock.getId());
     }
 
