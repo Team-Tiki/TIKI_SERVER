@@ -21,4 +21,8 @@ public class NDDeleter {
                 ndRepository.deleteByNoteIdAndDocumentId(noteId, documentId)
         );
     }
+
+    public void deleteAllByDocuments(final List<Long> documentIds) {
+        ndRepository.deleteAllByDocumentIdIn(documentIds);
+    }
 }

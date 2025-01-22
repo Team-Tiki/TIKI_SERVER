@@ -26,6 +26,7 @@ import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.notedocumentmanager.adapter.NDDeleter;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
 
@@ -44,6 +45,7 @@ public class DocumentService {
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
 	private final TeamFinder teamFinder;
 	private final DTBAdapter dtbAdapter;
+	private final NDDeleter ndDeleter;
 	private final AwsHandler awsHandler;
 
 	public DocumentsGetResponse getAllDocuments(final long memberId, final long teamId, final String type) {
@@ -75,6 +77,7 @@ public class DocumentService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Document> documents = documentFinder.findAllByIdAndTeamId(documentIds, teamId);
 		dtbAdapter.deleteAllByDocuments(documentIds);
+		ndDeleter.deleteAllByDocuments(documentIds);
 		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
 	}
