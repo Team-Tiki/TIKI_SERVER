@@ -7,6 +7,7 @@ import java.util.List;
 import com.tiki.server.document.adapter.DeletedDocumentAdapter;
 import com.tiki.server.document.adapter.DocumentDeleter;
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.entity.DeletedDocument;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.documenttimeblockmanager.adapter.DTBAdapter;
 import com.tiki.server.external.util.AwsHandler;
@@ -93,17 +94,10 @@ public class TeamService {
         checkIsAdmin(memberId, teamId);
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
         memberTeamManagerDeleter.deleteAll(memberTeamManagers);
-        List<Document> documents = documentFinder.findAllByTeamId(teamId);
-        ndDeleter.deleteAllByDocuments(documents.stream().map(Document::getId).toList());
-        documents.forEach(Document -> awsHandler.deleteFile(Document.getFileKey()));
-        documentDeleter.deleteAll(documents);
-        List<TimeBlock> timeBlocks = timeBlockFinder.findAllByTeamId(teamId);
-        timeBlocks.forEach(ntbDeleter::deleteAllByTimeBlock);
-        timeBlocks.forEach(dtbAdapter::deleteAllByTimeBlock);
+        deleteDocuments(teamId);
+        deleteTimeBlocks(teamId);
         noteDeleter.deleteAllByTeamId(teamId);
-        deletedDocumentAdapter.deleteAllByTeamId(teamId);
         folderDeleter.deleteAllByTeamId(teamId);
-        timeBlockDeleter.deleteAllByTeamId(teamId);
         teamDeleter.deleteById(teamId);
     }
 
@@ -153,5 +147,22 @@ public class TeamService {
         MemberTeamManager accessMember = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         accessMember.checkMemberAccessible(ADMIN);
         return accessMember;
+    }
+
+    private void deleteDocuments(final long teamId) {
+        List<Document> documents = documentFinder.findAllByTeamId(teamId);
+        documents.forEach(Document -> awsHandler.deleteFile(Document.getFileKey()));
+        List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(teamId);
+        deletedDocuments.forEach(DeletedDocument -> awsHandler.deleteFile(DeletedDocument.getFileKey()));
+        deletedDocumentAdapter.deleteAllByTeamId(teamId);
+        ndDeleter.deleteAllByDocuments(documents.stream().map(Document::getId).toList());
+        documentDeleter.deleteAll(documents);
+    }
+
+    private void deleteTimeBlocks(final long teamId) {
+        List<TimeBlock> timeBlocks = timeBlockFinder.findAllByTeamId(teamId);
+        timeBlocks.forEach(ntbDeleter::deleteAllByTimeBlock);
+        timeBlocks.forEach(dtbAdapter::deleteAllByTimeBlock);
+        timeBlockDeleter.deleteAllByTeamId(teamId);
     }
 }
