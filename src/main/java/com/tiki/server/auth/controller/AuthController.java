@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 
 import static com.tiki.server.auth.message.SuccessMessage.*;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
@@ -42,5 +44,13 @@ public class AuthController implements AuthControllerDocs {
     public SuccessResponse<ReissueGetResponse> reissue(final HttpServletRequest httpServletRequest) {
         ReissueGetResponse response = authService.reissueToken(httpServletRequest);
         return SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/withdrawal")
+    public SuccessResponse<?> withdrawal(final Principal principal) {
+        long memberId = Long.parseLong(principal.getName());
+        authService.withdrawal(memberId);
+        return SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage());
     }
 }

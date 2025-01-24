@@ -9,6 +9,7 @@ import com.tiki.server.auth.token.adapter.TokenFinder;
 import com.tiki.server.auth.token.adapter.TokenSaver;
 import com.tiki.server.auth.token.entity.Token;
 import com.tiki.server.email.Email;
+import com.tiki.server.member.adapter.MemberDeleter;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
@@ -21,6 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.auth.jwt.JwtGenerator;
 import com.tiki.server.auth.jwt.UserAuthentication;
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.note.adapter.NoteFinder;
+import com.tiki.server.note.entity.Note;
+import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.entity.Team;
 
 import lombok.RequiredArgsConstructor;
 import org.thymeleaf.util.StringUtils;
@@ -29,6 +37,8 @@ import static com.tiki.server.auth.message.ErrorCode.EMPTY_JWT;
 import static com.tiki.server.auth.message.ErrorCode.UNMATCHED_TOKEN;
 import static com.tiki.server.member.message.ErrorCode.INVALID_MEMBER;
 import static com.tiki.server.member.message.ErrorCode.UNMATCHED_PASSWORD;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -39,9 +49,14 @@ public class AuthService {
     private final JwtGenerator jwtGenerator;
     private final JwtProvider jwtProvider;
     private final MemberFinder memberFinder;
+    private final MemberTeamManagerFinder memberTeamManagerFinder;
+    private final MemberTeamManagerDeleter memberTeamManagerDeleter;
+    private final TeamFinder teamFinder;
+    private final NoteFinder noteFinder;
     private final TokenSaver tokenSaver;
     private final TokenFinder tokenFinder;
     private final PasswordEncoder passwordEncoder;
+    private final MemberDeleter memberDeleter;
 
     public SignInGetResponse signIn(final SignInRequest request) {
         Member member = checkMemberEmpty(request);
@@ -64,8 +79,22 @@ public class AuthService {
         return ReissueGetResponse.from(accessToken);
     }
 
+    @Transactional
+    public void withdrawal(final long memberId) {
+        Member member = memberFinder.findById(memberId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(memberId);
+        for (MemberTeamManager memberTeamManager : memberTeamManagers) {
+            Team team = teamFinder.findById(memberTeamManager.getTeamId());
+            List<Note> notes = noteFinder.findAllByMemberIdAndTeamId(memberId, team.getId());
+            notes.forEach(Note::deleteMemberDependency);
+            memberTeamManagerDeleter.delete(memberTeamManager);
+        }
+        memberDeleter.delete(member);
+    }
+
     private Member checkMemberEmpty(final SignInRequest request) {
-        return memberFinder.findByEmail(Email.from(request.email())).orElseThrow(() -> new MemberException(INVALID_MEMBER));
+        return memberFinder.findByEmail(Email.from(request.email()))
+            .orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
     private void checkTokenEmpty(final String token) {
