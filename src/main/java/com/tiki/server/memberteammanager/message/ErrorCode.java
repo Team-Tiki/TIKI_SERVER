@@ -13,7 +13,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
-	CONFLICT_TEAM_MEMBER(BAD_REQUEST, "이미 존재하는 팀원입니다"),
+	CONFLICT_TEAM_MEMBER(BAD_REQUEST, "이미 존재하는 팀원입니다."),
 	CANNOT_QUIT_TEAM(BAD_REQUEST, "팀을 탈퇴할 수 없습니다."),
 
 	/* 403 FORBIDDEN : 권한 없음 */
