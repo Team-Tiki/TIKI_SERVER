@@ -72,6 +72,7 @@ public class MemberService {
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(memberId);
         for (MemberTeamManager memberTeamManager : memberTeamManagers) {
             Team team = teamFinder.findById(memberTeamManager.getTeamId());
+            memberTeamManager.checkMemberIsNotAdmin();
             List<Note> notes = noteFinder.findAllByMemberIdAndTeamId(memberId, team.getId());
             notes.forEach(Note::deleteMemberDependency);
             memberTeamManagerDeleter.delete(memberTeamManager);
