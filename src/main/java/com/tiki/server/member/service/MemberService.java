@@ -1,5 +1,6 @@
 package com.tiki.server.member.service;
 
+import com.tiki.server.member.adapter.MemberDeleter;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.adapter.MemberSaver;
 import com.tiki.server.member.dto.request.PasswordChangeRequest;
@@ -8,8 +9,11 @@ import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.email.Email;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
+import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
+import com.tiki.server.note.adapter.NoteFinder;
+import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
 
@@ -32,9 +36,12 @@ public class MemberService {
 
     private final MemberSaver memberSaver;
     private final MemberFinder memberFinder;
+    private final MemberDeleter memberDeleter;
     private final PasswordEncoder passwordEncoder;
     private final TeamFinder teamFinder;
+    private final NoteFinder noteFinder;
     private final MemberTeamManagerFinder memberTeamManagerFinder;
+    private final MemberTeamManagerDeleter memberTeamManagerDeleter;
 
     @Transactional
     public void signUp(final MemberProfileCreateRequest request) {
@@ -57,6 +64,19 @@ public class MemberService {
         checkPasswordFormat(request.password());
         checkPasswordMatch(request.password(), request.passwordChecker());
         member.resetPassword(passwordEncoder.encode(request.password()));
+    }
+
+    @Transactional
+    public void withdrawal(final long memberId) {
+        Member member = memberFinder.findById(memberId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(memberId);
+        for (MemberTeamManager memberTeamManager : memberTeamManagers) {
+            Team team = teamFinder.findById(memberTeamManager.getTeamId());
+            List<Note> notes = noteFinder.findAllByMemberIdAndTeamId(memberId, team.getId());
+            notes.forEach(Note::deleteMemberDependency);
+            memberTeamManagerDeleter.delete(memberTeamManager);
+        }
+        memberDeleter.delete(member);
     }
 
     private Member createMember(final MemberProfileCreateRequest request) {

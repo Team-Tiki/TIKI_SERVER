@@ -17,6 +17,7 @@ import java.security.Principal;
 
 import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CHANGING_PASSWORD;
 import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CREATE_MEMBER;
+import static com.tiki.server.member.message.SuccessMessage.SUCCESS_WITHDRAWAL;
 import static com.tiki.server.team.message.SuccessMessage.SUCCESS_GET_JOINED_TEAM;
 
 @RestController
@@ -53,5 +54,13 @@ public class MemberController implements MemberControllerDocs {
     ) {
         memberService.changePassword(passwordChangeRequest);
         return SuccessResponse.success(SUCCESS_CHANGING_PASSWORD.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/withdrawal")
+    public SuccessResponse<?> withdrawal(final Principal principal) {
+        long memberId = Long.parseLong(principal.getName());
+        memberService.withdrawal(memberId);
+        return SuccessResponse.success(SUCCESS_WITHDRAWAL.getMessage());
     }
 }

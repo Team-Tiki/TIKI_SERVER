@@ -45,12 +45,4 @@ public class AuthController implements AuthControllerDocs {
         ReissueGetResponse response = authService.reissueToken(httpServletRequest);
         return SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage(), response);
     }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/withdrawal")
-    public SuccessResponse<?> withdrawal(final Principal principal) {
-        long memberId = Long.parseLong(principal.getName());
-        authService.withdrawal(memberId);
-        return SuccessResponse.success(SUCCESS_REISSUE_ACCESS_TOKEN.getMessage());
-    }
 }
