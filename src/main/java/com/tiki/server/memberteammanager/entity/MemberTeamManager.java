@@ -62,6 +62,12 @@ public class MemberTeamManager extends BaseTime {
 		}
 	}
 
+	public void checkMemberIsNotAdmin() {
+		if (Position.isAdmin(this.position)) {
+			throw new MemberTeamManagerException(CANNOT_QUIT_TEAM);
+		}
+	}
+
 	public void updateName(final String name){
 		this.name = name;
 	}
