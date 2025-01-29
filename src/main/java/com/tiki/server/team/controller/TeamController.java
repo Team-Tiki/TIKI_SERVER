@@ -58,6 +58,16 @@ public class TeamController implements TeamControllerDocs {
 
     @Override
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{teamId}/inform")
+    public SuccessResponse<TeamInformGetResponse> getTeamName(
+            @PathVariable final long teamId
+    ) {
+        TeamInformGetResponse response = teamService.getTeamInform(teamId);
+        return SuccessResponse.success(SUCCESS_GET_TEAM_INFORM.getMessage(), response);
+    }
+
+    @Override
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/category")
     public SuccessResponse<CategoriesGetResponse> getCategories() {
         CategoriesGetResponse response = teamService.getCategories();
@@ -75,15 +85,7 @@ public class TeamController implements TeamControllerDocs {
         teamService.deleteTeam(memberId, teamId);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{teamId}/inform")
-    public SuccessResponse<TeamInformGetResponse> getTeamName(
-            @PathVariable final long teamId
-    ) {
-        TeamInformGetResponse response = teamService.getTeamInform(teamId);
-        return SuccessResponse.success(SUCCESS_GET_TEAM_INFORM.getMessage(), response);
-    }
-
+    @Override
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{teamId}/inform")
     public SuccessResponse<?> updateTeamInform(
@@ -96,6 +98,7 @@ public class TeamController implements TeamControllerDocs {
         return SuccessResponse.success(SUCCESS_UPDATE_TEAM_NAME.getMessage());
     }
 
+    @Override
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{teamId}/member/{targetId}/admin")
     public SuccessResponse<?> alterAdmin(
