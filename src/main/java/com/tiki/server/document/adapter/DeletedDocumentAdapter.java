@@ -36,6 +36,10 @@ public class DeletedDocumentAdapter {
 		deletedDocumentRepository.deleteAll(deletedDocuments);
 	}
 
+	public void deleteAllByTeamId(final long teamId) {
+		deletedDocumentRepository.deleteAllByTeamId(teamId);
+	}
+
 	private DeletedDocument create(final Document document) {
 		return DeletedDocument.of(document);
 	}

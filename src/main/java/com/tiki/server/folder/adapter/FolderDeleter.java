@@ -17,4 +17,8 @@ public class FolderDeleter {
 	public void deleteAll(final List<Folder> folders) {
 		folderRepository.deleteAll(folders);
 	}
+
+	public void deleteAllByTeamId(final long teamId) {
+		folderRepository.deleteAllByTeamId(teamId);
+	}
 }

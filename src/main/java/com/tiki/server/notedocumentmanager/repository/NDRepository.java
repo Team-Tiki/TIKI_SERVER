@@ -12,4 +12,6 @@ public interface NDRepository extends JpaRepository<NDManager, Long> {
     void deleteByNoteIdAndDocumentId(final long noteId, final long documentId);
 
     List<NDManager> findAllByNoteId(final long noteId);
+
+    void deleteAllByDocumentIdIn(final List<Long> documentIds);
 }

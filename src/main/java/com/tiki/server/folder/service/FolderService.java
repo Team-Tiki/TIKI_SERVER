@@ -22,6 +22,7 @@ import com.tiki.server.folder.dto.response.FoldersGetResponse;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
+import com.tiki.server.notedocumentmanager.adapter.NDDeleter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +38,7 @@ public class FolderService {
 	private final DocumentDeleter documentDeleter;
 	private final DeletedDocumentAdapter deletedDocumentAdapter;
 	private final FolderDeleter folderDeleter;
+	private final NDDeleter ndDeleter;
 
 	public FoldersGetResponse get(final long memberId, final long teamId,
 			final Long folderId) {
@@ -112,6 +114,7 @@ public class FolderService {
 
 	private void deleteDocuments(final Folder folder) {
 		List<Document> documents = documentFinder.findAllByFolderId(folder.getId());
+		ndDeleter.deleteAllByDocuments(documents.stream().map(Document::getId).toList());
 		deletedDocumentAdapter.save(documents);
 		documentDeleter.deleteAll(documents);
 	}

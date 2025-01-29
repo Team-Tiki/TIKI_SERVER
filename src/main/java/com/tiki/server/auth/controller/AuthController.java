@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 
 import static com.tiki.server.auth.message.SuccessMessage.*;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")

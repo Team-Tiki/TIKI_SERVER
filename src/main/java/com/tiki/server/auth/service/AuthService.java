@@ -44,7 +44,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public SignInGetResponse signIn(final SignInRequest request) {
-        Member member = checkMemberEmpty(request);
+        Member member = checkMemberEmpty(request.email());
         checkPasswordMatching(member, request.password());
         Authentication authentication = createAuthentication(member.getId());
         String accessToken = jwtGenerator.generateAccessToken(authentication);
@@ -64,8 +64,9 @@ public class AuthService {
         return ReissueGetResponse.from(accessToken);
     }
 
-    private Member checkMemberEmpty(final SignInRequest request) {
-        return memberFinder.findByEmail(Email.from(request.email())).orElseThrow(() -> new MemberException(INVALID_MEMBER));
+    private Member checkMemberEmpty(final String email) {
+        return memberFinder.findByEmail(Email.from(email))
+            .orElseThrow(() -> new MemberException(INVALID_MEMBER));
     }
 
     private void checkTokenEmpty(final String token) {

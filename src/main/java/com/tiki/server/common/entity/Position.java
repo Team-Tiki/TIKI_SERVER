@@ -23,4 +23,8 @@ public enum Position {
 			default -> throw new TimeBlockException(INVALID_TYPE);
 		};
 	}
+
+	public static boolean isAdmin(final Position position) {
+		return position == ADMIN;
+	}
 }

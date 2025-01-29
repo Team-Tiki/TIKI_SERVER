@@ -16,4 +16,6 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
 	Optional<Folder> findByIdAndTeamId(final long id, final long teamId);
 
 	List<Folder> findAllByPathStartsWith(final String path);
+
+	void deleteAllByTeamId(final long teamId);
 }
