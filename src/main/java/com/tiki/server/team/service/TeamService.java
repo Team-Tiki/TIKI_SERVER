@@ -1,7 +1,9 @@
 package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
+import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_NUMBER;
 
+import com.tiki.server.team.exception.TeamException;
 import java.util.List;
 
 import com.tiki.server.document.adapter.DeletedDocumentAdapter;
@@ -72,6 +74,7 @@ public class TeamService {
     @Transactional
     public TeamCreateResponse createTeam(final long memberId, final TeamCreateRequest request) {
         Member member = memberFinder.findById(memberId);
+        checkTeamNumber(memberId);
         Team team = teamSaver.save(createTeam(request, member.getUniv()));
         memberTeamManagerSaver.save(createMemberTeamManager(member, team, ADMIN));
         return TeamCreateResponse.from(team);
@@ -165,4 +168,13 @@ public class TeamService {
         timeBlocks.forEach(dtbAdapter::deleteAllByTimeBlock);
         timeBlockDeleter.deleteAllByTeamId(teamId);
     }
+
+    private void checkTeamNumber(final long memberId) {
+        List<MemberTeamManager> joinedTeams = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
+                memberId);
+        if (joinedTeams.size() > 8) {
+            throw new TeamException(EXCEED_TEAM_NUMBER);
+        }
+    }
 }
+
