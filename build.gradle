@@ -67,6 +67,9 @@ dependencies {
 
 	//Validation
 	implementation 'commons-validator:commons-validator:1.7'
+
+	//icu4j
+	implementation 'com.ibm.icu:icu4j:73.2'
 }
 
 tasks.named('test') {
