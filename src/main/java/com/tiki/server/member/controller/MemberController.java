@@ -6,6 +6,7 @@ import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 
+import com.tiki.server.member.dto.response.MemberInfoGetResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +38,18 @@ public class MemberController implements MemberControllerDocs {
 
     @Override
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/info")
+    public SuccessResponse<MemberInfoGetResponse> getMemberInfo(final Principal principal) {
+        long memberId = Long.parseLong(principal.getName());
+        MemberInfoGetResponse response = memberService.getMemberInfo(memberId);
+        return SuccessResponse.success(SUCCESS_CREATE_MEMBER.getMessage(), response);
+    }
+
+    @Override
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/teams")
     public SuccessResponse<BelongTeamsGetResponse> getBelongTeam(
-        final Principal principal
+            final Principal principal
     ) {
         long memberId = Long.parseLong(principal.getName());
         BelongTeamsGetResponse response = memberService.findBelongTeams(memberId);
