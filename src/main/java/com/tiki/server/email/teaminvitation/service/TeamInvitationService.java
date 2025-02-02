@@ -14,6 +14,7 @@ import com.tiki.server.memberteammanager.adapter.MemberTeamManagerSaver;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.entity.Team;
+import com.tiki.server.team.exception.TeamException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.tiki.server.email.teaminvitation.messages.ErrorCode.ALREADY_INVITED_MEMBER;
 import static com.tiki.server.email.teaminvitation.messages.ErrorCode.NOT_MATCHED_MEMBER_INFORM;
+import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_NUMBER;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class TeamInvitationService {
     public void createTeamMemberFromInvitation(final long memberId, final long teamId, final long invitationId) {
         checkIsPresentTeamMember(memberId, teamId);
         Member member = memberFinder.findById(memberId);
+        checkTeamNumber(memberId);
         Team team = teamFinder.findById(teamId);
         TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         checkMemberMatched(invitation, member);
@@ -82,6 +85,14 @@ public class TeamInvitationService {
     private void checkIsPresentTeamMember(long memberId, long teamId) {
         if (memberTeamManagerFinder.checkIsPresent(memberId, teamId)) {
             throw new TeamInvitationException(ALREADY_INVITED_MEMBER);
+        }
+    }
+
+    private void checkTeamNumber(final long memberId) {
+        List<MemberTeamManager> joinedTeams = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
+                memberId);
+        if (joinedTeams.size() > 8) {
+            throw new TeamException(EXCEED_TEAM_NUMBER);
         }
     }
 }
