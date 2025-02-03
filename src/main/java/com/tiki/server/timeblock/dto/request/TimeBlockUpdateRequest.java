@@ -11,7 +11,7 @@ public record TimeBlockUpdateRequest(
 	@NotNull LocalDate endDate
 ) {
 	public TimeBlockUpdateRequest(final String name, final LocalDate startDate, final LocalDate endDate) {
-		Validator.validateLength(name, 25);
+		Validator.validateLengthContainEmoji(name, 25);
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;

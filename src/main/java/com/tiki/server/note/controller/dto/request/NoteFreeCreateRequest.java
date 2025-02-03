@@ -18,7 +18,7 @@ public record NoteFreeCreateRequest(
 ) {
 
         public NoteFreeCreateRequest(final String title, final boolean complete, final LocalDate startDate, final LocalDate endDate, final String contents, final List<Long> timeBlockIds, final List<Long> documentIds, final long teamId) {
-            Validator.validateLength(title, 30);
+            Validator.validateLengthContainEmoji(title, 30);
             this.title = title;
             this.complete = complete;
             this.startDate = startDate;

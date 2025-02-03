@@ -17,7 +17,7 @@ public record TimeBlockCreateRequest(
 	@NotNull List<Long> documentIds
 ) {
 	public TimeBlockCreateRequest(final String name, final String color, final LocalDate startDate, final LocalDate endDate, final BlockType blockType, final List<Long> documentIds) {
-		Validator.validateLength(name, 25);
+		Validator.validateLengthContainEmoji(name, 25);
 		this.name = name;
 		this.color = color;
 		this.startDate = startDate;
