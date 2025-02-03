@@ -1,12 +1,13 @@
 package com.tiki.server.member.dto.response;
 
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record MemberInfoGetResponse(
-        String Email,
-        String name,
-        LocalDate birth,
-        String University
+       @NotNull String Email,
+       @NotNull String name,
+       @NotNull LocalDate birth,
+       @NotNull String University
 ) {
 
     public static MemberInfoGetResponse from(
