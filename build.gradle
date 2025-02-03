@@ -73,8 +73,11 @@ dependencies {
     //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-    //Validation
-    implementation 'commons-validator:commons-validator:1.7'
+	//Validation
+	implementation 'commons-validator:commons-validator:1.7'
+
+	//icu4j
+	implementation 'com.ibm.icu:icu4j:73.2'
 }
 
 tasks.named('test') {
