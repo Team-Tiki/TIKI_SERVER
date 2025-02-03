@@ -18,6 +18,7 @@ import java.security.Principal;
 
 import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CHANGING_PASSWORD;
 import static com.tiki.server.member.message.SuccessMessage.SUCCESS_CREATE_MEMBER;
+import static com.tiki.server.member.message.SuccessMessage.SUCCESS_GET_MEMBER_INFORMATION;
 import static com.tiki.server.member.message.SuccessMessage.SUCCESS_WITHDRAWAL;
 import static com.tiki.server.team.message.SuccessMessage.SUCCESS_GET_JOINED_TEAM;
 
@@ -42,7 +43,7 @@ public class MemberController implements MemberControllerDocs {
     public SuccessResponse<MemberInfoGetResponse> getMemberInfo(final Principal principal) {
         long memberId = Long.parseLong(principal.getName());
         MemberInfoGetResponse response = memberService.getMemberInfo(memberId);
-        return SuccessResponse.success(SUCCESS_CREATE_MEMBER.getMessage(), response);
+        return SuccessResponse.success(SUCCESS_GET_MEMBER_INFORMATION.getMessage(), response);
     }
 
     @Override
