@@ -7,6 +7,7 @@ import com.tiki.server.member.dto.request.PasswordChangeRequest;
 import com.tiki.server.member.dto.request.MemberProfileCreateRequest;
 import com.tiki.server.member.dto.response.BelongTeamsGetResponse;
 import com.tiki.server.email.Email;
+import com.tiki.server.member.dto.response.MemberInfoGetResponse;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.member.exception.MemberException;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerDeleter;
@@ -53,9 +54,16 @@ public class MemberService {
     }
 
     public BelongTeamsGetResponse findBelongTeams(final long memberId) {
-        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(memberId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
+                memberId);
         List<Team> teams = getTeams(memberTeamManagers);
         return BelongTeamsGetResponse.from(teams);
+    }
+
+    public MemberInfoGetResponse getMemberInfo(final long memberId) {
+        Member member = memberFinder.findById(memberId);
+        return MemberInfoGetResponse.from(member.getEmail().getEmail(), member.getName(), member.getBirth(),
+                member.getUniv().name());
     }
 
     @Transactional
@@ -69,7 +77,8 @@ public class MemberService {
     @Transactional
     public void withdrawal(final long memberId) {
         Member member = memberFinder.findById(memberId);
-        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(memberId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
+                memberId);
         for (MemberTeamManager memberTeamManager : memberTeamManagers) {
             Team team = teamFinder.findById(memberTeamManager.getTeamId());
             memberTeamManager.checkMemberIsNotAdmin();
@@ -95,8 +104,8 @@ public class MemberService {
 
     private List<Team> getTeams(final List<MemberTeamManager> memberTeamManagers) {
         return memberTeamManagers.stream()
-            .map(memberTeamManager -> teamFinder.findById(memberTeamManager.getTeamId()))
-            .toList();
+                .map(memberTeamManager -> teamFinder.findById(memberTeamManager.getTeamId()))
+                .toList();
     }
 
     private void checkPasswordFormat(final String password) {
