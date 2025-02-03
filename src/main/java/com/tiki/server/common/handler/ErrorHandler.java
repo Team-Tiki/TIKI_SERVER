@@ -7,6 +7,7 @@ import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.verification.exception.EmailVerificationException;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;
+import io.sentry.Sentry;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -36,6 +37,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> memberException(MemberException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -43,6 +45,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> teamException(TeamException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -50,6 +53,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> memberTeamManagerException(MemberTeamManagerException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -57,6 +61,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> timeBlockException(TimeBlockException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -64,6 +69,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> documentException(DocumentException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -71,6 +77,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> noteException(NoteException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -78,6 +85,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> externalException(ExternalException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -85,6 +93,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> mailVerificationException(EmailVerificationException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -92,6 +101,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> mailSenderException(EmailSenderException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -99,6 +109,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> teamInvitationException(TeamInvitationException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -106,6 +117,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> folderException(FolderException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 
@@ -113,6 +125,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> authException(AuthException exception) {
         log.error(exception.getMessage());
         val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(
                 ErrorCodeResponse.of(errorCode.getCode(), errorCode.getMessage()));
     }
@@ -120,6 +133,7 @@ public class ErrorHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<BaseResponse> httpMessageNotReadableException(HttpMessageNotReadableException exception) {
         log.error(exception.getMessage());
+        Sentry.captureException(exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ErrorResponse.of(WRONG_INPUT));
     }
@@ -128,6 +142,7 @@ public class ErrorHandler {
     public ResponseEntity<BaseResponse> exception(Exception exception) {
         log.error(exception.getMessage());
         val errorCode = UNCAUGHT_SERVER_EXCEPTION;
+        Sentry.captureException(exception);
         return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
     }
 }
