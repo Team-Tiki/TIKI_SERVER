@@ -58,3 +58,7 @@ aws-property:
   bucket: ${AWS_PROPERTY.BUCKET.dev}
   aws-region: ap-northeast-2
   s3-url: ${AWS_PROPERTY.S3_URL.dev}
+
+sentry:
+  dsn: ${SENTRY_PROPERTY.dsn}
+  traces-sample-rate: 1.0
