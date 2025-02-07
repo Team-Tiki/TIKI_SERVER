@@ -2,6 +2,7 @@ package com.tiki.server.common.handler;
 
 import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
+import com.tiki.server.common.exception.TikiException;
 import com.tiki.server.email.emailsender.exception.EmailSenderException;
 import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.verification.exception.EmailVerificationException;
@@ -32,6 +33,14 @@ import static com.tiki.server.common.constants.Constants.WRONG_INPUT;
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
+
+    @ExceptionHandler(TikiException.class)
+    public ResponseEntity<BaseResponse> tikiException(TikiException exception) {
+        log.error(exception.getMessage());
+        val errorCode = exception.getErrorCode();
+        Sentry.captureException(exception);
+        return ResponseEntity.status(errorCode.getHttpStatus()).body(ErrorResponse.of(errorCode.getMessage()));
+    }
 
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<BaseResponse> memberException(MemberException exception) {
