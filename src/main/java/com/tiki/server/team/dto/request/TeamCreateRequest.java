@@ -11,6 +11,7 @@ public record TeamCreateRequest(
         @NotNull String iconImageUrl
 ) {
     public TeamCreateRequest(final String name, final Category category, final String iconImageUrl) {
+        Validator.isValidText(name);
         Validator.validateLength(name, 30);
         this.name = name;
         this.category = category;

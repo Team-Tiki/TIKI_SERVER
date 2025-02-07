@@ -8,6 +8,7 @@ public record TeamInformUpdateRequest(
         @NotNull String teamUrl
 ) {
     public TeamInformUpdateRequest(final String teamName, final String teamUrl) {
+        Validator.isValidText(teamName);
         Validator.validateLength(teamName, 30);
         this.teamName = teamName;
         this.teamUrl = teamUrl;
