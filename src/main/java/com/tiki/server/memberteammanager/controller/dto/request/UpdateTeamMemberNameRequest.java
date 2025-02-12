@@ -8,7 +8,7 @@ public record UpdateTeamMemberNameRequest(
 ) {
 
     public UpdateTeamMemberNameRequest(final String newName) {
-        Validator.isValidText(newName);
+        Validator.validText(newName);
         Validator.validateLength(newName, 32);
         this.newName = newName;
     }

@@ -27,7 +27,7 @@ public class Validator {
         }
     }
 
-    public static void isValidText(final String text) {
+    public static void validText(final String text) {
         String regex = "^[a-zA-Z가-힣0-9 !@#$%^&*()\\-_=+\\[\\]{};:'\",.<>?/|\\\\]+$";
         if (!text.matches(regex)) {
             throw new TikiException(INVALID_CHARACTER);
