@@ -26,6 +26,7 @@ public class SecurityConfig {
             "/api/v1/members/password",
             "/api/v1/members",
             "/api/v1/email/verification/**",
+            "/api/v1/team-invitation",
             "/actuator/health"
     };
 
