@@ -77,8 +77,7 @@ public class MemberService {
     @Transactional
     public void withdrawal(final long memberId) {
         Member member = memberFinder.findById(memberId);
-        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
-                memberId);
+        List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberId(memberId);
         for (MemberTeamManager memberTeamManager : memberTeamManagers) {
             Team team = teamFinder.findById(memberTeamManager.getTeamId());
             memberTeamManager.checkMemberIsNotAdmin();
