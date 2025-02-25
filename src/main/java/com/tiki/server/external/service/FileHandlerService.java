@@ -1,7 +1,7 @@
 package com.tiki.server.external.service;
 
 import com.tiki.server.external.dto.request.S3DeleteRequest;
-import com.tiki.server.external.dto.response.PreSignedUrlResponse;
+import com.tiki.server.external.dto.response.PutObjectPreSignedUrlResponse;
 import com.tiki.server.external.util.AwsHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class FileHandlerService {
 
     private final AwsHandler awsHandler;
 
-    public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
+    public PutObjectPreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
         return awsHandler.getUploadPreSignedUrl(fileFormat);
     }
 

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.tiki.server.external.config.AWSConfig;
-import com.tiki.server.external.dto.response.PreSignedUrlResponse;
+import com.tiki.server.external.dto.response.PutObjectPreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class AwsHandler {
 	@Value("${aws-property.bucket}")
 	private String bucket;
 
-	public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
+	public PutObjectPreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
 		try {
 			String fileName = generateFileName(fileFormat);
 			String key = FILE_SAVE_PREFIX + fileName;
@@ -39,7 +39,7 @@ public class AwsHandler {
 			PutObjectRequest putObjectRequest = createPutObjectRequest(key);
 			PutObjectPresignRequest putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
 			String url = preSigner.presignPutObject(putObjectPresignRequest).url().toString();
-			return PreSignedUrlResponse.of(fileName, url);
+			return PutObjectPreSignedUrlResponse.of(fileName, url);
 		} catch (RuntimeException e) {
 			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
 		}
