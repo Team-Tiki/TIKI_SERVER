@@ -12,14 +12,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.tiki.server.external.config.AWSConfig;
+import com.tiki.server.external.dto.response.GetObjectPreSignedUrlResponse;
 import com.tiki.server.external.dto.response.PutObjectPreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @Component
@@ -40,6 +43,18 @@ public class AwsHandler {
 			PutObjectPresignRequest putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
 			String url = preSigner.presignPutObject(putObjectPresignRequest).url().toString();
 			return PutObjectPreSignedUrlResponse.of(fileName, url);
+		} catch (RuntimeException e) {
+			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
+		}
+	}
+
+	public GetObjectPreSignedUrlResponse getDownloadPreSignedUrl(final String fileKey) {
+		try {
+			S3Presigner preSigner = awsConfig.getS3PreSigner();
+			GetObjectRequest getObjectRequest = createGetObjectRequest(fileKey);
+			GetObjectPresignRequest getObjectPresignRequest = createGetObjectPresignRequest(getObjectRequest);
+			String url = preSigner.presignGetObject(getObjectPresignRequest).url().toString();
+			return GetObjectPreSignedUrlResponse.from(url);
 		} catch (RuntimeException e) {
 			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
 		}
@@ -69,6 +84,20 @@ public class AwsHandler {
 		return PutObjectPresignRequest.builder()
 			.signatureDuration(Duration.ofMinutes(PRE_SIGNED_URL_EXPIRE_MINUTE))
 			.putObjectRequest(putObjectRequest)
+			.build();
+	}
+
+	private GetObjectRequest createGetObjectRequest(final String key) {
+		return GetObjectRequest.builder()
+			.bucket(bucket)
+			.key(key)
+			.build();
+	}
+
+	private GetObjectPresignRequest createGetObjectPresignRequest(final GetObjectRequest getObjectRequest) {
+		return GetObjectPresignRequest.builder()
+			.signatureDuration(Duration.ofMinutes(PRE_SIGNED_URL_EXPIRE_MINUTE))
+			.getObjectRequest(getObjectRequest)
 			.build();
 	}
 
