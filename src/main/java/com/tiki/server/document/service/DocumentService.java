@@ -14,7 +14,9 @@ import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.adapter.DocumentSaver;
 import com.tiki.server.document.dto.request.DocumentCreateRequest;
 import com.tiki.server.document.dto.request.DocumentsCreateRequest;
+import com.tiki.server.document.dto.response.DeletedDocumentResponse;
 import com.tiki.server.document.dto.response.DeletedDocumentsGetResponse;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.dto.response.DocumentsCreateResponse;
 import com.tiki.server.document.dto.response.DocumentsGetResponse;
 import com.tiki.server.document.entity.DeletedDocument;
@@ -53,7 +55,8 @@ public class DocumentService {
 		Position accessiblePosition = Position.getAccessiblePosition(type);
 		memberTeamManager.checkMemberAccessible(accessiblePosition);
 		List<Document> documents = documentFinder.findAllByTeamId(teamId);
-		return DocumentsGetResponse.from(documents);
+		List<DocumentResponse> responses = getDocumentResponses(documents);
+		return DocumentsGetResponse.from(responses);
 	}
 
 	@Transactional
@@ -69,7 +72,8 @@ public class DocumentService {
 	public DocumentsGetResponse get(final long memberId, final long teamId, final Long folderId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<Document> documents = documentFinder.findByTeamIdAndFolderId(teamId, folderId);
-		return DocumentsGetResponse.from(documents);
+		List<DocumentResponse> responses = getDocumentResponses(documents);
+		return DocumentsGetResponse.from(responses);
 	}
 
 	@Transactional
@@ -102,7 +106,14 @@ public class DocumentService {
 	public DeletedDocumentsGetResponse getTrash(final long memberId, final long teamId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		List<DeletedDocument> deletedDocuments = deletedDocumentAdapter.get(teamId);
-		return DeletedDocumentsGetResponse.from(deletedDocuments);
+		List<DeletedDocumentResponse> responses = getDeletedDocumentResponses(deletedDocuments);
+		return DeletedDocumentsGetResponse.from(responses);
+	}
+
+	private List<DocumentResponse> getDocumentResponses(final List<Document> documents) {
+		return documents.stream()
+			.map(document -> DocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey())))
+			.toList();
 	}
 
 	private void validateFolder(final Long folderId, final long teamId) {
@@ -140,5 +151,11 @@ public class DocumentService {
 	private void restoreTeamUsage(final long teamId, final List<DeletedDocument> deletedDocuments) {
 		Team team = teamFinder.findById(teamId);
 		team.restoreUsage(deletedDocuments.stream().mapToLong(DeletedDocument::getCapacity).sum());
+	}
+
+	private List<DeletedDocumentResponse> getDeletedDocumentResponses(final List<DeletedDocument> deletedDocuments) {
+		return deletedDocuments.stream()
+			.map(document -> DeletedDocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey())))
+			.toList();
 	}
 }
