@@ -68,7 +68,7 @@ public class MemberController implements MemberControllerDocs {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/withdrawal")
+    @DeleteMapping("/withdrawal")
     public SuccessResponse<?> withdrawal(final Principal principal) {
         long memberId = Long.parseLong(principal.getName());
         memberService.withdrawal(memberId);
