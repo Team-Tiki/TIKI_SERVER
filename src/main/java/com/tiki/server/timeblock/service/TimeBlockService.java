@@ -1,5 +1,7 @@
 package com.tiki.server.timeblock.service;
 
+import com.tiki.server.document.dto.response.DocumentResponse;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.notetimeblockmanager.adapter.NTBDeleter;
 import com.tiki.server.timeblock.dto.request.TimeBlockUpdateRequest;
 import com.tiki.server.timeblock.service.dto.response.AllTimeBlockServiceResponse;
@@ -49,6 +51,7 @@ public class TimeBlockService {
     private final NTBFinder ntbFinder;
     private final NoteFinder noteFinder;
     private final NTBDeleter ntbDeleter;
+    private final AwsHandler awsHandler;
 
     @Transactional
     public TimeBlockCreateResponse createTimeBlock(
@@ -178,7 +181,8 @@ public class TimeBlockService {
 
     private DocumentTagInfo getDocumentTagInfo(final DTBManager dtbManager) {
         Document document = documentFinder.findById(dtbManager.getDocumentId());
-        return DocumentTagInfo.of(document, dtbManager);
+        DocumentResponse response = DocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey()));
+        return DocumentTagInfo.of(response, dtbManager);
     }
 
     private List<Note> getNotes(final long timeBlockId) {

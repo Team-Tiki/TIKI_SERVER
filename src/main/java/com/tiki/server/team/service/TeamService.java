@@ -3,6 +3,7 @@ package com.tiki.server.team.service;
 import static com.tiki.server.common.entity.Position.ADMIN;
 import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_NUMBER;
 
+import com.tiki.server.team.dto.response.TeamResponse;
 import com.tiki.server.team.exception.TeamException;
 import java.util.List;
 
@@ -83,8 +84,9 @@ public class TeamService {
     public TeamsGetResponse getAllTeams(final long memberId) {
         Member member = memberFinder.findById(memberId);
         University univ = member.getUniv();
-        List<Team> team = teamFinder.findAllByUniv(univ);
-        return TeamsGetResponse.from(team);
+        List<Team> teams = teamFinder.findAllByUniv(univ);
+        List<TeamResponse> responses = getTeamResponses(teams);
+        return TeamsGetResponse.from(responses);
     }
 
     public CategoriesGetResponse getCategories() {
@@ -106,10 +108,6 @@ public class TeamService {
 
     public TeamInformGetResponse getTeamInform(final long teamId) {
         return TeamInformGetResponse.from(teamFinder.findById(teamId));
-    }
-
-    private Team createTeam(final TeamCreateRequest request, final University univ) {
-        return Team.of(request, univ);
     }
 
     @Transactional
@@ -134,6 +132,16 @@ public class TeamService {
         long capacity = team.getCapacity();
         long usage = team.getUsage();
         return UsageGetResponse.of(capacity, usage);
+    }
+
+    private Team createTeam(final TeamCreateRequest request, final University univ) {
+        return Team.of(request, univ);
+    }
+
+    private List<TeamResponse> getTeamResponses(final List<Team> teams) {
+        return teams.stream()
+            .map(team -> TeamResponse.createWithImage(team, awsHandler.getDownloadPreSignedUrl(team.getImageUrl())))
+            .toList();
     }
 
     private MemberTeamManager createMemberTeamManager(final Member member, final Team team, final Position position) {
