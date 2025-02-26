@@ -48,13 +48,12 @@ public class AwsHandler {
 		}
 	}
 
-	public GetObjectPreSignedUrlResponse getDownloadPreSignedUrl(final String fileKey) {
+	public String getDownloadPreSignedUrl(final String fileKey) {
 		try {
 			S3Presigner preSigner = awsConfig.getS3PreSigner();
 			GetObjectRequest getObjectRequest = createGetObjectRequest(fileKey);
 			GetObjectPresignRequest getObjectPresignRequest = createGetObjectPresignRequest(getObjectRequest);
-			String url = preSigner.presignGetObject(getObjectPresignRequest).url().toString();
-			return GetObjectPreSignedUrlResponse.from(url);
+			return preSigner.presignGetObject(getObjectPresignRequest).url().toString();
 		} catch (RuntimeException e) {
 			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
 		}
