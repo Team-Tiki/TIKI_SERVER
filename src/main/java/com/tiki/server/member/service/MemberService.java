@@ -1,5 +1,6 @@
 package com.tiki.server.member.service;
 
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.member.adapter.MemberDeleter;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.adapter.MemberSaver;
@@ -16,6 +17,7 @@ import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.note.adapter.NoteFinder;
 import com.tiki.server.note.entity.Note;
 import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.dto.response.TeamResponse;
 import com.tiki.server.team.entity.Team;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,6 +45,7 @@ public class MemberService {
     private final NoteFinder noteFinder;
     private final MemberTeamManagerFinder memberTeamManagerFinder;
     private final MemberTeamManagerDeleter memberTeamManagerDeleter;
+    private final AwsHandler awsHandler;
 
     @Transactional
     public void signUp(final MemberProfileCreateRequest request) {
@@ -57,7 +60,8 @@ public class MemberService {
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
                 memberId);
         List<Team> teams = getTeams(memberTeamManagers);
-        return BelongTeamsGetResponse.from(teams);
+        List<TeamResponse> responses = getTeamResponses(teams);
+        return BelongTeamsGetResponse.from(responses);
     }
 
     public MemberInfoGetResponse getMemberInfo(final long memberId) {
@@ -106,6 +110,12 @@ public class MemberService {
         return memberTeamManagers.stream()
                 .map(memberTeamManager -> teamFinder.findById(memberTeamManager.getTeamId()))
                 .toList();
+    }
+
+    private List<TeamResponse> getTeamResponses(final List<Team> teams) {
+        return teams.stream()
+            .map(team -> TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageUrl())))
+            .toList();
     }
 
     private void checkPasswordFormat(final String password) {
