@@ -5,7 +5,7 @@ import static lombok.AccessLevel.PRIVATE;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.tiki.server.document.entity.Document;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.folder.entity.Folder;
 
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public record DriveGetResponse(
 	@NotNull List<FolderGetResponse> folders
 ) {
 
-	public static DriveGetResponse of(final List<Document> documents, final List<Folder> folders) {
+	public static DriveGetResponse of(final List<DocumentResponse> documents, final List<Folder> folders) {
 		return DriveGetResponse.builder()
 			.documents(documents.stream().map(DocumentGetResponse::from).toList())
 			.folders(folders.stream().map(FolderGetResponse::from).toList())
@@ -34,13 +34,13 @@ public record DriveGetResponse(
 		@NotNull String type
 	) {
 
-		public static DocumentGetResponse from(final Document document) {
+		public static DocumentGetResponse from(final DocumentResponse document) {
 			return DocumentGetResponse.builder()
-				.documentId(document.getId())
-				.name(document.getFileName())
-				.url(document.getFileUrl())
-				.capacity(document.getCapacity())
-				.createdTime(document.getCreatedAt())
+				.documentId(document.documentId())
+				.name(document.name())
+				.url(document.url())
+				.capacity(document.capacity())
+				.createdTime(document.createdTime())
 				.type("document")
 				.build();
 		}

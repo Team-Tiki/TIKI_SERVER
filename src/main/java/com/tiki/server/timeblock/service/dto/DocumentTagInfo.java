@@ -2,7 +2,7 @@ package com.tiki.server.timeblock.service.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import com.tiki.server.document.entity.Document;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.documenttimeblockmanager.entity.DTBManager;
 
 import jakarta.validation.constraints.NotNull;
@@ -17,12 +17,12 @@ public record DocumentTagInfo(
 	@NotNull long tagId
 ) {
 
-	public static DocumentTagInfo of(final Document document, final DTBManager dtbManager) {
+	public static DocumentTagInfo of(final DocumentResponse document, final DTBManager dtbManager) {
 		return DocumentTagInfo.builder()
-			.documentId(document.getId())
-			.fileName(document.getFileName())
-			.fileUrl(document.getFileUrl())
-			.capacity(document.getCapacity())
+			.documentId(document.documentId())
+			.fileName(document.name())
+			.fileUrl(document.url())
+			.capacity(document.capacity())
 			.tagId(dtbManager.getId())
 			.build();
 	}

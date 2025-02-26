@@ -15,7 +15,7 @@ public record DocumentsGetResponse(
 	@NotNull List<DocumentInfoGetResponse> documents
 ) {
 
-	public static DocumentsGetResponse from(final List<Document> documents) {
+	public static DocumentsGetResponse from(final List<DocumentResponse> documents) {
 		return DocumentsGetResponse.builder()
 				.documents(documents.stream().map(DocumentInfoGetResponse::from).toList())
 				.build();
@@ -30,13 +30,13 @@ public record DocumentsGetResponse(
 		@NotNull LocalDateTime createdTime
 	) {
 
-		public static DocumentInfoGetResponse from(final Document document) {
+		public static DocumentInfoGetResponse from(final DocumentResponse document) {
 			return DocumentInfoGetResponse.builder()
-					.documentId(document.getId())
-					.name(document.getFileName())
-					.url(document.getFileUrl())
-					.capacity(document.getCapacity())
-					.createdTime(document.getCreatedAt())
+					.documentId(document.documentId())
+					.name(document.name())
+					.url(document.url())
+					.capacity(document.capacity())
+					.createdTime(document.createdTime())
 					.build();
 		}
 	}
