@@ -4,8 +4,6 @@ import static lombok.AccessLevel.PRIVATE;
 
 import java.util.List;
 
-import com.tiki.server.document.entity.DeletedDocument;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -14,7 +12,7 @@ public record DeletedDocumentsGetResponse(
 	@NotNull List<DeletedDocumentGetResponse> deletedDocuments
 ) {
 
-	public static DeletedDocumentsGetResponse from(final List<DeletedDocument> deletedDocuments) {
+	public static DeletedDocumentsGetResponse from(final List<DeletedDocumentResponse> deletedDocuments) {
 		return DeletedDocumentsGetResponse.builder()
 				.deletedDocuments(deletedDocuments.stream().map(DeletedDocumentGetResponse::from).toList())
 				.build();
@@ -28,12 +26,12 @@ public record DeletedDocumentsGetResponse(
 		@NotNull long capacity
 	) {
 
-		private static DeletedDocumentGetResponse from(final DeletedDocument deletedDocument) {
+		private static DeletedDocumentGetResponse from(final DeletedDocumentResponse deletedDocument) {
 			return DeletedDocumentGetResponse.builder()
-					.documentId(deletedDocument.getId())
-					.name(deletedDocument.getFileName())
-					.url(deletedDocument.getFileUrl())
-					.capacity(deletedDocument.getCapacity())
+					.documentId(deletedDocument.documentId())
+					.name(deletedDocument.name())
+					.url(deletedDocument.url())
+					.capacity(deletedDocument.capacity())
 					.build();
 		}
 	}
