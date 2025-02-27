@@ -18,15 +18,15 @@ public record TeamGetResponse(
 	@NotNull String overview,
 	@NotNull String imageUrl
 ) {
-	public static TeamGetResponse from(final Team team) {
+
+	public static TeamGetResponse from(final TeamResponse team) {
 		return TeamGetResponse.builder()
-			.teamId(team.getId())
-			.name(team.getName())
-			.overview(team.getOverview())
-			.category(team.getCategory())
-			.univ(team.getUniv())
-			.imageUrl(team.getImageUrl())
+			.teamId(team.teamId())
+			.name(team.name())
+			.overview(team.overview())
+			.category(team.category())
+			.univ(team.univ())
+			.imageUrl(team.imageUrl())
 			.build();
 	}
-
 }

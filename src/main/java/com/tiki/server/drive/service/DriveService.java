@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.drive.dto.DriveGetResponse;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.folder.adapter.FolderFinder;
 import com.tiki.server.folder.entity.Folder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
@@ -24,6 +26,7 @@ public class DriveService {
 	private final MemberTeamManagerFinder memberTeamManagerFinder;
 	private final DocumentFinder documentFinder;
 	private final FolderFinder folderFinder;
+	private final AwsHandler awsHandler;
 
 	public DriveGetResponse getDrive(final long memberId, final long teamId, final Long folderId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
@@ -31,7 +34,8 @@ public class DriveService {
 		Folder folder = getFolder(teamId, folderId);
 		String path = getChildFolderPath(folder);
 		List<Folder> folders = folderFinder.findByTeamIdAndPath(teamId, path);
-		return DriveGetResponse.of(documents, folders);
+		List<DocumentResponse> responses = getDocumentResponses(documents);
+		return DriveGetResponse.of(responses, folders);
 	}
 
 	private Folder getFolder(final long teamId, final Long folderId) {
@@ -48,5 +52,11 @@ public class DriveService {
 			return ROOT_PATH;
 		}
 		return folder.getChildPath();
+	}
+
+	private List<DocumentResponse> getDocumentResponses(final List<Document> documents) {
+		return documents.stream()
+			.map(document -> DocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey())))
+			.toList();
 	}
 }
