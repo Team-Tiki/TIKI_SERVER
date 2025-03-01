@@ -1,9 +1,11 @@
 package com.tiki.server.email.teaminvitation.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
+import com.tiki.server.email.Email;
 import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.email.teaminvitation.repository.TeamInvitationRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -31,8 +33,7 @@ public class TeamInvitationFinder {
         return teamInvitationRepository.findAllByTeamId(teamId);
     }
 
-    public void existByTeamIdAndEmail(final long teamId,final String targetEmail){
-        teamInvitationRepository.findByTeamIdAndEmail(teamId, targetEmail)
-                .orElseThrow(()->new TeamInvitationException(ALREADY_INVITED));
+    public Optional<TeamInvitation> presentByTeamIdAndEmail(final long teamId, final Email targetEmail){
+        return teamInvitationRepository.findByTeamIdAndEmail(teamId, targetEmail);
     }
 }
