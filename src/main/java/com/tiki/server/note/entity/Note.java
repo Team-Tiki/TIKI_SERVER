@@ -1,20 +1,23 @@
 package com.tiki.server.note.entity;
 
-import com.tiki.server.common.entity.BaseTime;
-import com.tiki.server.note.exception.NoteException;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-
-import static com.tiki.server.note.message.ErrorCode.UPDATE_ONLY_AUTHOR;
 import static com.tiki.server.note.message.ErrorCode.UPDATE_ONLY_BELONGING_TEAM;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
+
+import com.tiki.server.common.entity.BaseTime;
+import com.tiki.server.note.exception.NoteException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -84,7 +87,6 @@ public class Note extends BaseTime {
             final boolean complete,
             final NoteType noteType
     ) {
-        checkAuthor(clientId);
         checkTeam(clientTeamId);
         this.title = title;
         this.contents = contents;
@@ -96,12 +98,6 @@ public class Note extends BaseTime {
 
     public void deleteMemberDependency() {
         this.memberId = null;
-    }
-
-    private void checkAuthor(final long clientId) {
-        if (this.memberId != clientId) {
-            throw new NoteException(UPDATE_ONLY_AUTHOR);
-        }
     }
 
     private void checkTeam(final long clientTeamId) {
