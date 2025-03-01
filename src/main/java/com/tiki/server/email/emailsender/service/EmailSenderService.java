@@ -1,5 +1,6 @@
 package com.tiki.server.email.emailsender.service;
 
+import static com.tiki.server.email.teaminvitation.messages.ErrorCode.ALREADY_INVITED;
 import static com.tiki.server.memberteammanager.message.ErrorCode.CONFLICT_TEAM_MEMBER;
 
 import com.tiki.server.common.entity.Position;
@@ -9,6 +10,7 @@ import com.tiki.server.email.emailsender.service.dto.TeamInvitationCreateService
 import com.tiki.server.email.teaminvitation.adapter.TeamInvitationFinder;
 import com.tiki.server.email.teaminvitation.adapter.TeamInvitationSaver;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
+import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.verification.adapter.EmailVerificationSaver;
 import com.tiki.server.email.verification.domain.EmailVerification;
 import com.tiki.server.member.adapter.MemberFinder;
@@ -64,6 +66,7 @@ public class EmailSenderService {
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
         Team team = teamFinder.findById(request.teamId());
         checkIsPresentTeamMember(request);
+        checkDuplicateInvitation(request);
         TeamInvitation teamInvitation = teamInvitationSaver.createTeamInvitation(
                 TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.targetEmail()));
         mailSender.sendTeamInvitationMail(
@@ -73,6 +76,14 @@ public class EmailSenderService {
                 request.teamId(),
                 teamInvitation.getId()
         );
+    }
+
+    private void checkDuplicateInvitation(final TeamInvitationCreateServiceRequest request) {
+        teamInvitationFinder.presentByTeamIdAndEmail(request.teamId(), request.targetEmail()
+                )
+                .ifPresent(invitation -> {
+                    throw new TeamInvitationException(ALREADY_INVITED);
+                });
     }
 
     private void checkIsPresentTeamMember(final TeamInvitationCreateServiceRequest request) {
