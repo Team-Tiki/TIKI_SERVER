@@ -84,7 +84,6 @@ public class Note extends BaseTime {
             final boolean complete,
             final NoteType noteType
     ) {
-        checkAuthor(clientId);
         checkTeam(clientTeamId);
         this.title = title;
         this.contents = contents;
@@ -96,12 +95,6 @@ public class Note extends BaseTime {
 
     public void deleteMemberDependency() {
         this.memberId = null;
-    }
-
-    private void checkAuthor(final long clientId) {
-        if (this.memberId != clientId) {
-            throw new NoteException(UPDATE_ONLY_AUTHOR);
-        }
     }
 
     private void checkTeam(final long clientTeamId) {
