@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.tiki.server.email.teaminvitation.messages.ErrorCode.ALREADY_INVITED;
 import static com.tiki.server.email.teaminvitation.messages.ErrorCode.INVALID_TEAM_INVITATION;
 
 @RepositoryAdapter
@@ -28,5 +29,10 @@ public class TeamInvitationFinder {
 
     public List<TeamInvitation> findAllByTeamId(final long teamId) {
         return teamInvitationRepository.findAllByTeamId(teamId);
+    }
+
+    public void existByTeamIdAndEmail(final long teamId,final String targetEmail){
+        teamInvitationRepository.findByTeamIdAndEmail(teamId, targetEmail)
+                .orElseThrow(()->new TeamInvitationException(ALREADY_INVITED));
     }
 }
