@@ -1,14 +1,17 @@
 package com.tiki.server.email.teaminvitation.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
+import com.tiki.server.email.Email;
 import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.email.teaminvitation.repository.TeamInvitationRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.tiki.server.email.teaminvitation.messages.ErrorCode.ALREADY_INVITED;
 import static com.tiki.server.email.teaminvitation.messages.ErrorCode.INVALID_TEAM_INVITATION;
 
 @RepositoryAdapter
@@ -28,5 +31,9 @@ public class TeamInvitationFinder {
 
     public List<TeamInvitation> findAllByTeamId(final long teamId) {
         return teamInvitationRepository.findAllByTeamId(teamId);
+    }
+
+    public Optional<TeamInvitation> presentByTeamIdAndEmail(final long teamId, final Email targetEmail){
+        return teamInvitationRepository.findByTeamIdAndEmail(teamId, targetEmail);
     }
 }
