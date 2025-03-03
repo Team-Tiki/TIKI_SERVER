@@ -107,7 +107,9 @@ public class TeamService {
     }
 
     public TeamInformGetResponse getTeamInform(final long teamId) {
-        return TeamInformGetResponse.from(teamFinder.findById(teamId));
+        Team team = teamFinder.findById(teamId);
+        String iconImageUrl = awsHandler.getDownloadPreSignedUrl(team.getIconImageKey());
+        return TeamInformGetResponse.of(team, iconImageUrl);
     }
 
     @Transactional
