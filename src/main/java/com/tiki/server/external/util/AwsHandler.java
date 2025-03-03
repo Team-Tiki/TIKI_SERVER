@@ -35,8 +35,7 @@ public class AwsHandler {
 
 	public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
 		try {
-			String fileName = generateFileName(fileFormat);
-			String key = FILE_SAVE_PREFIX + fileName;
+			String key = generateFileKey(fileFormat);
 			S3Presigner preSigner = awsConfig.getS3PreSigner();
 			PutObjectRequest putObjectRequest = createPutObjectRequest(key);
 			PutObjectPresignRequest putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
@@ -99,7 +98,7 @@ public class AwsHandler {
 			.build();
 	}
 
-	private String generateFileName(final String fileFormat) {
-		return UUID.randomUUID() + FILE_DELIMITER + fileFormat;
+	private String generateFileKey(final String fileFormat) {
+		return FILE_SAVE_PREFIX + UUID.randomUUID() + FILE_DELIMITER + fileFormat;
 	}
 }
