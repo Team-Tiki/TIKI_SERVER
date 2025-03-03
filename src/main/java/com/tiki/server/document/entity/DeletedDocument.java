@@ -31,9 +31,6 @@ public class DeletedDocument extends BaseTime {
 	private String fileName;
 
 	@Column(nullable = false)
-	private String fileUrl;
-
-	@Column(nullable = false)
 	private String fileKey;
 
 	@Column(nullable = false)
@@ -45,7 +42,6 @@ public class DeletedDocument extends BaseTime {
 	public static DeletedDocument of(final Document document) {
 		return DeletedDocument.builder()
 			.fileName(document.getFileName())
-			.fileUrl(document.getFileUrl())
 			.fileKey(document.getFileKey())
 			.teamId(document.getTeamId())
 			.capacity(document.getCapacity())
