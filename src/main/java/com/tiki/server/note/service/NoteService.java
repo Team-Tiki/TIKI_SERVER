@@ -5,6 +5,7 @@ import com.tiki.server.common.util.ContentEncoder;
 import com.tiki.server.document.adapter.DocumentFinder;
 import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.note.adapter.NoteDeleter;
 import com.tiki.server.note.adapter.NoteFinder;
@@ -53,6 +54,7 @@ public class NoteService {
 	private final NDDeleter ndDeleter;
 	private final TimeBlockFinder timeBlockFinder;
 	private final DocumentFinder documentFinder;
+	private final AwsHandler awsHandler;
 
 	@Transactional
 	public NoteCreateServiceResponse createNoteFree(final NoteFreeCreateServiceRequest request) {
@@ -149,11 +151,14 @@ public class NoteService {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Note note = noteFinder.findById(noteId);
 		List<Document> documents = getDocumentListMappedByNote(noteId);
+		List<DocumentResponse> responses = documents.stream()
+			.map(document -> DocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey())))
+			.toList();
 		List<TimeBlock> timeBlocks = getTimeBlocksMappedByNote(noteId);
 		String memberName = getMemberName(note.getMemberId(), teamId);
 		return note.getNoteType() == NoteType.FREE
-			? NoteFreeDetailGetServiceResponse.of(note, memberName, documents, timeBlocks)
-			: NoteTemplateDetailGetServiceResponse.of(note, memberName, documents, timeBlocks);
+			? NoteFreeDetailGetServiceResponse.of(note, memberName, responses, timeBlocks)
+			: NoteTemplateDetailGetServiceResponse.of(note, memberName, responses, timeBlocks);
 	}
 
 	private String getMemberName(final Long noteMemberId, final long teamId) {
