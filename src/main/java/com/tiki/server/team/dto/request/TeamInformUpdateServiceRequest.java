@@ -8,7 +8,11 @@ public record TeamInformUpdateServiceRequest(
         @NotNull String teamName,
         @NotNull String teamIconUrl
 ) {
-    public static TeamInformUpdateServiceRequest from(final TeamInformUpdateRequest request, final long memberId, final long teamId) {
+    public static TeamInformUpdateServiceRequest of(
+        final TeamInformUpdateRequest request,
+        final long memberId,
+        final long teamId
+    ) {
         return new TeamInformUpdateServiceRequest(
                 memberId,
                 teamId,
