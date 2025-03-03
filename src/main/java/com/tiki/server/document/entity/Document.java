@@ -32,9 +32,6 @@ public class Document extends BaseTime {
 	private String fileName;
 
 	@Column(nullable = false)
-	private String fileUrl;
-
-	@Column(nullable = false)
 	private String fileKey;
 
 	@Column(nullable = false)
@@ -48,7 +45,6 @@ public class Document extends BaseTime {
 	public static Document of(final DocumentCreateRequest request, final long teamId, final Long folderId) {
 		return Document.builder()
 			.fileName(request.fileName())
-			.fileUrl(request.fileUrl())
 			.capacity(request.capacity())
 			.fileKey(request.fileKey())
 			.teamId(teamId)
@@ -59,7 +55,6 @@ public class Document extends BaseTime {
 	public static Document restore(final DeletedDocument deletedDocument) {
 		return Document.builder()
 				.fileName(deletedDocument.getFileName())
-				.fileUrl(deletedDocument.getFileUrl())
 				.capacity(deletedDocument.getCapacity())
 				.fileKey(deletedDocument.getFileKey())
 				.teamId(deletedDocument.getTeamId())
