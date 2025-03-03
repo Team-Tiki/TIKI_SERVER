@@ -40,7 +40,7 @@ public class AwsHandler {
 			PutObjectRequest putObjectRequest = createPutObjectRequest(key);
 			PutObjectPresignRequest putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
 			String url = preSigner.presignPutObject(putObjectPresignRequest).url().toString();
-			return PreSignedUrlResponse.of(fileName, url);
+			return PreSignedUrlResponse.of(key, url);
 		} catch (RuntimeException e) {
 			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
 		}
