@@ -37,6 +37,7 @@ import java.util.Optional;
 
 import static com.tiki.server.common.constants.Constants.INIT_NUM;
 import static com.tiki.server.note.constants.NoteConstants.PAGE_SIZE;
+import static com.tiki.server.note.constants.NoteConstants.UNKNOWN;
 
 @Service
 @RequiredArgsConstructor
@@ -164,7 +165,7 @@ public class NoteService {
 	private String getMemberName(final Long noteMemberId, final long teamId) {
 		return Optional.ofNullable(noteMemberId)
 			.map(id -> memberTeamManagerFinder.findByMemberIdAndTeamId(id, teamId).getName())
-			.orElse("알 수 없음");
+			.orElse(UNKNOWN);
 	}
 
 	private void updateNoteDocumentManager(final List<Long> documentIds, final long noteId) {
