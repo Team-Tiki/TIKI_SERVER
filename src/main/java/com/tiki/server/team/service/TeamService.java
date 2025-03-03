@@ -115,7 +115,7 @@ public class TeamService {
         checkIsAdmin(request.memberId(), request.teamId());
         Team team = teamFinder.findById(request.teamId());
         team.updateInform(request.teamName(), request.teamIconUrl());
-        updateIconUrlS3(team, request.teamIconUrl());
+        updateIconImageKey(team, request.teamIconUrl());
     }
 
     @Transactional
@@ -140,7 +140,7 @@ public class TeamService {
 
     private List<TeamResponse> getTeamResponses(final List<Team> teams) {
         return teams.stream()
-            .map(team -> TeamResponse.createWithImage(team, awsHandler.getDownloadPreSignedUrl(team.getImageUrl())))
+            .map(team -> TeamResponse.createWithImage(team, awsHandler.getDownloadPreSignedUrl(team.getImageKey())))
             .toList();
     }
 
@@ -148,9 +148,9 @@ public class TeamService {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private void updateIconUrlS3(final Team team, final String iconUrl) {
-        if (!team.isDefaultImage() && !team.isSameIconUrl(iconUrl)) {
-            awsHandler.deleteFile(team.getIconImageUrl());
+    private void updateIconImageKey(final Team team, final String iconImageKey) {
+        if (!team.isDefaultImage() && !team.isSameIconImageKey(iconImageKey)) {
+            awsHandler.deleteFile(team.getIconImageKey());
         }
     }
 
