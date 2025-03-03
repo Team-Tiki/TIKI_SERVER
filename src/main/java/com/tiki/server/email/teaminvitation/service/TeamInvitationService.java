@@ -7,12 +7,14 @@ import com.tiki.server.email.teaminvitation.adapter.TeamInvitationFinder;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationEmailsGetResponse;
 import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationInformGetResponse;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerSaver;
 import com.tiki.server.memberteammanager.entity.MemberTeamManager;
 import com.tiki.server.team.adapter.TeamFinder;
+import com.tiki.server.team.dto.response.TeamResponse;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.team.exception.TeamException;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +37,13 @@ public class TeamInvitationService {
     private final MemberTeamManagerSaver memberTeamManagerSaver;
     private final TeamFinder teamFinder;
     private final MemberFinder memberFinder;
+    private final AwsHandler awsHandler;
 
     public TeamInvitationInformGetResponse getInvitationInform(final long invitationId) {
         TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         Team team = teamFinder.findById(invitation.getTeamId());
-        return TeamInvitationInformGetResponse.of(invitation, team);
+        TeamResponse response = TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageKey()));
+        return TeamInvitationInformGetResponse.of(invitation, response);
     }
 
     @Transactional

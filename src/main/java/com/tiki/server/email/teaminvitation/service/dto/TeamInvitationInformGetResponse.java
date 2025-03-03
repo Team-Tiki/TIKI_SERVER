@@ -1,7 +1,7 @@
 package com.tiki.server.email.teaminvitation.service.dto;
 
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
-import com.tiki.server.team.entity.Team;
+import com.tiki.server.team.dto.response.TeamResponse;
 import jakarta.validation.constraints.NotNull;
 
 public record TeamInvitationInformGetResponse(
@@ -13,13 +13,13 @@ public record TeamInvitationInformGetResponse(
 
     public static TeamInvitationInformGetResponse of(
             final TeamInvitation invitation,
-            final Team team
+            final TeamResponse team
     ) {
         return new TeamInvitationInformGetResponse(
                 invitation.getSender(),
-                team.getName(),
-                team.getIconImageUrl(),
-                team.getId()
+                team.name(),
+                team.iconImageUrl(),
+                team.teamId()
         );
     }
 }
