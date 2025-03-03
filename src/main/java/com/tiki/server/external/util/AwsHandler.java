@@ -6,6 +6,7 @@ import static com.tiki.server.external.message.ErrorCode.*;
 import static com.tiki.server.external.constant.ExternalConstant.FILE_DELIMITER;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +48,9 @@ public class AwsHandler {
 	}
 
 	public String getDownloadPreSignedUrl(final String fileKey) {
+		if (Objects.isNull(fileKey)) {
+			return "";
+		}
 		try {
 			S3Presigner preSigner = awsConfig.getS3PreSigner();
 			GetObjectRequest getObjectRequest = createGetObjectRequest(fileKey);
