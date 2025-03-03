@@ -3,16 +3,14 @@ package com.tiki.server.team.controller.docs;
 import java.security.Principal;
 
 import com.tiki.server.team.dto.request.TeamInformUpdateRequest;
-import com.tiki.server.team.dto.request.TeamInformUpdateServiceRequest;
 import com.tiki.server.team.dto.response.UsageGetResponse;
 import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
-import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
+import com.tiki.server.team.dto.response.TeamInformGetResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.team.dto.request.TeamCreateRequest;
 import com.tiki.server.team.dto.response.TeamCreateResponse;
@@ -20,8 +18,6 @@ import com.tiki.server.team.dto.response.TeamCreateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 

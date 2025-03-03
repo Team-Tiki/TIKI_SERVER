@@ -1,4 +1,4 @@
-package com.tiki.server.team.service.dto.response;
+package com.tiki.server.team.dto.response;
 
 import static lombok.AccessLevel.PRIVATE;
 

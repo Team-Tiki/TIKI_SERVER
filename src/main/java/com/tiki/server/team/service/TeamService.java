@@ -28,7 +28,7 @@ import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
 import com.tiki.server.team.dto.response.UsageGetResponse;
-import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
+import com.tiki.server.team.dto.response.TeamInformGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

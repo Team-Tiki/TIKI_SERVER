@@ -18,7 +18,7 @@ import com.tiki.server.team.dto.response.TeamsGetResponse;
 
 import org.springframework.http.HttpStatus;
 
-import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
+import com.tiki.server.team.dto.response.TeamInformGetResponse;
 
 import org.springframework.web.bind.annotation.*;
 
