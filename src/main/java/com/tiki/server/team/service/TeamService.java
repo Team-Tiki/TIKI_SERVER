@@ -1,6 +1,7 @@
 package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
+import static com.tiki.server.team.constants.TeamConstants.MAX_TEAM_NUMBER;
 import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_NUMBER;
 
 import com.tiki.server.team.dto.response.TeamResponse;
@@ -182,7 +183,7 @@ public class TeamService {
     private void checkTeamNumber(final long memberId) {
         List<MemberTeamManager> joinedTeams = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
                 memberId);
-        if (joinedTeams.size() > 8) {
+        if (joinedTeams.size() > MAX_TEAM_NUMBER) {
             throw new TeamException(EXCEED_TEAM_NUMBER);
         }
     }
