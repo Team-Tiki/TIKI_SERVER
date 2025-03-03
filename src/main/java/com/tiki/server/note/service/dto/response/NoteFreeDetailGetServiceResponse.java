@@ -1,6 +1,7 @@
 package com.tiki.server.note.service.dto.response;
 
 import com.tiki.server.common.util.ContentDecoder;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.service.dto.response.DocumentTagGetServiceResponse;
 import com.tiki.server.note.entity.Note;
@@ -29,7 +30,7 @@ public record NoteFreeDetailGetServiceResponse(
 	public static NoteFreeDetailGetServiceResponse of(
 		final Note note,
 		final String author,
-		final List<Document> documents,
+		final List<DocumentResponse> documents,
 		final List<TimeBlock> timeBlocks
 	) {
 		return new NoteFreeDetailGetServiceResponse(

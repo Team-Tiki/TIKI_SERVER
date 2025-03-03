@@ -1,6 +1,7 @@
 package com.tiki.server.note.service.dto.response;
 
 import com.tiki.server.common.util.ContentDecoder;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.service.dto.response.DocumentTagGetServiceResponse;
 import com.tiki.server.note.entity.Note;
@@ -32,7 +33,7 @@ public record NoteTemplateDetailGetServiceResponse(
 	public static NoteTemplateDetailGetServiceResponse of(
 		final Note note,
 		final String author,
-		final List<Document> documents,
+		final List<DocumentResponse> documents,
 		final List<TimeBlock> timeBlocks
 	) {
 		List<String> contents = ContentDecoder.decodeNoteTemplate(note.getContents());

@@ -1,6 +1,6 @@
 package com.tiki.server.document.service.dto.response;
 
-import com.tiki.server.document.entity.Document;
+import com.tiki.server.document.dto.response.DocumentResponse;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -11,11 +11,11 @@ public record DocumentTagGetServiceResponse(
 	@NotNull long capacity
 ) {
 
-	public static DocumentTagGetServiceResponse from(final Document document) {
+	public static DocumentTagGetServiceResponse from(final DocumentResponse document) {
 		return new DocumentTagGetServiceResponse(
-			document.getId(),
-			document.getFileName(),
-			document.getFileUrl(),
-			document.getCapacity());
+			document.documentId(),
+			document.name(),
+			document.url(),
+			document.capacity());
 	}
 }
