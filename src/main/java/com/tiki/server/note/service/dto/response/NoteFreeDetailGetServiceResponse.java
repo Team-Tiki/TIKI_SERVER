@@ -1,6 +1,7 @@
 package com.tiki.server.note.service.dto.response;
 
 import com.tiki.server.common.util.ContentDecoder;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.document.service.dto.response.DocumentTagGetServiceResponse;
 import com.tiki.server.note.entity.Note;
@@ -29,8 +30,8 @@ public record NoteFreeDetailGetServiceResponse(
 	public static NoteFreeDetailGetServiceResponse of(
 		final Note note,
 		final String author,
-		final List<Document> documentList,
-		final List<TimeBlock> timeBlockList
+		final List<DocumentResponse> documents,
+		final List<TimeBlock> timeBlocks
 	) {
 		return new NoteFreeDetailGetServiceResponse(
 			note.getId(),
@@ -41,8 +42,8 @@ public record NoteFreeDetailGetServiceResponse(
 			note.getEndDate(),
 			note.isComplete(),
 			ContentDecoder.decodeNoteFree(note.getContents()),
-			documentList.stream().map(DocumentTagGetServiceResponse::from).toList(),
-			timeBlockList.stream().map(TimeBlockTagServiceResponse::from).toList()
+			documents.stream().map(DocumentTagGetServiceResponse::from).toList(),
+			timeBlocks.stream().map(TimeBlockTagServiceResponse::from).toList()
 		);
 	}
 }

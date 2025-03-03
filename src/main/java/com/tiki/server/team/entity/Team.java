@@ -61,9 +61,9 @@ public class Team extends BaseTime {
     @Column(nullable = false)
     private long usage;
 
-    private String imageUrl;
+    private String imageKey;
 
-    private String iconImageUrl;
+    private String iconImageKey;
 
     private LocalDate namingUpdatedAt;
 
@@ -75,17 +75,17 @@ public class Team extends BaseTime {
                 .univ(univ)
                 .subscribe(BASIC)
                 .usage(INIT_NUM)
-                .iconImageUrl(request.iconImageUrl())
+                .iconImageKey(request.iconImageKey())
                 .namingUpdatedAt(LocalDate.now())
                 .build();
     }
 
-    public void updateInform(final String name, final String iconImageUrl) {
+    public void updateInform(final String name, final String iconImageKey) {
         if (!name.equals(this.name)) {
             updateTeamName(name);
         }
-        if(!iconImageUrl.equals(this.iconImageUrl)){
-            updateIconImageUrl(iconImageUrl);
+        if(!iconImageKey.equals(this.iconImageKey)){
+            updateIconImageKey(iconImageKey);
         }
     }
 
@@ -97,16 +97,16 @@ public class Team extends BaseTime {
         this.namingUpdatedAt = LocalDate.now();
     }
 
-    public void updateIconImageUrl(final String url) {
-        this.iconImageUrl = url;
+    public void updateIconImageKey(final String key) {
+        this.iconImageKey = key;
     }
 
     public boolean isDefaultImage() {
-        return this.iconImageUrl.isBlank();
+        return this.iconImageKey.isBlank();
     }
 
-    public boolean isSameIconUrl(final String iconImageUrl) {
-        return this.iconImageUrl.equals(iconImageUrl);
+    public boolean isSameIconImageKey(final String iconImageKey) {
+        return this.iconImageKey.equals(iconImageKey);
     }
 
     public void addUsage(final long capacity) {

@@ -3,7 +3,9 @@ package com.tiki.server.note.service;
 import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.util.ContentEncoder;
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
+import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.note.adapter.NoteDeleter;
 import com.tiki.server.note.adapter.NoteFinder;
@@ -35,6 +37,7 @@ import java.util.Optional;
 
 import static com.tiki.server.common.constants.Constants.INIT_NUM;
 import static com.tiki.server.note.constants.NoteConstants.PAGE_SIZE;
+import static com.tiki.server.note.constants.NoteConstants.UNKNOWN;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +55,7 @@ public class NoteService {
 	private final NDDeleter ndDeleter;
 	private final TimeBlockFinder timeBlockFinder;
 	private final DocumentFinder documentFinder;
+	private final AwsHandler awsHandler;
 
 	@Transactional
 	public NoteCreateServiceResponse createNoteFree(final NoteFreeCreateServiceRequest request) {
@@ -137,8 +141,8 @@ public class NoteService {
 	) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		PageRequest pageable = PageRequest.of(INIT_NUM, PAGE_SIZE);
-		List<Note> noteList = getNotes(createdAt, sortOrder, pageable, teamId);
-		List<NoteGetResponse> noteGetResponses = noteList.stream()
+		List<Note> notes = getNotes(createdAt, sortOrder, pageable, teamId);
+		List<NoteGetResponse> noteGetResponses = notes.stream()
 			.map(note -> NoteGetResponse.of(note, getMemberName(note.getMemberId(), teamId)))
 			.toList();
 		return new NoteListGetServiceResponse(noteGetResponses);
@@ -147,30 +151,29 @@ public class NoteService {
 	public NoteDetailGetServiceResponse getNoteDetail(final long teamId, final long memberId, final long noteId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Note note = noteFinder.findById(noteId);
-		List<Document> documentList = getDocumentListMappedByNote(noteId);
-		List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
+		List<Document> documents = getDocumentsMappedByNote(noteId);
+		List<DocumentResponse> responses = documents.stream()
+			.map(document -> DocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey())))
+			.toList();
+		List<TimeBlock> timeBlocks = getTimeBlocksMappedByNote(noteId);
 		String memberName = getMemberName(note.getMemberId(), teamId);
 		return note.getNoteType() == NoteType.FREE
-			? NoteFreeDetailGetServiceResponse.of(note, memberName, documentList, timeBlockList)
-			: NoteTemplateDetailGetServiceResponse.of(note, memberName, documentList, timeBlockList);
+			? NoteFreeDetailGetServiceResponse.of(note, memberName, responses, timeBlocks)
+			: NoteTemplateDetailGetServiceResponse.of(note, memberName, responses, timeBlocks);
 	}
 
 	private String getMemberName(final Long noteMemberId, final long teamId) {
 		return Optional.ofNullable(noteMemberId)
 			.map(id -> memberTeamManagerFinder.findByMemberIdAndTeamId(id, teamId).getName())
-			.orElse("알 수 없음");
+			.orElse(UNKNOWN);
 	}
 
 	private void updateNoteDocumentManager(final List<Long> documentIds, final long noteId) {
 		List<Long> existingNoteDocumentIds = ndFinder.findAllByNoteId(noteId).stream()
 			.map(NDManager::getDocumentId)
 			.toList();
-		List<Long> idsToAdd = documentIds.stream()
-			.filter(id -> !existingNoteDocumentIds.contains(id))
-			.toList();
-		List<Long> idsToRemove = existingNoteDocumentIds.stream()
-			.filter(id -> !documentIds.contains(id))
-			.toList();
+		List<Long> idsToAdd = getIdsToAdd(documentIds, existingNoteDocumentIds);
+		List<Long> idsToRemove = getIdsToRemove(documentIds, existingNoteDocumentIds);
 		createNoteDocumentManagers(idsToAdd, noteId);
 		ndDeleter.deleteByNoteIdAndDocumentId(noteId, idsToRemove);
 	}
@@ -179,14 +182,22 @@ public class NoteService {
 		List<Long> existingNoteTimeBlockIds = ntbFinder.findAllByNoteId(noteId).stream()
 			.map(NTBManager::getTimeBlockId)
 			.toList();
-		List<Long> idsToAdd = timeBlockIds.stream()
-			.filter(id -> !existingNoteTimeBlockIds.contains(id))
-			.toList();
-		List<Long> idsToRemove = existingNoteTimeBlockIds.stream()
-			.filter(id -> !timeBlockIds.contains(id))
-			.toList();
+		List<Long> idsToAdd = getIdsToAdd(timeBlockIds, existingNoteTimeBlockIds);
+		List<Long> idsToRemove = getIdsToRemove(timeBlockIds, existingNoteTimeBlockIds);
 		createNoteTimeBlockManagers(idsToAdd, noteId);
 		ntbDeleter.deleteByNoteIdAndTimeBlockId(noteId, idsToRemove);
+	}
+
+	private List<Long> getIdsToAdd(final List<Long> ids, final List<Long> managerIds) {
+		return ids.stream()
+			.filter(id -> !managerIds.contains(id))
+			.toList();
+	}
+
+	private List<Long> getIdsToRemove(final List<Long> ids, final List<Long> managerIds) {
+		return managerIds.stream()
+			.filter(id -> !ids.contains(id))
+			.toList();
 	}
 
 	private List<Note> getNotes(final LocalDateTime createdAt, final SortOrder sortOrder, final PageRequest pageable,
@@ -198,19 +209,19 @@ public class NoteService {
 	}
 
 	private List<TimeBlock> getTimeBlocksMappedByNote(final long noteId) {
-		List<Long> timblockIdList = ntbFinder.findAllByNoteId(noteId).stream()
+		List<Long> timeBlockIds = ntbFinder.findAllByNoteId(noteId).stream()
 			.map(NTBManager::getTimeBlockId)
 			.toList();
-		return timblockIdList.stream()
+		return timeBlockIds.stream()
 			.map(timeBlockFinder::findById)
 			.toList();
 	}
 
-	private List<Document> getDocumentListMappedByNote(final long noteId) {
-		List<Long> documentIdList = ndFinder.findAllByNoteId(noteId).stream()
+	private List<Document> getDocumentsMappedByNote(final long noteId) {
+		List<Long> documentIds = ndFinder.findAllByNoteId(noteId).stream()
 			.map(NDManager::getDocumentId)
 			.toList();
-		return documentIdList.stream()
+		return documentIds.stream()
 			.map(documentFinder::findById)
 			.toList();
 	}

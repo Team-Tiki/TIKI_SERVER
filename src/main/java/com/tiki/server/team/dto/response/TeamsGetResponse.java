@@ -1,7 +1,5 @@
 package com.tiki.server.team.dto.response;
 
-import com.tiki.server.team.entity.Team;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 

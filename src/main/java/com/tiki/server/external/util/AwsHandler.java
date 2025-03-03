@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.tiki.server.external.config.AWSConfig;
-import com.tiki.server.external.dto.response.PutObjectPreSignedUrlResponse;
+import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 import com.tiki.server.external.exception.ExternalException;
 
 import lombok.RequiredArgsConstructor;
@@ -33,15 +33,14 @@ public class AwsHandler {
 	@Value("${aws-property.bucket}")
 	private String bucket;
 
-	public PutObjectPreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
+	public PreSignedUrlResponse getUploadPreSignedUrl(final String fileFormat) {
 		try {
-			String fileName = generateFileName(fileFormat);
-			String key = FILE_SAVE_PREFIX + fileName;
+			String key = generateFileKey(fileFormat);
 			S3Presigner preSigner = awsConfig.getS3PreSigner();
 			PutObjectRequest putObjectRequest = createPutObjectRequest(key);
 			PutObjectPresignRequest putObjectPresignRequest = createPutObjectPresignRequest(putObjectRequest);
 			String url = preSigner.presignPutObject(putObjectPresignRequest).url().toString();
-			return PutObjectPreSignedUrlResponse.of(fileName, url);
+			return PreSignedUrlResponse.of(key, url);
 		} catch (RuntimeException e) {
 			throw new ExternalException(PRESIGNED_URL_GET_ERROR);
 		}
@@ -99,7 +98,7 @@ public class AwsHandler {
 			.build();
 	}
 
-	private String generateFileName(final String fileFormat) {
-		return UUID.randomUUID() + FILE_DELIMITER + fileFormat;
+	private String generateFileKey(final String fileFormat) {
+		return FILE_SAVE_PREFIX + UUID.randomUUID() + FILE_DELIMITER + fileFormat;
 	}
 }

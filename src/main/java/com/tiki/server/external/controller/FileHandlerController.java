@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.external.controller.docs.FileHandlerControllerDocs;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
-import com.tiki.server.external.dto.response.PutObjectPreSignedUrlResponse;
+import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,9 +31,9 @@ public class FileHandlerController implements FileHandlerControllerDocs {
 	@Override
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/upload")
-	public SuccessResponse<PutObjectPreSignedUrlResponse> getPreSignedUrl(
+	public SuccessResponse<PreSignedUrlResponse> getPreSignedUrl(
 		@RequestParam final String fileFormat) {
-		PutObjectPreSignedUrlResponse response = fileHandlerService.getUploadPreSignedUrl(fileFormat);
+		PreSignedUrlResponse response = fileHandlerService.getUploadPreSignedUrl(fileFormat);
 		return SuccessResponse.success(PRESIGNED_URL_GET_SUCCESS.getMessage(), response);
 	}
 

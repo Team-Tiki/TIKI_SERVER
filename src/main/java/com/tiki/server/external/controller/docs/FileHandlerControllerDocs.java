@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.tiki.server.common.dto.ErrorResponse;
 import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.external.dto.request.S3DeleteRequest;
-import com.tiki.server.external.dto.response.PutObjectPreSignedUrlResponse;
+import com.tiki.server.external.dto.response.PreSignedUrlResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,7 +33,7 @@ public interface FileHandlerControllerDocs {
 				description = "S3 PRESIGNED URL 불러오기 실패",
 				content = @Content(schema = @Schema(implementation = ErrorResponse.class)))}
 	)
-	SuccessResponse<PutObjectPreSignedUrlResponse> getPreSignedUrl(
+	SuccessResponse<PreSignedUrlResponse> getPreSignedUrl(
 		@Parameter(
 			name = "fileFormat",
 			description = "파일 형식",

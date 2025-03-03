@@ -1,6 +1,7 @@
 package com.tiki.server.team.service;
 
 import static com.tiki.server.common.entity.Position.ADMIN;
+import static com.tiki.server.team.constants.TeamConstants.MAX_TEAM_NUMBER;
 import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_NUMBER;
 
 import com.tiki.server.team.dto.response.TeamResponse;
@@ -27,7 +28,7 @@ import com.tiki.server.team.dto.response.CategoriesGetResponse;
 import com.tiki.server.team.dto.response.TeamsGetResponse;
 
 import com.tiki.server.team.dto.response.UsageGetResponse;
-import com.tiki.server.team.service.dto.response.TeamInformGetResponse;
+import com.tiki.server.team.dto.response.TeamInformGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,7 +108,9 @@ public class TeamService {
     }
 
     public TeamInformGetResponse getTeamInform(final long teamId) {
-        return TeamInformGetResponse.from(teamFinder.findById(teamId));
+        Team team = teamFinder.findById(teamId);
+        String iconImageUrl = awsHandler.getDownloadPreSignedUrl(team.getIconImageKey());
+        return TeamInformGetResponse.of(team, iconImageUrl);
     }
 
     @Transactional
@@ -115,7 +118,7 @@ public class TeamService {
         checkIsAdmin(request.memberId(), request.teamId());
         Team team = teamFinder.findById(request.teamId());
         team.updateInform(request.teamName(), request.teamIconUrl());
-        updateIconUrlS3(team, request.teamIconUrl());
+        updateIconImageKey(team, request.teamIconUrl());
     }
 
     @Transactional
@@ -140,7 +143,7 @@ public class TeamService {
 
     private List<TeamResponse> getTeamResponses(final List<Team> teams) {
         return teams.stream()
-            .map(team -> TeamResponse.createWithImage(team, awsHandler.getDownloadPreSignedUrl(team.getImageUrl())))
+            .map(team -> TeamResponse.createWithImage(team, awsHandler.getDownloadPreSignedUrl(team.getImageKey())))
             .toList();
     }
 
@@ -148,9 +151,9 @@ public class TeamService {
         return MemberTeamManager.of(member, team, position);
     }
 
-    private void updateIconUrlS3(final Team team, final String iconUrl) {
-        if (!team.isDefaultImage() && !team.isSameIconUrl(iconUrl)) {
-            awsHandler.deleteFile(team.getIconImageUrl());
+    private void updateIconImageKey(final Team team, final String iconImageKey) {
+        if (!team.isDefaultImage() && !team.isSameIconImageKey(iconImageKey)) {
+            awsHandler.deleteFile(team.getIconImageKey());
         }
     }
 
@@ -180,7 +183,7 @@ public class TeamService {
     private void checkTeamNumber(final long memberId) {
         List<MemberTeamManager> joinedTeams = memberTeamManagerFinder.findAllByMemberIdOrderByCreatedAt(
                 memberId);
-        if (joinedTeams.size() > 8) {
+        if (joinedTeams.size() > MAX_TEAM_NUMBER) {
             throw new TeamException(EXCEED_TEAM_NUMBER);
         }
     }

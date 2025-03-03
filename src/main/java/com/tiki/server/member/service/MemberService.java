@@ -113,7 +113,7 @@ public class MemberService {
 
     private List<TeamResponse> getTeamResponses(final List<Team> teams) {
         return teams.stream()
-            .map(team -> TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageUrl())))
+            .map(team -> TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageKey())))
             .toList();
     }
 
