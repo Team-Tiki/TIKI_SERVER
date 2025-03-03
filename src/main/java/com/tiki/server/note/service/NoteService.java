@@ -150,7 +150,7 @@ public class NoteService {
 	public NoteDetailGetServiceResponse getNoteDetail(final long teamId, final long memberId, final long noteId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Note note = noteFinder.findById(noteId);
-		List<Document> documents = getDocumentListMappedByNote(noteId);
+		List<Document> documents = getDocumentsMappedByNote(noteId);
 		List<DocumentResponse> responses = documents.stream()
 			.map(document -> DocumentResponse.of(document, awsHandler.getDownloadPreSignedUrl(document.getFileKey())))
 			.toList();
@@ -212,7 +212,7 @@ public class NoteService {
 			.toList();
 	}
 
-	private List<Document> getDocumentListMappedByNote(final long noteId) {
+	private List<Document> getDocumentsMappedByNote(final long noteId) {
 		List<Long> documentIdList = ndFinder.findAllByNoteId(noteId).stream()
 			.map(NDManager::getDocumentId)
 			.toList();
