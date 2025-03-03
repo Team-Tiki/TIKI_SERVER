@@ -29,8 +29,8 @@ public record NoteFreeDetailGetServiceResponse(
 	public static NoteFreeDetailGetServiceResponse of(
 		final Note note,
 		final String author,
-		final List<Document> documentList,
-		final List<TimeBlock> timeBlockList
+		final List<Document> documents,
+		final List<TimeBlock> timeBlocks
 	) {
 		return new NoteFreeDetailGetServiceResponse(
 			note.getId(),
@@ -41,8 +41,8 @@ public record NoteFreeDetailGetServiceResponse(
 			note.getEndDate(),
 			note.isComplete(),
 			ContentDecoder.decodeNoteFree(note.getContents()),
-			documentList.stream().map(DocumentTagGetServiceResponse::from).toList(),
-			timeBlockList.stream().map(TimeBlockTagServiceResponse::from).toList()
+			documents.stream().map(DocumentTagGetServiceResponse::from).toList(),
+			timeBlocks.stream().map(TimeBlockTagServiceResponse::from).toList()
 		);
 	}
 }

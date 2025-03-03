@@ -3,6 +3,7 @@ package com.tiki.server.note.service;
 import com.tiki.server.common.entity.SortOrder;
 import com.tiki.server.common.util.ContentEncoder;
 import com.tiki.server.document.adapter.DocumentFinder;
+import com.tiki.server.document.dto.response.DocumentResponse;
 import com.tiki.server.document.entity.Document;
 import com.tiki.server.memberteammanager.adapter.MemberTeamManagerFinder;
 import com.tiki.server.note.adapter.NoteDeleter;
@@ -147,12 +148,12 @@ public class NoteService {
 	public NoteDetailGetServiceResponse getNoteDetail(final long teamId, final long memberId, final long noteId) {
 		memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
 		Note note = noteFinder.findById(noteId);
-		List<Document> documentList = getDocumentListMappedByNote(noteId);
-		List<TimeBlock> timeBlockList = getTimeBlocksMappedByNote(noteId);
+		List<Document> documents = getDocumentListMappedByNote(noteId);
+		List<TimeBlock> timeBlocks = getTimeBlocksMappedByNote(noteId);
 		String memberName = getMemberName(note.getMemberId(), teamId);
 		return note.getNoteType() == NoteType.FREE
-			? NoteFreeDetailGetServiceResponse.of(note, memberName, documentList, timeBlockList)
-			: NoteTemplateDetailGetServiceResponse.of(note, memberName, documentList, timeBlockList);
+			? NoteFreeDetailGetServiceResponse.of(note, memberName, documents, timeBlocks)
+			: NoteTemplateDetailGetServiceResponse.of(note, memberName, documents, timeBlocks);
 	}
 
 	private String getMemberName(final Long noteMemberId, final long teamId) {

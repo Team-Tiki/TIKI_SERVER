@@ -32,8 +32,8 @@ public record NoteTemplateDetailGetServiceResponse(
 	public static NoteTemplateDetailGetServiceResponse of(
 		final Note note,
 		final String author,
-		final List<Document> documentList,
-		final List<TimeBlock> timeBlockList
+		final List<Document> documents,
+		final List<TimeBlock> timeBlocks
 	) {
 		List<String> contents = ContentDecoder.decodeNoteTemplate(note.getContents());
 		return new NoteTemplateDetailGetServiceResponse(
@@ -48,8 +48,8 @@ public record NoteTemplateDetailGetServiceResponse(
 			contents.get(1),
 			contents.get(2),
 			contents.get(3),
-			documentList.stream().map(DocumentTagGetServiceResponse::from).toList(),
-			timeBlockList.stream().map(TimeBlockTagServiceResponse::from).toList()
+			documents.stream().map(DocumentTagGetServiceResponse::from).toList(),
+			timeBlocks.stream().map(TimeBlockTagServiceResponse::from).toList()
 		);
 	}
 }
