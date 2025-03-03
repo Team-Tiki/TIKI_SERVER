@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder(access = PRIVATE)
-public record PutObjectPreSignedUrlResponse(
+public record PreSignedUrlResponse(
 	@NotNull String fileName,
 	@NotNull String url
 ) {
 
-	public static PutObjectPreSignedUrlResponse of(final String fileName, final String url) {
-		return PutObjectPreSignedUrlResponse.builder()
+	public static PreSignedUrlResponse of(final String fileName, final String url) {
+		return PreSignedUrlResponse.builder()
 			.fileName(fileName)
 			.url(url)
 			.build();
