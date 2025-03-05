@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Builder(access = PRIVATE)
 public record TeamInformGetResponse(
-	@NotNull String name,
+	@NotNull String teamName,
 	@NotNull University university,
 	@NotNull String iconImageUrl,
 	@NotNull LocalDate namingUpdatedAt
@@ -20,7 +20,7 @@ public record TeamInformGetResponse(
 
 	public static TeamInformGetResponse of(final Team team, final String iconImageUrl) {
 		return TeamInformGetResponse.builder()
-			.name(team.getName())
+			.teamName(team.getName())
 			.university(team.getUniv())
 			.iconImageUrl(iconImageUrl)
 			.namingUpdatedAt(team.getNamingUpdatedAt())
