@@ -62,7 +62,7 @@ public class AwsHandler {
 	}
 
 	public void deleteFile(final String request) {
-		if (request.equals("file/갓슈.png")) return;	// 임시 로직
+		if (Objects.isNull(request) || request.equals("file/갓슈.png") || request.isBlank()) return;	// 임시 로직
 		try {
 			S3Client s3Client = awsConfig.getS3Client();
 			s3Client.deleteObject((DeleteObjectRequest.Builder builder) ->
