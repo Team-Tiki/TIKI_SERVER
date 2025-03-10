@@ -97,6 +97,7 @@ public class TeamService {
 
     @Transactional
     public void deleteTeam(final long memberId, final long teamId) {
+        Team team = teamFinder.findById(teamId);
         checkIsAdmin(memberId, teamId);
         List<MemberTeamManager> memberTeamManagers = memberTeamManagerFinder.findAllByTeamId(teamId);
         memberTeamManagerDeleter.deleteAll(memberTeamManagers);
@@ -104,6 +105,8 @@ public class TeamService {
         deleteTimeBlocks(teamId);
         noteDeleter.deleteAllByTeamId(teamId);
         folderDeleter.deleteAllByTeamId(teamId);
+        awsHandler.deleteFile(team.getIconImageKey());
+        awsHandler.deleteFile(team.getImageKey());
         teamDeleter.deleteById(teamId);
     }
 
