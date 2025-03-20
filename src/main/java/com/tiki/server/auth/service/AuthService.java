@@ -50,7 +50,7 @@ public class AuthService {
         String accessToken = jwtGenerator.generateAccessToken(authentication);
         String refreshToken = jwtGenerator.generateRefreshToken(authentication);
         tokenSaver.save(Token.of(member.getId(), refreshToken));
-        return SignInGetResponse.from(accessToken, refreshToken);
+        return SignInGetResponse.of(accessToken, refreshToken);
     }
 
     public ReissueGetResponse reissueToken(final HttpServletRequest request) {
