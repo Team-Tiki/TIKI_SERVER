@@ -2,6 +2,7 @@ package com.tiki.server.document.adapter;
 
 import static com.tiki.server.document.message.ErrorCode.INVALID_DOCUMENT;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.tiki.server.common.support.RepositoryAdapter;
@@ -38,6 +39,10 @@ public class DeletedDocumentAdapter {
 
 	public void deleteAllByTeamId(final long teamId) {
 		deletedDocumentRepository.deleteAllByTeamId(teamId);
+	}
+
+	public List<DeletedDocument> getExpiredDeletedDocuments(final LocalDate date) {
+		return deletedDocumentRepository.findAllByDate(date);
 	}
 
 	private DeletedDocument create(final Document document) {
