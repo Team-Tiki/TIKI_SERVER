@@ -5,10 +5,12 @@ import com.tiki.server.email.teaminvitation.adapter.TeamInvitationFinder;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Component
 @RequiredArgsConstructor
 public class TeamInvitationScheduler {
 
