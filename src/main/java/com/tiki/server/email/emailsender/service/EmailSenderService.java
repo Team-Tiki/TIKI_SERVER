@@ -79,7 +79,7 @@ public class EmailSenderService {
     }
 
     private void checkDuplicateInvitation(final TeamInvitationCreateServiceRequest request) {
-        teamInvitationFinder.presentByTeamIdAndEmail(request.teamId(), request.targetEmail()
+        teamInvitationFinder.presentById(request.teamId() + request.targetEmail().getEmail()
                 )
                 .ifPresent(invitation -> {
                     throw new TeamInvitationException(ALREADY_INVITED);
