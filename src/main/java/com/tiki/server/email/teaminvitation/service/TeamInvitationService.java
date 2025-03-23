@@ -39,7 +39,7 @@ public class TeamInvitationService {
     private final MemberFinder memberFinder;
     private final AwsHandler awsHandler;
 
-    public TeamInvitationInformGetResponse getInvitationInform(final long invitationId) {
+    public TeamInvitationInformGetResponse getInvitationInform(final String invitationId) {
         TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         Team team = teamFinder.findById(invitation.getTeamId());
         TeamResponse response = TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageKey()));
@@ -47,7 +47,7 @@ public class TeamInvitationService {
     }
 
     @Transactional
-    public void createTeamMemberFromInvitation(final long memberId, final long teamId, final long invitationId) {
+    public void createTeamMemberFromInvitation(final long memberId, final long teamId, final String invitationId) {
         checkIsPresentTeamMember(memberId, teamId);
         Member member = memberFinder.findById(memberId);
         checkTeamNumber(memberId);
@@ -58,14 +58,14 @@ public class TeamInvitationService {
         teamInvitationDeleter.deleteTeamInvitation(invitation);
     }
 
-    public void deleteTeamInvitationFromAdmin(final long memberId, final long teamId, final long invitationId) {
+    public void deleteTeamInvitationFromAdmin(final long memberId, final long teamId, final String invitationId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
         TeamInvitation teamInvitation = teamInvitationFinder.findByInvitationId(invitationId);
         teamInvitationDeleter.deleteTeamInvitation(teamInvitation);
     }
 
-    public void deleteTeamInvitation(final long memberId, final long invitationId) {
+    public void deleteTeamInvitation(final long memberId, final String invitationId) {
         TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         Member member = memberFinder.findById(memberId);
         checkMemberMatched(invitation, member);
@@ -76,7 +76,7 @@ public class TeamInvitationService {
     public TeamInvitationEmailsGetResponse getInvitations(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
-        List<TeamInvitation> teamInvitations = teamInvitationFinder.findAllByTeamId(teamId);
+        List<TeamInvitation> teamInvitations = teamInvitationFinder.findAllByIdStartingWith(String.valueOf(teamId));
         return TeamInvitationEmailsGetResponse.from(teamInvitations);
     }
 
