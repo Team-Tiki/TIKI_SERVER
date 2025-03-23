@@ -1,7 +1,7 @@
 package com.tiki.server.teaminvitation.service;
 
 import com.tiki.server.common.entity.Position;
-import com.tiki.server.teaminvitation.entity.Invitation;
+import com.tiki.server.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.teaminvitation.adapter.TeamInvitationDeleter;
 import com.tiki.server.teaminvitation.adapter.TeamInvitationFinder;
@@ -39,10 +39,10 @@ public class TeamInvitationService {
     private final AwsHandler awsHandler;
 
     public TeamInvitationInformGetResponse getInvitationInform(final String invitationId) {
-        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
-        Team team = teamFinder.findById(invitation.getTeamId());
+        TeamInvitation teamInvitation = teamInvitationFinder.findByInvitationId(invitationId);
+        Team team = teamFinder.findById(teamInvitation.getTeamId());
         TeamResponse response = TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageKey()));
-        return TeamInvitationInformGetResponse.of(invitation, response);
+        return TeamInvitationInformGetResponse.of(teamInvitation, response);
     }
 
     @Transactional
@@ -51,36 +51,36 @@ public class TeamInvitationService {
         Member member = memberFinder.findById(memberId);
         checkTeamNumber(memberId);
         Team team = teamFinder.findById(teamId);
-        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
-        checkMemberMatched(invitation, member);
+        TeamInvitation teamInvitation = teamInvitationFinder.findByInvitationId(invitationId);
+        checkMemberMatched(teamInvitation, member);
         memberTeamManagerSaver.save(MemberTeamManager.of(member, team, Position.EXECUTIVE));
-        teamInvitationDeleter.deleteTeamInvitation(invitation);
+        teamInvitationDeleter.deleteTeamInvitation(teamInvitation);
     }
 
     public void deleteTeamInvitationFromAdmin(final long memberId, final long teamId, final String invitationId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
-        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
-        teamInvitationDeleter.deleteTeamInvitation(invitation);
+        TeamInvitation teamInvitation = teamInvitationFinder.findByInvitationId(invitationId);
+        teamInvitationDeleter.deleteTeamInvitation(teamInvitation);
     }
 
     public void deleteTeamInvitation(final long memberId, final String invitationId) {
-        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
+        TeamInvitation teamInvitation = teamInvitationFinder.findByInvitationId(invitationId);
         Member member = memberFinder.findById(memberId);
-        checkMemberMatched(invitation, member);
-        teamInvitationDeleter.deleteTeamInvitation(invitation);
+        checkMemberMatched(teamInvitation, member);
+        teamInvitationDeleter.deleteTeamInvitation(teamInvitation);
     }
 
     @Transactional(readOnly = true)
     public TeamInvitationEmailsGetResponse getInvitations(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
-        List<Invitation> invitations = teamInvitationFinder.findAllByIdStartingWith(String.valueOf(teamId));
-        return TeamInvitationEmailsGetResponse.from(invitations);
+        List<TeamInvitation> teamInvitations = teamInvitationFinder.findAllByIdStartingWith(String.valueOf(teamId));
+        return TeamInvitationEmailsGetResponse.from(teamInvitations);
     }
 
-    private void checkMemberMatched(Invitation invitation, Member member) {
-        if (!invitation.getEmail().equals(member.getEmail())) {
+    private void checkMemberMatched(TeamInvitation teamInvitation, Member member) {
+        if (!teamInvitation.getEmail().equals(member.getEmail())) {
             throw new TeamInvitationException(ErrorCode.NOT_MATCHED_MEMBER_INFORM);
         }
     }

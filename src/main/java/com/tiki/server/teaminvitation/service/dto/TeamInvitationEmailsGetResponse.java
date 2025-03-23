@@ -1,6 +1,6 @@
 package com.tiki.server.teaminvitation.service.dto;
 
-import com.tiki.server.teaminvitation.entity.Invitation;
+import com.tiki.server.teaminvitation.entity.TeamInvitation;
 
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.List;
 public record TeamInvitationEmailsGetResponse(
         @NotNull List<TeamInvitationEmailGetResponse> teamInvitationEmailGetResponses
 ) {
-    public static TeamInvitationEmailsGetResponse from(final List<Invitation> invitations) {
+    public static TeamInvitationEmailsGetResponse from(final List<TeamInvitation> teamInvitations) {
         return new TeamInvitationEmailsGetResponse(
-                invitations.stream()
+                teamInvitations.stream()
                         .map(TeamInvitationEmailGetResponse::from)
                         .toList());
     }

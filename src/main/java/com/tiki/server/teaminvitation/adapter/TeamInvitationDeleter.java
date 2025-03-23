@@ -1,17 +1,17 @@
 package com.tiki.server.teaminvitation.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
-import com.tiki.server.teaminvitation.entity.Invitation;
-import com.tiki.server.teaminvitation.repository.InvitationRepository;
+import com.tiki.server.teaminvitation.entity.TeamInvitation;
+import com.tiki.server.teaminvitation.repository.TeamInvitationRepository;
 import lombok.RequiredArgsConstructor;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
 public class TeamInvitationDeleter {
 
-    private final InvitationRepository invitationRepository;
+    private final TeamInvitationRepository teamInvitationRepository;
 
-    public void deleteTeamInvitation(final Invitation invitation) {
-        invitationRepository.delete(invitation);
+    public void deleteTeamInvitation(final TeamInvitation teamInvitation) {
+        teamInvitationRepository.delete(teamInvitation);
     }
 }

@@ -9,7 +9,7 @@ import com.tiki.server.email.emailsender.service.dto.EmailServiceRequest;
 import com.tiki.server.email.emailsender.service.dto.TeamInvitationCreateServiceRequest;
 import com.tiki.server.teaminvitation.adapter.TeamInvitationFinder;
 import com.tiki.server.teaminvitation.adapter.TeamInvitationSaver;
-import com.tiki.server.teaminvitation.entity.Invitation;
+import com.tiki.server.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.verification.adapter.EmailVerificationSaver;
 import com.tiki.server.email.verification.domain.EmailVerification;
@@ -67,14 +67,14 @@ public class EmailSenderService {
         Team team = teamFinder.findById(request.teamId());
         checkIsPresentTeamMember(request);
         checkDuplicateInvitation(request);
-        Invitation invitation = teamInvitationSaver.createTeamInvitation(
-                Invitation.of(memberTeamManager.getName(), request.teamId(), request.targetEmail()));
+        TeamInvitation teamInvitation = teamInvitationSaver.createTeamInvitation(
+                TeamInvitation.of(memberTeamManager.getName(), request.teamId(), request.targetEmail()));
         mailSender.sendTeamInvitationMail(
                 request.targetEmail().getEmail(),
                 memberTeamManager.getName(),
                 team.getName(),
                 request.teamId(),
-                invitation.getId()
+                teamInvitation.getId()
         );
     }
 
