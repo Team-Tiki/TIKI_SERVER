@@ -6,7 +6,6 @@ import com.tiki.server.common.dto.SuccessResponse;
 import com.tiki.server.email.teaminvitation.service.TeamInvitationService;
 import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationEmailsGetResponse;
 import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationInformGetResponse;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class TeamInvitationController {
     @DeleteMapping("/team/{teamId}")
     public SuccessResponse<?> deleteTeamInvitationFromAdmin(
             final Principal principal,
-            @RequestParam @NonNull final String invitationId,
+            @RequestParam final long invitationId,
             @PathVariable final long teamId
     ) {
         long memberId = Long.parseLong(principal.getName());
@@ -46,7 +45,7 @@ public class TeamInvitationController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public SuccessResponse<TeamInvitationInformGetResponse> getInvitationInform(
-            @RequestParam @NonNull final String invitationId
+            @RequestParam final long invitationId
     ) {
         TeamInvitationInformGetResponse response = teamInvitationService.getInvitationInform(invitationId);
         return SuccessResponse.success(GET_TEAM_INVITATION_INFORM.getMessage(), response);
@@ -57,7 +56,7 @@ public class TeamInvitationController {
     public SuccessResponse<?> createTeamMemberFromInvitation(
             Principal principal,
             @RequestParam final long teamId,
-            @RequestParam @NonNull final String teamInvitationId
+            @RequestParam final long teamInvitationId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamInvitationService.createTeamMemberFromInvitation(memberId, teamId, teamInvitationId);
@@ -68,7 +67,7 @@ public class TeamInvitationController {
     @DeleteMapping
     public SuccessResponse<?> deleteTeamInvitationFromUser(
             Principal principal,
-            @RequestParam @NonNull final String invitationId
+            @RequestParam final long invitationId
     ) {
         long memberId = Long.parseLong(principal.getName());
         teamInvitationService.deleteTeamInvitation(memberId, invitationId);
