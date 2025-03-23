@@ -1,18 +1,13 @@
 package com.tiki.server.email.teaminvitation.repository;
 
-import com.tiki.server.email.Email;
 import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.data.repository.CrudRepository;
 
-public interface TeamInvitationRepository extends JpaRepository<TeamInvitation, Long> {
+public interface TeamInvitationRepository extends CrudRepository<TeamInvitation, String> {
 
-    List<TeamInvitation> findByExpiredDateBefore(final LocalDate expiredDate);
+    List<TeamInvitation> findAllByIdStartingWith(final String teamId);
 
-    List<TeamInvitation> findAllByTeamId(final long teamId);
-
-    Optional<TeamInvitation> findByTeamIdAndEmail(final long teamId, final Email email);
+    Optional<TeamInvitation> presentById(final String id);
 }
