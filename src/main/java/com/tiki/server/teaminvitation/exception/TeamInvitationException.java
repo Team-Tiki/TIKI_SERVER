@@ -1,6 +1,6 @@
-package com.tiki.server.email.teaminvitation.exception;
+package com.tiki.server.teaminvitation.exception;
 
-import com.tiki.server.email.teaminvitation.messages.ErrorCode;
+import com.tiki.server.teaminvitation.messages.ErrorCode;
 import lombok.Getter;
 
 @Getter

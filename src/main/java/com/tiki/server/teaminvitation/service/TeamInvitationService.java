@@ -1,12 +1,12 @@
-package com.tiki.server.email.teaminvitation.service;
+package com.tiki.server.teaminvitation.service;
 
 import com.tiki.server.common.entity.Position;
-import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
-import com.tiki.server.email.teaminvitation.adapter.TeamInvitationDeleter;
-import com.tiki.server.email.teaminvitation.adapter.TeamInvitationFinder;
-import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
-import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationEmailsGetResponse;
-import com.tiki.server.email.teaminvitation.service.dto.TeamInvitationInformGetResponse;
+import com.tiki.server.teaminvitation.entity.Invitation;
+import com.tiki.server.teaminvitation.exception.TeamInvitationException;
+import com.tiki.server.teaminvitation.adapter.TeamInvitationDeleter;
+import com.tiki.server.teaminvitation.adapter.TeamInvitationFinder;
+import com.tiki.server.teaminvitation.service.dto.TeamInvitationEmailsGetResponse;
+import com.tiki.server.teaminvitation.service.dto.TeamInvitationInformGetResponse;
 import com.tiki.server.external.util.AwsHandler;
 import com.tiki.server.member.adapter.MemberFinder;
 import com.tiki.server.member.entity.Member;
@@ -17,14 +17,13 @@ import com.tiki.server.team.adapter.TeamFinder;
 import com.tiki.server.team.dto.response.TeamResponse;
 import com.tiki.server.team.entity.Team;
 import com.tiki.server.team.exception.TeamException;
+import com.tiki.server.teaminvitation.messages.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.tiki.server.email.teaminvitation.messages.ErrorCode.ALREADY_INVITED_MEMBER;
-import static com.tiki.server.email.teaminvitation.messages.ErrorCode.NOT_MATCHED_MEMBER_INFORM;
 import static com.tiki.server.team.message.ErrorCode.EXCEED_TEAM_NUMBER;
 
 @Service
@@ -39,34 +38,34 @@ public class TeamInvitationService {
     private final MemberFinder memberFinder;
     private final AwsHandler awsHandler;
 
-    public TeamInvitationInformGetResponse getInvitationInform(final long invitationId) {
-        TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
+    public TeamInvitationInformGetResponse getInvitationInform(final String invitationId) {
+        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         Team team = teamFinder.findById(invitation.getTeamId());
         TeamResponse response = TeamResponse.createWithIcon(team, awsHandler.getDownloadPreSignedUrl(team.getIconImageKey()));
         return TeamInvitationInformGetResponse.of(invitation, response);
     }
 
     @Transactional
-    public void createTeamMemberFromInvitation(final long memberId, final long teamId, final long invitationId) {
+    public void createTeamMemberFromInvitation(final long memberId, final long teamId, final String invitationId) {
         checkIsPresentTeamMember(memberId, teamId);
         Member member = memberFinder.findById(memberId);
         checkTeamNumber(memberId);
         Team team = teamFinder.findById(teamId);
-        TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
+        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         checkMemberMatched(invitation, member);
         memberTeamManagerSaver.save(MemberTeamManager.of(member, team, Position.EXECUTIVE));
         teamInvitationDeleter.deleteTeamInvitation(invitation);
     }
 
-    public void deleteTeamInvitationFromAdmin(final long memberId, final long teamId, final long invitationId) {
+    public void deleteTeamInvitationFromAdmin(final long memberId, final long teamId, final String invitationId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
-        TeamInvitation teamInvitation = teamInvitationFinder.findByInvitationId(invitationId);
-        teamInvitationDeleter.deleteTeamInvitation(teamInvitation);
+        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
+        teamInvitationDeleter.deleteTeamInvitation(invitation);
     }
 
-    public void deleteTeamInvitation(final long memberId, final long invitationId) {
-        TeamInvitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
+    public void deleteTeamInvitation(final long memberId, final String invitationId) {
+        Invitation invitation = teamInvitationFinder.findByInvitationId(invitationId);
         Member member = memberFinder.findById(memberId);
         checkMemberMatched(invitation, member);
         teamInvitationDeleter.deleteTeamInvitation(invitation);
@@ -76,19 +75,19 @@ public class TeamInvitationService {
     public TeamInvitationEmailsGetResponse getInvitations(final long memberId, final long teamId) {
         MemberTeamManager memberTeamManager = memberTeamManagerFinder.findByMemberIdAndTeamId(memberId, teamId);
         memberTeamManager.checkMemberAccessible(Position.ADMIN);
-        List<TeamInvitation> teamInvitations = teamInvitationFinder.findAllByTeamId(teamId);
-        return TeamInvitationEmailsGetResponse.from(teamInvitations);
+        List<Invitation> invitations = teamInvitationFinder.findAllByIdStartingWith(String.valueOf(teamId));
+        return TeamInvitationEmailsGetResponse.from(invitations);
     }
 
-    private void checkMemberMatched(TeamInvitation teamInvitation, Member member) {
-        if (!teamInvitation.getEmail().equals(member.getEmail())) {
-            throw new TeamInvitationException(NOT_MATCHED_MEMBER_INFORM);
+    private void checkMemberMatched(Invitation invitation, Member member) {
+        if (!invitation.getEmail().equals(member.getEmail())) {
+            throw new TeamInvitationException(ErrorCode.NOT_MATCHED_MEMBER_INFORM);
         }
     }
 
     private void checkIsPresentTeamMember(long memberId, long teamId) {
         if (memberTeamManagerFinder.checkIsPresent(memberId, teamId)) {
-            throw new TeamInvitationException(ALREADY_INVITED_MEMBER);
+            throw new TeamInvitationException(ErrorCode.ALREADY_INVITED_MEMBER);
         }
     }
 

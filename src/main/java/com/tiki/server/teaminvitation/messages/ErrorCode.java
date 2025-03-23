@@ -1,4 +1,4 @@
-package com.tiki.server.email.teaminvitation.messages;
+package com.tiki.server.teaminvitation.messages;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
