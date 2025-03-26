@@ -3,12 +3,12 @@ package com.tiki.server.teaminvitation.adapter;
 import com.tiki.server.common.support.RepositoryAdapter;
 import com.tiki.server.teaminvitation.entity.TeamInvitation;
 import com.tiki.server.teaminvitation.exception.TeamInvitationException;
-import com.tiki.server.teaminvitation.repository.TeamInvitationRepository;
 import com.tiki.server.teaminvitation.messages.ErrorCode;
-import java.util.Optional;
+import com.tiki.server.teaminvitation.repository.TeamInvitationRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
@@ -26,6 +26,6 @@ public class TeamInvitationFinder {
     }
 
     public Optional<TeamInvitation> findById(final String id) {
-        return teamInvitationRepository.findById (id);
+        return teamInvitationRepository.findById(id);
     }
 }
