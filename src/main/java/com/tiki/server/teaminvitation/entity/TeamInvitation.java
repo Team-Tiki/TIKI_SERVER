@@ -21,7 +21,6 @@ import org.springframework.data.redis.core.RedisHash;
 public class TeamInvitation extends BaseTime {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
     private String id;
 
     private String sender;
