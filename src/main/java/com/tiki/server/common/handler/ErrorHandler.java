@@ -4,7 +4,7 @@ import com.tiki.server.auth.exception.AuthException;
 import com.tiki.server.common.dto.ErrorCodeResponse;
 import com.tiki.server.common.exception.TikiException;
 import com.tiki.server.email.emailsender.exception.EmailSenderException;
-import com.tiki.server.email.teaminvitation.exception.TeamInvitationException;
+import com.tiki.server.teaminvitation.exception.TeamInvitationException;
 import com.tiki.server.email.verification.exception.EmailVerificationException;
 import com.tiki.server.folder.exception.FolderException;
 import com.tiki.server.note.exception.NoteException;

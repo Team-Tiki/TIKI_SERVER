@@ -1,7 +1,6 @@
-package com.tiki.server.email.teaminvitation.service.dto;
+package com.tiki.server.teaminvitation.service.dto;
 
-import com.tiki.server.email.Email;
-import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
+import com.tiki.server.teaminvitation.entity.TeamInvitation;
 import jakarta.validation.constraints.NotNull;
 
 public record TeamInvitationEmailGetResponse(

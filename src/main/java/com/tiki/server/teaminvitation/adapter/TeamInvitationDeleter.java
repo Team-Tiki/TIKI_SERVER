@@ -1,11 +1,9 @@
-package com.tiki.server.email.teaminvitation.adapter;
+package com.tiki.server.teaminvitation.adapter;
 
 import com.tiki.server.common.support.RepositoryAdapter;
-import com.tiki.server.email.teaminvitation.entity.TeamInvitation;
-import com.tiki.server.email.teaminvitation.repository.TeamInvitationRepository;
+import com.tiki.server.teaminvitation.entity.TeamInvitation;
+import com.tiki.server.teaminvitation.repository.TeamInvitationRepository;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RepositoryAdapter
 @RequiredArgsConstructor
@@ -15,9 +13,5 @@ public class TeamInvitationDeleter {
 
     public void deleteTeamInvitation(final TeamInvitation teamInvitation) {
         teamInvitationRepository.delete(teamInvitation);
-    }
-
-    public void deleteAll(final List<TeamInvitation> expiredInvitation) {
-        teamInvitationRepository.deleteAll(expiredInvitation);
     }
 }

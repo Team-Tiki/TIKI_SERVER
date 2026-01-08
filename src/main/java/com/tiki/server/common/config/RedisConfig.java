@@ -1,8 +1,11 @@
 package com.tiki.server.common.config;
 
+import com.tiki.server.common.support.RedisRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,7 +15,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.util.Map;
 
 @Configuration
-@EnableRedisRepositories
+@EnableRedisRepositories(
+        basePackages = "com.tiki.server",
+        includeFilters = @ComponentScan.Filter(
+                type = FilterType.ANNOTATION,
+                value = RedisRepository.class
+        )
+)
 public class RedisConfig {
 
     @Value("${REDIS.host}")

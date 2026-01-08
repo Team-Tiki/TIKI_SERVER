@@ -2,10 +2,11 @@ package com.tiki.server.email.verification.domain;
 
 import com.tiki.server.email.Email;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
