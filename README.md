@@ -1,3 +1,19 @@
+
+## ⭐️ 서비스 플로우
+
+<img src="https://github.com/user-attachments/assets/76808058-2ebf-4170-974f-8439f2899f84" />
+
+## 💥 핵심기능
+
+1. <strong>Solution 1</strong>
+   <img  src="https://github.com/user-attachments/assets/d1f31ff0-263f-4b76-b3f5-438fd1bbc46a" />
+
+2. <strong>Solution 2</strong>
+   <img src="https://github.com/user-attachments/assets/4fdc42cb-c33d-466e-b4e9-db773ed616df" />
+
+3. <strong>Solution 3</strong>
+   <img src="https://github.com/user-attachments/assets/a1f35996-9502-40fc-b4d0-21815d6b073d" />
+
 ### 🏢 Architecture
 
 ![image](https://github.com/user-attachments/assets/16dd8458-9a0e-4020-86f8-28d63fee4315)
